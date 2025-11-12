@@ -230,7 +230,7 @@ export default function Navbar() {
   const renderSubItems = (subs: MenuItem['subs']) => {
     if (!subs || subs.length === 0) return <p className="text-white/50 italic text-sm">No subitems available.</p>;
 
-    
+
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
         {subs.map((sub, index) => {
@@ -400,7 +400,7 @@ export default function Navbar() {
       <AnimatePresence>
         {hoveredItem && (
           <motion.div
-            className="fixed left-0 right-0 bg-[#141212]/98 backdrop-blur-xl shadow-2xl z-40 border-t border-white/5"
+            className="fixed left-0 right-0  bg-[#141212]/98 backdrop-blur-xl shadow-2xl z-50 border-t border-white/5"
             style={{ top: scrolled ? '4rem' : '5rem' }}
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
