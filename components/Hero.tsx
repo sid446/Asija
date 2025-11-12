@@ -47,7 +47,7 @@ function Hero() {
               reimagining and realizing transformations across the entire enterprise.
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 justify-center md:justify-start">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 justify-center items-center md:justify-start">
             <Button label="Learn More" link="/get-started" color1="#1DCD9F" textColor="#000000" />
             <Button label="Contact Us" link="/contact" color1="#000000" textColor="#1DCD9F" />
           </div>
