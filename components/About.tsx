@@ -55,11 +55,8 @@ const cardsData = [
     buttonContent: 'Discover Our Culture',
   },
 ];
-interface AboutProps {
-  cardsRef: React.RefObject<HTMLDivElement>; // Required, non-nullable
-}
 
-const About = ({ cardsRef }: AboutProps) => {
+const About = () => {
   return (
     <section className="relative bg-[#141212] w-full overflow-hidden">
 
@@ -164,6 +161,3 @@ const About = ({ cardsRef }: AboutProps) => {
 };
 
 export default About;
-
-
-
