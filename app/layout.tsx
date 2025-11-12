@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
+import { Scroll } from "lucide-react";
+import  ScrollProvider from "./providers/ScrollProvider";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -23,7 +25,9 @@ export default function RootLayout({
       <body
         className={`${inter.variable} antialiased`}
       >
+        <ScrollProvider>
         {children}
+        </ScrollProvider>
       </body>
     </html>
   );
