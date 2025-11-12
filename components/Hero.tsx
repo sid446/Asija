@@ -18,7 +18,7 @@ function Hero() {
         playsInline
         preload="metadata"
         poster="/thumbnail.jpg"
-        loading="lazy"
+        
       >
         <source
           src="https://res.cloudinary.com/db2qa9dzs/video/upload/v1762886458/vid1_izwyyc.mp4"
@@ -34,7 +34,7 @@ function Hero() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
 
         {/* Blur mask – left side only */}
-        <div className="absolute inset-0 w-full sm:w-1/2 bg-black/40 backdrop-blur-sm sm:backdrop-blur-md" />
+        <div className="absolute inset-0 w-full  bg-black/40 backdrop-blur-sm sm:backdrop-blur-md" />
       </div>
 
       {/* Content Overlay */}
