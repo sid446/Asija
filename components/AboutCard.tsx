@@ -1,4 +1,5 @@
 // components/AboutCard.tsx
+'use client';
 import React from 'react';
 
 type AboutCardProps = {

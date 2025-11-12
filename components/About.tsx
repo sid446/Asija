@@ -1,6 +1,11 @@
-// About.tsx
+
+
+
+
+'use client';
 import React from 'react';
 import AboutCard from './AboutCard';
+import Beams from './Beams';
 
 const cardsData = [
   {
@@ -49,73 +54,87 @@ const cardsData = [
 
 const About = () => {
   return (
-    <section className="bg-[#141212] min-h-screen w-full px-4 py-12 sm:px-6 sm:py-16 md:px-8 lg:px-12 xl:px-20">
-      <div className="max-w-7xl mx-auto">
-        {/* Heading - Centered & Smaller on Mobile */}
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight text-center">
-          Our Legacy of Trust
-          <span className="text-[#1DCD9F] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold"> .</span>
-        </h1>
-
-        {/* Quote - Centered & No Border on Mobile */}
-        <blockquote
-          className={`
-            mt-6 sm:mt-20 text-sm sm:text-base md:text-lg lg:text-xl 
-            text-gray-300 italic font-light leading-relaxed 
-            text-center
-            ${'sm:border-l-4 sm:border-[#1DCD9F] sm:pl-6 sm:text-left'} 
-            py-2
-          `}
-        >
-          “Coming together is a beginning, keeping together is progress, working together is success.”
-        </blockquote>
-
-        {/* Main Content - Centered on Mobile */}
-        <div className="mt-8 sm:mt-12 space-y-4 sm:space-y-5 text-gray-300 text-sm sm:text-base leading-relaxed font-light text-center sm:text-left">
-          {/* Always visible */}
-          <p>
-            <span className="text-white">Asija & Associates LLP, Chartered Accountants</span> was established on{' '}
-            <span className="text-[#1DCD9F] font-medium">1st April 1986</span> by our founder member{' '}
-            <span className="text-white">CA. Uttam Chandra Asija</span> with the aim of providing a wide range of
-            Accounting and Financial services to clients in the Government, Corporate, and Private Sectors.
-          </p>
-
-          <p>
-            Over the years, the firm has been built around a team of professionals possessing vast experience in{' '}
-            <span className="text-[#1DCD9F]">auditing, accounting, taxation, company law matters</span>, and a host of other
-            financial services. We assist clients in solving complex problems and support the growth of society at large.
-          </p>
-
-          {/* Hidden on mobile, shown on sm+ */}
-          <div className="hidden sm:block space-y-4 text-left">
-            <p>
-              Our firm has not only augmented in knowledge and skills but has also established a{' '}
-              <span className="text-[#1DCD9F]">landmark achievement</span> by becoming the{' '}
-              <span className="text-white">
-                first Chartered Accountancy firm in Lucknow to convert into a Limited Liability Partnership.
-              </span>
-            </p>
-
-            <p className="mt-4 text-white text-sm sm:text-base">
-              We, at Asija, aim to deliver <span className="text-[#1DCD9F]">quality to our stakeholders</span> and strive to be the{' '}
-              <span className="">best at everything we do</span>. We believe in working
-              together to fulfill the needs of our clients <em>beyond their expectations</em>.
-            </p>
-          </div>
+    <section className="relative bg-[#141212] min-h-screen w-full overflow-hidden">
+      
+      {/* === UPPER SECTION: Beams + Dark Overlay + Content === */}
+      <div className="relative z-10 px-4 py-12 sm:px-6 sm:py-16 md:px-8 lg:px-12 xl:px-20">
+        
+        {/* Animated Beams – Only in upper part */}
+        <div className="absolute inset-0 z-0">
+          <Beams
+            
+            
+          />
         </div>
 
-        {/* Cards Grid - 2 columns on mobile, 3 on lg+ */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-12 sm:mt-20">
-          {cardsData.map((card, index) => (
-            <AboutCard
-              key={index}
-              image={card.image}
-              title={card.title}
-              description={card.description}
-              buttonContent={card.buttonContent}
-              isMobile
-            />
-          ))}
+        {/* Dark Overlay for readability */}
+        <div className="absolute inset-0 bg-black/70 z-10" />
+
+        {/* Upper Content */}
+        <div className="relative z-20 max-w-7xl mx-auto pb-20 sm:pb-28 mb-20">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight text-center">
+            Our Legacy of Trust
+            <span className="text-[#1DCD9F] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold"> .</span>
+          </h1>
+
+          <blockquote className={`
+            mt-6 sm:mt-20 text-sm sm:text-base md:text-lg lg:text-xl 
+            text-gray-300 italic font-light leading-relaxed text-center
+            ${'sm:border-l-4 sm:border-[#1DCD9F] sm:pl-6 sm:text-left'} py-2
+          `}>
+            "Coming together is a beginning, keeping together is progress, working together is success."
+          </blockquote>
+
+          <div className="mt-8 sm:mt-12 space-y-4 sm:space-y-5 text-gray-300 text-sm sm:text-base leading-relaxed font-light text-center sm:text-left">
+            <p>
+              <span className="text-white">Asija & Associates LLP, Chartered Accountants</span> was established on{' '}
+              <span className="text-[#1DCD9F] font-medium">1st April 1986</span> by our founder member{' '}
+              <span className="text-white">CA. Uttam Chandra Asija</span> with the aim of providing a wide range of
+              Accounting and Financial services to clients in the Government, Corporate, and Private Sectors.
+            </p>
+            <p>
+              Over the years, the firm has been built around a team of professionals possessing vast experience in{' '}
+              <span className="text-[#1DCD9F]">auditing, accounting, taxation, company law matters</span>, and a host of other
+              financial services. We assist clients in solving complex problems and support the growth of society at large.
+            </p>
+            <div className="hidden sm:block space-y-4 text-left">
+              <p>
+                Our firm has not only augmented in knowledge and skills but has also established a{' '}
+                <span className="text-[#1DCD9F]">landmark achievement</span> by becoming the{' '}
+                <span className="text-white">
+                  first Chartered Accountancy firm in Lucknow to convert into a Limited Liability Partnership.
+                </span>
+              </p>
+              <p className="mt-4 text-white text-sm sm:text-base">
+                We, at Asija, aim to deliver <span className="text-[#1DCD9F]">quality to our stakeholders</span> and strive to be the{' '}
+                <span className="">best at everything we do</span>. We believe in working
+                together to fulfill the needs of our clients <em>beyond their expectations</em>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* === LOWER SECTION: Full-Width #222222 Card Panel === */}
+      <div className="relative z-30 -mt-16 sm:-mt-20 lg:-mt-24">
+        <div className="bg-[#141212]  shadow-2xl">
+          <div className="px-4 py-12 sm:px-6 sm:py-16 md:px-8 lg:px-12 xl:px-20">
+            <div className="max-w-7xl mx-auto">
+
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                {cardsData.map((card, index) => (
+                  <AboutCard
+                    key={index}
+                    image={card.image}
+                    title={card.title}
+                    description={card.description}
+                    buttonContent={card.buttonContent}
+                    isMobile
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

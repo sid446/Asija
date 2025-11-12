@@ -1,2 +1,15 @@
 @import "tailwindcss";
 
+/* globals.css */
+/* Optional: Soft shadow when About overlaps Hero */
+.motion-about::before {
+  content: '';
+  position: absolute;
+  top: -3rem;
+  left: 0;
+  right: 0;
+  height: 6rem;
+  background: linear-gradient(to bottom, rgba(20,18,18,0.9), transparent);
+  pointer-events: none;
+  z-index: 10;
+}
