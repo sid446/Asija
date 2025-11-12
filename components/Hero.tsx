@@ -4,7 +4,7 @@ import Button from './Button';
 
 function Hero() {
   return (
-    <div className="fixed top-0 left-0 w-screen h-[60vh] sm:h-[90vh] overflow-hidden border-b-4 border-[#1DCD9F] z-10">
+    <div className="fixed top-0 left-0 w-screen h-[100vh] sm:h-[90vh] overflow-hidden border-b-4 border-[#1DCD9F] z-10">
      
 
       {/* Video Background */}

@@ -13,7 +13,7 @@ export default function Home() {
       {/* Scrolling Content */}
       <div className="relative z-40">
         {/* Spacer to push content down initially */}
-        <div className="h-[60vh] sm:h-[90vh]" />
+        <div className="h-[100vh] sm:h-[90vh]" />
         
         {/* Content that scrolls over hero */}
         <AboutUs />
