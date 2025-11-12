@@ -1,6 +1,7 @@
 // components/AboutCard.tsx
-'use client';
+
 import React from 'react';
+import { useInView } from 'react-intersection-observer';
 
 type AboutCardProps = {
   image: string;
@@ -8,6 +9,7 @@ type AboutCardProps = {
   description: string;
   buttonContent?: string;
   isMobile?: boolean;
+  index?: number; // For stagger
 };
 
 const AboutCard = ({
@@ -16,27 +18,46 @@ const AboutCard = ({
   description,
   buttonContent = 'Learn More',
   isMobile,
+  index = 0,
 }: AboutCardProps) => {
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+    rootMargin: '100px', // Start loading early
+  });
+
+  // Stagger delay: 100ms per card
+  const delay = index * 100;
+
   return (
     <div
+      ref={ref}
+      style={{
+        transitionDelay: inView ? `${delay}ms` : '0ms',
+      }}
       className={`
+        transform transition-all duration-700 ease-out
+        ${inView ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}
         group w-full bg-[#222222] border-t-4 border-[#1DCD9F] shadow-lg overflow-hidden 
-        transition-all duration-300 hover:shadow-xl hover:-translate-y-1
+        hover:shadow-xl hover:-translate-y-1
         ${isMobile ? 'h-auto' : ''}
       `}
     >
-      {/* Image - Smaller on mobile */}
+      {/* Image - Lazy + Optimized */}
       <div className={`relative ${isMobile ? 'h-28' : 'h-36 sm:h-40 md:h-44'} overflow-hidden`}>
         <img
           src={image}
           alt={title}
           loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          // Prevent layout shift
+          style={{ contentVisibility: 'auto', containIntrinsicSize: '300px 200px' }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
-      {/* Content - Compact on mobile */}
+      {/* Content */}
       <div className={`p-3 ${isMobile ? 'sm:p-4' : 'sm:p-5 md:p-6'} space-y-2 sm:space-y-3`}>
         <h2
           className={`
@@ -55,7 +76,7 @@ const AboutCard = ({
           {description}
         </p>
 
-        {/* Button - Full width on mobile */}
+        {/* Button */}
         <button
           className={`
             relative inline-flex items-center justify-center gap-1.5 
