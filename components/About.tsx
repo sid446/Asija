@@ -8,7 +8,7 @@ const cardsData = [
     title: 'Vision & Mission',
     description:
       'Achieve significant presence in every region of the country. Provide client-defined, quality services on global standards. Offer balanced threefold services in Audit, Taxation & Consultancy. Place clients’ interests ahead of the firm. Emerge as a leader in CA firms through dedication and quality. Be a well-recognized firm that fosters client needs and is the aspired choice for trainees. We continuously seek value-added knowledge for our people, clients, and society, blending professionalism with excellence.',
-    buttonContent: 'Discover Our Purpose', // Fixed: moved outside description
+    buttonContent: 'Discover Our Purpose',
   },
   {
     image: '/histoy.jpg',
@@ -49,21 +49,21 @@ const cardsData = [
 
 const About = () => {
   return (
-    <section className="bg-[#141212] min-h-screen w-full px-6 py-16 md:px-12 lg:px-20 xl:px-10">
+    <section className="bg-[#141212] min-h-screen w-full px-4 py-12 sm:px-6 sm:py-16 md:px-8 lg:px-12 xl:px-20">
       <div className="max-w-7xl mx-auto">
         {/* Heading */}
-        <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight text-center sm:text-left">
           Our Legacy of Trust
-          <span className="text-[#1DCD9F] text-6xl md:text-7xl font-bold"> .</span>
+          <span className="text-[#1DCD9F] text-5xl sm:text-6xl md:text-7xl font-bold"> .</span>
         </h1>
 
         {/* Quote */}
-        <blockquote className="mt-10 text-lg md:text-xl text-gray-300 italic font-light leading-relaxed border-l-4 border-[#1DCD9F] pl-6 py-2">
+        <blockquote className="mt-8 sm:mt-10 text-base sm:text-lg md:text-xl text-gray-300 italic font-light leading-relaxed border-l-4 border-[#1DCD9F] pl-4 sm:pl-6 py-2">
           “Coming together is a beginning, keeping together is progress, working together is success.”
         </blockquote>
 
         {/* Main Content */}
-        <div className="mt-12 space-y-6 text-gray-300 text-base items-center md:text-lg leading-relaxed font-light">
+        <div className="mt-10 sm:mt-12 space-y-5 sm:space-y-6 text-gray-300 text-sm sm:text-base md:text-lg leading-relaxed font-light">
           <p>
             <span className="text-white">Asija & Associates LLP, Chartered Accountants</span> was established on{' '}
             <span className="text-[#1DCD9F] font-medium">1st April 1986</span> by our founder member{' '}
@@ -85,7 +85,7 @@ const About = () => {
             </span>
           </p>
 
-          <p className="mt-8 text-white">
+          <p className="mt-6 sm:mt-8 text-white text-sm sm:text-base">
             We, at Asija, aim to deliver <span className="text-[#1DCD9F]">quality to our stakeholders</span> and strive to be the{' '}
             <span className="">best at everything we do</span>. We believe in working
             together to fulfill the needs of our clients <em>beyond their expectations</em>.
@@ -93,7 +93,7 @@ const About = () => {
         </div>
 
         {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mt-16 sm:mt-20">
           {cardsData.map((card, index) => (
             <AboutCard
               key={index}

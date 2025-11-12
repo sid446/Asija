@@ -10,31 +10,32 @@ type AboutCardProps = {
 
 const AboutCard = ({ image, title, description, buttonContent = 'Learn More' }: AboutCardProps) => {
   return (
-    <div className="group w-full max-w-sm mx-auto bg-[#222222] border-t-4 border-[#1DCD9F] shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+    <div className="group w-full bg-[#222222] border-t-4 border-[#1DCD9F] shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
       {/* Image */}
-      <div className="relative h-48 overflow-hidden">
+      <div className="relative h-40 sm:h-44 md:h-48 overflow-hidden">
         <img
           src={image}
           alt={title}
+          loading="lazy"
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
       {/* Content */}
-      <div className="p-6 space-y-4">
-        <h2 className="text-2xl font-bold text-gray-300 group-hover:text-[#1DCD9F] transition-colors duration-300">
+      <div className="p-4 sm:p-5 md:p-6 space-y-3 sm:space-y-4">
+        <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-300 group-hover:text-[#1DCD9F] transition-colors duration-300 line-clamp-2">
           {title}
         </h2>
-        <p className="text-sm lg:text-base leading-relaxed text-gray-400 line-clamp-3">
+        <p className="text-xs sm:text-sm md:text-base leading-relaxed text-gray-400 line-clamp-3">
           {description}
         </p>
 
-        {/* Button with fallback */}
-        <button className="relative inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-[#1DCD9F] rounded-full overflow-hidden transition-all duration-300 group-hover:bg-zinc-600 group-hover:text-[#1DCD9F] focus:outline-none focus:ring-2 focus:ring-[#1DCD9F] focus:ring-offset-2 focus:ring-offset-[#222222]">
+        {/* Button - Mobile-Optimized */}
+        <button className="relative inline-flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-medium text-white bg-[#1DCD9F] rounded-full overflow-hidden transition-all duration-300 group-hover:bg-zinc-600 group-hover:text-[#1DCD9F] focus:outline-none focus:ring-2 focus:ring-[#1DCD9F] focus:ring-offset-2 focus:ring-offset-[#222222] min-h-[40px] w-full justify-center sm:w-auto">
           <span className="relative z-10">{buttonContent}</span>
           <svg
-            className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+            className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-300 group-hover:translate-x-1"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
