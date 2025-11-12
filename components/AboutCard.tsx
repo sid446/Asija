@@ -6,13 +6,26 @@ type AboutCardProps = {
   title: string;
   description: string;
   buttonContent?: string;
+  isMobile?: boolean;
 };
 
-const AboutCard = ({ image, title, description, buttonContent = 'Learn More' }: AboutCardProps) => {
+const AboutCard = ({
+  image,
+  title,
+  description,
+  buttonContent = 'Learn More',
+  isMobile,
+}: AboutCardProps) => {
   return (
-    <div className="group w-full bg-[#222222] border-t-4 border-[#1DCD9F] shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
-      {/* Image */}
-      <div className="relative h-40 sm:h-44 md:h-48 overflow-hidden">
+    <div
+      className={`
+        group w-full bg-[#222222] border-t-4 border-[#1DCD9F] shadow-lg overflow-hidden 
+        transition-all duration-300 hover:shadow-xl hover:-translate-y-1
+        ${isMobile ? 'h-auto' : ''}
+      `}
+    >
+      {/* Image - Smaller on mobile */}
+      <div className={`relative ${isMobile ? 'h-28' : 'h-36 sm:h-40 md:h-44'} overflow-hidden`}>
         <img
           src={image}
           alt={title}
@@ -22,20 +35,39 @@ const AboutCard = ({ image, title, description, buttonContent = 'Learn More' }: 
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
-      {/* Content */}
-      <div className="p-4 sm:p-5 md:p-6 space-y-3 sm:space-y-4">
-        <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-300 group-hover:text-[#1DCD9F] transition-colors duration-300 line-clamp-2">
+      {/* Content - Compact on mobile */}
+      <div className={`p-3 ${isMobile ? 'sm:p-4' : 'sm:p-5 md:p-6'} space-y-2 sm:space-y-3`}>
+        <h2
+          className={`
+            font-bold text-gray-300 group-hover:text-[#1DCD9F] transition-colors duration-300 line-clamp-2
+            ${isMobile ? 'text-sm sm:text-base' : 'text-base sm:text-lg md:text-xl'}
+          `}
+        >
           {title}
         </h2>
-        <p className="text-xs sm:text-sm md:text-base leading-relaxed text-gray-400 line-clamp-3">
+        <p
+          className={`
+            leading-relaxed text-gray-400 line-clamp-3
+            ${isMobile ? 'text-xs sm:text-xs' : 'text-xs sm:text-sm'}
+          `}
+        >
           {description}
         </p>
 
-        {/* Button - Mobile-Optimized */}
-        <button className="relative inline-flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-medium text-white bg-[#1DCD9F] rounded-full overflow-hidden transition-all duration-300 group-hover:bg-zinc-600 group-hover:text-[#1DCD9F] focus:outline-none focus:ring-2 focus:ring-[#1DCD9F] focus:ring-offset-2 focus:ring-offset-[#222222] min-h-[40px] w-full justify-center sm:w-auto">
+        {/* Button - Full width on mobile */}
+        <button
+          className={`
+            relative inline-flex items-center justify-center gap-1.5 
+            px-1 sm:px-3 py-1.5 text-xs font-medium text-white bg-[#1DCD9F] rounded-full 
+            overflow-hidden transition-all duration-300 group-hover:bg-[#86dec6] 
+            group-hover:text-black focus:outline-none focus:ring-2 focus:ring-[#1DCD9F] 
+            focus:ring-offset-2 focus:ring-offset-[#222222] min-h-[32px]
+            ${isMobile ? 'w-full text-[10px]' : 'w-auto sm:w-auto'}
+          `}
+        >
           <span className="relative z-10">{buttonContent}</span>
           <svg
-            className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-300 group-hover:translate-x-1"
+            className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-0.5"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"

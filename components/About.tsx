@@ -51,19 +51,28 @@ const About = () => {
   return (
     <section className="bg-[#141212] min-h-screen w-full px-4 py-12 sm:px-6 sm:py-16 md:px-8 lg:px-12 xl:px-20">
       <div className="max-w-7xl mx-auto">
-        {/* Heading */}
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight text-center sm:text-left">
+        {/* Heading - Centered & Smaller on Mobile */}
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight text-center">
           Our Legacy of Trust
-          <span className="text-[#1DCD9F] text-5xl sm:text-6xl md:text-7xl font-bold"> .</span>
+          <span className="text-[#1DCD9F] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold"> .</span>
         </h1>
 
-        {/* Quote */}
-        <blockquote className="mt-8 sm:mt-10 text-base sm:text-lg md:text-xl text-gray-300 italic font-light leading-relaxed border-l-4 border-[#1DCD9F] pl-4 sm:pl-6 py-2">
+        {/* Quote - Centered & No Border on Mobile */}
+        <blockquote
+          className={`
+            mt-6 sm:mt-20 text-sm sm:text-base md:text-lg lg:text-xl 
+            text-gray-300 italic font-light leading-relaxed 
+            text-center
+            ${'sm:border-l-4 sm:border-[#1DCD9F] sm:pl-6 sm:text-left'} 
+            py-2
+          `}
+        >
           “Coming together is a beginning, keeping together is progress, working together is success.”
         </blockquote>
 
-        {/* Main Content */}
-        <div className="mt-10 sm:mt-12 space-y-5 sm:space-y-6 text-gray-300 text-sm sm:text-base md:text-lg leading-relaxed font-light">
+        {/* Main Content - Centered on Mobile */}
+        <div className="mt-8 sm:mt-12 space-y-4 sm:space-y-5 text-gray-300 text-sm sm:text-base leading-relaxed font-light text-center sm:text-left">
+          {/* Always visible */}
           <p>
             <span className="text-white">Asija & Associates LLP, Chartered Accountants</span> was established on{' '}
             <span className="text-[#1DCD9F] font-medium">1st April 1986</span> by our founder member{' '}
@@ -77,23 +86,26 @@ const About = () => {
             financial services. We assist clients in solving complex problems and support the growth of society at large.
           </p>
 
-          <p>
-            Our firm has not only augmented in knowledge and skills but has also established a{' '}
-            <span className="text-[#1DCD9F]">landmark achievement</span> by becoming the{' '}
-            <span className="text-white">
-              first Chartered Accountancy firm in Lucknow to convert into a Limited Liability Partnership.
-            </span>
-          </p>
+          {/* Hidden on mobile, shown on sm+ */}
+          <div className="hidden sm:block space-y-4 text-left">
+            <p>
+              Our firm has not only augmented in knowledge and skills but has also established a{' '}
+              <span className="text-[#1DCD9F]">landmark achievement</span> by becoming the{' '}
+              <span className="text-white">
+                first Chartered Accountancy firm in Lucknow to convert into a Limited Liability Partnership.
+              </span>
+            </p>
 
-          <p className="mt-6 sm:mt-8 text-white text-sm sm:text-base">
-            We, at Asija, aim to deliver <span className="text-[#1DCD9F]">quality to our stakeholders</span> and strive to be the{' '}
-            <span className="">best at everything we do</span>. We believe in working
-            together to fulfill the needs of our clients <em>beyond their expectations</em>.
-          </p>
+            <p className="mt-4 text-white text-sm sm:text-base">
+              We, at Asija, aim to deliver <span className="text-[#1DCD9F]">quality to our stakeholders</span> and strive to be the{' '}
+              <span className="">best at everything we do</span>. We believe in working
+              together to fulfill the needs of our clients <em>beyond their expectations</em>.
+            </p>
+          </div>
         </div>
 
-        {/* Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mt-16 sm:mt-20">
+        {/* Cards Grid - 2 columns on mobile, 3 on lg+ */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-12 sm:mt-20">
           {cardsData.map((card, index) => (
             <AboutCard
               key={index}
@@ -101,6 +113,7 @@ const About = () => {
               title={card.title}
               description={card.description}
               buttonContent={card.buttonContent}
+              isMobile
             />
           ))}
         </div>
