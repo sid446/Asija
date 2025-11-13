@@ -1,7 +1,7 @@
-// components/AboutCard.tsx
-
+'use client';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
+import Image from 'next/image';
 
 type AboutCardProps = {
   image: string;
@@ -9,7 +9,7 @@ type AboutCardProps = {
   description: string;
   buttonContent?: string;
   isMobile?: boolean;
-  index?: number; // For stagger
+  index?: number;
 };
 
 const AboutCard = ({
@@ -22,39 +22,42 @@ const AboutCard = ({
 }: AboutCardProps) => {
   const { ref, inView } = useInView({
     triggerOnce: true,
-    threshold: 0.1,
-    rootMargin: '100px', // Start loading early
+    threshold: 0.05,
+    rootMargin: '200px', // Start loading EARLY
   });
 
-  // Stagger delay: 100ms per card
-  const delay = index * 100;
+  const delay = index * 75; // Faster stagger
 
   return (
     <div
       ref={ref}
       style={{
         transitionDelay: inView ? `${delay}ms` : '0ms',
+        willChange: inView ? 'transform, opacity' : 'auto',
       }}
       className={`
-        transform transition-all duration-700 ease-out
-        ${inView ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}
-        group w-full bg-[#222222] border-t-4 border-[#1DCD9F] shadow-lg overflow-hidden 
-        hover:shadow-xl hover:-translate-y-1
+        transform transition-all duration-500 ease-out
+        ${inView ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'}
+        group w-full bg-[#222222] border-t-4 border-[#1DCD9F] 
+        shadow-md overflow-hidden 
+        hover:shadow-lg hover:-translate-y-1
         ${isMobile ? 'h-auto' : ''}
       `}
     >
-      {/* Image - Lazy + Optimized */}
+      {/* OPTIMIZED IMAGE with Next.js Image */}
       <div className={`relative ${isMobile ? 'h-28' : 'h-36 sm:h-40 md:h-44'} overflow-hidden`}>
-        <img
+        <Image
           src={image}
           alt={title}
-          loading="lazy"
-          decoding="async"
+          width={400}
+          height={isMobile ? 112 : 176}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-          // Prevent layout shift
-          style={{ contentVisibility: 'auto', containIntrinsicSize: '300px 200px' }}
+          quality={75}
+          placeholder="blur"
+          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
       {/* Content */}

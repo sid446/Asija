@@ -141,15 +141,16 @@ const About = () => {
 
               {/* Cards Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-2  lg:grid-cols-3 gap-4 mt-0  sm:mt-15 sm:gap-6 mb-10">
-                {cardsData.map((card, index) => (
+                
+{cardsData.map((card, index) => (
   <AboutCard
     key={index}
     image={card.image}
     title={card.title}
     description={card.description}
     buttonContent={card.buttonContent}
-    
-    index={index} // This enables stagger
+    isMobile={false} // or use useState hook for mobile detection
+    index={index} // REQUIRED for stagger
   />
 ))}
               </div>
