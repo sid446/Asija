@@ -2,6 +2,7 @@ import AboutUs from "@/components/About";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
 import  Navbar  from "@/components/Navbar";
+import IndustriesFlowMenu from "@/components/Industry";
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
         {/* Content that scrolls over hero */}
         <AboutUs />
         <Services />
+        <IndustriesFlowMenu />
       </div>
     </div>
   );

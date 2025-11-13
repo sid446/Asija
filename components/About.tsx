@@ -129,7 +129,7 @@ const About = () => {
 
       {/* === LOWER SECTION: Full-Width Card Panel with Heading === */}
       <div className="relative z-30 -mt-12 sm:-mt-16 lg:-mt-20">
-        <div className="bg-[#222222]  shadow-2xl">
+        <div className="bg-[#141212]  shadow-2xl">
           <div className="px-4 py-10 sm:px-6 sm:py-12 md:px-8 lg:px-12 xl:px-20">
             <div className="max-w-7xl mx-auto">
 
