@@ -1,10 +1,16 @@
+
 import AboutUs from "@/components/About";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
 import  Navbar  from "@/components/Navbar";
 import IndustriesFlowMenu from "@/components/Industry";
+import Career from "@/components/Carrer";
+
+
+
 
 export default function Home() {
+
   return (
     <div className="relative">
       {/* Fixed Hero Background */}
@@ -20,6 +26,8 @@ export default function Home() {
         <AboutUs />
         <Services />
         <IndustriesFlowMenu />
+        <Career />
+        
       </div>
     </div>
   );
