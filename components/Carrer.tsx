@@ -27,7 +27,7 @@ function Career () {
   }, [])
 
   return (
-    <div ref={sectionRef} className='w-full min-h-screen bg-gradient-to-b from-black to-[#141212] px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 flex flex-col items-center justify-center py-12 sm:py-16 md:py-20'>
+    <div ref={sectionRef} className='w-full min-h-screen bg-gradient-to-b from-black to-[#141212] px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 flex flex-col items-center py-12 sm:py-16 md:py-20'>
     <div className={`w-full max-w-[1400px] h-[60vh] sm:h-[65vh] md:h-[70vh] lg:h-[75vh] xl:h-[80vh] relative rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl transition-all duration-1000 delay-400 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
         <img className='w-full h-full object-cover absolute inset-0' src="/image.png" alt="Career opportunities" />
         <div className='absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/20'></div>
