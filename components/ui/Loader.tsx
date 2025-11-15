@@ -3,79 +3,40 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { WaveLoader } from './WaveLoader';
 
 export default function Loader() {
-  const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Simulate loading progress
+  // Simulate loading (2 seconds total)
   useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((p) => {
-        if (p >= 100) {
-          clearInterval(interval);
-          setTimeout(() => setIsLoading(false), 300);
-          return 100;
-        }
-        return p + 1;
-      });
-    }, 20);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000); // Adjust duration as needed
 
-    return () => clearInterval(interval);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <AnimatePresence>
       {isLoading && (
         <motion.div
-          className="fixed inset-0 z-[9999] flex overflow-hidden"
-          exit={{ opacity: 1 }} // Prevent fade
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#141212] overflow-hidden"
+          initial={{ y: 0 }}
+          exit={{ y: '-100%' }}           // Slides UP
+          transition={{ duration: 0.8, ease: 'easeInOut' }}
         >
-          {/* LEFT HALF */}
+          {/* Centered Wave Loader */}
           <motion.div
-            className="flex-1 bg-[#2a2a2a] flex flex-col items-end justify-center "
-            initial={{ x: 0 }}
-            exit={{ x: '-100%' }}
-            transition={{ duration: 0.9, ease: 'easeInOut' }}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
           >
-            <motion.span
-              className="text-6xl md:text-8xl font-bold text-white"
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
-            >
-              LOAD
-            </motion.span>
+            <WaveLoader
+              bars={5}
+              barClass="bg-[#1DCD9F]"
+            />
           </motion.div>
-
-          {/* RIGHT HALF */}
-          <motion.div
-            className="flex-1 bg-[#2a2a2a] flex flex-col gap-10  items-start  justify-center "
-            initial={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ duration: 0.9, ease: 'easeInOut' }}
-          >
-            <motion.span
-              className="text-6xl md:text-8xl font-bold text-white mt-20"
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
-            >
-              ING
-            </motion.span>
-            <motion.div
-            className=" text-2xl md:text-3xl font-medium text-white/80 ml-30"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
-          >
-            {progress}%
-          </motion.div>
-
-          </motion.div>
-
-          {/* PERCENTAGE – centered below */}
-          
         </motion.div>
       )}
     </AnimatePresence>
