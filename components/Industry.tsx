@@ -239,7 +239,7 @@ const industriesSlides = [
     description: "End-to-end audit, tax planning, and compliance for banks, NBFCs, and fintech startups.",
     descriptionKey: 'industries.bankingDesc', // ADD THIS to your JSON
     image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?q=80&w=2070&auto=format&fit=crop",
-    bgColor: "#141212",
+    bgColor: "#2a2a2a",
     textColor: "#ffffff",
     slug: "banking"
   },
@@ -249,7 +249,7 @@ const industriesSlides = [
     description: "Financial advisory for schools, universities, and edtech platforms with grant compliance.",
     descriptionKey: 'industries.educationDesc', // ADD THIS to your JSON
     image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop",
-    bgColor: "#141212",
+    bgColor: "#2a2a2a",
     textColor: "#ffffff",
     slug: "education"
   },
@@ -259,7 +259,7 @@ const industriesSlides = [
     description: "Hospital accounting, medical billing, and regulatory compliance under NABH & HIPAA.",
     descriptionKey: 'industries.healthcareDesc', // ADD THIS to your JSON
     image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=2070&auto=format&fit=crop",
-    bgColor: "#141212",
+    bgColor: "#2a2a2a",
     textColor: "#ffffff",
     slug: "healthcare"
   },
@@ -269,7 +269,7 @@ const industriesSlides = [
     description: "Project finance, PPP models, and cost audits for roads, metro, and smart cities.",
     descriptionKey: 'industries.infrastructureDesc', // ADD THIS to your JSON
     image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2070&auto=format&fit=crop",
-    bgColor: "#141212",
+    bgColor: "#2a2a2a",
     textColor: "#ffffff",
     slug: "infrastructure"
   },
@@ -279,7 +279,7 @@ const industriesSlides = [
     description: "RERA compliance, project funding, and valuation for developers and REITs.",
     descriptionKey: 'industries.realtyDesc', // ADD THIS to your JSON
     image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=2070&auto=format&fit=crop",
-    bgColor: "#141212",
+    bgColor: "#2a2a2a",
     textColor: "#ffffff",
     slug: "realestate"
   },
@@ -289,7 +289,7 @@ export default function Industries() {
   const { t } = useTranslation(); // ADD THIS
   
   return (
-    <section className="bg-black w-full py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-20">
+    <section className="bg-[#252525] w-full py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-20">
       <div className="max-w-7xl mx-auto">
         
         <motion.div
@@ -326,7 +326,7 @@ export default function Industries() {
                     src={item.image}
                     alt={t(item.translationKey)}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/25 to-transparent" />
                   
                   <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6 md:p-8 lg:p-12">
                     <motion.div
@@ -375,7 +375,7 @@ export default function Industries() {
               <SliderBtn
                 key={index}
                 value={item.slug}
-                className='group relative overflow-hidden bg-gradient-to-b from-[#1a1a1a] to-[#141212] border border-white/10 rounded-xl p-4 sm:p-5 text-left cursor-pointer transition-all duration-300 hover:border-[#1DCD9F]/50 hover:shadow-xl hover:shadow-[#1DCD9F]/20 touch-manipulation select-none'
+                className='group relative overflow-hidden bg-gradient-to-b from-[#323232] to-[#2a2a2a] border border-white/10 rounded-xl p-4 sm:p-5 text-left cursor-pointer transition-all duration-300 hover:border-[#1DCD9F]/50 hover:shadow-xl hover:shadow-[#1DCD9F]/20 touch-manipulation select-none'
                 progressBarClass='bg-[#1DCD9F] h-full'
               >
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#1DCD9F] to-[#0EA578] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

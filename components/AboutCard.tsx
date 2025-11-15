@@ -38,7 +38,7 @@ const AboutCard = ({
       className={`
         transform transition-all duration-500 ease-out
         ${inView ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'}
-        group w-full bg-[#222222] border-t-4 border-[#1DCD9F] 
+        group w-full bg-[#323232] border-t-4 border-[#1DCD9F] 
         shadow-md overflow-hidden 
         hover:shadow-lg hover:-translate-y-1
         ${isMobile ? 'h-auto' : ''}
@@ -57,7 +57,7 @@ const AboutCard = ({
           blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
       {/* Content */}
@@ -86,7 +86,7 @@ const AboutCard = ({
             px-1 sm:px-3 py-1.5 text-xs font-medium text-white bg-[#1DCD9F] rounded-full 
             overflow-hidden transition-all duration-300 group-hover:bg-[#86dec6] 
             group-hover:text-black focus:outline-none focus:ring-2 focus:ring-[#1DCD9F] 
-            focus:ring-offset-2 focus:ring-offset-[#222222] min-h-[32px]
+            focus:ring-offset-2 focus:ring-offset-[#323232] min-h-[32px]
             ${isMobile ? 'w-full text-[10px]' : 'w-auto sm:w-auto'}
           `}
         >

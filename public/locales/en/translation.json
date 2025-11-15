@@ -79,6 +79,33 @@
     "applyNow": "Apply Now",
     "viewPositions": "View Open Positions"
   },
+  "contact": {
+    "title": "Get In Touch",
+    "description": "Reach out to us for expert financial services and consultation.",
+    "officeLocations": "Office Locations",
+    "officeLocation1": "Lucknow, Uttar Pradesh",
+    "officeLocation2": "India",
+    "contactNo": "Contact No.",
+    "phone1": "+91 XXXXX XXXXX",
+    "phone2": "+91 XXXXX XXXXX",
+    "emails": "Emails",
+    "email1": "info@asija.in",
+    "email2": "contact@asija.in",
+    "enquiryForm": "Enquiry Form / Consult Us"
+  },
+  "footer": {
+    "description": "Professional audit, tax, and advisory services across multiple industries.",
+    "company": "Company",
+    "services": "Services",
+    "contact": "Contact",
+    "copyright": "© 2024 Asija & Associates LLP. All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "officeLocations": "Office Locations",
+    "contactNo": "Contact No.",
+    "emails": "Emails",
+    "enquiryForm": "Enquiry Form"
+  },
   "languageSwitcher": {
     "en": "English",
     "hi": "Hindi",

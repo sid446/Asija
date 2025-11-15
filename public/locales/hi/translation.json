@@ -79,6 +79,33 @@
     "applyNow": "अभी आवेदन करें",
     "viewPositions": "खुली स्थिति देखें"
   },
+  "contact": {
+    "title": "संपर्क करें",
+    "description": "विशेषज्ञ वित्तीय सेवाओं और परामर्श के लिए हमसे संपर्क करें।",
+    "officeLocations": "कार्यालय स्थान",
+    "officeLocation1": "लखनऊ, उत्तर प्रदेश",
+    "officeLocation2": "भारत",
+    "contactNo": "संपर्क नंबर",
+    "phone1": "+91 XXXXX XXXXX",
+    "phone2": "+91 XXXXX XXXXX",
+    "emails": "ईमेल",
+    "email1": "info@asija.in",
+    "email2": "contact@asija.in",
+    "enquiryForm": "जांच फॉर्म / परामर्श करें"
+  },
+  "footer": {
+    "description": "कई उद्योगों में पेशेवर लेखा परीक्षा, कर और परामर्श सेवाएं।",
+    "company": "कंपनी",
+    "services": "सेवाएँ",
+    "contact": "संपर्क",
+    "copyright": "© 2024 असीजा एंड एसोसिएट्स एलएलपी। सभी अधिकार सुरक्षित।",
+    "privacy": "गोपनीयता नीति",
+    "terms": "सेवा की शर्तें",
+    "officeLocations": "कार्यालय स्थान",
+    "contactNo": "संपर्क नंबर",
+    "emails": "ईमेल",
+    "enquiryForm": "जांच फॉर्म"
+  },
   "languageSwitcher": {
     "en": "अंग्रेज़ी",
     "hi": "हिन्दी",

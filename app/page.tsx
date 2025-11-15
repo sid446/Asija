@@ -1,34 +1,38 @@
+'use client';
 
 import AboutUs from "@/components/About";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
-import  Navbar  from "@/components/Navbar";
+import Navbar from "@/components/Navbar";
 import IndustriesFlowMenu from "@/components/Industry";
 import Career from "@/components/Carrer";
-
-
-
+import Contact from "@/components/Contact";
+import Footer from "@/components/Footer";
+import Loader from "@/components/ui/Loader";   // ← ADD THIS
+import FAQs from "@/components/FAQ";
+import FAQAccordion from "@/components/FaqInteractable";
 
 export default function Home() {
-
   return (
-    <div className="relative">
-      {/* Fixed Hero Background */}
-      <Navbar />
-      <Hero />
-      
-      {/* Scrolling Content */}
-      <div className="relative z-40">
-        {/* Spacer to push content down initially */}
-        <div className="h-[100vh] sm:h-[90vh]" />
-        
-        {/* Content that scrolls over hero */}
-        <AboutUs />
-        <Services />
-        <IndustriesFlowMenu />
-        <Career />
-        
+    <>
+      {/* Loader – appears first */}
+      <Loader />
+
+      <div className="relative">
+        <Navbar />
+        <Hero />
+
+        <div className="relative z-40">
+          <div className="h-[100vh] sm:h-[90vh]" />
+          <AboutUs />
+          <Services />
+          <IndustriesFlowMenu />
+          <Career />
+          <Contact />
+          <FAQAccordion/>
+          <Footer />
+        </div>
       </div>
-    </div>
+    </>
   );
 }

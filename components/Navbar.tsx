@@ -300,7 +300,7 @@ export default function Navbar() {
         transition={{ duration: 0.3 }}
         className="overflow-hidden"
       >
-        <div className="pl-6 pr-4 py-3 space-y-3 bg-white/5 rounded-lg mt-2">
+        <div className="pl-6 pr-4 py-3 space-y-3 bg-white/8 rounded-lg mt-2">
           {subs.map((sub, index) => {
             if (typeof sub === 'string') {
               return (
@@ -340,19 +340,21 @@ export default function Navbar() {
         animate={{ y: 0 }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled 
-            ? 'h-16 bg-[#141212]/95 backdrop-blur-lg shadow-lg shadow-black/20' 
-            : 'h-20 bg-[#141212]'
+            ? 'h-16 bg-[#2a2a2a]/95 backdrop-blur-lg shadow-lg shadow-black/20' 
+            : 'h-20 bg-[#2a2a2a]'
         }`}
       >
-        <div className="h-full flex justify-between items-center px-4 md:px-8 max-w-7xl mx-auto">
+        <div className="h-full flex justify-between items-center px-4 md:px-20 w-full mx-auto">
           {/* LEFT SIDE */}
           <div className="flex gap-8 lg:gap-10 items-center">
             <motion.h1 
-              className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent cursor-pointer"
+              className="text-sm md:text-lg mt-2 w-fit leading-5 font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent cursor-pointer"
               whileHover={{ scale: 1.05 }}
               transition={{ type: 'spring', stiffness: 400 }}
             >
-              ASIJA
+              ASIJA & ASSOCIATES LLP
+              <br />
+              <span className='text-sm'>Chartered Accountants</span>
             </motion.h1>
 
             {/* Desktop Navigation - Left */}
@@ -401,7 +403,7 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-white p-2 hover:bg-white/10 rounded-lg transition-colors"
+            className="md:hidden text-white p-2 hover:bg-white/15 rounded-lg transition-colors"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
@@ -421,7 +423,7 @@ export default function Navbar() {
       <AnimatePresence>
         {hoveredItem && (
           <motion.div
-            className="fixed left-0 right-0 bg-[#141212]/98 backdrop-blur-xl shadow-2xl z-50 border-t border-white/5"
+            className="fixed left-0 right-0 bg-[#2a2a2a]/98 backdrop-blur-xl shadow-2xl z-50 border-t border-white/5"
             style={{ top: scrolled ? '4rem' : '5rem' }}
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -474,7 +476,7 @@ export default function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+              className="fixed inset-0 bg-black/45 backdrop-blur-sm z-40 md:hidden"
             />
             
             {/* Menu Panel */}
@@ -483,7 +485,7 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="fixed top-0 right-0 bottom-0 w-80 bg-gradient-to-b from-[#1a1818] to-[#141212] z-50 md:hidden shadow-2xl overflow-y-auto"
+              className="fixed top-0 right-0 bottom-0 w-80 bg-gradient-to-b from-[#303030] to-[#2a2a2a] z-50 md:hidden shadow-2xl overflow-y-auto"
             >
               <div className="flex flex-col h-full p-6">
                 {/* Close Button */}
@@ -491,7 +493,7 @@ export default function Navbar() {
                   <LanguageSwitcher />
                   <button
                     onClick={() => setMobileMenuOpen(false)}
-                    className="text-white/70 hover:text-white p-2 hover:bg-white/10 rounded-lg transition-colors"
+                    className="text-white/70 hover:text-white p-2 hover:bg-white/15 rounded-lg transition-colors"
                   >
                     <CloseIcon />
                   </button>
@@ -514,7 +516,7 @@ export default function Navbar() {
                             setMobileMenuOpen(false);
                           }
                         }}
-                        className="text-left text-white/90 hover:text-[#1DCD9F] text-base font-medium py-3 px-4 hover:bg-white/5 rounded-lg transition-all border-l-2 border-transparent hover:border-[#1DCD9F] w-full flex items-center justify-between"
+                        className="text-left text-white/90 hover:text-[#1DCD9F] text-base font-medium py-3 px-4 hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#1DCD9F] w-full flex items-center justify-between"
                       >
                         {item.translationKey ? t(item.translationKey) : item.label}
                         {item.subs && item.subs.length > 0 && (
@@ -548,7 +550,7 @@ export default function Navbar() {
                           setMobileMenuOpen(false);
                         }
                       }}
-                      className="text-left text-white/90 hover:text-[#1DCD9F] text-base font-medium py-3 px-4 hover:bg-white/5 rounded-lg transition-all border-l-2 border-transparent hover:border-[#1DCD9F] w-full flex items-center justify-between"
+                      className="text-left text-white/90 hover:text-[#1DCD9F] text-base font-medium py-3 px-4 hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#1DCD9F] w-full flex items-center justify-between"
                     >
                       {rightMenu[0].translationKey ? t(rightMenu[0].translationKey) : 'Contact Us'}
                       {rightMenu[0].subs && rightMenu[0].subs.length > 0 && (
@@ -572,10 +574,10 @@ export default function Navbar() {
                     transition={{ delay: (leftMenu.length + 1) * 0.05 }}
                     className="flex gap-6 mt-auto pt-8"
                   >
-                    <button className="w-12 h-12 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-lg transition-all hover:scale-110 text-white/70 hover:text-[#1DCD9F]">
+                    <button className="w-12 h-12 flex items-center justify-center bg-white/8 hover:bg-white/15 rounded-lg transition-all hover:scale-110 text-white/70 hover:text-[#1DCD9F]">
                       <InstagramIcon />
                     </button>
-                    <button className="w-12 h-12 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-lg transition-all hover:scale-110 text-white/70 hover:text-[#1DCD9F]">
+                    <button className="w-12 h-12 flex items-center justify-center bg-white/8 hover:bg-white/15 rounded-lg transition-all hover:scale-110 text-white/70 hover:text-[#1DCD9F]">
                       <LinkedInIcon />
                     </button>
                   </motion.div>

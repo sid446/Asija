@@ -79,6 +79,33 @@
     "applyNow": "قدّم الآن",
     "viewPositions": "عرض الوظائف الشاغرة"
   },
+  "contact": {
+    "title": "تواصل معنا",
+    "description": "تواصل معنا للحصول على خدمات مالية استشارية متخصصة.",
+    "officeLocations": "مواقع المكاتب",
+    "officeLocation1": "لكناو، أتر برديش",
+    "officeLocation2": "الهند",
+    "contactNo": "رقم الاتصال",
+    "phone1": "+91 XXXXX XXXXX",
+    "phone2": "+91 XXXXX XXXXX",
+    "emails": "البريد الإلكتروني",
+    "email1": "info@asija.in",
+    "email2": "contact@asija.in",
+    "enquiryForm": "نموذج الاستفسار / استشرنا"
+  },
+  "footer": {
+    "description": "خدمات تدقيق وضرائب واستشارات احترافية عبر صناعات متعددة.",
+    "company": "الشركة",
+    "services": "الخدمات",
+    "contact": "اتصل",
+    "copyright": "© 2024 أسيجا وشركاه ذ.م.م. جميع الحقوق محفوظة.",
+    "privacy": "سياسة الخصوصية",
+    "terms": "شروط الخدمة",
+    "officeLocations": "مواقع المكاتب",
+    "contactNo": "رقم الاتصال",
+    "emails": "البريد الإلكتروني",
+    "enquiryForm": "نموذج الاستفسار"
+  },
   "languageSwitcher": {
     "en": "الإنجليزية",
     "hi": "الهندية",

@@ -65,12 +65,12 @@ const About = () => {
   const { t } = useTranslation(); // ADD THIS
   
   return (
-    <section className="relative bg-[#141212] w-full overflow-hidden">
+    <section className="relative bg-[#2a2a2a] w-full overflow-hidden">
       <div className="relative z-10 px-4 py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24">
         
         <div className="absolute inset-0 z-0">
           <Beams
-            intensity={1.6}
+            intensity={1.3}
             speed={0.5}
             animationType="rotate3d"
             colors={['#1DCD9F', '#0EA578']}
@@ -80,7 +80,7 @@ const About = () => {
           />
         </div>
 
-        <div className="absolute inset-0 bg-black/70 z-10" />
+        <div className="absolute inset-0 bg-black/20 z-10" />
 
         <div className="relative z-20 max-w-7xl mx-auto max-h-screen overflow-y-auto px-2 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 md:py-10 lg:py-12">
           <div className="pb-12 sm:pb-16 md:pb-20 lg:pb-28">
@@ -113,7 +113,7 @@ const About = () => {
       </div>
 
       <div className="relative z-30 -mt-12 sm:-mt-16 lg:-mt-20">
-        <div className="bg-[#141212]  shadow-2xl">
+        <div className="bg-[#2a2a2a]  shadow-2xl">
           <div className="px-4 py-10 sm:px-6 sm:py-12 md:px-8 lg:px-12 xl:px-20">
             <div className="max-w-7xl mx-auto">
 

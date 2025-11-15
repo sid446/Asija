@@ -29,10 +29,10 @@ function Career () {
   }, [])
 
   return (
-    <div ref={sectionRef} className='w-full min-h-screen bg-gradient-to-b from-black to-[#141212] flex flex-col items-center py-12 sm:py-16 md:py-20'>
-      <div className={`w-full  h-[60vh] sm:h-[65vh] md:h-[70vh] lg:h-[75vh] xl:h-[80vh] relative  overflow-hidden shadow-2xl transition-all duration-1000 delay-400 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+    <div ref={sectionRef} className=' min-h-screen bg-[#252525] flex flex-col items-center py-12 sm:py-16 md:py-20'>
+      <div className={`w-full  h-[60vh] sm:h-[65vh] md:h-[70vh] lg:h-[75vh] xl:h-[80vh] relative  overflow-hidden  transition-all duration-1000 delay-400 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
         <img className='w-full h-full object-cover absolute inset-0' src="/image.png" alt="Career opportunities" />
-        <div className='absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/20'></div>
+        <div className='absolute inset-0 bg-gradient-to-t from-black/55 via-black/35 to-black/12'></div>
         <div className='relative z-10 w-full h-full flex items-center justify-center px-6 sm:px-8 md:px-12 lg:px-16 xl:px-20 py-8 sm:py-12 md:py-16'>
             
           <div className={`max-w-5xl w-full transition-all duration-1000 delay-600 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -53,7 +53,7 @@ function Career () {
               <button className='px-6 sm:px-8 md:px-10 py-3 sm:py-3.5 md:py-4 bg-[#1DCD9F] text-white text-sm sm:text-base font-semibold rounded-lg md:rounded-xl hover:bg-[#18b88c] transition-all hover:scale-105 shadow-lg'>
                 {t('career.applyNow')} {/* UPDATED */}
               </button>
-              <button className='px-6 sm:px-8 md:px-10 py-3 sm:py-3.5 md:py-4 bg-white/10 backdrop-blur-sm border border-white/30 text-white text-sm sm:text-base font-semibold rounded-lg md:rounded-xl hover:bg-white/20 transition-all'>
+              <button className='px-6 sm:px-8 md:px-10 py-3 sm:py-3.5 md:py-4 bg-white/15 backdrop-blur-sm border border-white/40 text-white text-sm sm:text-base font-semibold rounded-lg md:rounded-xl hover:bg-white/25 transition-all'>
                 {t('career.viewPositions')} {/* UPDATED */}
               </button>
             </div>

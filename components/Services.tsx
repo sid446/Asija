@@ -84,7 +84,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ group, index }) => {
     >
       <div
         className={`
-          relative overflow-hidden  bg-gradient-to-b from-[#1a1a1a] to-[#141212]
+          relative overflow-hidden  bg-gradient-to-b from-[#323232] to-[#2a2a2a]
           border border-white/10 backdrop-blur-xl
           shadow-xl transition-all duration-500
           hover:shadow-2xl hover:shadow-[#1DCD9F]/20
@@ -172,7 +172,7 @@ export default function Services() {
   const { t } = useTranslation(); // ADD THIS
   
   return (
-    <section className="bg-black w-full py-16 sm:py-20 md:py-24 px-4 sm:px-6 md970 md:px-8 lg:px-12 xl:px-20">
+    <section className="bg-[#252525] w-full py-16 sm:py-20 md:py-24 px-4 sm:px-6 md970 md:px-8 lg:px-12 xl:px-20">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

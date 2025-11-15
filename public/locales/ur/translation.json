@@ -79,6 +79,33 @@
     "applyNow": "ابھی اپلائی کریں",
     "viewPositions": "کھلی پوزیشنز دیکھیں"
   },
+  "contact": {
+    "title": "رابطہ کریں",
+    "description": "ماہر مالیاتی خدمات اور مشاورت کے لیے ہم سے رابطہ کریں۔",
+    "officeLocations": "دفاتر کے مقامات",
+    "officeLocation1": "لکھنؤ، اتر پردیش",
+    "officeLocation2": "بھارت",
+    "contactNo": "رابطہ نمبر",
+    "phone1": "+91 XXXXX XXXXX",
+    "phone2": "+91 XXXXX XXXXX",
+    "emails": "ای میل",
+    "email1": "info@asija.in",
+    "email2": "contact@asija.in",
+    "enquiryForm": "استفسار فارم / مشورہ لیں"
+  },
+  "footer": {
+    "description": "متعدد صنعتوں میں پیشہ ورانہ آڈٹ، ٹیکس اور ایڈوائزری خدمات۔",
+    "company": "کمپنی",
+    "services": "خدمات",
+    "contact": "رابطہ",
+    "copyright": "© 2024 اسیجا اینڈ ایسوسی ایٹس ایل ایل پی۔ تمام حقوق محفوظ ہیں۔",
+    "privacy": "رازداری کی پالیسی",
+    "terms": "سروس کی شرائط",
+    "officeLocations": "دفاتر کے مقامات",
+    "contactNo": "رابطہ نمبر",
+    "emails": "ای میل",
+    "enquiryForm": "استفسار فارم"
+  },
   "languageSwitcher": {
     "en": "انگریزی",
     "hi": "ہندی",

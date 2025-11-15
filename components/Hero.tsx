@@ -28,8 +28,8 @@ function Hero() {
 
       {/* Gradient + Blur Overlay */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent md:from-black/90 md:via-black/50 md:to-transparent bg-black/70" />
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm md:backdrop-blur-md" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/35 to-transparent md:from-black/60 md:via-black/35 md:to-transparent bg-black/40" />
+        <div className="absolute inset-0 bg-black/25 backdrop-blur-sm md:backdrop-blur-md" />
       </div>
 
       {/* Content */}
@@ -48,7 +48,7 @@ function Hero() {
           </div>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 justify-center items-center md:justify-start">
             <Button label={t('hero.learnMore')} link="/get-started" color1="#1DCD9F" textColor="#000000" /> {/* UPDATED */}
-            <Button label={t('hero.contactUs')} link="/contact" color1="#000000" textColor="#1DCD9F" /> {/* UPDATED */}
+            <Button label={t('hero.contactUs')} link="/contact" color1="#323232" textColor="#1DCD9F" /> {/* UPDATED */}
           </div>
         </div>
       </div>

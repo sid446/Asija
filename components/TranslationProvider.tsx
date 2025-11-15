@@ -114,7 +114,7 @@ export const LanguageSwitcher: React.FC = () => {
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
         disabled={loading}
-        className="flex items-center justify-center gap-2 px-2 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-all disabled:opacity-50"
+        className="flex items-center justify-center gap-2 px-2 py-1 bg-white/8 hover:bg-white/15 border border-white/15 rounded-lg transition-all disabled:opacity-50"
         whileHover={{ scale: loading ? 1 : 1.05 }}
         whileTap={{ scale: loading ? 1 : 0.95 }}
       >
@@ -149,7 +149,7 @@ export const LanguageSwitcher: React.FC = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="absolute top-full left-0 mt-2 w-40 bg-[#1a1a1a] border border-white/10 rounded-xl shadow-2xl overflow-hidden z-10"
+            className="absolute top-full left-0 mt-2 w-40 bg-[#252525] border border-white/10 rounded-xl shadow-2xl overflow-hidden z-10"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-2 space-y-1">
@@ -168,7 +168,7 @@ export const LanguageSwitcher: React.FC = () => {
                     transition-all text-left
                     ${language === lang.code 
                       ? 'bg-[#1DCD9F]/20 text-[#1DCD9F]' 
-                      : 'text-white/80 hover:bg-white/5 hover:text-white'
+                      : 'text-white/80 hover:bg-white/8 hover:text-white'
                     }
                   `}
                 >

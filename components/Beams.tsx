@@ -162,7 +162,7 @@ void main() {
     float tRay = saw * saw * (3.0 - 2.0 * saw);
     vec3 userGradient = 2.0 * sampleGradient(tRay);
     vec3 spectral = (uColorCount > 0) ? userGradient : spectralDefault;
-    vec3 base = (0.05 / (0.4 + stepLen))
+    vec3 base = (0.035 / (0.4 + stepLen))
               * smoothstep(5.0, 0.0, rad)
               * spectral;
 
@@ -253,7 +253,7 @@ const Beams: React.FC<BeamsProps> = ({
     if (!container) return;
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const renderer = new Renderer({ dpr, alpha: false, antialias: false });
+    const renderer = new Renderer({ dpr, alpha: true, antialias: false });
     rendererRef.current = renderer;
 
     const gl = renderer.gl;
