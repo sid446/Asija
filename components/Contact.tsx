@@ -12,11 +12,11 @@ export default function Contact() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
-        className="w-full max-w-7xl flex flex-col lg:flex-row justify-between gap-12 mb-16 mt-10"
+        className="w-full max-w-7xl flex flex-col lg:flex-row justify-between gap-12 mb-8 sm:mb-16 mt-10"
       >
         {/* LEFT: Text */}
-        <div className="lg:w-1/2 space-y-5">
-          <p className="text-[#1DCD9F] font-medium text-lg tracking-wider">
+        <div className="lg:w-1/2 space-y-2 sm:space-y-5">
+          <p className="text-[#1DCD9F] font-medium text-xl sm:text-lg tracking-wider">
             Contact us
           </p>
           <h1 className="text-4xl md:text-5xl font-bold leading-tight">
@@ -28,7 +28,7 @@ export default function Contact() {
         </div>
 
         {/* RIGHT: Contact Info */}
-        <div className="lg:w-1/2 space-y-8">
+        <div className="lg:w-1/2 space-y-3 sm:space-y-8">
           {/* Mobile */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}

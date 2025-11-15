@@ -40,13 +40,13 @@ const Footer = () => {
             className="lg:col-span-1"
           >
              <motion.h1 
-                          className="text-xs md:text-lg mt-2 w-fit mb-2 leading-5 font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent cursor-pointer"
+                          className="text-lg md:text-lg mt-2 w-fit mb-2 leading-5 font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent cursor-pointer"
                           whileHover={{ scale: 1.05 }}
                           transition={{ type: 'spring', stiffness: 400 }}
                         >
                           ASIJA & ASSOCIATES LLP
                           <br />
-                          <span className='text-xs'>Chartered Accountants</span>
+                          <span className='text-sm sm:text-xs'>Chartered Accountants</span>
                         </motion.h1>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
               {t('footer.description') || 'Professional audit, tax, and advisory services across multiple industries.'}

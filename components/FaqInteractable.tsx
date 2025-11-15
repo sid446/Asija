@@ -1,9 +1,7 @@
-// components/FAQAccordion.tsx
 'use client';
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/Accordian';
-import { Clock, CreditCard, Truck, Globe, Package } from 'lucide-react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { Clock, CreditCard, Truck, ChevronDown } from 'lucide-react';
 
 type FAQItem = {
   id: string;
@@ -12,7 +10,35 @@ type FAQItem = {
   answer: string;
 };
 
+// Simple Accordion Components
+const Accordion = ({ children, ...props }: { children: React.ReactNode; type: string; collapsible: boolean; className?: string }) => (
+  <div {...props}>{children}</div>
+);
+
+const AccordionItem = ({ children, value, className }: { children: React.ReactNode; value: string; className?: string }) => (
+  <div data-value={value} className={className}>{children}</div>
+);
+
+const AccordionTrigger = ({ children, className, onClick }: { children: React.ReactNode; className?: string; onClick?: () => void }) => (
+  <button onClick={onClick} className={`w-full text-left ${className}`}>
+    {children}
+  </button>
+);
+
+const AccordionContent = ({ children, isOpen }: { children: React.ReactNode; isOpen: boolean }) => (
+  <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+    {children}
+  </div>
+);
+
 export default function FAQAccordion() {
+  const [openItem, setOpenItem] = useState<string | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  React.useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
   const faqItems: FAQItem[] = [
     {
       id: 'item-1',
@@ -35,75 +61,94 @@ export default function FAQAccordion() {
       answer:
         'Yes. Choose Express (1–2 days) or Same-Day (select cities) at checkout. Available for orders placed before 2:00 PM IST. International options vary.',
     },
-   
   ];
 
+  const toggleItem = (id: string) => {
+    setOpenItem(openItem === id ? null : id);
+  };
+
   return (
-    <section className="bg-[#1DCD9F] h-[52vh] py-20">
-      <div className="mx-auto max-w-7xl px-6 md:px-8">
-        <div className="flex flex-col gap-10 md:flex-row md:gap-16">
-          {/* LEFT: Sticky Title */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="md:w-1/3"
-          >
-            <div className="sticky top-24">
-              <h2 className="mt-4 text-4xl md:text-5xl font-bold text-zinc-900">
-                Frequently Asked <span className="text-[#1DCD9F]">Questions</span>
+    <section className="bg-[#1DCD9F] min-h-[400px] py-12 sm:py-16 md:py-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
+        <div className="flex flex-col gap-8 md:gap-12 lg:gap-16">
+          
+          {/* Title Section - Not sticky on mobile */}
+          <div className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+            <div className="md:sticky md:top-24">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-zinc-900 leading-tight">
+                Frequently Asked <br className="sm:hidden" />
+                <span >Questions</span>
               </h2>
-              <p className="text-zinc-800 mt-4 text-lg">
-                Can’t find what you’re looking for? Reach our{' '}
+              <p className="text-zinc-800 mt-3 sm:mt-4 text-base sm:text-lg leading-relaxed">
+                Can't find what you're looking for? Reach our{' '}
                 <a
                   href="mailto:support@asija.in"
-                  className="text-zinc-900 font-medium"
+                  className="text-zinc-900 font-semibold  hover:text-white transition-colors"
                 >
                   support team
-                </a>{' '}
-                 we reply in under 2 ho urs.
+                </a>
+                {' '} we reply in under 2 hours.
               </p>
             </div>
-          </motion.div>
+          </div>
 
-          {/* RIGHT: Accordion */}
-          <div className="md:w-2/3   ">
-            <Accordion type="single" collapsible className="w-full space-y-3 ">
+          {/* Accordion Section */}
+          <div className="w-full">
+            <Accordion type="single" collapsible className="w-full space-y-3 sm:space-y-4">
               {faqItems.map((item, index) => {
                 const Icon = item.icon;
+                const isOpen = openItem === item.id;
+                
                 return (
-                  <motion.div
+                  <div
                     key={item.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
+                    className={`transition-all duration-500 delay-${index * 100} ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
                   >
                     <AccordionItem
                       value={item.id}
-                      className="bg-[#2A2A2A] rounded-xl shadow-md border border-white/10 overflow-hidden"
+                      className="bg-[#2A2A2A] rounded-lg sm:rounded-xl shadow-lg border border-white/10 overflow-hidden hover:border-white/20 transition-all"
                     >
-                      <AccordionTrigger className="px-6 py-5  group">
-                        <div className="flex items-center gap-4">
-                          <div className="w-3 h-3 bg-[#1DCD9F]/20 rounded-full flex items-center justify-center group-hover:bg-[#1DCD9F]/30 transition-colors">
-                            <Icon className="w-5 h-5 text-[#1DCD9F]" />
+                      <AccordionTrigger 
+                        className="px-4 sm:px-6 py-4 sm:py-5 group touch-manipulation"
+                        onClick={() => toggleItem(item.id)}
+                      >
+                        <div className="flex items-center justify-between w-full gap-3">
+                          <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
+                            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#1DCD9F]/20 rounded-full flex items-center justify-center group-hover:bg-[#1DCD9F]/30 transition-colors flex-shrink-0">
+                              <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#1DCD9F]" />
+                            </div>
+                            <span className="text-sm sm:text-base font-medium text-white group-hover:text-[#1DCD9F] transition-colors text-left">
+                              {item.question}
+                            </span>
                           </div>
-                          <span className="text-sm font-medium text-white group-hover:text-[#1DCD9F] transition-colors">
-                            {item.question}
-                          </span>
+                          <ChevronDown 
+                            className={`w-5 h-5 text-white/60 transition-transform duration-300 flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`}
+                          />
                         </div>
                       </AccordionTrigger>
-                      <AccordionContent>
-                        <div className="px-14 pb-6">
-                          <p className="text-white/70  leading-relaxed">
+                      
+                      <AccordionContent isOpen={isOpen}>
+                        <div className="px-4 sm:px-6 md:px-14 pb-4 sm:pb-5 md:pb-6">
+                          <p className="text-white/80 text-sm sm:text-base leading-relaxed">
                             {item.answer}
                           </p>
                         </div>
                       </AccordionContent>
                     </AccordionItem>
-                  </motion.div>
+                  </div>
                 );
               })}
             </Accordion>
+          </div>
+
+          {/* Mobile CTA */}
+          <div className={`md:hidden text-center transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+            <a 
+              href="mailto:support@asija.in"
+              className="inline-block px-6 py-3 bg-zinc-900 text-white font-semibold rounded-lg hover:bg-zinc-800 transition-all active:scale-95 touch-manipulation shadow-lg"
+            >
+              Contact Support
+            </a>
           </div>
         </div>
       </div>
