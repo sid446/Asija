@@ -38,7 +38,7 @@ function Career() {
         {/* Optimized image with loading state */}
         <img 
           className={`w-full h-full object-cover absolute inset-0 transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1600&q=80" 
+          src="image.png" 
           alt="Career opportunities"
           loading="lazy"
           onLoad={() => setImageLoaded(true)}
