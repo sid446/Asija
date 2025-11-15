@@ -1,9 +1,11 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation, LanguageSwitcher } from './TranslationProvider';
 
 type MenuItem = {
   label: string;
+  translationKey?: string;
   subs?: (string | { title: string; items: string[]; insights: boolean })[];
   overview?: string;
   isIcon?: boolean;
@@ -11,9 +13,15 @@ type MenuItem = {
 };
 
 const leftMenu: MenuItem[] = [
-  { label: 'Home', subs: [], overview: 'Welcome to Asija – Your trusted partner in audit, tax, and advisory services.' },
   { 
-    label: 'About Us', 
+    label: 'Home', 
+    translationKey: 'navbar.home',
+    subs: [], 
+    overview: 'Welcome to Asija – Your trusted partner in audit, tax, and advisory services.' 
+  },
+  { 
+    label: 'About Us',
+    translationKey: 'navbar.aboutUs',
     subs: [
       'Who We Are',
       'Our Team / Strength',
@@ -24,7 +32,8 @@ const leftMenu: MenuItem[] = [
     overview: 'Learn about our legacy, values, and the team driving excellence.' 
   },
   { 
-    label: 'Services', 
+    label: 'Services',
+    translationKey: 'navbar.services',
     subs: [
       { 
         title: 'Audit and Assurance', 
@@ -87,7 +96,8 @@ const leftMenu: MenuItem[] = [
     overview: 'Comprehensive audit, tax, and advisory solutions tailored to your business.' 
   },
   { 
-    label: 'Industries', 
+    label: 'Industries',
+    translationKey: 'navbar.industries',
     subs: [
       'Banking and Financial Institutions',
       'Education',
@@ -102,9 +112,15 @@ const leftMenu: MenuItem[] = [
     ], 
     overview: 'Industry-specific expertise to navigate complex regulatory and financial landscapes.' 
   },
-  { label: 'Asija Global Services', subs: [], overview: 'Global reach with local expertise – serving clients worldwide.' },
   { 
-    label: 'Career', 
+    label: 'Asija Global Services',
+    translationKey: 'navbar.asijaGlobal',
+    subs: [], 
+    overview: 'Global reach with local expertise – serving clients worldwide.' 
+  },
+  { 
+    label: 'Career',
+    translationKey: 'navbar.career',
     subs: ['Apply Form', 'Current Openings'], 
     overview: 'Join a team of passionate professionals. Explore opportunities with us.' 
   },
@@ -112,7 +128,8 @@ const leftMenu: MenuItem[] = [
 
 const rightMenu: MenuItem[] = [
   { 
-    label: 'Contact Us', 
+    label: 'Contact Us',
+    translationKey: 'navbar.contactUs',
     subs: [
       'Office Locations',
       'Contact No.',
@@ -211,6 +228,7 @@ const NavItem = ({ label, isIcon, icon, isActive, hasDropdown }: NavItemProps) =
 /*  MAIN NAVBAR                                                    */
 /* --------------------------------------------------------------- */
 export default function Navbar() {
+  const { t } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
@@ -229,7 +247,6 @@ export default function Navbar() {
 
   const renderSubItems = (subs: MenuItem['subs']) => {
     if (!subs || subs.length === 0) return <p className="text-white/50 italic text-sm">No subitems available.</p>;
-
 
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
@@ -348,7 +365,7 @@ export default function Navbar() {
                   onMouseLeave={() => setHoveredItem(null)}
                 >
                   <NavItem 
-                    label={item.label}
+                    label={item.translationKey ? t(item.translationKey) : item.label}
                     isActive={hoveredItem === item.label}
                     hasDropdown={item.subs && item.subs.length > 0}
                   />
@@ -367,7 +384,7 @@ export default function Navbar() {
                 onMouseLeave={() => setHoveredItem(null)}
               >
                 <NavItem 
-                  label={item.label} 
+                  label={item.translationKey ? t(item.translationKey) : item.label}
                   isIcon={item.isIcon}
                   icon={item.icon}
                   isActive={hoveredItem === item.label}
@@ -375,6 +392,10 @@ export default function Navbar() {
                 />
               </motion.div>
             ))}
+            <div className='w-[2px] h-6 bg-zinc-500 mr-4' ></div>
+            
+            {/* Language Switcher */}
+            <LanguageSwitcher />
           </nav>
 
           {/* Mobile Menu Button */}
@@ -400,7 +421,7 @@ export default function Navbar() {
       <AnimatePresence>
         {hoveredItem && (
           <motion.div
-            className="fixed left-0 right-0  bg-[#141212]/98 backdrop-blur-xl shadow-2xl z-50 border-t border-white/5"
+            className="fixed left-0 right-0 bg-[#141212]/98 backdrop-blur-xl shadow-2xl z-50 border-t border-white/5"
             style={{ top: scrolled ? '4rem' : '5rem' }}
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -414,8 +435,10 @@ export default function Navbar() {
                 {/* Submenu Columns */}
                 <div>
                   <h3 className="text-[#1DCD9F] font-semibold text-xl mb-6 tracking-wide flex items-center gap-2">
-                    {hoveredItem}
-                   
+                    {(() => {
+                      const menuItem = findMenuItem(hoveredItem);
+                      return menuItem?.translationKey ? t(menuItem.translationKey) : hoveredItem;
+                    })()}
                   </h3>
                   {renderSubItems(findMenuItem(hoveredItem)?.subs)}
                 </div>
@@ -464,7 +487,8 @@ export default function Navbar() {
             >
               <div className="flex flex-col h-full p-6">
                 {/* Close Button */}
-                <div className="flex justify-end mb-6">
+                <div className="flex justify-between items-center mb-6">
+                  <LanguageSwitcher />
                   <button
                     onClick={() => setMobileMenuOpen(false)}
                     className="text-white/70 hover:text-white p-2 hover:bg-white/10 rounded-lg transition-colors"
@@ -492,7 +516,7 @@ export default function Navbar() {
                         }}
                         className="text-left text-white/90 hover:text-[#1DCD9F] text-base font-medium py-3 px-4 hover:bg-white/5 rounded-lg transition-all border-l-2 border-transparent hover:border-[#1DCD9F] w-full flex items-center justify-between"
                       >
-                        {item.label}
+                        {item.translationKey ? t(item.translationKey) : item.label}
                         {item.subs && item.subs.length > 0 && (
                           <motion.div
                             animate={{ rotate: mobileOpenItem === item.label ? 180 : 0 }}
@@ -526,7 +550,7 @@ export default function Navbar() {
                       }}
                       className="text-left text-white/90 hover:text-[#1DCD9F] text-base font-medium py-3 px-4 hover:bg-white/5 rounded-lg transition-all border-l-2 border-transparent hover:border-[#1DCD9F] w-full flex items-center justify-between"
                     >
-                      Contact Us
+                      {rightMenu[0].translationKey ? t(rightMenu[0].translationKey) : 'Contact Us'}
                       {rightMenu[0].subs && rightMenu[0].subs.length > 0 && (
                         <motion.div
                           animate={{ rotate: mobileOpenItem === 'Contact Us' ? 180 : 0 }}

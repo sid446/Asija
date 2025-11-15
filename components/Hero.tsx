@@ -1,12 +1,14 @@
+'use client';
 import React from 'react';
 import Navbar from './Navbar';
 import Button from './Button';
+import { useTranslation } from './TranslationProvider';
 
 function Hero() {
+  const { t } = useTranslation(); 
+  
   return (
     <div className="fixed top-0 left-0 w-screen h-[100vh] sm:h-[90vh] overflow-hidden border-b-4 border-[#1DCD9F] z-10">
-     
-
       {/* Video Background */}
       <video
         className="absolute inset-0 w-full h-full object-cover"
@@ -30,26 +32,23 @@ function Hero() {
         <div className="absolute inset-0 bg-black/40 backdrop-blur-sm md:backdrop-blur-md" />
       </div>
 
-      {/* Bottom Fade - removed as content will cover it */}
-      
       {/* Content */}
       <div className="relative z-30 flex h-full items-center justify-center md:justify-start px-4 sm:px-6 md:px-10 lg:px-16 pt-20">
         <div className="w-full max-w-lg space-y-4 sm:space-y-5 md:space-y-6 text-center md:text-left">
           <p className="text-[#1DCD9F] font-bold text-xs sm:text-sm md:text-base tracking-widest uppercase">
-            Build the Future with Clarity
+            {t('hero.tagline')} {/* UPDATED */}
           </p>
           <h1 className="text-white font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight">
-            Transformation
+            {t('hero.title')} {/* UPDATED */}
           </h1>
           <div className="border-0 md:border-l-4 border-[#169976] pl-0 md:pl-4 mx-auto md:mx-0 max-w-md md:max-w-none">
             <p className="text-gray-300 text-sm sm:text-base md:text-lg leading-relaxed">
-              Asija teams give you the confidence to shape the future and create new value by
-              reimagining and realizing transformations across the entire enterprise.
+              {t('hero.description')} {/* UPDATED */}
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 justify-center items-center md:justify-start">
-            <Button label="Learn More" link="/get-started" color1="#1DCD9F" textColor="#000000" />
-            <Button label="Contact Us" link="/contact" color1="#000000" textColor="#1DCD9F" />
+            <Button label={t('hero.learnMore')} link="/get-started" color1="#1DCD9F" textColor="#000000" /> {/* UPDATED */}
+            <Button label={t('hero.contactUs')} link="/contact" color1="#000000" textColor="#1DCD9F" /> {/* UPDATED */}
           </div>
         </div>
       </div>

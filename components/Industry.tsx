@@ -1,6 +1,7 @@
 'use client';
 import React, { createContext, useContext, useState, useEffect, useRef, ReactNode, FC } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from './TranslationProvider'; 
 
 // ============================================================
 // PROGRESSIVE CAROUSEL COMPONENT (copied from your spec)
@@ -234,7 +235,9 @@ const SliderBtn: FC<{
 const industriesSlides = [
   {
     title: "Banking & Finance",
+    translationKey: 'industries.banking', // ADD THIS
     description: "End-to-end audit, tax planning, and compliance for banks, NBFCs, and fintech startups.",
+    descriptionKey: 'industries.bankingDesc', // ADD THIS to your JSON
     image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?q=80&w=2070&auto=format&fit=crop",
     bgColor: "#141212",
     textColor: "#ffffff",
@@ -242,7 +245,9 @@ const industriesSlides = [
   },
   {
     title: "Education",
+    translationKey: 'industries.education', // ADD THIS
     description: "Financial advisory for schools, universities, and edtech platforms with grant compliance.",
+    descriptionKey: 'industries.educationDesc', // ADD THIS to your JSON
     image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop",
     bgColor: "#141212",
     textColor: "#ffffff",
@@ -250,7 +255,9 @@ const industriesSlides = [
   },
   {
     title: "Healthcare",
+    translationKey: 'industries.healthcare', // ADD THIS
     description: "Hospital accounting, medical billing, and regulatory compliance under NABH & HIPAA.",
+    descriptionKey: 'industries.healthcareDesc', // ADD THIS to your JSON
     image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=2070&auto=format&fit=crop",
     bgColor: "#141212",
     textColor: "#ffffff",
@@ -258,7 +265,9 @@ const industriesSlides = [
   },
   {
     title: "Infrastructure",
+    translationKey: 'industries.infrastructure', // ADD THIS
     description: "Project finance, PPP models, and cost audits for roads, metro, and smart cities.",
+    descriptionKey: 'industries.infrastructureDesc', // ADD THIS to your JSON
     image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2070&auto=format&fit=crop",
     bgColor: "#141212",
     textColor: "#ffffff",
@@ -266,7 +275,9 @@ const industriesSlides = [
   },
   {
     title: "Real Estate",
+    translationKey: 'industries.realty', // ADD THIS
     description: "RERA compliance, project funding, and valuation for developers and REITs.",
+    descriptionKey: 'industries.realtyDesc', // ADD THIS to your JSON
     image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=2070&auto=format&fit=crop",
     bgColor: "#141212",
     textColor: "#ffffff",
@@ -274,16 +285,13 @@ const industriesSlides = [
   },
 ];
 
-// ============================================================
-// INDUSTRIES SECTION COMPONENT
-// ============================================================
-
 export default function Industries() {
+  const { t } = useTranslation(); // ADD THIS
+  
   return (
     <section className="bg-black w-full py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-20">
       <div className="max-w-7xl mx-auto">
         
-        {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -292,12 +300,11 @@ export default function Industries() {
           className="text-center mb-6"
         >
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-            Industries We Serve
+            {t('industries.title')} {/* UPDATED */}
             <span className="text-[#1DCD9F] text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold"> .</span>
           </h1>
         </motion.div>
 
-        {/* Intro */}
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -305,13 +312,11 @@ export default function Industries() {
           transition={{ delay: 0.3, duration: 0.8 }}
           className="text-gray-300 text-base sm:text-lg leading-relaxed text-center max-w-3xl mx-auto mb-16"
         >
-          Tailored financial solutions across diverse sectors. Click any industry to explore our specialized services.
+          {t('industries.description')} {/* UPDATED */}
         </motion.p>
 
-        {/* Progressive Carousel */}
         <ProgressSlider vertical={false} activeSlider='banking' duration={6000}>
           
-          {/* Image Content - Fixed Height Container */}
           <SliderContent className="relative w-full h-[350px] sm:h-[450px] md:h-[550px] lg:h-[600px] overflow-hidden">
             {industriesSlides.map((item, index) => (
               <SliderWrapper key={index} value={item.slug} className="absolute inset-0">
@@ -319,12 +324,10 @@ export default function Industries() {
                   <img
                     className='absolute inset-0 w-full h-full object-cover'
                     src={item.image}
-                    alt={item.title}
+                    alt={t(item.translationKey)}
                   />
-                  {/* Gradient Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
                   
-                  {/* Text Overlay */}
                   <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6 md:p-8 lg:p-12">
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
@@ -334,14 +337,13 @@ export default function Industries() {
                     >
                       <div className="flex-1">
                         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2 sm:mb-3 md:mb-4">
-                          {item.title}
+                          {t(item.translationKey)} {/* UPDATED */}
                         </h2>
                         <p className="text-gray-200 text-sm sm:text-base md:text-lg lg:text-xl max-w-2xl leading-relaxed">
-                          {item.description}
+                          {item.descriptionKey ? t(item.descriptionKey) : item.description} {/* UPDATED */}
                         </p>
                       </div>
                       
-                      {/* Learn More Button */}
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
@@ -359,7 +361,6 @@ export default function Industries() {
                           </svg>
                         </span>
                         
-                        {/* Button Shine Effect */}
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
                       </motion.button>
                     </motion.div>
@@ -369,7 +370,6 @@ export default function Industries() {
             ))}
           </SliderContent>
 
-          {/* Navigation Buttons */}
           <SliderBtnGroup className='mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 touch-manipulation'>
             {industriesSlides.map((item, index) => (
               <SliderBtn
@@ -378,17 +378,15 @@ export default function Industries() {
                 className='group relative overflow-hidden bg-gradient-to-b from-[#1a1a1a] to-[#141212] border border-white/10 rounded-xl p-4 sm:p-5 text-left cursor-pointer transition-all duration-300 hover:border-[#1DCD9F]/50 hover:shadow-xl hover:shadow-[#1DCD9F]/20 touch-manipulation select-none'
                 progressBarClass='bg-[#1DCD9F] h-full'
               >
-                {/* Gradient Bar on Top */}
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#1DCD9F] to-[#0EA578] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 
                 <h3 className='text-sm sm:text-base font-bold text-white mb-2 group-hover:text-[#1DCD9F] transition-colors duration-300'>
-                  {item.title}
+                  {t(item.translationKey)} {/* UPDATED */}
                 </h3>
                 <p className='text-xs sm:text-sm text-gray-400 line-clamp-2 leading-relaxed'>
-                  {item.description}
+                  {item.descriptionKey ? t(item.descriptionKey) : item.description} {/* UPDATED */}
                 </p>
 
-                {/* Hover Glow */}
                 <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                   <div className="absolute inset-0 bg-gradient-to-t from-[#1DCD9F]/10 to-transparent" />
                 </div>

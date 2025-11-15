@@ -13,3 +13,24 @@
   pointer-events: none;
   z-index: 10;
 }
+/* globals.css */
+.font-arabic {
+  font-family: 'Noto Naskh Arabic', system-ui, sans-serif;
+}
+
+.font-devanagari {
+  font-family: 'Noto Sans Devanagari', system-ui, sans-serif;
+}
+
+/* Optional: Mirror icons/text for RTL */
+[dir="rtl"] .mirror {
+  transform: scaleX(-1);
+}
+
+/* Flip text alignment */
+[dir="rtl"] .text-left {
+  text-align: right !important;
+}
+[dir="rtl"] .text-right {
+  text-align: left !important;
+}
