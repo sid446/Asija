@@ -8,56 +8,56 @@ const cardsData = [
   {
     image: '/mission1.jpg',
     title: 'Vision & Mission',
-    titleKey: 'about.visionMission', // ADD THIS
+    titleKey: 'about.visionMission',
     description:
       'Achieve significant presence in every region of the country. Provide client-defined, quality services on global standards...',
-    descriptionKey: 'about.visionDesc', // ADD THIS
-    buttonContent: 'Discover Our Purpose',
+    descriptionKey: 'about.visionDesc',
+    buttonContentKey: 'about.buttonVision',
   },
   {
     image: '/histoy.jpg',
     title: 'Our Rich History',
-    titleKey: 'about.history', // ADD THIS
+    titleKey: 'about.history',
     description:
       'With over 39 years of excellence, founded on 1st April 1986 by CA Uttam Chandra Asija...',
-    descriptionKey: 'about.historyDesc', // ADD THIS
-    buttonContent: 'Explore Our Journey',
+    descriptionKey: 'about.historyDesc',
+    buttonContentKey: 'about.buttonHistory',
   },
   {
     image: '/img1.jpg',
     title: 'Area & Infrastructure',
-    titleKey: 'about.areaInfra', // ADD THIS
+    titleKey: 'about.areaInfra',
     description:
       'Spanning 6,050 sq.ft. — one of Lucknow largest CA offices...',
-    descriptionKey: 'about.areaDesc', // ADD THIS
-    buttonContent: 'See Our Space',
+    descriptionKey: 'about.areaDesc',
+    buttonContentKey: 'about.buttonArea',
   },
   {
     image: '/img2.jpg',
     title: 'Networking',
-    titleKey: 'about.networking', // ADD THIS
+    titleKey: 'about.networking',
     description:
       'High-speed Wi-Fi across all terminals. Multiple laser & inkjet printers...',
-    descriptionKey: 'about.networkingDesc', // ADD THIS
-    buttonContent: 'Connect with Us',
+    descriptionKey: 'about.networkingDesc',
+    buttonContentKey: 'about.buttonNetworking',
   },
   {
     image: '/about1.jpg',
     title: 'Data Security & Safety',
-    titleKey: 'about.dataSecurity', // ADD THIS
+    titleKey: 'about.dataSecurity',
     description:
       'Client confidentiality is paramount. Multi-layered protection...',
-    descriptionKey: 'about.dataSecurityDesc', // ADD THIS
-    buttonContent: 'Learn About Our Security',
+    descriptionKey: 'about.dataSecurityDesc',
+    buttonContentKey: 'about.buttonSecurity',
   },
   {
     image: '/about2.jpg',
     title: 'Culture',
-    titleKey: 'about.culture', // ADD THIS
+    titleKey: 'about.culture',
     description:
       'We are a family. We value integrity, teamwork, and growth...',
-    descriptionKey: 'about.cultureDesc', // ADD THIS
-    buttonContent: 'Discover Our Culture',
+    descriptionKey: 'about.cultureDesc',
+    buttonContentKey: 'about.buttonCulture',
   },
 ];
 
@@ -129,7 +129,7 @@ const About = () => {
                     image={card.image}
                     title={card.titleKey ? t(card.titleKey) : card.title} 
                     description={card.descriptionKey ? t(card.descriptionKey) : card.description}
-                    buttonContent={card.buttonContent}
+                    buttonContent={card.buttonContentKey ? t(card.buttonContentKey) : t('common.learnMore')}
                     isMobile={false}
                     index={index}
                   />

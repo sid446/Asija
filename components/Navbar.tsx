@@ -17,7 +17,7 @@ const leftMenu: MenuItem[] = [
     label: 'Home', 
     translationKey: 'navbar.home',
     subs: [], 
-    overview: 'Welcome to Asija – Your trusted partner in audit, tax, and advisory services.' 
+    overview: 'navbar.overview.home'
   },
   { 
     label: 'About Us',
@@ -29,7 +29,7 @@ const leftMenu: MenuItem[] = [
       'Alumni',
       'Life at Asija - (year wise)',
     ], 
-    overview: 'Learn about our legacy, values, and the team driving excellence.' 
+    overview: 'navbar.overview.aboutUs'
   },
   { 
     label: 'Services',
@@ -93,7 +93,7 @@ const leftMenu: MenuItem[] = [
         insights: true 
       },
     ], 
-    overview: 'Comprehensive audit, tax, and advisory solutions tailored to your business.' 
+    overview: 'navbar.overview.services'
   },
   { 
     label: 'Industries',
@@ -110,19 +110,19 @@ const leftMenu: MenuItem[] = [
       'Textiles',
       'Trading',
     ], 
-    overview: 'Industry-specific expertise to navigate complex regulatory and financial landscapes.' 
+    overview: 'navbar.overview.industries'
   },
   { 
     label: 'Asija Global Services',
     translationKey: 'navbar.asijaGlobal',
     subs: [], 
-    overview: 'Global reach with local expertise – serving clients worldwide.' 
+    overview: 'navbar.overview.asijaGlobal'
   },
   { 
     label: 'Career',
     translationKey: 'navbar.career',
     subs: ['Apply Form', 'Current Openings'], 
-    overview: 'Join a team of passionate professionals. Explore opportunities with us.' 
+    overview: 'navbar.overview.career'
   },
 ];
 
@@ -136,7 +136,7 @@ const rightMenu: MenuItem[] = [
       'Emails',
       'Enquiry Form / Consult Us'
     ], 
-    overview: 'Get in touch with our experts. We are here to help.' 
+    overview: 'navbar.overview.contactUs'
   },
 ];
 
@@ -347,14 +347,17 @@ export default function Navbar() {
         <div className="h-full flex justify-between items-center px-4 md:px-20 w-full mx-auto">
           {/* LEFT SIDE */}
           <div className="flex gap-8 lg:gap-10 items-center">
+            
             <motion.h1 
-              className="text-sm md:text-lg mt-2 w-fit leading-5 font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent cursor-pointer"
+              className="text-sm md:text-md mt-2 flex  justify-center items-center gap-3 w-fit leading-5 font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent cursor-pointer"
               whileHover={{ scale: 1.05 }}
               transition={{ type: 'spring', stiffness: 400 }}
-            >
+            ><img className='w-12' src="/logo.png" alt="" />
+              <div>
               ASIJA & ASSOCIATES LLP
               <br />
-              <span className='text-sm'>Chartered Accountants</span>
+              <span className='text-xs'>{t('common.charteredAccountants')}</span>
+              </div>
             </motion.h1>
 
             {/* Desktop Navigation - Left */}
@@ -449,10 +452,10 @@ export default function Navbar() {
                 <div className="bg-gradient-to-b from-white/5 to-white/3 backdrop-blur-sm p-6 rounded-2xl border border-white/10 h-fit">
                   <h4 className="text-white font-semibold text-lg mb-3">Overview</h4>
                   <p className="text-white/70 text-sm leading-relaxed">
-                    {findMenuItem(hoveredItem)?.overview || 'Explore detailed insights and services under this section.'}
+                    {findMenuItem(hoveredItem)?.overview ? t(findMenuItem(hoveredItem)?.overview || '') : t('common.exploreInsights')}
                   </p>
                   <button className="mt-5 text-[#1DCD9F] text-sm font-medium hover:underline inline-flex items-center gap-1 group">
-                    Learn More
+                    {t('common.learnMore')}
                     <motion.div
                       className="group-hover:translate-x-1 transition-transform"
                     >

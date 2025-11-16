@@ -6,7 +6,16 @@
     "industries": "Industries",
     "asijaGlobal": "Asija Global Services",
     "career": "Career",
-    "contactUs": "Contact Us"
+    "contactUs": "Contact Us",
+    "overview": {
+      "home": "Welcome to Asija – Your trusted partner in audit, tax, and advisory services.",
+      "aboutUs": "Learn about our legacy, values, and the team driving excellence.",
+      "services": "Comprehensive audit, tax, and advisory solutions tailored to your business.",
+      "industries": "Industry-specific expertise to navigate complex regulatory and financial landscapes.",
+      "asijaGlobal": "Global reach with local expertise – serving clients worldwide.",
+      "career": "Join a team of passionate professionals. Explore opportunities with us.",
+      "contactUs": "Get in touch with our experts. We are here to help."
+    }
   },
   "hero": {
     "tagline": "Build the Future with Clarity",
@@ -34,7 +43,13 @@
     "dataSecurity": "Data Security & Safety",
     "dataSecurityDesc": "Client confidentiality is paramount. Multi-layered protection: professional antivirus, password security, role-based access. Only authorized personnel can modify data. Robust, reliable, and trusted.",
     "culture": "Culture",
-    "cultureDesc": "We are a family. We value integrity, teamwork, and growth. Every member is empowered with responsibility under experienced partners. Excellence is our culture — not a goal. We respect knowledge, skills, and individuality while delivering quality with professionalism."
+    "cultureDesc": "We are a family. We value integrity, teamwork, and growth. Every member is empowered with responsibility under experienced partners. Excellence is our culture — not a goal. We respect knowledge, skills, and individuality while delivering quality with professionalism.",
+    "buttonVision": "Discover Our Purpose",
+    "buttonHistory": "Explore Our Journey",
+    "buttonArea": "See Our Space",
+    "buttonNetworking": "Connect with Us",
+    "buttonSecurity": "Learn About Our Security",
+    "buttonCulture": "Discover Our Culture"
   },
   "services": {
     "title": "Our Services",
@@ -80,18 +95,22 @@
     "viewPositions": "View Open Positions"
   },
   "contact": {
-    "title": "Get In Touch",
-    "description": "Reach out to us for expert financial services and consultation.",
+    "title": "Connect With Us",
+    "tagline": "Contact us",
+    "description": "We'd love to hear from you! Please get in touch.",
     "officeLocations": "Office Locations",
     "officeLocation1": "Lucknow, Uttar Pradesh",
     "officeLocation2": "India",
     "contactNo": "Contact No.",
-    "phone1": "+91 XXXXX XXXXX",
+    "phone1": "+91 98765 43210",
     "phone2": "+91 XXXXX XXXXX",
-    "emails": "Emails",
-    "email1": "info@asija.in",
+    "mobile": "Mobile",
+    "location": "Bandra West, Mumbai 400050, India",
+    "emails": "Email",
+    "email1": "hello@asija.in",
     "email2": "contact@asija.in",
-    "enquiryForm": "Enquiry Form / Consult Us"
+    "enquiryForm": "Enquiry Form / Consult Us",
+    "imageAlt": "Asija team in creative studio"
   },
   "footer": {
     "description": "Professional audit, tax, and advisory services across multiple industries.",
@@ -112,5 +131,10 @@
     "ar": "Arabic",
     "ur": "Urdu",
     "dz": "Dzongkha"
+  },
+  "common": {
+    "charteredAccountants": "Chartered Accountants",
+    "learnMore": "Learn More",
+    "exploreInsights": "Explore detailed insights and services under this section."
   }
 }

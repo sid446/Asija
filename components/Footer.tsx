@@ -46,7 +46,7 @@ const Footer = () => {
                         >
                           ASIJA & ASSOCIATES LLP
                           <br />
-                          <span className='text-sm sm:text-xs'>Chartered Accountants</span>
+                          <span className='text-sm sm:text-xs'>{t('common.charteredAccountants')}</span>
                         </motion.h1>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
               {t('footer.description') || 'Professional audit, tax, and advisory services across multiple industries.'}

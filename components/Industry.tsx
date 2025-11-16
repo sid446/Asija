@@ -350,7 +350,7 @@ export default function Industries() {
                         className="self-start sm:self-end flex-shrink-0 group relative overflow-hidden bg-[#1DCD9F] hover:bg-[#0EA578] text-black font-bold px-6 py-3 rounded-lg transition-all duration-300 shadow-lg hover:shadow-[#1DCD9F]/50"
                       >
                         <span className="relative z-10 flex items-center gap-2">
-                          Learn More
+                          {t('common.learnMore')}
                           <svg 
                             className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" 
                             fill="none" 

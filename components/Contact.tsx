@@ -3,10 +3,13 @@
 import { Mail, Phone, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { useTranslation } from './TranslationProvider';
 
 export default function Contact() {
+  const { t } = useTranslation();
+  
   return (
-    <div className="w-full min-h-screen bg-gradient-to-b from-[#252525] to-[#1a1818] flex flex-col items-center px-6 md:px-20 lg:px-32 pb-20 text-white overflow-hidden">
+    <div id="contact" className="w-full min-h-screen bg-gradient-to-b from-[#252525] to-[#1a1818] flex flex-col items-center px-6 md:px-20 lg:px-32 pb-20 text-white overflow-hidden">
       {/* Content Section */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -17,13 +20,13 @@ export default function Contact() {
         {/* LEFT: Text */}
         <div className="lg:w-1/2 space-y-2 sm:space-y-5">
           <p className="text-[#1DCD9F] font-medium text-xl sm:text-lg tracking-wider">
-            Contact us
+            {t('contact.tagline')}
           </p>
           <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-            Connect With Us <span className='text-6xl text-[#1DCD9F]'>.</span>
+            {t('contact.title')} <span className='text-6xl text-[#1DCD9F]'>.</span>
           </h1>
           <p className="text-xl text-white/70 max-w-lg">
-            We’d love to hear from you! Please get in touch.
+            {t('contact.description')}
           </p>
         </div>
 
@@ -40,8 +43,8 @@ export default function Contact() {
               <Phone className="w-5 h-5 text-[#1DCD9F]" />
             </div>
             <div>
-              <h3 className="font-bold text-lg text-white">Mobile</h3>
-              <p className="text-white/60 text-md">+91 98765 43210</p>
+              <h3 className="font-bold text-lg text-white">{t('contact.mobile')}</h3>
+              <p className="text-white/60 text-md">{t('contact.phone1')}</p>
             </div>
           </motion.div>
 
@@ -56,12 +59,12 @@ export default function Contact() {
               <Mail className="w-5 h-5 text-[#1DCD9F]" />
             </div>
             <div>
-              <h3 className="font-bold text-lg text-white">Email</h3>
+              <h3 className="font-bold text-lg text-white">{t('contact.emails')}</h3>
               <a
-                href="mailto:hello@asija.in"
+                href={`mailto:${t('contact.email1')}`}
                 className="text-white/60 text-md hover:text-[#1DCD9F] transition-colors"
               >
-                hello@asija.in
+                {t('contact.email1')}
               </a>
             </div>
           </motion.div>
@@ -77,9 +80,9 @@ export default function Contact() {
               <MapPin className="w-5 h-5 text-[#1DCD9F]" />
             </div>
             <div>
-              <h3 className="font-bold text-lg text-white">Location</h3>
+              <h3 className="font-bold text-lg text-white">{t('contact.officeLocations')}</h3>
               <p className="text-white/60 text-md">
-                Bandra West, Mumbai 400050, India
+                {t('contact.location')}
               </p>
             </div>
           </motion.div>
@@ -97,7 +100,7 @@ export default function Contact() {
 
         <Image
           src="/hey.jpg"
-          alt="Asija team in creative studio"
+          alt={t('contact.imageAlt')}
           width={1920}
           height={1080}
           className="w-full h-[60vh] md:h-[70vh] object-cover"
