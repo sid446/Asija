@@ -28,7 +28,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-[#2a2a2a] w-full ">
+  <footer className="bg-surface w-full ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-20 py-12 sm:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-8 sm:mb-12">
           {/* Brand Column */}
@@ -39,16 +39,16 @@ const Footer = () => {
             transition={{ duration: 0.6 }}
             className="lg:col-span-1"
           >
-             <motion.h1 
-                          className="text-lg md:text-lg mt-2 w-fit mb-2 leading-5 font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent cursor-pointer"
+            <motion.h1 
+                         className="text-lg md:text-lg mt-2 w-fit mb-2 leading-5 font-bold bg-clip-text  cursor-pointer"
                           whileHover={{ scale: 1.05 }}
                           transition={{ type: 'spring', stiffness: 400 }}
                         >
                           ASIJA & ASSOCIATES LLP
                           <br />
-                          <span className='text-sm sm:text-xs'>{t('common.charteredAccountants')}</span>
+                          <span className='text-sm sm:text-xs text-muted'>{t('common.charteredAccountants')}</span>
                         </motion.h1>
-            <p className="text-gray-400 text-sm leading-relaxed mb-6">
+            <p className="text-muted text-sm leading-relaxed mb-6">
               {t('footer.description') || 'Professional audit, tax, and advisory services across multiple industries.'}
             </p>
             
@@ -58,7 +58,7 @@ const Footer = () => {
                 href="#"
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-10 h-10 flex items-center justify-center bg-white/8 hover:bg-[#1DCD9F] rounded-lg transition-all duration-300 text-white/70 hover:text-white"
+                className="w-10 h-10 flex items-center justify-center bg-card hover:bg-accent rounded-lg transition-all duration-300 text-muted hover:text-white border-theme"
                 aria-label="Instagram"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -70,7 +70,7 @@ const Footer = () => {
                 href="#"
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-10 h-10 flex items-center justify-center bg-white/8 hover:bg-[#1DCD9F] rounded-lg transition-all duration-300 text-white/70 hover:text-white"
+                className="w-10 h-10 flex items-center justify-center bg-card hover:bg-accent rounded-lg transition-all duration-300 text-muted hover:text-white border-theme"
                 aria-label="LinkedIn"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -87,13 +87,13 @@ const Footer = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <h3 className="text-white font-semibold text-lg mb-4">{t('footer.company') || 'Company'}</h3>
+            <h3 className="text-theme font-semibold text-lg mb-4">{t('footer.company') || 'Company'}</h3>
             <ul className="space-y-3">
               {footerLinks.company.map((link, index) => (
                 <li key={index}>
                   <a
                     href={link.href}
-                    className="text-gray-400 hover:text-[#1DCD9F] transition-colors duration-300 text-sm sm:text-base inline-block hover:translate-x-1 transition-transform"
+                    className="text-muted hover:text-accent transition-all duration-300 text-sm sm:text-base inline-block hover:translate-x-1"
                   >
                     {link.label}
                   </a>
@@ -109,13 +109,13 @@ const Footer = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <h3 className="text-white font-semibold text-lg mb-4">{t('footer.services') || 'Services'}</h3>
+            <h3 className="text-theme font-semibold text-lg mb-4">{t('footer.services') || 'Services'}</h3>
             <ul className="space-y-3">
               {footerLinks.services.map((link, index) => (
                 <li key={index}>
                   <a
                     href={link.href}
-                    className="text-gray-400 hover:text-[#1DCD9F] transition-colors duration-300 text-sm sm:text-base inline-block hover:translate-x-1 transition-transform"
+                    className="text-muted hover:text-accent transition-all duration-300 text-sm sm:text-base inline-block hover:translate-x-1"
                   >
                     {link.label}
                   </a>
@@ -131,13 +131,13 @@ const Footer = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <h3 className="text-white font-semibold text-lg mb-4">{t('footer.contact') || 'Contact'}</h3>
+            <h3 className="text-theme font-semibold text-lg mb-4">{t('footer.contact') || 'Contact'}</h3>
             <ul className="space-y-3">
               {footerLinks.contact.map((link, index) => (
                 <li key={index}>
                   <a
                     href={link.href}
-                    className="text-gray-400 hover:text-[#1DCD9F] transition-colors duration-300 text-sm sm:text-base inline-block hover:translate-x-1 transition-transform"
+                    className="text-muted hover:text-accent transition-all duration-300 text-sm sm:text-base inline-block hover:translate-x-1"
                   >
                     {link.label}
                   </a>
@@ -153,16 +153,16 @@ const Footer = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4"
+          className="pt-8 border-t border-theme flex flex-col sm:flex-row justify-between items-center gap-4"
         >
-          <p className="text-gray-500 text-sm text-center sm:text-left">
+          <p className="text-muted text-sm text-center sm:text-left">
             {t('footer.copyright') || '© 2024 Asija & Associates LLP. All rights reserved.'}
           </p>
-          <div className="flex gap-6 text-sm text-gray-500">
-            <a href="#" className="hover:text-[#1DCD9F] transition-colors">
+          <div className="flex gap-6 text-sm text-muted">
+            <a href="#" className="hover:text-accent transition-colors">
               {t('footer.privacy') || 'Privacy Policy'}
             </a>
-            <a href="#" className="hover:text-[#1DCD9F] transition-colors">
+            <a href="#" className="hover:text-accent transition-colors">
               {t('footer.terms') || 'Terms of Service'}
             </a>
           </div>

@@ -84,27 +84,26 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ group, index }) => {
     >
       <div
         className={`
-          relative overflow-hidden  bg-gradient-to-b from-[#323232] to-[#2a2a2a]
-          border border-white/10 backdrop-blur-xl
-          shadow-xl transition-all duration-500
-          hover:shadow-2xl hover:shadow-[#1DCD9F]/20
-          hover:border-[#1DCD9F]/30
-          ${isOpen ? 'ring-2 ring-[#1DCD9F]/50' : ''}
+          relative overflow-hidden bg-card
+          border border-theme backdrop-blur-sm
+          shadow-sm transition-all duration-500
+          hover:shadow-lg hover:shadow-(--theme-accent)/10
+          ${isOpen ? 'ring-2 ring-(--theme-accent)/20' : ''}
         `}
       >
-        <div className="h-1 bg-gradient-to-r from-[#1DCD9F] to-[#0EA578]" />
+  <div className="h-1 bg-linear-to-r from-(--theme-accent) to-[#0EA578]" />
 
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="w-full flex items-center justify-between p-5 sm:p-6 text-left"
         >
-          <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white group-hover:text-[#1DCD9F] transition-colors duration-300">
+          <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-theme group-hover:accent transition-colors duration-300">
             {t(group.translationKey)} {/* UPDATED */}
           </h3>
           <motion.div
             animate={{ rotate: isOpen ? 90 : 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="text-[#1DCD9F]"
+            className="text-accent"
           >
             <ChevronRight className="w-6 h-6" />
           </motion.div>
@@ -119,7 +118,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ group, index }) => {
               transition={{ duration: 0.4, ease: 'easeInOut' }}
               className="overflow-hidden"
             >
-              <div className="px-5 pb-6 sm:px-6 sm:pb-7 space-y-5  border-t border-white/5 pt-5">
+                <div className="px-5 pb-6 sm:px-6 sm:pb-7 space-y-5  border-t border-theme pt-5">
                 {group.items.length > 0 ? (
                   <ul className="space-y-3">
                     {group.items.map((item, i) => (
@@ -128,10 +127,10 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ group, index }) => {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: i * 0.05 }}
-                        className="flex items-center gap-3 text-gray-300 text-sm sm:text-base"
+                        className="flex items-center gap-3 text-muted text-sm sm:text-base"
                       >
-                        <div className="w-2 h-2 bg-[#1DCD9F] rounded-full flex-shrink-0" />
-                        <span className="hover:text-white transition-colors">{item}</span>
+                          <div className="w-2 h-2 bg-accent rounded-full shrink-0" />
+                          <span className="hover:accent transition-colors">{item}</span>
                       </motion.li>
                     ))}
                   </ul>
@@ -143,15 +142,15 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ group, index }) => {
                   <motion.button
                     whileHover={{ x: 4 }}
                     whileTap={{ scale: 0.95 }}
-                    className="inline-flex items-center gap-2 text-[#1DCD9F] text-sm font-semibold hover:underline"
+                    className="inline-flex items-center gap-2 text-accent text-sm font-semibold hover:underline"
                   >
                     {t('services.viewInsights')} {/* UPDATED */}
                     <ChevronRight className="w-4 h-4" />
                   </motion.button>
                 )}
 
-                <div className="mt-6 pt-5 border-t border-white/10">
-                  <p className="text-gray-600 text-xs italic leading-relaxed">
+                <div className="mt-6 pt-5 border-t border-theme">
+                  <p className="text-muted text-xs italic leading-relaxed">
                     Detailed insights, case studies, and expert guidance coming soon…
                   </p>
                 </div>
@@ -161,7 +160,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ group, index }) => {
         </AnimatePresence>
 
         <div className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1DCD9F]/10 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-(--theme-accent)/10 to-transparent" />
         </div>
       </div>
     </motion.div>
@@ -172,7 +171,7 @@ export default function Services() {
   const { t } = useTranslation(); // ADD THIS
   
   return (
-    <section className="bg-[#252525] w-full py-16 sm:py-20 md:py-24 px-4 sm:px-6 md970 md:px-8 lg:px-12 xl:px-20">
+    <section className="bg-theme w-full py-16 sm:py-20 md:py-24 px-4 sm:px-6 md970 md:px-8 lg:px-12 xl:px-20">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -181,9 +180,9 @@ export default function Services() {
           transition={{ duration: 0.8 }}
           className="text-center"
         >
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-theme leading-tight">
             {t('services.title')} {/* UPDATED */}
-            <span className="text-[#1DCD9F] text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold"> .</span>
+            <span className="accent text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold"> .</span>
           </h1>
         </motion.div>
 
@@ -192,7 +191,7 @@ export default function Services() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3, duration: 0.8 }}
-          className="mt-6 text-gray-300 text-base sm:text-lg leading-relaxed text-center max-w-3xl mx-auto"
+          className="mt-6 text-muted text-base sm:text-lg leading-relaxed text-center max-w-3xl mx-auto"
         >
           {t('services.description')} {/* UPDATED */}
         </motion.p>

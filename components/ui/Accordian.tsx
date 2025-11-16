@@ -85,58 +85,6 @@ const AccordionContent = React.forwardRef<
 
 AccordionContent.displayName = AccordionPrimitive.Content.displayName;
 
-// Demo Component
-export default function AccordionDemo() {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-8">
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-2 text-slate-900 dark:text-slate-900">
-          Frequently Asked Questions
-        </h1>
-        <p className="text-slate-600 dark:text-slate-400 mb-8">
-          Find answers to common questions below
-        </p>
-        
-        <Accordion type="single" collapsible className="bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-hidden">
-          <AccordionItem value="item-1">
-            <AccordionTrigger className="px-6 text-slate-900 dark:text-slate-100">
-              What is Framer Motion?
-            </AccordionTrigger>
-            <AccordionContent className="px-6 text-slate-700 dark:text-slate-300">
-              Framer Motion is a production-ready motion library for React. It provides simple yet powerful animations with declarative syntax, making it easy to add smooth transitions and interactions to your components.
-            </AccordionContent>
-          </AccordionItem>
 
-          <AccordionItem value="item-2">
-            <AccordionTrigger className="px-6 text-slate-900 dark:text-slate-100">
-              How do I install it?
-            </AccordionTrigger>
-            <AccordionContent className="px-6 text-slate-700 dark:text-slate-300">
-              You can install Framer Motion using npm or yarn. Simply run: <code className="bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded">npm install framer-motion</code> or <code className="bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded">yarn add framer-motion</code>
-            </AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem value="item-3">
-            <AccordionTrigger className="px-6 text-slate-900 dark:text-slate-100">
-              What are the benefits of using motion?
-            </AccordionTrigger>
-            <AccordionContent className="px-6 text-slate-700 dark:text-slate-300">
-              Motion animations improve user experience by providing visual feedback, guiding attention, and making interfaces feel more responsive and polished. They help users understand state changes and create a more engaging interaction.
-            </AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem value="item-4">
-            <AccordionTrigger className="px-6 text-slate-900 dark:text-slate-100">
-              Can I customize the animations?
-            </AccordionTrigger>
-            <AccordionContent className="px-6 text-slate-700 dark:text-slate-300">
-              Absolutely! Framer Motion offers extensive customization options. You can adjust duration, easing functions, stagger effects, and create complex animation sequences. The transition prop accepts various configuration options to fine-tune your animations.
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </div>
-    </div>
-  );
-}
 
 export { Accordion, AccordionContent, AccordionItem, AccordionTrigger };

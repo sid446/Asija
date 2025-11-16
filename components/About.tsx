@@ -84,26 +84,28 @@ const About = () => {
 
         <div className="relative z-20 max-w-7xl mx-auto max-h-screen overflow-y-auto px-2 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 md:py-10 lg:py-12">
           <div className="pb-12 sm:pb-16 md:pb-20 lg:pb-28">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight text-center">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-center" style={{ color: '#ffffff' }}>
               {t('about.title')} {/* UPDATED */}
               <span className="text-[#1DCD9F] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold"> .</span>
             </h1>
 
             <blockquote className={`
               mt-4 sm:mt-6 md:mt-8 lg:mt-10 text-sm sm:text-base md:text-lg lg:text-xl 
-              text-gray-300 italic font-light leading-relaxed text-center
+              italic font-light leading-relaxed text-center
               ${'sm:border-l-4 sm:border-[#1DCD9F] sm:pl-6 sm:text-left'} py-1 sm:py-2
-            `}>
+            `}
+              style={{ color: '#ffffff' }}
+            >
               {t('about.quote')} {/* UPDATED */}
             </blockquote>
 
             <div className="mt-6 sm:mt-8 md:mt-10 space-y-3 sm:space-y-4 text-gray-300 text-sm sm:text-base leading-relaxed font-light text-center sm:text-left">
-              <p>{t('about.description1')}</p> {/* UPDATED */}
-              <p>{t('about.description2')}</p> {/* UPDATED */}
+              <p style={{ color: '#ffffff' }}>{t('about.description1')}</p> {/* UPDATED */}
+              <p style={{ color: '#ffffff' }}>{t('about.description2')}</p> {/* UPDATED */}
 
               <div className="hidden sm:block space-y-3 text-left">
-                <p>{t('about.description3')}</p> {/* UPDATED */}
-                <p className="mt-3 text-white text-sm sm:text-base">
+                <p style={{ color: '#ffffff' }}>{t('about.description3')}</p> {/* UPDATED */}
+                <p className="mt-3 text-sm sm:text-base" style={{ color: '#ffffff' }}>
                   {t('about.description4')} {/* UPDATED */}
                 </p>
               </div>
@@ -117,7 +119,7 @@ const About = () => {
           <div className="px-4 py-10 sm:px-6 sm:py-12 md:px-8 lg:px-12 xl:px-20">
             <div className="max-w-7xl mx-auto">
 
-              <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight  mb-8 sm:mb-12">
+              <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight  mb-8 sm:mb-12" >
                 {t('about.exploreStrengths')} {/* UPDATED */}
                 <span className="text-[#1DCD9F] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold"> .</span>
               </h2>

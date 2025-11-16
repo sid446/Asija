@@ -35,10 +35,10 @@ const AboutCard = ({
         transitionDelay: inView ? `${delay}ms` : '0ms',
         willChange: inView ? 'transform, opacity' : 'auto',
       }}
-      className={`
+        className={`
         transform transition-all duration-500 ease-out
         ${inView ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'}
-        group w-full bg-[#323232] border-t-4 border-[#1DCD9F] 
+        group w-full bg-card border-t-4 border-accent 
         shadow-md overflow-hidden 
         hover:shadow-lg hover:-translate-y-1
         ${isMobile ? 'h-auto' : ''}
@@ -64,7 +64,7 @@ const AboutCard = ({
       <div className={`p-3 ${isMobile ? 'sm:p-4' : 'sm:p-5 md:p-6'} space-y-2 sm:space-y-3`}>
         <h2
           className={`
-            font-bold text-gray-300 group-hover:text-[#1DCD9F] transition-colors duration-300 line-clamp-2
+            font-bold text-theme group-hover:accent transition-colors duration-300 line-clamp-2
             ${isMobile ? 'text-sm sm:text-base' : 'text-base sm:text-lg md:text-xl'}
           `}
         >
@@ -72,7 +72,7 @@ const AboutCard = ({
         </h2>
         <p
           className={`
-            leading-relaxed text-gray-400 line-clamp-3
+            leading-relaxed text-muted line-clamp-3
             ${isMobile ? 'text-xs sm:text-xs' : 'text-xs sm:text-sm'}
           `}
         >
@@ -83,12 +83,13 @@ const AboutCard = ({
         <button
           className={`
             relative inline-flex items-center justify-center gap-1.5 
-            px-1 sm:px-3 py-1.5 text-xs font-medium text-white bg-[#1DCD9F] rounded-full 
+            px-1 sm:px-3 py-1.5 text-xs font-medium text-theme bg-accent rounded-full 
             overflow-hidden transition-all duration-300 group-hover:bg-[#86dec6] 
-            group-hover:text-black focus:outline-none focus:ring-2 focus:ring-[#1DCD9F] 
-            focus:ring-offset-2 focus:ring-offset-[#323232] min-h-[32px]
+            group-hover:text-black focus:outline-none focus:ring-2 focus:ring-[var(--theme-accent)] 
+            focus:ring-offset-2 focus:ring-offset-[var(--theme-card)] min-h-[32px]
             ${isMobile ? 'w-full text-[10px]' : 'w-auto sm:w-auto'}
           `}
+          style={{ backgroundColor: 'var(--theme-accent)' }}
         >
           <span className="relative z-10">{buttonContent}</span>
           <svg

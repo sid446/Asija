@@ -58,3 +58,111 @@
     height: 0;
   }
 }
+
+/* Theme variables (defaults = dark theme) */
+:root {
+  --theme-bg: #2a2a2a;
+  --theme-surface: #252525;
+  --theme-card: #323232;
+  --theme-text: #ffffff;
+  --theme-muted: #9ca3af;
+  --theme-border: rgba(255,255,255,0.06);
+  --theme-accent: #1DCD9F;
+}
+
+/* Light theme overrides */
+[data-theme="light"] {
+  --theme-bg: #ffffff;
+  --theme-surface: #f8fafc;
+  --theme-card: #ffffff;
+  --theme-text: #111827;
+  --theme-muted: #6b7280;
+  --theme-border: rgba(0,0,0,0.06);
+  --theme-accent: #1DCD9F;
+}
+
+/* Apply base colors */
+body {
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
+}
+
+/* Generic utility helpers that map to theme variables. Use these in new components. */
+.bg-theme { background-color: var(--theme-bg) !important; }
+.bg-surface { background-color: var(--theme-surface) !important; }
+.bg-card { background-color: var(--theme-card) !important; }
+.text-theme { color: var(--theme-text) !important; }
+.text-muted { color: var(--theme-muted) !important; }
+.border-theme { border-color: var(--theme-border) !important; }
+.accent { color: var(--theme-accent) !important; }
+.bg-accent { background-color: var(--theme-accent) !important; }
+.border-accent { border-color: var(--theme-accent) !important; }
+
+/* Override frequently-used dark Tailwind classes when light theme active.
+   This lets the toggle affect existing components without changing each file. */
+[data-theme="light"] [class*="bg-[#2a2a2a]"] { background-color: var(--theme-bg) !important; }
+[data-theme="light"] [class*="bg-[#252525]"] { background-color: var(--theme-surface) !important; }
+[data-theme="light"] [class*="bg-[#323232]"] { background-color: var(--theme-card) !important; }
+[data-theme="light"] [class*="text-white"] { color: var(--theme-text) !important; }
+[data-theme="light"] [class*="text-gray-300"] { color: var(--theme-muted) !important; }
+[data-theme="light"] [class*="text-gray-400"] { color: var(--theme-muted) !important; }
+[data-theme="light"] [class*="text-gray-500"] { color: var(--theme-muted) !important; }
+[data-theme="light"] [class*="text-gray-600"] { color: var(--theme-muted) !important; }
+[data-theme="light"] [class*="border-white/10"] { border-color: var(--theme-border) !important; }
+[data-theme="light"] [class*="bg-white/8"] { background-color: rgba(255,255,255,0.08) !important; }
+[data-theme="light"] [class*="bg-black/"] { background-color: transparent !important; }
+
+/* Special-purpose helpers for targeted visibility tweaks */
+/* Always render FAQ question text white for maximum contrast in both themes */
+.faq-question { color: #ffffff !important; }
+[data-theme="light"] .faq-question { color: #ffffff !important; }
+
+/* Force dark (readable) text when light theme active (use on overlays) */
+.ensure-dark-in-light { color: inherit; }
+[data-theme="light"] .ensure-dark-in-light { color: var(--theme-text) !important; }
+
+/* Extended light-theme remaps for common Tailwind utilities that cause low contrast
+   This helps the theme toggle automatically correct many existing utility classes
+   without editing each component. Keep conservative mappings to avoid surprising
+   behavior in complex layouts. */
+[data-theme="light"] .text-white,
+[data-theme="light"] .text-slate-50,
+[data-theme="light"] .text-gray-50,
+[data-theme="light"] .text-gray-100,
+[data-theme="light"] .text-slate-100,
+[data-theme="light"] .text-slate-200 {
+  color: var(--theme-text) !important;
+}
+
+[data-theme="light"] .text-gray-200,
+[data-theme="light"] .text-slate-300,
+[data-theme="light"] .text-gray-300 {
+  color: var(--theme-muted) !important;
+}
+
+[data-theme="light"] .bg-black,
+[data-theme="light"] .bg-slate-900,
+[data-theme="light"] .bg-slate-800,
+[data-theme="light"] .bg-gray-900 {
+  background-color: var(--theme-surface) !important;
+}
+
+[data-theme="light"] .bg-white,
+[data-theme="light"] .bg-gray-50 {
+  background-color: var(--theme-card) !important;
+}
+
+[data-theme="light"] .placeholder-white,
+[data-theme="light"] ::placeholder {
+  color: var(--theme-muted) !important;
+}
+
+/* Prefer using theme-accent-based subtle ring in light mode for focus states */
+[data-theme="light"] .ring-white,
+[data-theme="light"] .ring-white\/20 {
+  box-shadow: 0 0 0 4px rgba(29,205,159,0.06) !important;
+}
+
+/* Re-assert special-purpose helpers so they win after the broad remaps above */
+[data-theme="light"] .faq-question { color: #ffffff !important; }
+[data-theme="light"] .ensure-dark-in-light { color: var(--theme-text) !important; }

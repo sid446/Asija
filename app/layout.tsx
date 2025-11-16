@@ -4,6 +4,7 @@ import "./globals.css";
 import { Scroll } from "lucide-react";
 import ScrollProvider from "./providers/ScrollProvider";
 import { TranslationProvider } from "@/components/TranslationProvider";
+import ThemeProvider from '@/components/ThemeProvider';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -23,14 +24,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.variable} antialiased bg-[#2a2a2a]`}
-      >
-        <TranslationProvider>
-          <ScrollProvider>
-            {children}
-          </ScrollProvider>
-        </TranslationProvider>
+      <body className={`${inter.variable} antialiased`}>
+        <ThemeProvider>
+          <TranslationProvider>
+            <ScrollProvider>
+              {children}
+            </ScrollProvider>
+          </TranslationProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

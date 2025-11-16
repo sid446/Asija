@@ -9,7 +9,7 @@ export default function Contact() {
   const { t } = useTranslation();
   
   return (
-    <div id="contact" className="w-full min-h-screen bg-gradient-to-b from-[#252525] to-[#1a1818] flex flex-col items-center px-6 md:px-20 lg:px-32 pb-20 text-white overflow-hidden">
+    <div id="contact" className="w-full min-h-screen bg-theme flex flex-col items-center px-6 md:px-20 lg:px-32 pb-20 overflow-hidden">
       {/* Content Section */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -19,13 +19,13 @@ export default function Contact() {
       >
         {/* LEFT: Text */}
         <div className="lg:w-1/2 space-y-2 sm:space-y-5">
-          <p className="text-[#1DCD9F] font-medium text-xl sm:text-lg tracking-wider">
+          <p className="accent font-medium text-xl sm:text-lg tracking-wider">
             {t('contact.tagline')}
           </p>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-            {t('contact.title')} <span className='text-6xl text-[#1DCD9F]'>.</span>
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight text-theme">
+            {t('contact.title')} <span className='text-6xl accent'>.</span>
           </h1>
-          <p className="text-xl text-white/70 max-w-lg">
+          <p className="text-xl text-muted max-w-lg">
             {t('contact.description')}
           </p>
         </div>
@@ -39,12 +39,12 @@ export default function Contact() {
             transition={{ delay: 0.2 }}
             className="flex items-start gap-4 group"
           >
-            <div className="w-10 h-10 bg-[#1DCD9F]/20 rounded-full flex items-center justify-center group-hover:bg-[#1DCD9F]/30 transition-colors">
-              <Phone className="w-5 h-5 text-[#1DCD9F]" />
+            <div className="w-10 h-10 bg-card rounded-full flex items-center justify-center group-hover:bg-accent transition-colors">
+              <Phone className="w-5 h-5 text-accent" />
             </div>
             <div>
-              <h3 className="font-bold text-lg text-white">{t('contact.mobile')}</h3>
-              <p className="text-white/60 text-md">{t('contact.phone1')}</p>
+              <h3 className="font-bold text-lg text-theme">{t('contact.mobile')}</h3>
+              <p className="text-muted text-md">{t('contact.phone1')}</p>
             </div>
           </motion.div>
 
@@ -55,14 +55,14 @@ export default function Contact() {
             transition={{ delay: 0.3 }}
             className="flex items-start gap-4 group"
           >
-            <div className="w-10 h-10 bg-[#1DCD9F]/20 rounded-full flex items-center justify-center group-hover:bg-[#1DCD9F]/30 transition-colors">
-              <Mail className="w-5 h-5 text-[#1DCD9F]" />
+            <div className="w-10 h-10 bg-card rounded-full flex items-center justify-center group-hover:bg-accent transition-colors">
+              <Mail className="w-5 h-5 text-accent" />
             </div>
             <div>
-              <h3 className="font-bold text-lg text-white">{t('contact.emails')}</h3>
+              <h3 className="font-bold text-lg text-theme">{t('contact.emails')}</h3>
               <a
                 href={`mailto:${t('contact.email1')}`}
-                className="text-white/60 text-md hover:text-[#1DCD9F] transition-colors"
+                className="text-muted text-md hover:text-accent transition-colors"
               >
                 {t('contact.email1')}
               </a>
@@ -76,12 +76,12 @@ export default function Contact() {
             transition={{ delay: 0.4 }}
             className="flex items-start gap-4 group"
           >
-            <div className="w-10 h-10 bg-[#1DCD9F]/20 rounded-full flex items-center justify-center group-hover:bg-[#1DCD9F]/30 transition-colors">
-              <MapPin className="w-5 h-5 text-[#1DCD9F]" />
+            <div className="w-10 h-10 bg-card rounded-full flex items-center justify-center group-hover:bg-accent transition-colors">
+              <MapPin className="w-5 h-5 text-accent" />
             </div>
             <div>
-              <h3 className="font-bold text-lg text-white">{t('contact.officeLocations')}</h3>
-              <p className="text-white/60 text-md">
+              <h3 className="font-bold text-lg text-theme">{t('contact.officeLocations')}</h3>
+              <p className="text-muted text-md">
                 {t('contact.location')}
               </p>
             </div>
@@ -98,14 +98,17 @@ export default function Contact() {
       >
         
 
-        <Image
-          src="/hey.jpg"
-          alt={t('contact.imageAlt')}
-          width={1920}
-          height={1080}
-          className="w-full h-[60vh] md:h-[70vh] object-cover"
-          priority
-        />
+        <div className="relative">
+          <Image
+            src="/hey.jpg"
+            alt={t('contact.imageAlt')}
+            width={1920}
+            height={1080}
+            className="w-full h-[60vh] md:h-[70vh] object-cover"
+            priority
+          />
+          <div className="absolute inset-x-0 bottom-0 h-40 bg-linear-to-t from-theme via-transparent to-transparent pointer-events-none" />
+        </div>
       </motion.div>
     </div>
   );

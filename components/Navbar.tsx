@@ -1,5 +1,6 @@
-'use client';
+"use client";
 import React, { useState, useEffect } from 'react';
+import { useTheme } from './ThemeProvider';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation, LanguageSwitcher } from './TranslationProvider';
 
@@ -212,7 +213,7 @@ const NavItem = ({ label, isIcon, icon, isActive, hasDropdown }: NavItemProps) =
       )}
       {isActive && (
         <motion.div
-          className="absolute h-1 bg-gradient-to-r from-[#1DCD9F] to-[#0EA578] rounded-full left-4 right-4"
+          className="absolute h-1 bg-linear-to-r from-[#1DCD9F] to-[#0EA578] rounded-full left-4 right-4"
           style={{ bottom: -2 }}
           layoutId="nav-underline"
           initial={{ opacity: 0, scaleX: 0.8 }}
@@ -348,18 +349,32 @@ export default function Navbar() {
           {/* LEFT SIDE */}
           <div className="flex gap-8 lg:gap-10 items-center">
             
-            <motion.h1 
-              className="text-sm md:text-md mt-2 flex  justify-center items-center gap-3 w-fit leading-4 font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent cursor-pointer"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: 'spring', stiffness: 400 }}
-            ><img className='w-9 sm:w-12' src="/logo.png" alt="" />
-              <div>
-               
-              <span className='font-extrabold  '>ASIJA & ASSOCIATES LLP</span>
-              <br />
-              <span className='text-xs font-semibold text-zinc-300'>{t('common.charteredAccountants')}</span>
+            <motion.div className="flex items-center gap-2.5 md:gap-3">
+            <motion.img
+              src="/logo.png"
+              alt="Asija Logo"
+              className={`transition-all duration-300 ${scrolled ? 'w-12 md:w-13' : 'w-9 md:w-11'}`}
+            />
+            
+            {/* TEXT: Hidden on scroll with smooth collapse */}
+            <motion.div
+              className="text-left leading-tight overflow-hidden whitespace-nowrap"
+              initial={false}
+              animate={{ 
+                opacity: scrolled ? 0 : 1,
+                width: scrolled ? 0 : 'auto',
+                marginLeft: scrolled ? 0 : undefined
+              }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+            >
+              <div className="font-extrabold text-white text-xs md:text-sm tracking-tight">
+                ASIJA & ASSOCIATES LLP
               </div>
-            </motion.h1>
+              <div className="text-[10px] md:text-xs font-medium text-theme-green tracking-wide">
+                {t('common.charteredAccountants')}
+              </div>
+            </motion.div>
+          </motion.div>
 
             {/* Desktop Navigation - Left */}
             <nav className="hidden lg:flex gap-1 relative">
@@ -398,8 +413,11 @@ export default function Navbar() {
                 />
               </motion.div>
             ))}
-            <div className='w-[2px] h-6 bg-zinc-500 mr-4' ></div>
-            
+            <div className='w-0.5 h-6 bg-zinc-500 mr-4' ></div>
+
+            {/* Theme Toggle (moved from ThemeProvider) */}
+            <ThemeToggle />
+
             {/* Language Switcher */}
             <LanguageSwitcher />
           </nav>
@@ -416,7 +434,7 @@ export default function Navbar() {
 
         {/* Bottom border gradient */}
         <motion.div 
-          className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#1DCD9F]/50 to-transparent"
+          className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-[#1DCD9F]/50 to-transparent"
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
           transition={{ delay: 0.5, duration: 0.8 }}
@@ -450,7 +468,7 @@ export default function Navbar() {
                 </div>
 
                 {/* Overview Panel */}
-                <div className="bg-gradient-to-b from-white/5 to-white/3 backdrop-blur-sm p-6 rounded-2xl border border-white/10 h-fit">
+                <div className="bg-linear-to-b from-white/5 to-white/3 backdrop-blur-sm p-6 rounded-2xl border border-white/10 h-fit">
                   <h4 className="text-white font-semibold text-lg mb-3">Overview</h4>
                   <p className="text-white/70 text-sm leading-relaxed">
                     {findMenuItem(hoveredItem)?.overview ? t(findMenuItem(hoveredItem)?.overview || '') : t('common.exploreInsights')}
@@ -489,7 +507,7 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="fixed top-0 right-0 bottom-0 w-80 bg-gradient-to-b from-[#303030] to-[#2a2a2a] z-50 md:hidden shadow-2xl overflow-y-auto"
+              className="fixed top-0 right-0 bottom-0 w-80 bg-linear-to-b from-[#303030] to-[#2a2a2a] z-50 md:hidden shadow-2xl overflow-y-auto"
             >
               <div className="flex flex-col h-full p-6">
                 {/* Close Button */}
@@ -538,7 +556,7 @@ export default function Navbar() {
                     </motion.div>
                   ))}
 
-                  <div className="h-px bg-gradient-to-r from-white/20 to-transparent my-2" />
+                  <div className="h-px bg-linear-to-r from-white/20 to-transparent my-2" />
 
                   <motion.div
                     initial={{ opacity: 0, x: 50 }}
@@ -585,6 +603,10 @@ export default function Navbar() {
                       <LinkedInIcon />
                     </button>
                   </motion.div>
+                  {/* Mobile Theme Toggle */}
+                  <div className="mt-6 flex items-center gap-3">
+                    <ThemeToggle />
+                  </div>
                 </nav>
               </div>
             </motion.div>
@@ -592,5 +614,29 @@ export default function Navbar() {
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+function ThemeToggle() {
+  const { theme, toggleTheme } = useTheme();
+
+  return (
+    <button
+      aria-label="Toggle theme"
+      onClick={toggleTheme}
+      className={`p-2 rounded-md shadow-sm border transition-all duration-200 ${theme === 'light' ? 'bg-white text-gray-800 border-gray-200' : 'bg-gray-800 text-white border-gray-700'}`}
+      title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+    >
+      {theme === 'dark' ? (
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+        </svg>
+      ) : (
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+        </svg>
+      )}
+    </button>
   );
 }

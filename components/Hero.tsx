@@ -28,21 +28,21 @@ function Hero() {
 
       {/* Gradient + Blur Overlay */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/35 to-transparent md:from-black/60 md:via-black/35 md:to-transparent bg-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/6zz0 via-black/35 to-transparent md:from-black/60 md:via-black/35 md:to-transparent bg-black/40" />
         <div className="absolute inset-0 bg-black/25 backdrop-blur-sm md:backdrop-blur-md" />
       </div>
 
       {/* Content */}
       <div className="relative z-30 flex h-full items-center justify-center md:justify-start px-4 sm:px-6 md:px-10 lg:px-16 pt-20">
         <div className="w-full max-w-lg space-y-4 sm:space-y-5 md:space-y-6 text-center md:text-left">
-          <p className="text-[#1DCD9F] font-bold text-xs sm:text-sm md:text-base tracking-widest uppercase">
+          <p className="font-bold text-xs sm:text-sm md:text-base tracking-widest uppercase" style={{ color: '#1DCD9F' }}>
             {t('hero.tagline')} {/* UPDATED */}
           </p>
-          <h1 className="text-white font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight">
+          <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight" style={{ color: '#ffffff' }}>
             {t('hero.title')} {/* UPDATED */}
           </h1>
-          <div className="border-0 md:border-l-4 border-[#169976] pl-0 md:pl-4 mx-auto md:mx-0 max-w-md md:max-w-none">
-            <p className="text-gray-300 text-sm sm:text-base md:text-lg leading-relaxed">
+          <div className="border-0 md:border-l-4 pl-0 md:pl-4 mx-auto md:mx-0 max-w-md md:max-w-none" style={{ borderColor: '#169976' }}>
+            <p className="text-sm sm:text-base md:text-lg leading-relaxed" style={{ color: '#d1d5db' }}>
               {t('hero.description')} {/* UPDATED */}
             </p>
           </div>

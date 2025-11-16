@@ -1,7 +1,8 @@
 'use client';
 import React, { createContext, useContext, useState, useEffect, useRef, ReactNode, FC } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useTranslation } from './TranslationProvider'; 
+import { useTranslation } from './TranslationProvider';
+import { useTheme } from './ThemeProvider';
 
 // ============================================================
 // PROGRESSIVE CAROUSEL COMPONENT (copied from your spec)
@@ -287,9 +288,10 @@ const industriesSlides = [
 
 export default function Industries() {
   const { t } = useTranslation(); // ADD THIS
+  const { theme } = useTheme();
   
   return (
-    <section className="bg-[#252525] w-full py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-20">
+  <section className="bg-theme w-full py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-20">
       <div className="max-w-7xl mx-auto">
         
         <motion.div
@@ -299,9 +301,9 @@ export default function Industries() {
           transition={{ duration: 0.8 }}
           className="text-center mb-6"
         >
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-theme leading-tight">
             {t('industries.title')} {/* UPDATED */}
-            <span className="text-[#1DCD9F] text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold"> .</span>
+            <span className="accent text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold"> .</span>
           </h1>
         </motion.div>
 
@@ -310,7 +312,7 @@ export default function Industries() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3, duration: 0.8 }}
-          className="text-gray-300 text-base sm:text-lg leading-relaxed text-center max-w-3xl mx-auto mb-16"
+          className="text-muted text-base sm:text-lg leading-relaxed  text-center max-w-3xl mx-auto mb-16"
         >
           {t('industries.description')} {/* UPDATED */}
         </motion.p>
@@ -326,7 +328,8 @@ export default function Industries() {
                     src={item.image}
                     alt={t(item.translationKey)}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/25 to-transparent" />
+                  {/* Dark gradient overlay at bottom for text visibility */}
+                  <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent pointer-events-none" />
                   
                   <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6 md:p-8 lg:p-12">
                     <motion.div
@@ -336,10 +339,10 @@ export default function Industries() {
                       className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4"
                     >
                       <div className="flex-1">
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2 sm:mb-3 md:mb-4">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 md:mb-4" style={{ color: '#ffffff' }}>
                           {t(item.translationKey)} {/* UPDATED */}
                         </h2>
-                        <p className="text-gray-200 text-sm sm:text-base md:text-lg lg:text-xl max-w-2xl leading-relaxed">
+                        <p className="text-sm sm:text-base md:text-lg lg:text-xl max-w-2xl leading-relaxed" style={{ color: '#ffffff' }}>
                           {item.descriptionKey ? t(item.descriptionKey) : item.description} {/* UPDATED */}
                         </p>
                       </div>
@@ -347,7 +350,7 @@ export default function Industries() {
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="self-start sm:self-end flex-shrink-0 group relative overflow-hidden bg-[#1DCD9F] hover:bg-[#0EA578] text-black font-bold px-6 py-3 rounded-lg transition-all duration-300 shadow-lg hover:shadow-[#1DCD9F]/50"
+                        className="self-start sm:self-end shrink-0 group relative overflow-hidden bg-accent hover:opacity-95 text-black font-bold px-6 py-3 rounded-lg transition-all duration-300 shadow-lg hover:shadow-(--theme-accent)/50"
                       >
                         <span className="relative z-10 flex items-center gap-2">
                           {t('common.learnMore')}
@@ -361,7 +364,12 @@ export default function Industries() {
                           </svg>
                         </span>
                         
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+                        <div className={
+                          `absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ` +
+                          (theme === 'light'
+                            ? 'bg-linear-to-r from-transparent via-white/20 to-transparent'
+                            : 'bg-linear-to-r from-transparent via-black/20 to-transparent')
+                        } />
                       </motion.button>
                     </motion.div>
                   </div>
@@ -375,20 +383,20 @@ export default function Industries() {
               <SliderBtn
                 key={index}
                 value={item.slug}
-                className='group relative overflow-hidden bg-gradient-to-b from-[#323232] to-[#2a2a2a] border border-white/10 rounded-xl p-4 sm:p-5 text-left cursor-pointer transition-all duration-300 hover:border-[#1DCD9F]/50 hover:shadow-xl hover:shadow-[#1DCD9F]/20 touch-manipulation select-none'
-                progressBarClass='bg-[#1DCD9F] h-full'
+                className='group relative overflow-hidden bg-card border border-theme rounded-xl p-4 sm:p-5 text-left cursor-pointer transition-all duration-300 hover:border-accent/50 hover:shadow-xl hover:shadow-(--theme-accent)/20 touch-manipulation select-none'
+                progressBarClass='bg-accent h-full'
               >
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#1DCD9F] to-[#0EA578] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-(--theme-accent) to-[#0EA578] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 
-                <h3 className='text-sm sm:text-base font-bold text-white mb-2 group-hover:text-[#1DCD9F] transition-colors duration-300'>
+                <h3 className='text-sm sm:text-base font-bold text-theme mb-2 group-hover:accent transition-colors duration-300'>
                   {t(item.translationKey)} {/* UPDATED */}
                 </h3>
-                <p className='text-xs sm:text-sm text-gray-400 line-clamp-2 leading-relaxed'>
+                <p className='text-xs sm:text-sm text-muted line-clamp-2 leading-relaxed'>
                   {item.descriptionKey ? t(item.descriptionKey) : item.description} {/* UPDATED */}
                 </p>
 
-                <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1DCD9F]/10 to-transparent" />
+                  <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <div className="absolute inset-0 bg-linear-to-t from-(--theme-accent)/10 to-transparent" />
                 </div>
               </SliderBtn>
             ))}
