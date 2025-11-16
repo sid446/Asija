@@ -349,14 +349,15 @@ export default function Navbar() {
           <div className="flex gap-8 lg:gap-10 items-center">
             
             <motion.h1 
-              className="text-sm md:text-md mt-2 flex  justify-center items-center gap-3 w-fit leading-5 font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent cursor-pointer"
+              className="text-sm md:text-md mt-2 flex  justify-center items-center gap-3 w-fit leading-4 font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent cursor-pointer"
               whileHover={{ scale: 1.05 }}
               transition={{ type: 'spring', stiffness: 400 }}
             ><img className='w-12' src="/logo.png" alt="" />
               <div>
-              ASIJA & ASSOCIATES LLP
+               
+              <span className='font-extrabold'>ASIJA & ASSOCIATES LLP</span>
               <br />
-              <span className='text-xs'>{t('common.charteredAccountants')}</span>
+              <span className='text-xs font-semibold text-zinc-300'>{t('common.charteredAccountants')}</span>
               </div>
             </motion.h1>
 
