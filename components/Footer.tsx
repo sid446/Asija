@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from './TranslationProvider';
+import Link from 'next/link';
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -11,7 +12,8 @@ const Footer = () => {
       { label: t('navbar.aboutUs'), href: '#about' },
       { label: t('navbar.services'), href: '#services' },
       { label: t('navbar.industries'), href: '#industries' },
-      { label: t('navbar.career'), href: '#career' }
+      { label: t('navbar.career'), href: '#career' },
+      { label: 'Our Team / Strength', href: '/team' }
     ],
     services: [
       { label: t('services.auditAssurance'), href: '#services' },
@@ -91,12 +93,21 @@ const Footer = () => {
             <ul className="space-y-3">
               {footerLinks.company.map((link, index) => (
                 <li key={index}>
-                  <a
-                    href={link.href}
-                    className="text-muted hover:text-accent transition-all duration-300 text-sm sm:text-base inline-block hover:translate-x-1"
-                  >
-                    {link.label}
-                  </a>
+                  {link.href.startsWith('/') ? (
+                    <Link
+                      href={link.href}
+                      className="text-muted hover:text-accent transition-all duration-300 text-sm sm:text-base inline-block hover:translate-x-1"
+                    >
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <a
+                      href={link.href}
+                      className="text-muted hover:text-accent transition-all duration-300 text-sm sm:text-base inline-block hover:translate-x-1"
+                    >
+                      {link.label}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>

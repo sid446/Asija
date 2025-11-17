@@ -3,11 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { useTheme } from './ThemeProvider';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation, LanguageSwitcher } from './TranslationProvider';
+import Link from 'next/link';
 
 type MenuItem = {
   label: string;
   translationKey?: string;
-  subs?: (string | { title: string; items: string[]; insights: boolean })[];
+  subs?: (string | { title: string; items: string[]; insights: boolean } | { label: string; href: string })[];
   overview?: string;
   isIcon?: boolean;
   icon?: React.ReactNode;
@@ -25,7 +26,7 @@ const leftMenu: MenuItem[] = [
     translationKey: 'navbar.aboutUs',
     subs: [
       'Who We Are',
-      'Our Team / Strength',
+      { label: 'Our Team / Strength', href: '/team' },
       'Our Purpose and Values',
       'Alumni',
       'Life at Asija - (year wise)',
@@ -262,19 +263,31 @@ export default function Navbar() {
                 </button>
               </div>
             );
+          } else if ('href' in sub) {
+            return (
+              <div key={index} className="group">
+                <Link 
+                  href={sub.href}
+                  className="text-left text-white/90 group-hover:text-[#1DCD9F] text-base font-medium transition-all flex items-center gap-2 py-1 hover:translate-x-1"
+                >
+                  <span className="w-1.5 h-1.5 bg-[#1DCD9F] rounded-full opacity-0 group-hover:opacity-100 transition-all" />
+                  {sub.label}
+                </Link>
+              </div>
+            );
           } else {
             return (
-              <div key={sub.title} className="space-y-3">
-                <h4 className="text-[#1DCD9F] font-semibold text-base mb-1">{sub.title}</h4>
+              <div key={(sub as any).title} className="space-y-3">
+                <h4 className="text-[#1DCD9F] font-semibold text-base mb-1">{(sub as any).title}</h4>
                 <ul className="space-y-2">
-                  {sub.items.map((item, idx) => (
+                  {(sub as any).items.map((item: string, idx: number) => (
                     <li key={idx}>
                       <button className="text-left text-white/70 hover:text-white text-sm transition-all hover:translate-x-1 inline-block py-0.5">
                         {item}
                       </button>
                     </li>
                   ))}
-                  {sub.insights && (
+                  {(sub as any).insights && (
                     <li className="pt-1">
                       <button className="text-left text-[#1DCD9F] text-sm font-medium hover:underline inline-flex items-center gap-1 group">
                         View Insights
@@ -316,12 +329,25 @@ export default function Navbar() {
                   {sub}
                 </button>
               );
+            } else if ('href' in sub) {
+              return (
+                <Link
+                  key={index}
+                  href={sub.href}
+                  style={{
+                    color: theme === 'light' ? '#6b7280' : '#ffffff',
+                  }}
+                  className="text-left text-sm transition-all block py-1 hover:translate-x-1"
+                >
+                  {sub.label}
+                </Link>
+              );
             } else {
               return (
-                <div key={sub.title} className="space-y-2">
-                  <h5 className="text-[#1DCD9F] font-semibold text-sm">{sub.title}</h5>
+                <div key={(sub as any).title} className="space-y-2">
+                  <h5 className="text-[#1DCD9F] font-semibold text-sm">{(sub as any).title}</h5>
                   <ul className="space-y-1.5 pl-3">
-                    {sub.items.map((item, idx) => (
+                    {(sub as any).items.map((item: string, idx: number) => (
                       <li key={idx}>
                         <button 
                           style={{
