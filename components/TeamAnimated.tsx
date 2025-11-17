@@ -1,14 +1,14 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const members = [
   {
     name: 'CA Ashish Kapoor',
     role: 'Sr. Partner',
     avatar: '/AshishKapoor.jpeg',
-    linkedin: 'https://linkedin.com/in/ashishkapoor', // replace with real link
+    linkedin: 'https://linkedin.com/in/ashishkapoor',
     description: `CA. Ashish Kapoor is the Senior Partner at Asija & Associates LLP, a distinguished Chartered Accountancy firm with a legacy of over 39 years of professional excellence. With more than two decades of experience, he has been at the forefront of guiding organizations across diverse sectors including technology services, financial services, automotive, infrastructure, education, and manufacturing. Ashish specializes in Direct and Indirect Taxation, with deep expertise in Income Tax Litigation, Benami Law, and Goods & Services Tax (GST). He is also widely recognized for his contributions to financial regulations, compliance frameworks, and advisory to FinTech enterprises. His balanced approach to consulting and litigation has made him a trusted advisor to corporates, government institutions, and international organizations. Over the years, he has been a sought-after speaker, trainer, and thought leader, delivering sessions at prestigious platforms such as the Institute of Chartered Accountants of India (ICAI), Reserve Bank of India (RBI), Indian Institutes of Management (IIMs), the National Academy of Direct Taxes (NADT), the National Academy of Customs, Indirect Taxes & Narcotics (NACIN), and several leading corporate and educational forums. His presentations cover a wide spectrum—ranging from taxation of charitable trusts and GST reforms to income tax litigation strategies, internal controls, and financial governance. Ashish has had the privilege of working with and advising global and national institutions and he also actively represents clients before the Income Tax Appellate Authority, Company Law Board, and appellate authorities under the PMLA & Benami Transactions Act.
 
 Beyond his practice, Ashish Kapoor is a frequent contributor to professional publications and journals, authoring articles on evolving tax reforms, compliance issues, and governance standards. His writings and talks aim not only at simplifying complex tax frameworks but also at strengthening professional education and policy awareness within the business community.
@@ -85,62 +85,68 @@ Email: kamal.ferwani@asija.in`,
   },
 ];
 
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 },
-  },
-};
-
-const item = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0 },
-};
+// Motion variants
+const container = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.1 } } };
+const item = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } };
 
 export default function TeamAnimated() {
   const [selectedMember, setSelectedMember] = useState<any>(null);
+  const sidebarRef = useRef<HTMLDivElement>(null);
 
-  // BULLETPROOF SCROLL LOCK – Works on iOS, Android, Desktop
-    // BEST SCROLL LOCK 2025 – Background locked, Sidebar scrolls perfectly
+  // LOCK BODY SCROLL + HIDE SCROLLBAR WHEN SIDEBAR IS OPEN
   useEffect(() => {
-    if (!selectedMember) {
+    if (selectedMember) {
+      // Save current scroll position
+      const scrollY = window.scrollY;
+
+      // Lock body
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+      document.body.style.overflow = 'hidden';
+
+      // Optional: hide scrollbar visually (no layout jump)
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      // Restore scroll
+      const scrollY = document.body.style.top;
       document.body.style.position = '';
       document.body.style.top = '';
-      document.body.style.width = '';
-      document.body.style.paddingRight = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      document.body.style.overflow = '';
+
       document.documentElement.style.overflow = '';
-      return;
+
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
     }
+  }, [selectedMember]);
 
-    const scrollY = window.scrollY;
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+  // FORCE SIDEBAR TO CAPTURE MOUSE WHEEL (even on touchpads)
+  useEffect(() => {
+    if (!selectedMember) return;
 
-    // Lock background
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.width = '100%';
-    document.body.style.paddingRight = `${scrollbarWidth}px`;
-    // This is the key line → allow the page to be scrollable again after lock
-    document.body.style.overscrollBehaviorY = 'none';
+    const sidebar = sidebarRef.current;
+    if (!sidebar) return;
 
-    return () => {
-      const savedScrollY = -parseInt(document.body.style.top || '0', 10);
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      document.body.style.paddingRight = '';
-      document.body.style.overscrollBehaviorY = '';
-      document.documentElement.style.overflow = '';
-      window.scrollTo(0, savedScrollY);
+    const handleWheel = (e: WheelEvent) => {
+      if (e.deltaY === 0) return;
+      e.preventDefault();
+      sidebar.scrollBy({ top: e.deltaY, behavior: 'auto' });
     };
+
+    sidebar.addEventListener('wheel', handleWheel, { passive: false });
+    return () => sidebar.removeEventListener('wheel', handleWheel);
   }, [selectedMember]);
 
   return (
     <>
+      {/* Team Grid Section */}
       <section className="relative bg-[#2a2a2a] w-full overflow-hidden py-16 md:py-32">
         <div className="absolute inset-0 bg-black/20 z-10" />
-
         <div className="relative z-20 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
             className="mb-12 md:mb-20"
@@ -156,7 +162,7 @@ export default function TeamAnimated() {
               The Experts Guiding Your Finances
             </h3>
             <p className="text-gray-300 text-lg text-left mt-10 border-l-4 border-[#1DCD9F] pl-4 leading-relaxed">
-              Meet the dedicated professionals who make your financial success their top priority. We believe that accounting is more than just numbers; it's about building lasting relationships. Our team combines technical expertise with a proactive approach, working alongside you as a trusted partner to navigate complex financial landscapes and unlock new opportunities.
+              Meet the dedicated professionals who make your financial success their top priority. We believe that accounting is more than just numbers; it's about building lasting relationships...
             </p>
           </motion.div>
 
@@ -196,26 +202,35 @@ export default function TeamAnimated() {
         </div>
       </section>
 
-      {/* Sidebar Modal */}
+      {/* FINAL SIDEBAR - NO BODY SCROLL, NO SCROLLBAR, PERFECT SCROLLING */}
       <AnimatePresence>
         {selectedMember && (
           <>
+            {/* Backdrop - only left side */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedMember(null)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 cursor-pointer
+                         pr-0 sm:pr-[500px] lg:pr-[600px]"
             />
 
+            {/* Sidebar - smooth scrolling + custom scrollbar */}
             <motion.div
-  initial={{ x: '100%' }}
-  animate={{ x: 0 }}
-  exit={{ x: '100%' }}
-  transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-  className="fixed right-0 top-0 bottom-0 w-full sm:w-[500px] lg:w-[600px] bg-[#1a1a1a] shadow-2xl z-50 overflow-y-auto overscroll-contain"
-  style={{ WebkitOverflowScrolling: 'touch' }} // This line fixes iOS scrolling!
->
+              ref={sidebarRef}
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+              className="fixed inset-y-0 right-0 w-full sm:w-[500px] lg:w-[600px] 
+                         bg-[#1a1a1a] shadow-2xl z-50 
+                         overflow-y-auto overscroll-contain
+                         scrollbar-thin scrollbar-thumb-[#1DCD9F]/70 scrollbar-track-[#2a2a2a]
+                         hover:scrollbar-thumb-[#1DCD9F]"
+              style={{ WebkitOverflowScrolling: 'touch' }}
+              onClick={(e) => e.stopPropagation()}
+            >
               <button
                 onClick={() => setSelectedMember(null)}
                 className="absolute top-6 right-6 w-12 h-12 flex items-center justify-center rounded-full bg-[#2a2a2a] hover:bg-[#1DCD9F] transition-all group z-10"
@@ -225,7 +240,7 @@ export default function TeamAnimated() {
                 </svg>
               </button>
 
-              <div className="p-8 pt-24 sm:pt-8 min-h-screen">
+              <div className="p-8 pt-24 sm:pt-8">
                 <div className="mb-10">
                   <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-[#1DCD9F] mb-6 mx-auto sm:mx-0">
                     <img src={selectedMember.avatar} alt={selectedMember.name} className="w-full h-full object-cover" />
