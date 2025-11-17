@@ -183,7 +183,7 @@ export default function TeamAnimated() {
               >
                 <div className="relative overflow-hidden rounded-lg">
                   <img
-                    className="w-full h-96 object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
+                    className="w-full h-96 object-cover object-top group-hover:h-93 grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
                     src={member.avatar}
                     alt={`${member.name} - ${member.role}`}
                     loading="lazy"
