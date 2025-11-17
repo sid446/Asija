@@ -230,6 +230,7 @@ const NavItem = ({ label, isIcon, icon, isActive, hasDropdown }: NavItemProps) =
 /* --------------------------------------------------------------- */
 export default function Navbar() {
   const { t } = useTranslation();
+  const { theme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
@@ -307,7 +308,10 @@ export default function Navbar() {
               return (
                 <button
                   key={index}
-                  className="text-left text-white/80 hover:text-[#1DCD9F] text-sm transition-all block py-1 hover:translate-x-1"
+                  style={{
+                    color: theme === 'light' ? '#6b7280' : '#ffffff',
+                  }}
+                  className="text-left text-sm transition-all block py-1 hover:translate-x-1"
                 >
                   {sub}
                 </button>
@@ -319,7 +323,12 @@ export default function Navbar() {
                   <ul className="space-y-1.5 pl-3">
                     {sub.items.map((item, idx) => (
                       <li key={idx}>
-                        <button className="text-left text-white/70 hover:text-white text-xs transition-all hover:translate-x-1 inline-block">
+                        <button 
+                          style={{
+                            color: theme === 'light' ? '#6b7280' : '#ffffff',
+                          }}
+                          className="text-left text-xs transition-all hover:translate-x-1 inline-block"
+                        >
                           {item}
                         </button>
                       </li>
@@ -507,15 +516,22 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="fixed top-0 right-0 bottom-0 w-80 bg-linear-to-b from-[#303030] to-[#2a2a2a] z-50 md:hidden shadow-2xl overflow-y-auto"
+              style={{
+                backgroundColor: theme === 'light' ? '#ffffff' : '#252525',
+              }}
+              className="fixed top-0 right-0 bottom-0 w-80 z-50 md:hidden shadow-2xl overflow-y-auto"
             >
               <div className="flex flex-col h-full p-6">
-                {/* Close Button */}
+                {/* Close Button + Top Controls */}
                 <div className="flex justify-between items-center mb-6">
-                  <LanguageSwitcher />
+                  <div className="flex items-center gap-2">
+                    <LanguageSwitcher />
+                    <ThemeToggle />
+                  </div>
                   <button
                     onClick={() => setMobileMenuOpen(false)}
-                    className="text-white/70 hover:text-white p-2 hover:bg-white/15 rounded-lg transition-colors"
+                    style={{ color: theme === 'light' ? '#1f2937' : '#ffffff' }}
+                    className="p-2 hover:bg-white/15 rounded-lg transition-colors"
                   >
                     <CloseIcon />
                   </button>
@@ -538,7 +554,11 @@ export default function Navbar() {
                             setMobileMenuOpen(false);
                           }
                         }}
-                        className="text-left text-white/90 hover:text-[#1DCD9F] text-base font-medium py-3 px-4 hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#1DCD9F] w-full flex items-center justify-between"
+                        style={{
+                          color: theme === 'light' ? '#1f2937' : '#ffffff',
+                          backgroundColor: theme === 'light' ? 'transparent' : 'transparent',
+                        }}
+                        className="text-left font-medium text-base py-3 px-4 hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#1DCD9F] w-full flex items-center justify-between"
                       >
                         {item.translationKey ? t(item.translationKey) : item.label}
                         {item.subs && item.subs.length > 0 && (
@@ -572,7 +592,10 @@ export default function Navbar() {
                           setMobileMenuOpen(false);
                         }
                       }}
-                      className="text-left text-white/90 hover:text-[#1DCD9F] text-base font-medium py-3 px-4 hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#1DCD9F] w-full flex items-center justify-between"
+                      style={{
+                        color: theme === 'light' ? '#1f2937' : '#ffffff',
+                      }}
+                      className="text-left font-medium text-base py-3 px-4 hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#1DCD9F] w-full flex items-center justify-between"
                     >
                       {rightMenu[0].translationKey ? t(rightMenu[0].translationKey) : 'Contact Us'}
                       {rightMenu[0].subs && rightMenu[0].subs.length > 0 && (
@@ -596,17 +619,25 @@ export default function Navbar() {
                     transition={{ delay: (leftMenu.length + 1) * 0.05 }}
                     className="flex gap-6 mt-auto pt-8"
                   >
-                    <button className="w-12 h-12 flex items-center justify-center bg-white/8 hover:bg-white/15 rounded-lg transition-all hover:scale-110 text-white/70 hover:text-[#1DCD9F]">
+                    <button 
+                      style={{
+                        backgroundColor: theme === 'light' ? '#f3f4f6' : 'rgba(255,255,255,0.08)',
+                        color: theme === 'light' ? '#1f2937' : '#ffffff',
+                      }}
+                      className="w-12 h-12 flex items-center justify-center rounded-lg transition-all hover:scale-110"
+                    >
                       <InstagramIcon />
                     </button>
-                    <button className="w-12 h-12 flex items-center justify-center bg-white/8 hover:bg-white/15 rounded-lg transition-all hover:scale-110 text-white/70 hover:text-[#1DCD9F]">
+                    <button 
+                      style={{
+                        backgroundColor: theme === 'light' ? '#f3f4f6' : 'rgba(255,255,255,0.08)',
+                        color: theme === 'light' ? '#1f2937' : '#ffffff',
+                      }}
+                      className="w-12 h-12 flex items-center justify-center rounded-lg transition-all hover:scale-110"
+                    >
                       <LinkedInIcon />
                     </button>
                   </motion.div>
-                  {/* Mobile Theme Toggle */}
-                  <div className="mt-6 flex items-center gap-3">
-                    <ThemeToggle />
-                  </div>
                 </nav>
               </div>
             </motion.div>
@@ -624,7 +655,12 @@ function ThemeToggle() {
     <button
       aria-label="Toggle theme"
       onClick={toggleTheme}
-      className={`p-2 rounded-md shadow-sm border transition-all duration-200 ${theme === 'light' ? 'bg-white text-gray-800 border-gray-200' : 'bg-gray-800 text-white border-gray-700'}`}
+      style={{
+        backgroundColor: theme === 'light' ? '#ffffff' : '#1f2937',
+        color: theme === 'light' ? '#1f2937' : '#ffffff',
+        borderColor: theme === 'light' ? '#e5e7eb' : '#374151',
+      }}
+      className="p-2 rounded-md shadow-sm border transition-all duration-200"
       title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
     >
       {theme === 'dark' ? (
