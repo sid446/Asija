@@ -145,7 +145,7 @@ export default function TeamAnimated() {
   return (
     <>
       {/* Team Grid Section */}
-      <section className="relative bg-[#2a2a2a] w-full overflow-hidden py-16 md:py-32">
+      <section className="relative bg-[#2a2a2a] w-full overflow-hidden pt-16 md:pt-32">
         <div className="absolute inset-0 bg-black/20 z-10" />
         <div className="relative z-20 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -199,7 +199,67 @@ export default function TeamAnimated() {
               </motion.div>
             ))}
           </motion.div>
+         
         </div>
+         {/* Closing Hero Section with Overlay Text */}
+<section className="relative h-100 mt-20 min-h-[100px] flex items-center justify-center overflow-hidden">
+  {/* Background Image */}
+  <img 
+    src="/123456.jpg" 
+    alt="Asija & Associates Team Office" 
+    className="absolute inset-0 w-full h-full object-cover brightness-75"
+    loading="lazy"
+  />
+
+  {/* Dark Overlay */}
+  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/40" />
+
+  {/* Content */}
+  <motion.div 
+    className="relative z-10 text-center px-6 max-w-5xl mx-auto"
+    initial={{ opacity: 0, y: 40 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 1, ease: "easeOut" }}
+  >
+    <h2 className="text-2xl md:text-4xl font-bold text-white mb-6 leading-tight">
+      Your Success Is Our Legacy
+      <span className="text-[#1DCD9F]">.</span>
+    </h2>
+    
+    <p className="text-sm md:text-md text-gray-200 mb-10 max-w-3xl mx-auto leading-relaxed">
+      With over 39 years of excellence, Asija & Associates LLP continues to deliver trust, precision, 
+      and strategic financial leadership to businesses and institutions across India and beyond.
+    </p>
+
+    <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+      <a 
+        href="/contact" 
+        className="inline-flex items-center gap-3 bg-[#1DCD9F] hover:bg-[#19b892] text-black font-bold px-8  py-3 rounded-full text-sm transition-all transform hover:scale-105 shadow-xl"
+      >
+        Start a Conversation
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+
+      <a 
+        href="tel:+911234567890" 
+        className="inline-flex items-center gap-3 border-2 border-[#1DCD9F] text-[#1DCD9F] hover:bg-[#1DCD9F] hover:text-black font-semibold px-8 py-3 rounded-full text-sm transition-all"
+      >
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+        </svg>
+        Call Us Today
+      </a>
+    </div>
+
+    {/* Trust Badges / Logos (Optional) */}
+    
+  </motion.div>
+
+  
+</section>
       </section>
 
       {/* FINAL SIDEBAR - NO BODY SCROLL, NO SCROLLBAR, PERFECT SCROLLING */}
