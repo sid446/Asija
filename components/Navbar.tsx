@@ -8,6 +8,7 @@ import Link from 'next/link';
 type MenuItem = {
   label: string;
   translationKey?: string;
+  href?: string;
   subs?: (string | { title: string; items: string[]; insights: boolean } | { label: string; href: string })[];
   overview?: string;
   isIcon?: boolean;
@@ -18,6 +19,7 @@ const leftMenu: MenuItem[] = [
   { 
     label: 'Home', 
     translationKey: 'navbar.home',
+    href: '/',
     subs: [], 
     overview: 'navbar.overview.home'
   },
@@ -190,14 +192,41 @@ type NavItemProps = {
   icon?: React.ReactNode;
   isActive?: boolean;
   hasDropdown?: boolean;
+  href?: string;
 };
 
-const NavItem = ({ label, isIcon, icon, isActive, hasDropdown }: NavItemProps) => {
+const NavItem = ({ label, isIcon, icon, isActive, hasDropdown, href }: NavItemProps) => {
   if (isIcon) {
     return (
       <div className="w-8 h-8 text-white/70 hover:text-[#1DCD9F] transition-all hover:scale-110 cursor-pointer">
         {icon}
       </div>
+    );
+  }
+
+  if (href) {
+    return (
+      <Link href={href} className="relative px-4 py-6 text-white/90 hover:text-white text-sm font-medium transition-colors flex items-center gap-1.5 group">
+        {label}
+        {hasDropdown && (
+          <motion.div
+            animate={{ rotate: isActive ? 180 : 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <ChevronDownIcon />
+          </motion.div>
+        )}
+        {isActive && (
+          <motion.div
+            className="absolute h-1 bg-linear-to-r from-[#1DCD9F] to-[#0EA578] rounded-full left-4 right-4"
+            style={{ bottom: -2 }}
+            layoutId="nav-underline"
+            initial={{ opacity: 0, scaleX: 0.8 }}
+            animate={{ opacity: 1, scaleX: 1 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+          />
+        )}
+      </Link>
     );
   }
 
@@ -384,14 +413,17 @@ export default function Navbar() {
           {/* LEFT SIDE */}
           <div className="flex gap-8 lg:gap-10 items-center">
             
-            <motion.div className="flex items-center gap-2.5 md:gap-3">
+            <motion.div className="flex items-center gap-2.5 md:gap-3 cursor-pointer">
+            <Link href="/">
             <motion.img
               src="/logo.png"
               alt="Asija Logo"
               className={`transition-all duration-300 ${scrolled ? 'w-12 md:w-13' : 'w-9 md:w-11'}`}
             />
+            </Link>
             
             {/* TEXT: Hidden on scroll with smooth collapse */}
+            <Link href="/">
             <motion.div
               className="text-left leading-tight overflow-hidden whitespace-nowrap"
               initial={false}
@@ -409,6 +441,7 @@ export default function Navbar() {
                 {t('common.charteredAccountants')}
               </div>
             </motion.div>
+            </Link>
           </motion.div>
 
             {/* Desktop Navigation - Left */}
@@ -424,6 +457,7 @@ export default function Navbar() {
                     label={item.translationKey ? t(item.translationKey) : item.label}
                     isActive={hoveredItem === item.label}
                     hasDropdown={item.subs && item.subs.length > 0}
+                    href={item.href}
                   />
                 </motion.div>
               ))}
