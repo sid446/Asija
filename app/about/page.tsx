@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import { Timeline } from '@/components/Timeline';
 import Values from '@/components/Values';
+import Footer from '@/components/Footer';
  const data = [
   {
     title: "1986",
@@ -154,40 +155,40 @@ Today, with decades of trust earned and hundreds of success stories written, we 
       />
 
       {/* Hero Overlay Content – unchanged */}
-      <div className="absolute text-left top-[60%] left-[35%] transform -translate-x-1/2 -translate-y-1/2 text-center px-4">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white drop-shadow-lg">
-          Who We Are <span className='text-[#2BC99C] text-7xl'>.</span>
+      <div className="absolute text-left  top-[70%] sm:top-[60%] left-1/2 sm:left-[35%] transform -translate-x-1/2 -translate-y-1/2 px-4 w-full sm:w-auto">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white drop-shadow-lg">
+          Who We Are <span className='text-[#2BC99C] text-4xl sm:text-5xl md:text-6xl lg:text-7xl'>.</span>
         </h1>
-        <p className="mt-4 text-lg sm:text-xl md:text-2xl text-gray-100 drop-shadow-md">
+        <p className="mt-6 sm:mt-4 text-lg sm:text-lg md:text-xl lg:text-2xl text-gray-100 drop-shadow-md">
           Unwavering dedication to financial excellence and professional integrity.
         </p>
-        <p className='mt-8 text-md sm:text-lg md:text-xl text-gray-200 border-l-4 border-[#2BC99C] pl-4'>
+        <p className='mt-8 sm:mt-8 text-base sm:text-base md:text-lg lg:text-xl text-gray-200 border-l-4 border-[#2BC99C] pl-3 sm:pl-4'>
           We are not just your accountants; we are your strategic allies. <span className='font-bold'>Asija</span> combines deep-seated expertise with a forward-thinking mindset to deliver more than just numbers...
         </p>
       </div>
 
-      {/* OUR STORY – EXACT SAME LAYOUT, JUST SHOWS MORE INITIALLY */}
-      <div className='w-full h-auto flex gap-8 p-20'>
-        <div className='w-[40%] flex flex-col gap-10'>
-          <h1 className='text-4xl sm:text-5xl md:text-6xl font-bold border-l-10 px-6 border-[#2BC99C] text-white drop-shadow-lg'>
+      {/* OUR STORY – RESPONSIVE LAYOUT */}
+      <div className='w-full h-auto flex flex-col lg:flex-row gap-6 sm:gap-8 p-6 sm:p-8 md:p-12 lg:p-20'>
+        <div className='w-full lg:w-[40%] flex flex-col gap-4 sm:gap-10'>
+          <h1 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold border-l-4 sm:border-l-10 px-3 sm:px-6 border-[#2BC99C] text-white drop-shadow-lg'>
             Our Story
           </h1>
-          <blockquote className='text-xl font-semibold text-gray-300'>
+          <blockquote className='text-base sm:text-lg md:text-xl font-semibold text-gray-300'>
             " Coming together is a beginning, keeping together is progress Working together is success "
           </blockquote>
         </div>
 
-        <div className='w-[60%] relative'>
+        <div className='w-full lg:w-[60%] relative'>
           <div className="overflow-hidden">
             <p
               ref={contentRef}
-              className={`text-lg text-gray-300 leading-relaxed transition-all duration-1000 ease-in-out ${
-                isExpanded ? 'max-h-none' : 'max-h-56'   // ← increased from 32 → 56 (shows ~7–8 lines)
+              className={`text-sm sm:text-base md:text-lg text-gray-300 leading-relaxed transition-all duration-1000 ease-in-out ${
+                isExpanded ? 'max-h-none' : 'max-h-40 sm:max-h-56'
               }`}
               style={{
                 maskImage: isExpanded
                   ? 'none'
-                  : 'linear-gradient(to bottom, black 70%, transparent 100%)', // ← softer fade
+                  : 'linear-gradient(to bottom, black 70%, transparent 100%)',
                 WebkitMaskImage: isExpanded
                   ? 'none'
                   : 'linear-gradient(to bottom, black 70%, transparent 100%)',
@@ -196,13 +197,11 @@ Today, with decades of trust earned and hundreds of success stories written, we 
             />
           </div>
 
-          
-
-          {/* Same premium button */}
+          {/* Premium button */}
           {showButton && (
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="mt-6 flex items-center gap-2 text-[#2BC99C] font-semibold hover:text-white transition-all duration-300"
+              className="mt-4 sm:mt-6 flex items-center gap-2 text-[#2BC99C] font-semibold hover:text-white transition-all duration-300"
             >
               <span className="relative overflow-hidden inline-block">
                 <span className={`inline-block transition-transform duration-500 ${isExpanded ? '-translate-y-full' : ''}`}>
@@ -212,7 +211,7 @@ Today, with decades of trust earned and hundreds of success stories written, we 
                   Read less
                 </span>
               </span>
-              <span className="text-2xl">
+              <span className="text-xl sm:text-2xl">
                 {isExpanded ? '↑' : '↓'}
               </span>
             </button>
@@ -221,6 +220,7 @@ Today, with decades of trust earned and hundreds of success stories written, we 
       </div>
       <Timeline data={data} />
       <Values />
+      <Footer/>
       
     </div>
   );

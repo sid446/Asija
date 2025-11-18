@@ -26,12 +26,13 @@ const leftMenu: MenuItem[] = [
   { 
     label: 'About Us',
     translationKey: 'navbar.aboutUs',
+    href: '/about',
     subs: [
-      'Who We Are',
+      { label: 'Who We Are', href: '/about' },
       { label: 'Our Team / Strength', href: '/team' },
-      'Our Purpose and Values',
-      'Alumni',
-      'Life at Asija - (year wise)',
+      { label: 'Our Purpose and Values', href: '/about#values' },
+      { label: 'Alumni', href: '/about#alumni' },
+      { label: 'Life at Asija - (year wise)', href: '/about#values' },
     ], 
     overview: 'navbar.overview.aboutUs'
   },

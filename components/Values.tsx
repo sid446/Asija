@@ -67,7 +67,7 @@ const Values = () => {
   const [selectedCard, setSelectedCard] = useState<typeof cardsData[0] | null>(null);
   
   return (
-    <section className="relative bg-[#2a2a2a] w-full overflow-hidden mt-10 sm:mt-20 lg:mt-30">
+    <section id="values" className="relative bg-[#2a2a2a] w-full overflow-hidden mt-10 sm:mt-20 lg:mt-30">
       
 
       <div className="relative z-30 -mt-12 sm:-mt-16 lg:-mt-20">
