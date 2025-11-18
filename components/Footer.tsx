@@ -9,23 +9,23 @@ const Footer = () => {
 
   const footerLinks = {
     company: [
-      { label: t('navbar.aboutUs'), href: '#about' },
-      { label: t('navbar.services'), href: '#services' },
-      { label: t('navbar.industries'), href: '#industries' },
-      { label: t('navbar.career'), href: '#career' },
+      { label: t('navbar.aboutUs'), href: '/4about' },
+      { label: t('navbar.services'), href: '/services' },
+      { label: t('navbar.industries'), href: '/industries' },
+      { label: t('navbar.career'), href: '/career' },
       { label: 'Our Team / Strength', href: '/team' }
     ],
     services: [
-      { label: t('services.auditAssurance'), href: '#services' },
-      { label: t('services.directTax'), href: '#services' },
-      { label: t('services.corporateLaw'), href: '#services' },
-      { label: t('services.consultancy'), href: '#services' }
+      { label: t('services.auditAssurance'), href: '/services' },
+      { label: t('services.directTax'), href: '/services' },
+      { label: t('services.corporateLaw'), href: '/services' },
+      { label: t('services.consultancy'), href: '/services' }
     ],
     contact: [
-      { label: t('footer.officeLocations'), href: '#contact' },
-      { label: t('footer.contactNo'), href: '#contact' },
-      { label: t('footer.emails'), href: '#contact' },
-      { label: t('footer.enquiryForm'), href: '#contact' }
+      { label: t('footer.officeLocations'), href: '/contact' },
+      { label: t('footer.contactNo'), href: '/contact' },
+      { label: t('footer.emails'), href: '/contact' },
+      { label: t('footer.enquiryForm'), href: '/contact' }
     ]
   };
 
