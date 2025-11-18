@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import { Timeline } from '@/components/Timeline';
+import Values from '@/components/Values';
  const data = [
   {
     title: "1986",
@@ -219,6 +220,8 @@ Today, with decades of trust earned and hundreds of success stories written, we 
         </div>
       </div>
       <Timeline data={data} />
+      <Values />
+      
     </div>
   );
 }

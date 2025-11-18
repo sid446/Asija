@@ -10,6 +10,7 @@ type AboutCardProps = {
   buttonContent?: string;
   isMobile?: boolean;
   index?: number;
+  onButtonClick?: () => void;
 };
 
 const AboutCard = ({
@@ -19,6 +20,7 @@ const AboutCard = ({
   buttonContent = 'Learn More',
   isMobile,
   index = 0,
+  onButtonClick,
 }: AboutCardProps) => {
   const { ref, inView } = useInView({
     triggerOnce: true,
@@ -81,6 +83,7 @@ const AboutCard = ({
 
         {/* Button */}
         <button
+          onClick={onButtonClick}
           className={`
             relative inline-flex items-center justify-center gap-1.5 
             px-1 sm:px-3 py-1.5 text-xs font-medium text-theme bg-accent rounded-full 
