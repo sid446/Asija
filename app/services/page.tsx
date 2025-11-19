@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { ArrowRight ,Check} from 'lucide-react';
+import { ArrowRight, Check, Calendar, ShieldCheck, Users, Zap, GraduationCap, Globe } from 'lucide-react';
 
 interface ServiceGroup {
   title: string;
@@ -15,6 +15,8 @@ interface ServiceGroup {
   description: string;
   detailedDescription: string;
   benefits: string[];
+  subItems?: Record<string, string[]>;
+  deepSubItems?: Record<string, Record<string, Record<string, string[]>>>;
 }
 
 const serviceGroups: ServiceGroup[] = [
@@ -33,13 +35,7 @@ const serviceGroups: ServiceGroup[] = [
     insights: true,
     imgSrc: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1470&auto=format&fit=crop',
     description: 'Comprehensive audit solutions ensuring compliance, transparency, and financial accuracy across all business operations.',
-    detailedDescription: `Our Audit and Assurance services provide comprehensive solutions designed to ensure compliance, transparency, and financial accuracy across all aspects of your business operations. We bring decades of experience and deep expertise to help organizations meet regulatory requirements while building stakeholder confidence.
-
-Our statutory audit services ensure full compliance with the Companies Act 2013 and other applicable regulations. We conduct thorough examinations of financial statements, internal controls, and business processes to provide reliable assurance to shareholders, regulators, and other stakeholders.
-
-Through internal audit engagements, we help organizations strengthen their internal control frameworks, identify operational inefficiencies, and mitigate risks. Our team works closely with management to provide actionable recommendations that enhance governance and operational effectiveness.
-
-We also specialize in procurement audits, fund audits for government and non-profit organizations, and management audits that evaluate the effectiveness of organizational leadership and strategic initiatives. Each engagement is tailored to meet the specific needs and objectives of our clients.`,
+    detailedDescription: `Our Audit and Assurance services provide comprehensive solutions designed to ensure compliance, transparency, and financial accuracy...`,
     benefits: [
       'Enhanced financial credibility and stakeholder confidence',
       'Identification of operational inefficiencies and risk areas',
@@ -47,21 +43,62 @@ We also specialize in procurement audits, fund audits for government and non-pro
       'Improved internal controls and governance frameworks',
       'Strategic insights for business improvement',
     ],
+    subItems: {
+      'Statutory Audit': [
+        'Assessment of Internal Control and Auditing of Accounts',
+        'Accounting Standard Compliances',
+        'Companies Act Compliances',
+        'IFRS Compliances',
+        'IGAAP Compliances',
+        'True & Fair Opinion Assurance',
+      ],
+      'Internal Audit': [
+        'Monitor Operating Results',
+        'Verify Financial Records',
+        'Evaluate Internal Controls',
+        'Assist with increasing efficiency and effectiveness of operations',
+        'Fraud Detection',
+      ],
+      'Procurement Audit': [
+        'Tender Process Review',
+        'Vendor Evaluation and Selection Review',
+        'Purchase Order Review',
+        'Internal Process Review',
+      ],
+      'Special Audit': [
+        'Audit against Rules & Orders',
+        'Audit of Sanctions',
+        'Audit against provision of fraud',
+        'Propriety Audit',
+        'Performance Audit',
+      ],
+      'Fund Audit': [
+        'Grant or Program Audit',
+        'Compliance with applicable legislation',
+        'Compliance with applicable Accounting Standard',
+      ],
+      'Externally Funded Project Audit': [
+        'Review of Project Disbursement',
+        'Review of Documentation',
+        'Review of Project Financial Report',
+        'Review of Management Structure',
+        'Review of Project Monitoring and Evaluation',
+      ],
+      'Management Audit': [
+        'Assessment of methods and policies of organizations\' management',
+        'Identification of weakness of system and management',
+        'Suggestions for Improvements',
+      ],
+    },
   },
   {
     title: 'Direct Tax',
     translationKey: 'services.directTax',
-    items: ['Income Tax Services', 'Benami Transaction', 'Tax Planning & Advisory', 'Return Filing & Compliance', 'Assessment & Appeals', 'Transfer Pricing'],
+    items: ['Income Tax Services', 'Benami Transaction'],
     insights: true,
     imgSrc: 'https://images.unsplash.com/photo-1554224154-26032ffc0d07?q=80&w=1470&auto=format&fit=crop',
     description: 'Expert guidance on income tax planning, compliance, and representation in complex tax matters.',
-    detailedDescription: `Our Direct Tax services offer comprehensive solutions for individuals, businesses, and institutions navigating India's complex income tax landscape. We combine technical expertise with practical insights to help clients optimize their tax positions while ensuring full compliance with applicable laws.
-
-We provide end-to-end income tax services including strategic tax planning, return preparation and filing, assessment representation, and appellate services. Our team stays current with evolving tax regulations and judicial precedents to provide informed guidance on complex tax matters.
-
-Our expertise extends to handling Benami transaction cases, representing clients before tax authorities, and managing investigations under the Prevention of Money Laundering Act (PMLA) and Benami Transactions (Prohibition) Act. We work diligently to protect our clients' interests while ensuring compliance with all legal requirements.
-
-We also provide transfer pricing services for multinational enterprises, helping them establish and defend arm's length pricing for international transactions. Our approach combines economic analysis with legal expertise to minimize tax risks and disputes.`,
+    detailedDescription: `The Direct Tax Vertical of Asija & Associates LLP has a professional reputation...`,
     benefits: [
       'Minimized tax liability through strategic planning',
       'Expert representation before tax authorities',
@@ -69,6 +106,61 @@ We also provide transfer pricing services for multinational enterprises, helping
       'Risk mitigation in complex tax matters',
       'Peace of mind with professional tax management',
     ],
+    subItems: {
+      'Income Tax Services': [
+        'Compliance Support Services',
+        'Registrations, Certifications & Approvals',
+        'Advisory Services',
+        'Representations',
+      ],
+      'Benami Transaction': ['Advisory Services', 'Representations'],
+    },
+    deepSubItems: {
+      'Direct Tax': {
+        'Income Tax Services': {
+          'Compliance Support Services': [
+            'PAN / TAN registrations',
+            'Filing of Income Tax Returns',
+            'TDS / TCS Compliance & e-Return Filing',
+            'Advance Tax Calculation & Tax Deposition',
+            'e-Filing of Form 15CA & Form 15CB',
+            'e-Filing of Audit report and other digital documents and forms',
+          ],
+          'Registrations, Certifications & Approvals': [
+            '12AA(1)(b), 80G(5)(vi), 10(23C)(vi) from Commissioner of Income Tax (Exemption)',
+            'Approval u/s 17(2)(ii)(b) for specialized hospitals',
+            'Certificate u/s 197 (Lower/Nil TDS)',
+            'Certificate u/s 206C(9) for Lower/Nil TCS',
+            'Certification u/s 195(2) & 195(3) for International Transactions',
+          ],
+          'Advisory Services': [
+            'International and Domestic Tax Planning',
+            'Assistance in availing benefits, exemptions, relief, rebates and deductions',
+            'Innovative tax minimization strategies with risk mitigation',
+          ],
+          'Representations': [
+            'Scrutiny Assessments before Assessing Officer',
+            'Revision of Orders before Principal Commissioner',
+            'Appeals before CIT(A)',
+            'Representation before ITAT',
+            'Before Director General of Income Tax (Investigation)',
+          ],
+        },
+        'Benami Transaction': {
+          'Advisory Services': [
+            'Transaction Advisory on potential Benami transactions',
+            'Guidance during enquiry by Initiating Officer',
+          ],
+          'Representations': [
+            'Before Initiating Officer (AC/DC)',
+            'Before Approving Authority (Addl./Jt. Commissioner)',
+            'Before Administrator',
+            'Before Adjudicating Authority',
+            'Before Appellate Tribunal',
+          ],
+        },
+      },
+    },
   },
   {
     title: 'Corporate Law Services',
@@ -80,17 +172,12 @@ We also provide transfer pricing services for multinational enterprises, helping
       'NGO Registration & Consultancy',
       'Foreign Contribution Regulation Act 2010',
       'Assurance Services',
+      'Other Services',
     ],
     insights: true,
     imgSrc: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=1470&auto=format&fit=crop',
     description: 'End-to-end corporate legal compliance and advisory services for businesses of all sizes.',
-    detailedDescription: `Our Corporate Law Services provide comprehensive support for businesses navigating India's complex regulatory landscape. From entity formation to ongoing compliance, we offer end-to-end solutions that help organizations operate efficiently within the legal framework.
-
-We assist clients with company incorporation, LLP formation, and partnership registrations. Our services include drafting constitutive documents, obtaining necessary approvals, and ensuring compliance with the Companies Act 2013, LLP Act 2008, and Partnership Act 1932.
-
-For NGOs and non-profit organizations, we provide specialized services including registration under various acts, obtaining 12A and 80G certifications, FCRA registration and compliance, and advisory on governance and regulatory matters. We understand the unique challenges faced by the social sector and provide practical solutions.
-
-Our corporate compliance services ensure timely filing of statutory returns, maintenance of statutory registers and records, secretarial compliance, and board meeting management. We help organizations avoid penalties and maintain good standing with regulatory authorities.`,
+    detailedDescription: `Our Corporate Law Services provide comprehensive support for businesses navigating India's complex regulatory landscape...`,
     benefits: [
       'Seamless entity formation and structuring',
       'Ongoing compliance management',
@@ -98,30 +185,106 @@ Our corporate compliance services ensure timely filing of statutory returns, mai
       'Expert advisory on regulatory matters',
       'Cost-effective compliance solutions',
     ],
+    subItems: {
+      'Companies Act 2013': [
+        'Incorporation of Private/ Public / OPC',
+        'Annual Filing of Companies',
+        'Company Law Compliances',
+        'CSR Compliances',
+        'Conversion of entities into Part I – Company',
+        'Advisory & Retainership',
+        'Secretarial Compliances',
+        'Strike Off / Winding Up',
+      ],
+      'Limited Liability Partnership Act 2008': [
+        'Incorporation of LLP',
+        'Conversion of entities (Partnership firms and companies) into LLP',
+        'Annual Filing of LLPs',
+        'Secretarial Compliances',
+        'Specialized Drafting of LLP Agreement',
+        'Strike off / Winding Up',
+        'Advisory Services related to LLP Act',
+      ],
+      'Partnership Act 1932': [
+        'Drafting of Partnership Agreement',
+        'Registration of Partnership Firms',
+        'Partnership Act Compliances',
+        'Conversion of Firms into LLP/ Company',
+      ],
+      'NGO Registration & Consultancy': [
+        'Registration of Charitable Trusts',
+        'Registration / Renewal of Society',
+        'Incorporation of Section-8 Company',
+        'Drafting of Memorandum/ Bye laws of Society',
+        'Drafting of Trust Deed',
+        'Compliances under Societies Act',
+        'Advisory related to NGOs',
+      ],
+      'Foreign Contribution Regulation Act 2010': [
+        'Registration/ Prior Permission from Ministry of Home Affairs',
+        'Annual Return Filing',
+        'FCRA Compliances',
+        'Advisory related to Foreign Remittance',
+      ],
+      'Assurance Services': [
+        'Secretarial Audit',
+        'Compliance Audit of Entities on Retainership Basis',
+        'Search Report',
+        'Due Diligence Report',
+      ],
+      'Other Services': [
+        'Legalostью Drafting (Drafting of various agreements, Contract Vetting)',
+        'Intellectual Property Right (Trademark, Copyright)',
+        'AOP/BOI/ HUF Formation',
+        'Importer Exporter Code',
+        'Issuance of Digital Signature Certificate',
+        'Dematerialization',
+      ],
+    },
+  },
+  {
+    title: 'Banking & Finance',
+    translationKey: 'services.bankingFinance',
+    items: ['Banking', 'Finance'],
+    insights: true,
+    imgSrc: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?q=80&w=1551&auto=format&fit=crop',
+    description: 'Specialized audit and financing solutions for banks and financial institutions.',
+    detailedDescription: `We provide specialized services to banking and financial institutions with deep domain expertise in regulatory compliance, risk management, and financing solutions.`,
+    benefits: [
+      'Regulatory compliance assurance',
+      'Enhanced risk management in lending',
+      'Optimized financing structures',
+      'Improved audit quality and reporting',
+      'Stronger governance and controls',
+    ],
+    subItems: {
+      'Banking': [
+        'Statutory Audit',
+        'Concurrent Audit',
+        'Revenue Audit',
+        'Information System Audit',
+        'Stock Audit',
+      ],
+      'Finance': [
+        'Project Financing',
+        'Working Capital Finance',
+        'Corporate Lending',
+      ],
+    },
   },
   {
     title: 'Consultancy',
     translationKey: 'services.consultancy',
     items: [
       'Process Re-Engineering',
-      'Business Advisory',
       'Start-up Consultancy',
+      'Business Advisory',
       'MIS System Designing',
-      'Financial Modeling',
-      'Strategic Planning',
     ],
     insights: true,
     imgSrc: 'https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1470&auto=format&fit=crop',
     description: 'Strategic business consulting to optimize operations, drive growth, and achieve your vision.',
-    detailedDescription: `Our Consultancy services help businesses optimize their operations, improve efficiency, and achieve sustainable growth. We work as strategic partners, providing insights and solutions tailored to each client's unique circumstances and objectives.
-
-Our process re-engineering services identify inefficiencies in business operations and design streamlined workflows that reduce costs and improve productivity. We analyze existing processes, identify bottlenecks, and implement improvements that deliver measurable results.
-
-For start-ups and emerging businesses, we provide comprehensive support including business plan development, financial modeling, funding assistance, and regulatory compliance guidance. We help entrepreneurs transform their ideas into viable businesses with solid foundations for growth.
-
-Our MIS system designing services help organizations establish robust management information systems that provide timely, accurate data for decision-making. We design customized reporting frameworks that align with business objectives and provide actionable insights.
-
-Through business advisory services, we provide strategic guidance on critical business decisions including expansion planning, mergers and acquisitions, restructuring, and performance improvement initiatives.`,
+    detailedDescription: `Our Consultancy services help businesses optimize their operations...`,
     benefits: [
       'Improved operational efficiency and productivity',
       'Data-driven decision making capabilities',
@@ -129,6 +292,35 @@ Through business advisory services, we provide strategic guidance on critical bu
       'Accelerated business growth',
       'Risk-aware business development',
     ],
+    subItems: {
+      'Process Re-Engineering': [
+        'Suggesting the best practices',
+        'Identifying Performance gaps by comparing current processes with best practices',
+        'Training of employees of entity for new changes to be made',
+        'Review and Monitoring of implemented processes',
+        'Capacity Building',
+      ],
+      'Start-up Consultancy': [
+        'Certifications and special licenses assistance',
+        'Analysis of market and competitors',
+        'Consultancy and Advisory Services',
+        'Process Mapping & assisting',
+        'Review and monitoring on continuous basis',
+      ],
+      'Business Advisory': [
+        'IT risk and Assurance',
+        'Process Audit and controls',
+        'Risk Management',
+        'Finance Management Consulting',
+        'Supply Chain and Customer Management Services',
+      ],
+      'MIS System Designing': [
+        'Accounting Information and System Design',
+        'Transaction Processing Systems',
+        'Budgetary controls and designs',
+        'IT system design and consultancy',
+      ],
+    },
   },
   {
     title: 'Indirect Tax',
@@ -137,15 +329,7 @@ Through business advisory services, we provide strategic guidance on critical bu
     insights: true,
     imgSrc: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1515&auto=format&fit=crop',
     description: 'GST and indirect tax solutions ensuring seamless compliance and optimal tax efficiency.',
-    detailedDescription: `Our Indirect Tax services provide comprehensive solutions for businesses navigating India's GST regime and other indirect tax obligations. We help clients optimize their tax positions while ensuring full compliance with applicable laws and regulations.
-
-We offer end-to-end GST services including registration, return filing, input tax credit optimization, and compliance management. Our team stays updated with frequent GST notifications, circulars, and judicial pronouncements to provide current and accurate guidance.
-
-Our GST advisory services help businesses structure their operations tax-efficiently, manage complex transactions, and handle sector-specific GST issues. We provide opinions on GST applicability, classification, valuation, and other contentious matters.
-
-For GST litigation, we represent clients before GST authorities, appellate tribunals, and courts. We have successfully handled numerous cases involving GST demands, refunds, and interpretational issues.
-
-We also provide customs duty advisory and compliance services for businesses engaged in import-export activities, helping them navigate customs valuation, classification, and duty optimization opportunities.`,
+    detailedDescription: `Our Indirect Tax services provide comprehensive solutions...`,
     benefits: [
       'Optimized GST liability and cash flow',
       'Seamless compliance with GST regulations',
@@ -153,6 +337,17 @@ We also provide customs duty advisory and compliance services for businesses eng
       'Minimized risk of penalties and interest',
       'Strategic guidance on indirect tax planning',
     ],
+    subItems: {
+      'Goods and Service Tax': [
+        'Tax Advisory (Applicability / Rates defined)',
+        'Registration',
+        'Transition / Conversion from Old Laws (VAT, Service Tax, Excise & VAT to GST)',
+        'Return Filing (Monthly / Annually)',
+        'GST Compliance Management',
+        'Input Tax Credit Optimization',
+        'GST Audit & Health Check',
+      ],
+    },
   },
   {
     title: 'Risk Advisory Services',
@@ -167,16 +362,8 @@ We also provide customs duty advisory and compliance services for businesses eng
     ],
     insights: true,
     imgSrc: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=1470&auto=format&fit=crop',
-    description: 'Proactive risk identification and mitigation strategies to protect your business interests and ensure sustainable growth.',
-    detailedDescription: `Our Risk Advisory Services help organizations identify, assess, and mitigate risks that could impact their objectives and operations. We provide comprehensive solutions that strengthen risk management frameworks and enhance organizational resilience.
-
-Our enterprise risk management services help organizations establish robust ERM frameworks aligned with their strategic objectives. We assist in identifying key risks, assessing their potential impact, and developing mitigation strategies that balance risk and opportunity.
-
-Through internal controls assessment, we evaluate the design and operating effectiveness of internal controls over financial reporting, operations, and compliance. We provide recommendations to strengthen control environments and reduce the risk of errors, fraud, and regulatory violations.
-
-Our fraud risk management services help organizations prevent, detect, and respond to fraud. We conduct fraud risk assessments, design anti-fraud controls, and provide forensic accounting services when fraud is suspected or detected.
-
-We also provide compliance risk advisory services, helping organizations navigate complex regulatory environments and avoid costly penalties. Our services include regulatory compliance assessments, policy and procedure development, and compliance monitoring programs.`,
+    description: 'Proactive risk identification and mitigation strategies to protect your business interests.',
+    detailedDescription: `Our Risk Advisory Services help organizations identify, assess, and mitigate risks...`,
     benefits: [
       'Proactive identification and mitigation of key risks',
       'Strengthened internal control environment',
@@ -187,25 +374,17 @@ We also provide compliance risk advisory services, helping organizations navigat
   },
 ];
 
-// Animated Letter Animation
-const letterVariants: Variants = {
-  hover: { y: '-50%' },
-};
+
+const letterVariants: Variants = { hover: { y: '-50%' } };
 
 const AnimatedLetter: React.FC<{ letter: string }> = ({ letter }) => (
   <div className="inline-block h-[36px] overflow-hidden font-semibold text-3xl">
-    <motion.span
-      className="flex min-w-[4px] flex-col"
-      variants={letterVariants}
-      transition={{ duration: 0.5 }}
-    >
+    <motion.span className="flex min-w-[4px] flex-col" variants={letterVariants} transition={{ duration: 0.5 }}>
       <span>{letter}</span>
       <span>{letter}</span>
     </motion.span>
   </div>
 );
-
-// Service Card Component
 
 interface ServiceCardProps {
   service: ServiceGroup;
@@ -217,33 +396,28 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, onClick }) => {
     <motion.div
       whileHover="hover"
       onClick={onClick}
-      className="group relative h-96 w-full cursor-pointer overflow-hidden  shadow-xl bg-gray-800"
+      className="group relative h-60 sm:h-72 md:h-80 lg:h-96 w-full cursor-pointer overflow-hidden shadow-xl bg-gray-800"
       transition={{ staggerChildren: 0.035 }}
     >
-      <div
-        className="absolute inset-0 bg-cover bg-center transition-all duration-700 group-hover:scale-110 md:saturate-0 md:group-hover:saturate-100"
+      <div className="absolute inset-0 bg-cover bg-center transition-all duration-700 group-hover:scale-110 md:saturate-0 md:group-hover:saturate-100"
         style={{ backgroundImage: `url(${service.imgSrc})` }}
       />
       <div className="absolute inset-0 bg-black/50 transition-all duration-500 group-hover:bg-black/70" />
 
-      <div className="relative z-10 flex h-full flex-col justify-between p-8 text-white">
-        <svg
-          className="ml-auto w-9 h-9 text-white/70 transition-transform duration-500 group-hover:-rotate-45 group-hover:text-[#1DCD9F]"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+      <div className="relative z-10 flex h-full flex-col justify-between p-4 sm:p-6 md:p-8 text-white">
+        <svg className="ml-auto w-6 sm:w-8 md:w-9 h-6 sm:h-8 md:h-9 text-white/70 transition-transform duration-500 group-hover:-rotate-45 group-hover:text-[#1DCD9F]"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
         </svg>
 
         <div>
-          <h3 className="mb-4 text-3xl font-bold leading-tight">
+          <h3 className="mb-2 sm:mb-4 text-xl sm:text-2xl md:text-3xl font-bold leading-tight">
             {service.title.split('').map((letter, i) => (
               <AnimatedLetter key={i} letter={letter} />
             ))}
           </h3>
-          <p className="mb-5 text-gray-200 line-clamp-2">{service.description}</p>
-          <span className="inline-block bg-[#1DCD9F]/20 border border-[#1DCD9F] text-[#1DCD9F] px-4 py-2 rounded-full text-sm font-medium">
+          <p className="mb-3 sm:mb-5 text-xs sm:text-sm text-gray-200 line-clamp-2">{service.description}</p>
+          <span className="inline-block bg-[#1DCD9F]/20 border border-[#1DCD9F] text-[#1DCD9F] px-2 sm:px-4 py-1 sm:py-2 rounded-full text-xs sm:text-sm font-medium">
             {service.items.length} Services
           </span>
         </div>
@@ -256,7 +430,6 @@ export default function ServicesPage() {
   const [selectedService, setSelectedService] = useState<ServiceGroup | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
-  // Lock scroll when modal is open
   useEffect(() => {
     if (selectedService) {
       const scrollY = window.scrollY;
@@ -272,18 +445,15 @@ export default function ServicesPage() {
     }
   }, [selectedService]);
 
-  // Trap scroll inside modal
   useEffect(() => {
     if (!selectedService || !modalRef.current) return;
     const modal = modalRef.current;
-
     const handleWheel = (e: WheelEvent) => {
       e.stopPropagation();
       if (e.deltaY !== 0) {
         modal.scrollBy({ top: e.deltaY * 1.2, behavior: 'auto' });
       }
     };
-
     modal.addEventListener('wheel', handleWheel, { passive: false });
     return () => modal.removeEventListener('wheel', handleWheel);
   }, [selectedService]);
@@ -292,167 +462,265 @@ export default function ServicesPage() {
     <div className="min-h-screen bg-gradient-to-b from-[#0f0f0f] to-[#1a1a1a] text-white">
       <Navbar />
 
-      {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      {/* Hero */}
+      <section className="relative h-[50vh] sm:h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-[#0f0f0f]" />
-        <img
-          src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop"
-          alt="Financial Excellence"
-          className="absolute inset-0 w-full h-full object-cover opacity-40"
-        />
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="absolute left-1/2 sm:left-[0%] top-1/2 sm:top-[60%] z-10 text-left px-6 max-w-6xl mx-auto"
-        >
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">
-            Our Services<span className="text-[#1DCD9F]">.</span>
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-300 mb-6">
-            Comprehensive Financial Solutions for Your Success
-          </p>
-          <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto border-l-4 border-[#1DCD9F] pl-6">
+        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop"
+          alt="Financial Excellence" className="absolute inset-0 w-full h-full object-cover opacity-40" />
+        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}
+          className="absolute left-[0%] top-[60%] sm:top-[60%] z-10 text-left px-4 sm:px-6 max-w-6xl mx-auto w-full">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-6">Our Services<span className="text-[#1DCD9F]">.</span></h1>
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 mb-3 sm:mb-6">Comprehensive Financial Solutions for Your Success</p>
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-400  mx-auto border-l-4 border-[#1DCD9F] pl-3 sm:pl-6">
             From audit to advisory, we deliver excellence at every step of your financial journey.
           </p>
         </motion.div>
       </section>
 
       {/* Services Grid */}
-      <section className="py-20 px-6 md:px-12 lg:px-20">
-        <div className='p-10 flex flex-col gap-8'>
-        <h1 className='text-4xl font-bold'>Our Core Services <span className='text-6xl text-[#1DCD9F]'>.</span></h1>
-        <p className='text-md max-w-3xl text-gray-300'>We deliver precise, compliant, and value-driven solutions tailored to your business needs. Explore our comprehensive range of auditing and chartered accountancy services below</p>
+      <section className="py-10 sm:py-20 px-3 sm:px-6 md:px-12 lg:px-20">
+        <div className='p-4 sm:p-10 flex flex-col gap-4 sm:gap-8'>
+          <h1 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold'>Our Core Services <span className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#1DCD9F]'>.</span></h1>
+          <p className='text-xs sm:text-sm md:text-base lg:text-lg max-w-3xl text-gray-300'>We deliver precise, compliant, and value-driven solutions tailored to your business needs.</p>
         </div>
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
           {serviceGroups.map((service, index) => (
-            <motion.div
-              key={service.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.15, duration: 0.6 }}
-            >
+            <motion.div key={service.title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }} transition={{ delay: index * 0.15, duration: 0.6 }}>
               <ServiceCard service={service} onClick={() => setSelectedService(service)} />
             </motion.div>
           ))}
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-r from-[#1DCD9F]/10 via-transparent to-transparent">
-        <div className="max-w-5xl mx-auto text-center px-6">
-          <h2 className="text-4xl md:text-6xl font-bold mb-6">
-            Ready to Transform Your Business?
-          </h2>
-          <p className="text-xl text-gray-300 mb-12 max-w-3xl mx-auto">
+      {/* ==================== WHY CHOOSE US SECTION – FEATURES AESTHETIC ==================== */}
+      <section className="py-10 sm:py-20 px-4 sm:px-6 md:px-12 lg:px-20 bg-[#1a1a1a]">
+        <div className="mx-auto max-w-5xl space-y-8 sm:space-y-12">
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="relative z-10 mx-auto max-w-2xl space-y-3 sm:space-y-6 text-center"
+          >
+            <h2 className="text-balance text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold">
+              Why Choose <span className="text-[#1DCD9F]">Us</span>
+            </h2>
+            <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-400">
+              13+ years of expertise, 500+ trusted clients, and one partner for all your financial needs.
+            </p>
+          </motion.div>
+
+          {/* Grid with Borders - Features Aesthetic */}
+          <div className="relative mx-auto max-w-7xl divide-x divide-y divide-[#2c2c2c] border border-[#2c2c2c] bg-[#202020] *:p-4 sm:*:p-6 md:*:p-8 sm:grid-cols-2 lg:grid-cols-3 grid">
+            
+            {[
+              {
+                title: "13+ Years Expertise",
+                desc: "Deep domain knowledge across audit, tax, corporate law, banking, and advisory.",
+                icon: Calendar,
+              },
+              {
+                title: "500+ Happy Clients",
+                desc: "From startups to listed companies across diverse industries trust us.",
+                icon: Users,
+              },
+              {
+                title: "One-Stop Partner",
+                desc: "Audit, tax, corporate law, banking, and risk advisory under one roof.",
+                icon: ShieldCheck,
+              },
+              {
+                title: "Proactive Approach",
+                desc: "We optimize tax, reduce risk, and drive sustainable growth.",
+                icon: Zap,
+              },
+              {
+                title: "Expert Team",
+                desc: "Qualified CAs, Company Secretaries, and Lawyers as your extended team.",
+                icon: GraduationCap,
+              },
+              {
+                title: "Pan-India Presence",
+                desc: "Seamless virtual and physical support with secure, paperless processes.",
+                icon: Globe,
+              },
+            ].map((item, i) => {
+              const Icon = item.icon;
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05, duration: 0.5 }}
+                  className="space-y-3"
+                >
+                  {/* Icon + Title Row */}
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <Icon className="h-3 sm:h-4 w-3 sm:w-4 text-[#1DCD9F] shrink-0" />
+                    <h3 className="text-xs sm:text-sm font-semibold text-white">{item.title}</h3>
+                  </div>
+                  {/* Description */}
+                  <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">{item.desc}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-8 sm:py-12 bg-linear-to-r from-[#1DCD9F]/10 via-transparent to-transparent">
+        <div className="max-w-5xl mx-auto text-center px-4 sm:px-6">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">Ready to Transform Your Business?</h2>
+          <p className="text-sm sm:text-base md:text-lg text-gray-300 mb-6 sm:mb-12 max-w-3xl mx-auto">
             Let's discuss how our expertise can help you achieve financial excellence and sustainable growth.
           </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <a
-              href="/contact"
-              className="inline-flex items-center justify-center gap-3 bg-[#1DCD9F] hover:bg-[#19b892] text-black font-bold px-10 py-5 rounded-full text-lg transition-all transform hover:scale-105 shadow-2xl"
-            >
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
+            <a href="/contact" className="inline-flex items-center justify-center gap-2 sm:gap-3 bg-[#1DCD9F] hover:bg-[#19b892] text-black font-bold px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm transition-all transform hover:scale-105 shadow-2xl">
               Get Started Now
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 sm:w-6 h-4 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </a>
-            <a
-              href="tel:+911234567890"
-              className="inline-flex items-center justify-center gap-3 border-2 border-[#1DCD9F] text-[#1DCD9F] hover:bg-[#1DCD9F] hover:text-black font-bold px-10 py-5 rounded-full text-lg transition-all"
-            >
+            <a href="tel:+911234567890" className="inline-flex items-center justify-center gap-2 sm:gap-3 border-2 border-[#1DCD9F] text-[#1DCD9F] hover:bg-[#1DCD9F] hover:text-black font-bold px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm transition-all">
               Call Us Today
             </a>
           </div>
         </div>
       </section>
 
-      {/* Modal */}
+
+      {/* Modal - Enhanced for Deep Nesting */}
       <AnimatePresence>
         {selectedService && (
           <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedService(null)}
-              className="fixed inset-0 bg-black/90 backdrop-blur-md z-40 cursor-pointer"
-            />
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              onClick={() => setSelectedService(null)} className="fixed inset-0 bg-black/90 backdrop-blur-md z-40 cursor-pointer" />
             <motion.div
               ref={modalRef}
-              initial={{ opacity: 0, scale: 0.9, y: 100 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 100 }}
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className="fixed inset-4 md:inset-10 lg:inset-20 bg-[#111111] rounded-3xl z-50 overflow-y-auto shadow-2xl border border-[#1DCD9F]/30 scrollbar-thin scrollbar-thumb-[#1DCD9F] scrollbar-track-[#1a1a1a]"
+              className="fixed bottom-0 left-0 right-0 h-[100vh] bg-gradient-to-br from-[#0a0a0a] via-[#111111] to-[#0f0f0f] z-50 overflow-hidden shadow-2xl border-t border-gray-800"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="sticky top-0 bg-[#111111]/95 backdrop-blur-xl border-b border-[#1DCD9F]/30 p-6 flex justify-between items-center z-10">
-                <h2 className="text-3xl md:text-4xl font-bold text-white">{selectedService.title}</h2>
-                <button
-                  onClick={() => setSelectedService(null)}
-                  className="w-14 h-14 rounded-full bg-[#1DCD9F]/20 hover:bg-[#1DCD9F] transition-all group"
-                >
-                  <svg className="w-8 h-8 mx-auto text-white group-hover:text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="relative h-48 md:h-64 overflow-hidden">
+                <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${selectedService.imgSrc})` }} />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/70 to-[#0a0a0a]" />
+                <button onClick={() => setSelectedService(null)}
+                  className="absolute top-6 right-6 w-12 h-12 rounded-full bg-black/40 backdrop-blur-sm hover:bg-[#1DCD9F] transition-all group border border-white/20">
+                  <svg className="w-6 h-6 mx-auto text-white group-hover:text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
+                <div className="absolute bottom-8 left-8 right-8">
+                  <h2 className="text-2xl md:text-5xl font-bold text-white mb-3">{selectedService.title}</h2>
+                  <p className="text-gray-200  text-sm md:text-lg">{selectedService.description}</p>
+                </div>
               </div>
 
-              <div className="p-8 md:p-12 space-y-12">
-                <div>
-                  <h3 className="text-3xl font-bold text-[#1DCD9F] mb-6">Overview</h3>
-                  <p className="text-lg text-gray-300 leading-relaxed whitespace-pre-line">{selectedService.detailedDescription}</p>
-                </div>
+              <div className="overflow-y-auto h-[calc(100%-12rem)] md:h-[calc(100%-16rem)] scrollbar-thin scrollbar-thumb-gray-700 scrollbarf-track-transparent">
+                <div className="p-8 md:p-12 space-y-12">
 
-                <div>
-                  <h3 className="text-3xl font-bold text-[#1DCD9F] mb-8">Our Services Include:</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    {selectedService.items.map((item, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.05 }}
-                        className="flex items-center gap-4 bg-[#1a1a1a] p-5 rounded-xl hover:bg-[#1DCD9F]/10 transition-colors"
-                      >
-                        <span className="text-2xl text-[#1DCD9F]"><Check /></span>
-                        <span className="text-gray-200 font-medium">{item}</span>
-                      </motion.div>
-                    ))}
+                  <div>
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="h-8 w-1 bg-[#1DCD9F]" />
+                      <h3 className="text-xl md:text-2xl font-bold text-white">Overview</h3>
+                    </div>
+                    <p className="text-base text-gray-400 leading-relaxed whitespace-pre-line border-l-2 border-gray-800 pl-6">
+                      {selectedService.detailedDescription}
+                    </p>
                   </div>
-                </div>
 
-                <div>
-                  <h3 className="text-3xl font-bold text-[#1DCD9F] mb-8">Key Benefits</h3>
-                  <div className="space-y-5">
-                    {selectedService.benefits.map((benefit, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, y: 15 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: i * 0.1 }}
-                        className="flex items-start gap-5 bg-gradient-to-r from-[#1DCD9F]/10 to-transparent p-6 rounded-xl"
-                      >
-                        <span className="text-3xl"><ArrowRight /></span>
-                        <span className="text-lg text-gray-200">{benefit}</span>
-                      </motion.div>
-                    ))}
+                  <div>
+                    <div className="flex items-center gap-3 mb-8">
+                      <div className="h-8 w-1 bg-[#1DCD9F]" />
+                      <h3 className="text-xl md:text-2xl font-bold text-white">Our Services Include</h3>
+                    </div>
+                    <div className="space-y-6">
+                      {selectedService.items.map((mainItem, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0, x: -30 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.1 }}
+                          className="border border-gray-800 rounded-xl overflow-hidden bg-gray-900/30"
+                        >
+                          <div className="flex items-center gap-4 bg-gray-900/70 p-5">
+                            <div className="w-8 h-8 rounded-full bg-[#1DCD9F]/20 flex items-center justify-center">
+                              <Check className="w-5 h-5 text-[#1DCD9F]" />
+                            </div>
+                            <span className="text-white font-semibold text-lg">{mainItem}</span>
+                          </div>
+
+                          {selectedService.subItems?.[mainItem] && (
+                            <div className="px-6 py-4 space-y-2 bg-gray-900/40">
+                              {selectedService.subItems[mainItem].map((sub, j) => (
+                                <div key={j} className="flex items-start gap-3 ml-10 text-gray-300 text-sm">
+                                  <span className="mt-1.5 text-[#1DCD9F]">•</span>
+                                  <span>{sub}</span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
+                          {selectedService.deepSubItems?.[selectedService.title]?.[mainItem] && (
+                            <div className="px-6 py-4 bg-gray-900/40 space-y-5">
+                              {Object.entries(selectedService.deepSubItems[selectedService.title][mainItem]).map(([cat, items]) => (
+                                <div key={cat}>
+                                  <p className="text-[#1DCD9F] font-semibold text-sm mb-3 ml-10">{cat}</p>
+                                  {items.map((item, k) => (
+                                    <div key={k} className="flex items-start gap-3 ml-16 text-gray-400 text-sm">
+                                      <span className="mt-1.5">–</span>
+                                      <span>{item}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </motion.div>
+                      ))}
+                    </div>
                   </div>
-                </div>
 
-                <div className="bg-gradient-to-r from-[#1DCD9F]/20 to-transparent p-10 rounded-2xl text-center">
-                  <h3 className="text-3xl font-bold mb-4">Ready to Get Started?</h3>
-                  <p className="text-gray-300 mb-8 text-lg">
-                    Contact us today for a personalized consultation tailored to your business needs.
-                  </p>
-                  <a
-                    href="/contact"
-                    className="inline-block bg-[#1DCD9F] hover:bg-[#19b892] text-black font-bold px-10 py-4 rounded-full text-lg transition-all transform hover:scale-105 shadow-xl"
-                  >
-                    Schedule a Consultation
-                  </a>
+                  <div>
+                    <div className="flex items-center gap-3 mb-8">
+                      <div className="h-8 w-1 bg-[#1DCD9F]" />
+                      <h3 className="text-2xl font-bold text-white">Key Benefits</h3>
+                    </div>
+                    <div className="space-y-4">
+                      {selectedService.benefits.map((benefit, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0, y: 15 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: i * 0.1 }}
+                          className="flex items-start gap-4 bg-gradient-to-r from-gray-900/30 to-transparent p-5 rounded-lg border-l-2 border-[#1DCD9F] hover:border-l-4 transition-all"
+                        >
+                          <ArrowRight className="w-5 h-5 text-[#1DCD9F] flex-shrink-0 mt-0.5" />
+                          <span className="text-gray-400 text-sm leading-relaxed">{benefit}</span>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="relative overflow-hidden bg-gradient-to-r from-[#1DCD9F]/5 via-[#1DCD9F]/10 to-transparent p-10 rounded-xl border border-[#1DCD9F]/20">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-[#1DCD9F]/5 rounded-full blur-3xl" />
+                    <div className="relative text-center">
+                      <h3 className="text-2xl md:text-3xl font-bold mb-3 text-white">Ready to Get Started?</h3>
+                      <p className="text-gray-400 mb-8 text-base max-w-2xl mx-auto">
+                        Contact us today for a personalized consultation tailored to your business needs.
+                      </p>
+                      <a href="/contact" className="inline-flex items-center gap-3 bg-[#1DCD9F] hover:bg-[#19b892] text-black font-bold px-8 py-4 rounded-full text-base transition-all transform hover:scale-105 shadow-lg hover:shadow-[#1DCD9F]/50">
+                        Schedule a Consultation <ArrowRight className="w-5 h-5" />
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>
