@@ -221,12 +221,12 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, onClick }) => {
         </svg>
 
         <div>
-          <h3 className="mb-2 sm:mb-4 text-xl sm:text-2xl md:text-3xl font-bold leading-tight">
+          <h3 className="mb-2 sm:mb-4 text-xl sm:text-2xl md:text-3xl font-bold leading-tight" style={{color:'white'}}>
             {service.title.split('').map((letter, i) => (
               <AnimatedLetter key={i} letter={letter} />
             ))}
           </h3>
-          <p className="mb-3 sm:mb-5 text-xs sm:text-sm line-clamp-2 opacity-90">{service.description}</p>
+          <p className="mb-3 sm:mb-5 text-xs sm:text-sm line-clamp-2 opacity-90" style={{color:'white'}}>{service.description}</p>
           <span className="inline-block border border-[#1DCD9F] px-2 sm:px-4 py-1 sm:py-2 rounded-full text-xs sm:text-sm font-medium bg-[#1DCD9F]/20 text-[#1DCD9F]">
             {service.items.length} Services
           </span>
@@ -460,8 +460,8 @@ export default function ServicesContent() {
                   </svg>
                 </button>
                 <div className="absolute bottom-8 left-8 right-8">
-                  <h2 className="text-2xl md:text-5xl font-bold mb-3 text-white">{selectedService.title}</h2>
-                  <p className="text-sm md:text-lg text-gray-300">{selectedService.description}</p>
+                  <h2 className="text-2xl md:text-5xl font-bold mb-3 " style={{color:'white'}}>{selectedService.title}</h2>
+                  <p className="text-sm md:text-lg "style={{color:'white'}}>{selectedService.description}</p>
                 </div>
               </div>
 
