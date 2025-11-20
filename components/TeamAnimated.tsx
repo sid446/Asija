@@ -92,7 +92,7 @@ Since over a decade, Mr. Kamal has obtained good experience in almost every fiel
   },
   {
     name: 'CA Padmaja Sunkad',
-    role: 'Senior Partner',
+    role: 'Sr. Partner',
     avatar: '/Padma.jpeg',
     linkedin: '#',
     qualifications: 'FCA, DISA, AICA, DIRM',
@@ -107,6 +107,24 @@ Since over a decade, Mr. Kamal has obtained good experience in almost every fiel
 The KRTQ vertical under her leadership conducts training programs and workshops for Corporates, Govt entities, UN bodies and Pvt Clients for knowledge upgradation and training of their staff and management on various topics in Taxation, Corporate Law, Audit. Her vertical addresses various queries raised by clients, especially in GST and Customs and issues advisories to them from time to time.
 
 Padmaja has a PAN India experience working in Pune, Bengaluru, Bareilly, Lucknow, Gurgaon expanding the footprint of the firm in very diverse working conditions. She has a flair for languages and speaks English, Hindi, Marathi, Kannada. She has been a regular speaker at sessions on various topics in GST conducted by NACIN, NADT. She has also been a faculty to CA students on technical topics and a soft skills trainer as well and has undertaken confidential assignments with the Institute of Chartered Accountants of India (ICAI).`,
+  },
+  {
+    name: 'CA Mohammad Hassan Shuaib',
+    role: 'Consultant',
+    avatar: '/Hasan.jpeg',
+    linkedin: '#',
+    qualifications: 'CA, DISA, FAFD, AICA (Level 1)',
+    specialization: 'Global Taxation, UAE & Middle East Tax Advisory, VAT, Corporate Tax, International Assurance & Compliance',
+    experience: '8+ Years',
+    membership: '',
+    associationYears: '',
+    mobile: '',
+    email: 'hassan.shuaib@asija.in',
+    description: `CA Mohammad Hassan Shuaib is a highly skilled Chartered Accountant with DISA, FAFD, and AICA (Level 1) certifications. With rich international exposure, he brings deep expertise in global taxation, regulatory compliance, tax structuring, and strategic advisory across multiple jurisdictions.
+
+He has previously worked with PwC Assurance & Compliance (Kolkata) on high-profile audit and compliance engagements for clients based in the Cayman Islands, Bahamas, and Australia. Subsequently, he served as a Taxation Consultant in the UAE, advising corporate clients on VAT implementation, Corporate Tax, cross-border structuring, and compliance under Middle Eastern regulatory frameworks.
+
+Currently driving Asija & Associates LLP’s international expansion in the UAE and broader Middle East region, Hassan plays a pivotal role in strengthening the firm’s global tax and assurance capabilities, delivering seamless cross-border solutions to clients operating in diverse and complex regulatory environments.`,
   },
   {
     name: 'CA Sunil Kumar Agarwal',
@@ -146,20 +164,23 @@ He has an experience of almost 10 years in the Real Estate Sector and has also b
 
 Presently, he is an integral part of our Audit and Assurance Vertical, delivering high-quality audit, consulting, and advisory services to clients across industries.`,
   },
-  {
-    name: 'Hasan',
+    {
+    name: 'CA Akash Agarwal',
     role: 'Partner',
-    avatar: '/Hasan.jpeg',
+    avatar: '/AkashAgarwal.jpeg',
     linkedin: '#',
-    qualifications: '',
-    specialization: '',
-    experience: '',
+    qualifications: 'ACA, LL.B, B.Com',
+    specialization: 'Direct Taxation, Tax Litigation, Indirect Taxation, Business & Taxation Consultancy',
+    experience: '5+ Years',
     membership: '',
-    associationYears: '',
-    mobile: '',
-    email: '',
-    description: 'Dedicated professional with expertise in financial consulting and analysis.',
+    associationYears: '5+ Years',
+    mobile: '+91-9582462284',
+    email: 'akash.agarwal@asija.in',
+    description: `CA Akash Agarwal is an Associate Chartered Accountant (ACA), LL.B, and commerce graduate, associated with Asija & Associates LLP since June 2019. Currently, he heads key responsibilities in the Direct Taxation Vertical of the firm.
+
+His core areas of expertise include Tax Litigation in Direct Tax matters, representation before income tax authorities, appeals, assessments, and providing end-to-end business consultancy related to taxation and compliances. With a strong blend of legal and accounting knowledge, he offers practical and result-oriented solutions in complex direct and indirect tax scenarios, helping clients navigate assessments, litigation, and strategic tax planning effectively.`,
   },
+    
     {
     name: 'CA Rohit Singh',
     role: 'Partner',

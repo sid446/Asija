@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
-import Navbar from '@/components/Navbar';
+import { ArrowRight, Check, Calendar, ShieldCheck, Users, Zap, GraduationCap, Globe, ChevronDown } from 'lucide-react';
 import Footer from '@/components/Footer';
-import { ArrowRight, Check, Calendar, ShieldCheck, Users, Zap, GraduationCap, Globe } from 'lucide-react';
+import Navbar from '@/components/Navbar';
 
 interface ServiceGroup {
   title: string;
@@ -374,7 +374,6 @@ const serviceGroups: ServiceGroup[] = [
   },
 ];
 
-
 const letterVariants: Variants = { hover: { y: '-50%' } };
 
 const AnimatedLetter: React.FC<{ letter: string }> = ({ letter }) => (
@@ -426,12 +425,105 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, onClick }) => {
   );
 };
 
+// Expandable Item Component
+const ExpandableMainItem: React.FC<{
+  mainItem: string;
+  service: ServiceGroup;
+  serviceTitle: string;
+  isExpanded: boolean;
+  onToggle: () => void;
+}> = ({ mainItem, service, serviceTitle, isExpanded, onToggle }) => {
+  const hasSubItems = service.subItems?.[mainItem];
+  const hasDeepSubItems = service.deepSubItems?.[serviceTitle]?.[mainItem];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -30 }}
+      animate={{ opacity: 1, x: 0 }}
+      className="border border-gray-800 rounded-xl overflow-hidden bg-gray-900/30"
+    >
+      <button
+        onClick={onToggle}
+        className="w-full flex items-center gap-4 bg-gray-900/70 p-5 hover:bg-gray-800/70 transition-colors"
+      >
+        
+        <span className="text-white font-semibold text-lg flex-1 text-left">{mainItem}</span>
+        {(hasSubItems || hasDeepSubItems) && (
+          <motion.div
+            animate={{ rotate: isExpanded ? 180 : 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ChevronDown className="w-5 h-5 text-[#1DCD9F]" />
+          </motion.div>
+        )}
+      </button>
+
+      <AnimatePresence>
+        {isExpanded && (hasSubItems || hasDeepSubItems) && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="px-6 py-4 bg-gray-900/40 space-y-2"
+          >
+            {/* Regular subItems */}
+            {hasSubItems && !hasDeepSubItems && (
+              <div className="space-y-2">
+                {Array.isArray(hasSubItems) ? hasSubItems.map((sub, j) => (
+                  <div key={j} className="flex items-start gap-3 ml-10 text-gray-300 text-sm">
+                    <span className="mt-1.5 text-[#1DCD9F]">•</span>
+                    <span>{sub}</span>
+                  </div>
+                )) : null}
+              </div>
+            )}
+
+            {/* Deep subItems with categories */}
+            {hasDeepSubItems && (
+              <div className="space-y-5">
+                {Object.entries(hasDeepSubItems).map(([cat, items]) => (
+                  <div key={cat}>
+                    <p className="text-[#1DCD9F] font-semibold text-sm mb-3 ml-10">{cat}</p>
+                    {Array.isArray(items) ? (
+                      items.map((item, k) => (
+                        <div key={k} className="flex items-start gap-3 ml-16 text-gray-400 text-sm">
+                          <span className="mt-1.5">–</span>
+                          <span>{item}</span>
+                        </div>
+                      ))
+                    ) : (
+                      Object.entries(items).map(([subCat, subItems]) => (
+                        <div key={subCat} className="ml-10">
+                          <p className="text-gray-300 font-medium text-sm mb-2 ml-6">{subCat}</p>
+                          {Array.isArray(subItems) && subItems.map((item, k) => (
+                            <div key={k} className="flex items-start gap-3 ml-16 text-gray-400 text-xs">
+                              <span className="mt-1.5">◦</span>
+                              <span>{item}</span>
+                            </div>
+                          ))}
+                        </div>
+                      ))
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+};
+
 export default function ServicesPage() {
   const [selectedService, setSelectedService] = useState<ServiceGroup | null>(null);
+  const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (selectedService) {
+      setExpandedItems({});
       const scrollY = window.scrollY;
       document.body.style.position = 'fixed';
       document.body.style.top = `-${scrollY}px`;
@@ -458,17 +550,23 @@ export default function ServicesPage() {
     return () => modal.removeEventListener('wheel', handleWheel);
   }, [selectedService]);
 
+  const toggleItemExpanded = (itemName: string) => {
+    setExpandedItems(prev => ({
+      ...prev,
+      [itemName]: !prev[itemName]
+    }));
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0f0f0f] to-[#1a1a1a] text-white">
-      <Navbar />
-
       {/* Hero */}
+      <Navbar/>
       <section className="relative h-[50vh] sm:h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-[#0f0f0f]" />
         <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop"
           alt="Financial Excellence" className="absolute inset-0 w-full h-full object-cover opacity-40" />
         <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}
-          className="absolute left-[0%] top-[60%] sm:top-[60%] z-10 text-left px-4 sm:px-6 max-w-6xl mx-auto w-full">
+          className="absolute left-[0%] top-[50%] sm:top-[60%] z-10 text-left px-4 sm:px-6 max-w-6xl mx-auto w-full">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-6">Our Services<span className="text-[#1DCD9F]">.</span></h1>
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 mb-3 sm:mb-6">Comprehensive Financial Solutions for Your Success</p>
           <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-400  mx-auto border-l-4 border-[#1DCD9F] pl-3 sm:pl-6">
@@ -493,10 +591,9 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* ==================== WHY CHOOSE US SECTION – FEATURES AESTHETIC ==================== */}
+      {/* Why Choose Us Section */}
       <section className="py-10 sm:py-20 px-4 sm:px-6 md:px-12 lg:px-20 bg-[#1a1a1a]">
         <div className="mx-auto max-w-5xl space-y-8 sm:space-y-12">
-          {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -512,40 +609,14 @@ export default function ServicesPage() {
             </p>
           </motion.div>
 
-          {/* Grid with Borders - Features Aesthetic */}
           <div className="relative mx-auto max-w-7xl divide-x divide-y divide-[#2c2c2c] border border-[#2c2c2c] bg-[#202020] *:p-4 sm:*:p-6 md:*:p-8 sm:grid-cols-2 lg:grid-cols-3 grid">
-            
             {[
-              {
-                title: "13+ Years Expertise",
-                desc: "Deep domain knowledge across audit, tax, corporate law, banking, and advisory.",
-                icon: Calendar,
-              },
-              {
-                title: "500+ Happy Clients",
-                desc: "From startups to listed companies across diverse industries trust us.",
-                icon: Users,
-              },
-              {
-                title: "One-Stop Partner",
-                desc: "Audit, tax, corporate law, banking, and risk advisory under one roof.",
-                icon: ShieldCheck,
-              },
-              {
-                title: "Proactive Approach",
-                desc: "We optimize tax, reduce risk, and drive sustainable growth.",
-                icon: Zap,
-              },
-              {
-                title: "Expert Team",
-                desc: "Qualified CAs, Company Secretaries, and Lawyers as your extended team.",
-                icon: GraduationCap,
-              },
-              {
-                title: "Pan-India Presence",
-                desc: "Seamless virtual and physical support with secure, paperless processes.",
-                icon: Globe,
-              },
+              { title: "13+ Years Expertise", desc: "Deep domain knowledge across audit, tax, corporate law, banking, and advisory.", icon: Calendar },
+              { title: "500+ Happy Clients", desc: "From startups to listed companies across diverse industries trust us.", icon: Users },
+              { title: "One-Stop Partner", desc: "Audit, tax, corporate law, banking, and risk advisory under one roof.", icon: ShieldCheck },
+              { title: "Proactive Approach", desc: "We optimize tax, reduce risk, and drive sustainable growth.", icon: Zap },
+              { title: "Expert Team", desc: "Qualified CAs, Company Secretaries, and Lawyers as your extended team.", icon: GraduationCap },
+              { title: "Pan-India Presence", desc: "Seamless virtual and physical support with secure, paperless processes.", icon: Globe },
             ].map((item, i) => {
               const Icon = item.icon;
               return (
@@ -557,12 +628,10 @@ export default function ServicesPage() {
                   transition={{ delay: i * 0.05, duration: 0.5 }}
                   className="space-y-3"
                 >
-                  {/* Icon + Title Row */}
                   <div className="flex items-center gap-2 sm:gap-3">
                     <Icon className="h-3 sm:h-4 w-3 sm:w-4 text-[#1DCD9F] shrink-0" />
                     <h3 className="text-xs sm:text-sm font-semibold text-white">{item.title}</h3>
                   </div>
-                  {/* Description */}
                   <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">{item.desc}</p>
                 </motion.div>
               );
@@ -579,7 +648,7 @@ export default function ServicesPage() {
             Let's discuss how our expertise can help you achieve financial excellence and sustainable growth.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
-            <a href="/contact" className="inline-flex items-center justify-center gap-2 sm:gap-3 bg-[#1DCD9F] hover:bg-[#19b892] text-black font-bold px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm transition-all transform hover:scale-105 shadow-2xl">
+            <a href="#contact" className="inline-flex items-center justify-center gap-2 sm:gap-3 bg-[#1DCD9F] hover:bg-[#19b892] text-black font-bold px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm transition-all transform hover:scale-105 shadow-2xl">
               Get Started Now
               <svg className="w-4 sm:w-6 h-4 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -592,8 +661,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-
-      {/* Modal - Enhanced for Deep Nesting */}
+      {/* Modal - Expandable Items */}
       <AnimatePresence>
         {selectedService && (
           <>
@@ -619,11 +687,11 @@ export default function ServicesPage() {
                 </button>
                 <div className="absolute bottom-8 left-8 right-8">
                   <h2 className="text-2xl md:text-5xl font-bold text-white mb-3">{selectedService.title}</h2>
-                  <p className="text-gray-200  text-sm md:text-lg">{selectedService.description}</p>
+                  <p className="text-gray-200 text-sm md:text-lg">{selectedService.description}</p>
                 </div>
               </div>
 
-              <div className="overflow-y-auto h-[calc(100%-12rem)] md:h-[calc(100%-16rem)] scrollbar-thin scrollbar-thumb-gray-700 scrollbarf-track-transparent">
+              <div className="overflow-y-auto h-[calc(100%-12rem)] md:h-[calc(100%-16rem)] scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
                 <div className="p-8 md:p-12 space-y-12">
 
                   <div>
@@ -639,51 +707,18 @@ export default function ServicesPage() {
                   <div>
                     <div className="flex items-center gap-3 mb-8">
                       <div className="h-8 w-1 bg-[#1DCD9F]" />
-                      <h3 className="text-xl md:text-2xl font-bold text-white">Our Services Include</h3>
+                      <h3 className="text-xl md:text-2xl font-bold text-white">Our Services Include </h3>
                     </div>
                     <div className="space-y-6">
                       {selectedService.items.map((mainItem, i) => (
-                        <motion.div
+                        <ExpandableMainItem
                           key={i}
-                          initial={{ opacity: 0, x: -30 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.1 }}
-                          className="border border-gray-800 rounded-xl overflow-hidden bg-gray-900/30"
-                        >
-                          <div className="flex items-center gap-4 bg-gray-900/70 p-5">
-                            <div className="w-8 h-8 rounded-full bg-[#1DCD9F]/20 flex items-center justify-center">
-                              <Check className="w-5 h-5 text-[#1DCD9F]" />
-                            </div>
-                            <span className="text-white font-semibold text-lg">{mainItem}</span>
-                          </div>
-
-                          {selectedService.subItems?.[mainItem] && (
-                            <div className="px-6 py-4 space-y-2 bg-gray-900/40">
-                              {selectedService.subItems[mainItem].map((sub, j) => (
-                                <div key={j} className="flex items-start gap-3 ml-10 text-gray-300 text-sm">
-                                  <span className="mt-1.5 text-[#1DCD9F]">•</span>
-                                  <span>{sub}</span>
-                                </div>
-                              ))}
-                            </div>
-                          )}
-
-                          {selectedService.deepSubItems?.[selectedService.title]?.[mainItem] && (
-                            <div className="px-6 py-4 bg-gray-900/40 space-y-5">
-                              {Object.entries(selectedService.deepSubItems[selectedService.title][mainItem]).map(([cat, items]) => (
-                                <div key={cat}>
-                                  <p className="text-[#1DCD9F] font-semibold text-sm mb-3 ml-10">{cat}</p>
-                                  {items.map((item, k) => (
-                                    <div key={k} className="flex items-start gap-3 ml-16 text-gray-400 text-sm">
-                                      <span className="mt-1.5">–</span>
-                                      <span>{item}</span>
-                                    </div>
-                                  ))}
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </motion.div>
+                          mainItem={mainItem}
+                          service={selectedService}
+                          serviceTitle={selectedService.title}
+                          isExpanded={expandedItems[mainItem] || false}
+                          onToggle={() => toggleItemExpanded(mainItem)}
+                        />
                       ))}
                     </div>
                   </div>
@@ -702,7 +737,7 @@ export default function ServicesPage() {
                           transition={{ delay: i * 0.1 }}
                           className="flex items-start gap-4 bg-gradient-to-r from-gray-900/30 to-transparent p-5 rounded-lg border-l-2 border-[#1DCD9F] hover:border-l-4 transition-all"
                         >
-                          <ArrowRight className="w-5 h-5 text-[#1DCD9F] flex-shrink-0 mt-0.5" />
+                          
                           <span className="text-gray-400 text-sm leading-relaxed">{benefit}</span>
                         </motion.div>
                       ))}
@@ -716,7 +751,7 @@ export default function ServicesPage() {
                       <p className="text-gray-400 mb-8 text-base max-w-2xl mx-auto">
                         Contact us today for a personalized consultation tailored to your business needs.
                       </p>
-                      <a href="/contact" className="inline-flex items-center gap-3 bg-[#1DCD9F] hover:bg-[#19b892] text-black font-bold px-8 py-4 rounded-full text-base transition-all transform hover:scale-105 shadow-lg hover:shadow-[#1DCD9F]/50">
+                      <a href="#contact" className="inline-flex items-center gap-3 bg-[#1DCD9F] hover:bg-[#19b892] text-black font-bold px-8 py-4 rounded-full text-base transition-all transform hover:scale-105 shadow-lg hover:shadow-[#1DCD9F]/50">
                         Schedule a Consultation <ArrowRight className="w-5 h-5" />
                       </a>
                     </div>
@@ -727,8 +762,7 @@ export default function ServicesPage() {
           </>
         )}
       </AnimatePresence>
-
-      <Footer />
+      <Footer/>
     </div>
   );
 }
