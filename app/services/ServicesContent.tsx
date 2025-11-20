@@ -357,8 +357,8 @@ export default function ServicesContent() {
         
         <div className="absolute text-left top-[60%] sm:top-[60%] left-1/2 sm:left-[35%] transform -translate-x-1/2 -translate-y-1/2 px-4 w-full sm:w-auto">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold drop-shadow-lg" style={{color:"white"}}>Our Services<span className="text-[#2BC99C] text-4xl sm:text-5xl md:text-6xl lg:text-7xl">.</span></h1>
-          <p className="mt-6 sm:mt-4 text-lg sm:text-lg md:text-xl lg:text-2xl drop-shadow-md" style={{color:"white"}}>Comprehensive Financial Solutions for Your Success</p>
-          <p className="mt-8 sm:mt-8 text-base sm:text-base md:text-lg lg:text-xl border-l-4 border-[#2BC99C] pl-3 sm:pl-4" style={{color:"white"}}>
+          <p className="mt-4 sm:mt-4 text-lg sm:text-lg md:text-xl lg:text-2xl drop-shadow-md" style={{color:"white"}}>Comprehensive Financial Solutions for Your Success</p>
+          <p className="mt-6 sm:mt-8 text-base sm:text-base md:text-lg lg:text-xl border-l-4 border-[#2BC99C] pl-3 sm:pl-4" style={{color:"white"}}>
             Delivering excellence from audit to advisory, we guide your financial journey with expertise and integrity.<br />
             We turn compliance into confidence and challenges into growth opportunities.
           </p>
