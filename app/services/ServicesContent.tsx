@@ -355,7 +355,7 @@ export default function ServicesContent() {
         <div className='absolute inset-x-0 top-0 h-[100vh] bg-gradient-to-t from-black/70 via-black/40 to-transparent pointer-events-none'></div>
         <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop" alt="Financial Excellence" className="w-full h-[100vh] object-cover" />
         
-        <div className="absolute text-left top-[70%] sm:top-[60%] left-1/2 sm:left-[35%] transform -translate-x-1/2 -translate-y-1/2 px-4 w-full sm:w-auto">
+        <div className="absolute text-left top-[60%] sm:top-[60%] left-1/2 sm:left-[35%] transform -translate-x-1/2 -translate-y-1/2 px-4 w-full sm:w-auto">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold drop-shadow-lg" style={{color:"white"}}>Our Services<span className="text-[#2BC99C] text-4xl sm:text-5xl md:text-6xl lg:text-7xl">.</span></h1>
           <p className="mt-6 sm:mt-4 text-lg sm:text-lg md:text-xl lg:text-2xl drop-shadow-md" style={{color:"white"}}>Comprehensive Financial Solutions for Your Success</p>
           <p className="mt-8 sm:mt-8 text-base sm:text-base md:text-lg lg:text-xl border-l-4 border-[#2BC99C] pl-3 sm:pl-4" style={{color:"white"}}>
