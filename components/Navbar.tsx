@@ -39,6 +39,7 @@ const leftMenu: MenuItem[] = [
   { 
     label: 'Services',
     translationKey: 'navbar.services',
+    href: '/services',
     subs: [
       { 
         title: 'Audit and Assurance', 
@@ -51,7 +52,8 @@ const leftMenu: MenuItem[] = [
           'Externally Funded Project Audit', 
           'Management Audit'
         ], 
-        insights: true 
+        insights: true,
+        href: '/services?service=Audit and Assurance'
       },
       { 
         title: 'Direct Tax', 
@@ -59,7 +61,8 @@ const leftMenu: MenuItem[] = [
           'Income Tax Services', 
           'Benami Transaction'
         ], 
-        insights: true 
+        insights: true,
+        href: '/services?service=Direct Tax'
       },
       { 
         title: 'Corporate Law Services', 
@@ -71,7 +74,8 @@ const leftMenu: MenuItem[] = [
           'Foreign Contribution Regulation Act 2010', 
           'Assurance Services'
         ], 
-        insights: true 
+        insights: true,
+        href: '/services?service=Corporate Law Services'
       },
       { 
         title: 'Consultancy', 
@@ -81,7 +85,8 @@ const leftMenu: MenuItem[] = [
           'Start-up Consultancy', 
           'MIS System Designing'
         ], 
-        insights: true 
+        insights: true,
+        href: '/services?service=Consultancy'
       },
       { 
         title: 'Indirect Tax', 
@@ -90,12 +95,14 @@ const leftMenu: MenuItem[] = [
           'Custom', 
           'Professional Tax'
         ], 
-        insights: true 
+        insights: true,
+        href: '/services?service=Indirect Tax'
       },
       { 
         title: 'Risk Advisory Services', 
         items: [], 
-        insights: true 
+        insights: true,
+        href: '/services?service=Risk Advisory Services'
       },
     ], 
     overview: 'navbar.overview.services'
@@ -282,7 +289,7 @@ export default function Navbar() {
     if (!subs || subs.length === 0) return <p className="text-white/50 italic text-sm">No subitems available.</p>;
 
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-x-12 gap-y-8">
         {subs.map((sub, index) => {
           if (typeof sub === 'string') {
             return (
@@ -293,7 +300,38 @@ export default function Navbar() {
                 </button>
               </div>
             );
-          } else if ('href' in sub) {
+          } else if ('title' in sub) {
+            // This is a service item with title and items array
+            return (
+              <div key={(sub as any).title} className="space-y-3">
+                <h4 className="text-[#1DCD9F] font-semibold text-base mb-1">{(sub as any).title}</h4>
+                <ul className="space-y-2">
+                  {(sub as any).items.map((item: string, idx: number) => (
+                    <li key={idx}>
+                      <Link 
+                        href={(sub as any).href || '/services'}
+                        className="text-left text-white/70 hover:text-white text-sm transition-all hover:translate-x-1 inline-block py-0.5"
+                      >
+                        {item}
+                      </Link>
+                    </li>
+                  ))}
+                  {(sub as any).insights && (
+                    <li className="pt-1">
+                      <Link 
+                        href={(sub as any).href || '/services'}
+                        className="text-left text-[#1DCD9F] text-sm font-medium hover:underline inline-flex items-center gap-1 group"
+                      >
+                        View Insights
+                        <ArrowRightIcon />
+                      </Link>
+                    </li>
+                  )}
+                </ul>
+              </div>
+            );
+          } else if ('href' in sub && 'label' in sub) {
+            // This is a simple link item
             return (
               <div key={index} className="group">
                 <Link 
@@ -303,29 +341,6 @@ export default function Navbar() {
                   <span className="w-1.5 h-1.5 bg-[#1DCD9F] rounded-full opacity-0 group-hover:opacity-100 transition-all" />
                   {sub.label}
                 </Link>
-              </div>
-            );
-          } else {
-            return (
-              <div key={(sub as any).title} className="space-y-3">
-                <h4 className="text-[#1DCD9F] font-semibold text-base mb-1">{(sub as any).title}</h4>
-                <ul className="space-y-2">
-                  {(sub as any).items.map((item: string, idx: number) => (
-                    <li key={idx}>
-                      <button className="text-left text-white/70 hover:text-white text-sm transition-all hover:translate-x-1 inline-block py-0.5">
-                        {item}
-                      </button>
-                    </li>
-                  ))}
-                  {(sub as any).insights && (
-                    <li className="pt-1">
-                      <button className="text-left text-[#1DCD9F] text-sm font-medium hover:underline inline-flex items-center gap-1 group">
-                        View Insights
-                        <ArrowRightIcon />
-                      </button>
-                    </li>
-                  )}
-                </ul>
               </div>
             );
           }
@@ -359,7 +374,30 @@ export default function Navbar() {
                   {sub}
                 </button>
               );
-            } else if ('href' in sub) {
+            } else if ('title' in sub) {
+              // This is a service item with title and items array
+              return (
+                <div key={(sub as any).title} className="space-y-2">
+                  <h5 className="text-[#1DCD9F] font-semibold text-sm">{(sub as any).title}</h5>
+                  <ul className="space-y-1.5 pl-3">
+                    {(sub as any).items.map((item: string, idx: number) => (
+                      <li key={idx}>
+                        <Link 
+                          href={(sub as any).href || '/services'}
+                          style={{
+                            color: theme === 'light' ? '#6b7280' : '#ffffff',
+                          }}
+                          className="text-left text-xs transition-all hover:translate-x-1 inline-block"
+                        >
+                          {item}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            } else if ('href' in sub && 'label' in sub) {
+              // This is a simple link item
               return (
                 <Link
                   key={index}
@@ -371,26 +409,6 @@ export default function Navbar() {
                 >
                   {sub.label}
                 </Link>
-              );
-            } else {
-              return (
-                <div key={(sub as any).title} className="space-y-2">
-                  <h5 className="text-[#1DCD9F] font-semibold text-sm">{(sub as any).title}</h5>
-                  <ul className="space-y-1.5 pl-3">
-                    {(sub as any).items.map((item: string, idx: number) => (
-                      <li key={idx}>
-                        <button 
-                          style={{
-                            color: theme === 'light' ? '#6b7280' : '#ffffff',
-                          }}
-                          className="text-left text-xs transition-all hover:translate-x-1 inline-block"
-                        >
-                          {item}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
               );
             }
           })}

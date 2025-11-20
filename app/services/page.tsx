@@ -1,10 +1,12 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { ArrowRight, Check, Calendar, ShieldCheck, Users, Zap, GraduationCap, Globe, ChevronDown } from 'lucide-react';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import { useTheme } from '@/components/ThemeProvider';
 
 interface ServiceGroup {
   title: string;
@@ -395,30 +397,30 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, onClick }) => {
     <motion.div
       whileHover="hover"
       onClick={onClick}
-      className="group relative h-60 sm:h-72 md:h-80 lg:h-96 w-full cursor-pointer overflow-hidden shadow-xl bg-gray-800"
+      className="group relative h-60 sm:h-72 md:h-80 lg:h-96 w-full cursor-pointer overflow-hidden shadow-xl bg-theme"
       transition={{ staggerChildren: 0.035 }}
     >
       <div className="absolute inset-0 bg-cover bg-center transition-all duration-700 group-hover:scale-110 md:saturate-0 md:group-hover:saturate-100"
         style={{ backgroundImage: `url(${service.imgSrc})` }}
       />
-      <div className="absolute inset-0 bg-black/50 transition-all duration-500 group-hover:bg-black/70" />
+      <div className="absolute inset-0 transition-all duration-500 group-hover:opacity-100" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', opacity: 1 }} onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.7)')} onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.5)')} />
 
-      <div className="relative z-10 flex h-full flex-col justify-between p-4 sm:p-6 md:p-8 text-white">
-        <svg className="ml-auto w-6 sm:w-8 md:w-9 h-6 sm:h-8 md:h-9 text-white/70 transition-transform duration-500 group-hover:-rotate-45 group-hover:text-[#1DCD9F]"
-          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="relative z-10 flex h-full flex-col justify-between p-4 sm:p-6 md:p-8" style={{ color: '#ffffff' }}>
+        <svg className="ml-auto w-6 sm:w-8 md:w-9 h-6 sm:h-8 md:h-9 transition-transform duration-500 group-hover:-rotate-45 group-hover:text-[#1DCD9F]"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
         </svg>
 
         <div>
-          <h3 className="mb-2 sm:mb-4 text-xl sm:text-2xl md:text-3xl font-bold leading-tight">
+          <h3 className="mb-2 sm:mb-4 text-xl sm:text-2xl md:text-3xl font-bold leading-tight" style={{ color: '#ffffff' }}>
             {service.title.split('').map((letter, i) => (
               <AnimatedLetter key={i} letter={letter} />
             ))}
           </h3>
-          <p className="mb-3 sm:mb-5 text-xs sm:text-sm text-gray-200 line-clamp-2">{service.description}</p>
-          <span className="inline-block bg-[#1DCD9F]/20 border border-[#1DCD9F] text-[#1DCD9F] px-2 sm:px-4 py-1 sm:py-2 rounded-full text-xs sm:text-sm font-medium">
+          <p className="mb-3 sm:mb-5 text-xs sm:text-sm line-clamp-2" style={{ color: '#ffffff' }}>{service.description}</p>
+          <span className="inline-block border border-[#1DCD9F] px-2 sm:px-4 py-1 sm:py-2 rounded-full text-xs sm:text-sm font-medium" style={{ backgroundColor: 'rgba(29, 205, 159, 0.2)', color: '#1DCD9F' }}>
             {service.items.length} Services
-          </span>
+          </span> 
         </div>
       </div>
     </motion.div>
@@ -440,20 +442,24 @@ const ExpandableMainItem: React.FC<{
     <motion.div
       initial={{ opacity: 0, x: -30 }}
       animate={{ opacity: 1, x: 0 }}
-      className="border border-gray-800 rounded-xl overflow-hidden bg-gray-900/30"
+      style={{ borderColor: '#1f2937', backgroundColor: 'rgba(17, 24, 39, 0.3)' }}
+      className="border rounded-xl overflow-hidden"
     >
       <button
         onClick={onToggle}
-        className="w-full flex items-center gap-4 bg-gray-900/70 p-5 hover:bg-gray-800/70 transition-colors"
+        className="w-full flex items-center gap-4 p-5 transition-colors"
+        style={{ backgroundColor: 'rgba(17, 24, 39, 0.7)', cursor: 'pointer' }}
+        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(17, 24, 39, 0.5)')}
+        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'rgba(17, 24, 39, 0.7)')}
       >
         
-        <span className="text-white font-semibold text-lg flex-1 text-left">{mainItem}</span>
+        <span className="font-semibold text-lg flex-1 text-left" style={{ color: '#ffffff' }}>{mainItem}</span>
         {(hasSubItems || hasDeepSubItems) && (
           <motion.div
             animate={{ rotate: isExpanded ? 180 : 0 }}
             transition={{ duration: 0.3 }}
           >
-            <ChevronDown className="w-5 h-5 text-[#1DCD9F]" />
+            <ChevronDown className="w-5 h-5" style={{ color: '#1DCD9F' }} />
           </motion.div>
         )}
       </button>
@@ -465,15 +471,16 @@ const ExpandableMainItem: React.FC<{
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="px-6 py-4 bg-gray-900/40 space-y-2"
+            className="px-6 py-4 space-y-2"
+            style={{ backgroundColor: 'rgba(17, 24, 39, 0.9)' }}
           >
             {/* Regular subItems */}
             {hasSubItems && !hasDeepSubItems && (
               <div className="space-y-2">
                 {Array.isArray(hasSubItems) ? hasSubItems.map((sub, j) => (
-                  <div key={j} className="flex items-start gap-3 ml-10 text-gray-300 text-sm">
-                    <span className="mt-1.5 text-[#1DCD9F]">•</span>
-                    <span>{sub}</span>
+                  <div key={j} className="flex items-start gap-3 ml-10 text-sm">
+                    <span className="mt-1.5" style={{ color: '#1DCD9F' }}>•</span>
+                    <span style={{ color: '#d1d5db' }}>{sub}</span>
                   </div>
                 )) : null}
               </div>
@@ -484,22 +491,22 @@ const ExpandableMainItem: React.FC<{
               <div className="space-y-5">
                 {Object.entries(hasDeepSubItems).map(([cat, items]) => (
                   <div key={cat}>
-                    <p className="text-[#1DCD9F] font-semibold text-sm mb-3 ml-10">{cat}</p>
+                    <p className="font-semibold text-sm mb-3 ml-10" style={{ color: '#1DCD9F' }}>{cat}</p>
                     {Array.isArray(items) ? (
                       items.map((item, k) => (
-                        <div key={k} className="flex items-start gap-3 ml-16 text-gray-400 text-sm">
-                          <span className="mt-1.5">–</span>
-                          <span>{item}</span>
+                        <div key={k} className="flex items-start gap-3 ml-16 text-sm">
+                          <span className="mt-1.5" style={{ color: '#9ca3af' }}>–</span>
+                          <span style={{ color: '#9ca3af' }}>{item}</span>
                         </div>
                       ))
                     ) : (
                       Object.entries(items).map(([subCat, subItems]) => (
                         <div key={subCat} className="ml-10">
-                          <p className="text-gray-300 font-medium text-sm mb-2 ml-6">{subCat}</p>
+                          <p className="font-medium text-sm mb-2 ml-6" style={{ color: '#e5e7eb' }}>{subCat}</p>
                           {Array.isArray(subItems) && subItems.map((item, k) => (
-                            <div key={k} className="flex items-start gap-3 ml-16 text-gray-400 text-xs">
-                              <span className="mt-1.5">◦</span>
-                              <span>{item}</span>
+                            <div key={k} className="flex items-start gap-3 ml-16 text-xs">
+                              <span className="mt-1.5" style={{ color: '#9ca3af' }}>◦</span>
+                              <span style={{ color: '#9ca3af' }}>{item}</span>
                             </div>
                           ))}
                         </div>
@@ -517,9 +524,22 @@ const ExpandableMainItem: React.FC<{
 };
 
 export default function ServicesPage() {
+  const searchParams = useSearchParams();
+  const { theme } = useTheme();
   const [selectedService, setSelectedService] = useState<ServiceGroup | null>(null);
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
   const modalRef = useRef<HTMLDivElement>(null);
+
+  // Auto-open service from query parameter
+  useEffect(() => {
+    const serviceName = searchParams.get('service');
+    if (serviceName) {
+      const service = serviceGroups.find(s => s.title === serviceName);
+      if (service) {
+        setSelectedService(service);
+      }
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (selectedService) {
@@ -558,19 +578,20 @@ export default function ServicesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0f0f0f] to-[#1a1a1a] text-white">
+    <div className="min-h-screen bg-theme text-white">
       {/* Hero */}
       <Navbar/>
       <section className="relative h-[50vh] sm:h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-[#0f0f0f]" />
+       <div className='absolute inset-x-0 top-0 h-[100vh] bg-gradient-to-t from-black via-black to-black/70 pointer-events-none'></div>
         <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop"
           alt="Financial Excellence" className="absolute inset-0 w-full h-full object-cover opacity-40" />
         <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}
-          className="absolute left-[0%] top-[50%] sm:top-[60%] z-10 text-left px-4 sm:px-6 max-w-6xl mx-auto w-full">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-6">Our Services<span className="text-[#1DCD9F]">.</span></h1>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 mb-3 sm:mb-6">Comprehensive Financial Solutions for Your Success</p>
-          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-400  mx-auto border-l-4 border-[#1DCD9F] pl-3 sm:pl-6">
-            From audit to advisory, we deliver excellence at every step of your financial journey.
+          className="absolute left-[0%] sm:left-[2%] top-[40%] sm:top-[50%] z-10 text-left px-4 sm:px-6 max-w-6xl mx-auto w-full">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-6" style={{ color: '#ffffff' }}>Our Services<span className="text-[#1DCD9F]"> .</span></h1>
+          <p className="mt-1 sm:mt-4 text-lg sm:text-lg md:text-xl lg:text-2xl drop-shadow-md" style={{ color: 'white' }}>Comprehensive Financial Solutions for Your Success</p>
+          <p className="mt-2 sm:mt-8 text-base sm:text-base md:text-lg lg:text-xl  border-l-4 border-[#2BC99C] pl-3 sm:pl-4" style={{ color: 'white' }}>
+            Delivering excellence from audit to advisory, we guide your financial journey with expertise and integrity.
+We turn compliance into confidence and challenges into growth opportunities.
           </p>
         </motion.div>
       </section>
@@ -592,7 +613,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-10 sm:py-20 px-4 sm:px-6 md:px-12 lg:px-20 bg-[#1a1a1a]">
+      <section className="py-10 sm:py-20 px-4 sm:px-6 md:px-12 lg:px-20 " style={{ backgroundColor: theme === 'dark' ? '#1a1a1a' : '#f0f0f0' }  }>
         <div className="mx-auto max-w-5xl space-y-8 sm:space-y-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -609,7 +630,7 @@ export default function ServicesPage() {
             </p>
           </motion.div>
 
-          <div className="relative mx-auto max-w-7xl divide-x divide-y divide-[#2c2c2c] border border-[#2c2c2c] bg-[#202020] *:p-4 sm:*:p-6 md:*:p-8 sm:grid-cols-2 lg:grid-cols-3 grid">
+          <div className="relative mx-auto max-w-7xl divide-x divide-y divide-[#2c2c2c] border border-[#2c2c2c]  *:p-4 sm:*:p-6 md:*:p-8 sm:grid-cols-2 lg:grid-cols-3 grid" style={{ backgroundColor: theme === 'dark' ? '#202020' : '#ffffff' }}>
             {[
               { title: "13+ Years Expertise", desc: "Deep domain knowledge across audit, tax, corporate law, banking, and advisory.", icon: Calendar },
               { title: "500+ Happy Clients", desc: "From startups to listed companies across diverse industries trust us.", icon: Users },
@@ -641,10 +662,10 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-8 sm:py-12 bg-linear-to-r from-[#1DCD9F]/10 via-transparent to-transparent">
+      <section className="py-8 sm:py-12 bg-[#265B4D]" >
         <div className="max-w-5xl mx-auto text-center px-4 sm:px-6">
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">Ready to Transform Your Business?</h2>
-          <p className="text-sm sm:text-base md:text-lg text-gray-300 mb-6 sm:mb-12 max-w-3xl mx-auto">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6" style={{color:"white"}}>Ready to Transform Your Business?</h2>
+          <p className="text-sm sm:text-base md:text-lg  mb-6 sm:mb-12 max-w-3xl mx-auto" style={{color:'#D1D5DB'}}>
             Let's discuss how our expertise can help you achieve financial excellence and sustainable growth.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
@@ -666,40 +687,48 @@ export default function ServicesPage() {
         {selectedService && (
           <>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              onClick={() => setSelectedService(null)} className="fixed inset-0 bg-black/90 backdrop-blur-md z-40 cursor-pointer" />
+              onClick={() => setSelectedService(null)} className={`fixed inset-0 backdrop-blur-md z-40 cursor-pointer ${theme === 'light' ? 'bg-black/40' : 'bg-black/90'}`} />
             <motion.div
               ref={modalRef}
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className="fixed bottom-0 left-0 right-0 h-[100vh] bg-gradient-to-br from-[#0a0a0a] via-[#111111] to-[#0f0f0f] z-50 overflow-hidden shadow-2xl border-t border-gray-800"
+              className={`fixed bottom-0 left-0 right-0 h-[100vh] z-50 overflow-hidden shadow-2xl border-t ${
+                theme === 'light'
+                  ? 'bg-gradient-to-br from-gray-50 via-white to-gray-100 border-gray-300'
+                  : 'bg-gradient-to-br from-[#0a0a0a] via-[#111111] to-[#0f0f0f] border-gray-800'
+              }`}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="relative h-48 md:h-64 overflow-hidden">
                 <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${selectedService.imgSrc})` }} />
                 <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/70 to-[#0a0a0a]" />
                 <button onClick={() => setSelectedService(null)}
-                  className="absolute top-6 right-6 w-12 h-12 rounded-full bg-black/40 backdrop-blur-sm hover:bg-[#1DCD9F] transition-all group border border-white/20">
-                  <svg className="w-6 h-6 mx-auto text-white group-hover:text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  className="absolute top-6 right-6 w-12 h-12 rounded-full backdrop-blur-sm transition-all group border"
+                  style={{ backgroundColor: 'rgba(0, 0, 0, 0.4)', borderColor: 'rgba(255, 255, 255, 0.2)' }}
+                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#1DCD9F')}
+                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.4)')}
+                >
+                  <svg className="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#ffffff' }} onMouseEnter={(e) => e.currentTarget.style.color === '#ffffff' && (e.currentTarget.style.color = '#000000')} onMouseLeave={(e) => (e.currentTarget.style.color = '#ffffff')}>
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
                 <div className="absolute bottom-8 left-8 right-8">
-                  <h2 className="text-2xl md:text-5xl font-bold text-white mb-3">{selectedService.title}</h2>
-                  <p className="text-gray-200 text-sm md:text-lg">{selectedService.description}</p>
+                  <h2 className={`text-2xl md:text-5xl font-bold mb-3 ` } style={{color:'white'}}>{selectedService.title}</h2>
+                  <p className={`text-sm md:text-lg `} style={{color:'#d1d5db'}}>{selectedService.description}</p>
                 </div>
               </div>
 
-              <div className="overflow-y-auto h-[calc(100%-12rem)] md:h-[calc(100%-16rem)] scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
+              <div className={`overflow-y-auto h-[calc(100%-12rem)] md:h-[calc(100%-16rem)] scrollbar-thin ${theme === 'light' ? 'scrollbar-thumb-gray-300 scrollbar-track-gray-100' : 'scrollbar-thumb-gray-700 scrollbar-track-transparent'}`}>
                 <div className="p-8 md:p-12 space-y-12">
 
                   <div>
                     <div className="flex items-center gap-3 mb-6">
                       <div className="h-8 w-1 bg-[#1DCD9F]" />
-                      <h3 className="text-xl md:text-2xl font-bold text-white">Overview</h3>
+                      <h3 className={`text-xl md:text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Overview</h3>
                     </div>
-                    <p className="text-base text-gray-400 leading-relaxed whitespace-pre-line border-l-2 border-gray-800 pl-6">
+                    <p className={`text-base leading-relaxed whitespace-pre-line border-l-2 pl-6 ${theme === 'light' ? 'text-gray-700 border-gray-300' : 'text-gray-400 border-gray-800'}`}>
                       {selectedService.detailedDescription}
                     </p>
                   </div>
@@ -707,7 +736,7 @@ export default function ServicesPage() {
                   <div>
                     <div className="flex items-center gap-3 mb-8">
                       <div className="h-8 w-1 bg-[#1DCD9F]" />
-                      <h3 className="text-xl md:text-2xl font-bold text-white">Our Services Include </h3>
+                      <h3 className={`text-xl md:text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Our Services Include </h3>
                     </div>
                     <div className="space-y-6">
                       {selectedService.items.map((mainItem, i) => (
@@ -726,7 +755,7 @@ export default function ServicesPage() {
                   <div>
                     <div className="flex items-center gap-3 mb-8">
                       <div className="h-8 w-1 bg-[#1DCD9F]" />
-                      <h3 className="text-2xl font-bold text-white">Key Benefits</h3>
+                      <h3 className={`text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Key Benefits</h3>
                     </div>
                     <div className="space-y-4">
                       {selectedService.benefits.map((benefit, i) => (
@@ -735,20 +764,30 @@ export default function ServicesPage() {
                           initial={{ opacity: 0, y: 15 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: i * 0.1 }}
-                          className="flex items-start gap-4 bg-gradient-to-r from-gray-900/30 to-transparent p-5 rounded-lg border-l-2 border-[#1DCD9F] hover:border-l-4 transition-all"
+                          className={`flex items-start gap-4 p-5 rounded-lg border-l-2 border-[#1DCD9F] hover:border-l-4 transition-all ${
+                            theme === 'light'
+                              ? 'bg-gradient-to-r from-gray-200/30 to-transparent'
+                              : 'bg-gradient-to-r from-gray-900/30 to-transparent'
+                          }`}
                         >
                           
-                          <span className="text-gray-400 text-sm leading-relaxed">{benefit}</span>
+                          <span className={`text-sm leading-relaxed ${theme === 'light' ? 'text-gray-700' : 'text-gray-400'}`}>{benefit}</span>
                         </motion.div>
                       ))}
                     </div>
                   </div>
 
-                  <div className="relative overflow-hidden bg-gradient-to-r from-[#1DCD9F]/5 via-[#1DCD9F]/10 to-transparent p-10 rounded-xl border border-[#1DCD9F]/20">
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-[#1DCD9F]/5 rounded-full blur-3xl" />
+                  <div className={`relative overflow-hidden bg-gradient-to-r p-10 rounded-xl border ${
+                    theme === 'light'
+                      ? 'from-gray-200/20 via-gray-300/20 to-transparent border-gray-400/30'
+                      : 'from-[#1DCD9F]/5 via-[#1DCD9F]/10 to-transparent border-[#1DCD9F]/20'
+                  }`}>
+                    <div className={`absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl ${
+                      theme === 'light' ? 'bg-gray-300/10' : 'bg-[#1DCD9F]/5'
+                    }`} />
                     <div className="relative text-center">
-                      <h3 className="text-2xl md:text-3xl font-bold mb-3 text-white">Ready to Get Started?</h3>
-                      <p className="text-gray-400 mb-8 text-base max-w-2xl mx-auto">
+                      <h3 className={`text-2xl md:text-3xl font-bold mb-3 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Ready to Get Started?</h3>
+                      <p className={`mb-8 text-base max-w-2xl mx-auto ${theme === 'light' ? 'text-gray-700' : 'text-gray-400'}`}>
                         Contact us today for a personalized consultation tailored to your business needs.
                       </p>
                       <a href="#contact" className="inline-flex items-center gap-3 bg-[#1DCD9F] hover:bg-[#19b892] text-black font-bold px-8 py-4 rounded-full text-base transition-all transform hover:scale-105 shadow-lg hover:shadow-[#1DCD9F]/50">

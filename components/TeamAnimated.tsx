@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
+import { useTheme } from './ThemeProvider';
 
 const members = [
   {
@@ -259,6 +260,7 @@ const container = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { st
 const item = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } };
 
 export default function TeamAnimated() {
+  const { theme } = useTheme();
   const [selectedMember, setSelectedMember] = useState<any>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
 
@@ -441,8 +443,7 @@ export default function TeamAnimated() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedMember(null)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 cursor-pointer
-                         pr-0 sm:pr-[500px] lg:pr-[600px]"
+              className={`fixed inset-0 backdrop-blur-sm z-40 cursor-pointer pr-0 sm:pr-[500px] lg:pr-[600px] ${theme === 'light' ? 'bg-black/30' : 'bg-black/60'}`}
             />
 
             {/* Sidebar - smooth scrolling + custom scrollbar */}
@@ -452,19 +453,23 @@ export default function TeamAnimated() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="fixed inset-y-0 right-0 w-full sm:w-[500px] lg:w-[600px] 
-                         bg-[#1a1a1a] shadow-2xl z-50 
-                         overflow-y-auto overscroll-contain
-                         scrollbar-thin scrollbar-thumb-[#1DCD9F]/70 scrollbar-track-[#2a2a2a]
-                         hover:scrollbar-thumb-[#1DCD9F]"
+              className={`fixed inset-y-0 right-0 w-full sm:w-[500px] lg:w-[600px] shadow-2xl z-50 overflow-y-auto overscroll-contain scrollbar-thin ${
+                theme === 'light'
+                  ? 'bg-gray-50 scrollbar-thumb-[#1DCD9F]/60 scrollbar-track-gray-200 hover:scrollbar-thumb-[#1DCD9F]'
+                  : 'bg-[#1a1a1a] scrollbar-thumb-[#1DCD9F]/70 scrollbar-track-[#2a2a2a] hover:scrollbar-thumb-[#1DCD9F]'
+              }`}
               style={{ WebkitOverflowScrolling: 'touch' }}
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={() => setSelectedMember(null)}
-                className="absolute top-6 right-6 w-12 h-12 flex items-center justify-center rounded-full bg-[#2a2a2a] hover:bg-[#1DCD9F] transition-all group z-10"
+                className={`absolute top-6 right-6 w-12 h-12 flex items-center justify-center rounded-full hover:bg-[#1DCD9F] transition-all group z-10 ${
+                  theme === 'light' ? 'bg-gray-300' : 'bg-[#2a2a2a]'
+                }`}
               >
-                <svg className="w-7 h-7 text-gray-400 group-hover:text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className={`w-7 h-7 group-hover:text-black ${
+                  theme === 'light' ? 'text-gray-700' : 'text-gray-400'
+                }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
@@ -475,11 +480,15 @@ export default function TeamAnimated() {
                   <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-[#1DCD9F] mb-6 mx-auto sm:mx-0">
                     <img src={selectedMember.avatar} alt={selectedMember.name} className="w-full h-full object-cover" />
                   </div>
-                  <h2 className="text-3xl font-bold mb-2 text-white text-center sm:text-left uppercase tracking-wide">
+                  <h2 className={`text-3xl font-bold mb-2 text-center sm:text-left uppercase tracking-wide ${
+                    theme === 'light' ? 'text-gray-900' : 'text-white'
+                  }`}>
                     {selectedMember.name}
                   </h2>
                   {selectedMember.qualifications && (
-                    <p className="text-gray-400 text-lg mb-3 text-center sm:text-left">{selectedMember.qualifications}</p>
+                    <p className={`text-lg mb-3 text-center sm:text-left ${
+                      theme === 'light' ? 'text-gray-700' : 'text-gray-400'
+                    }`}>{selectedMember.qualifications}</p>
                   )}
                   <p className="text-[#1DCD9F] text-xl font-medium text-center sm:text-left">{selectedMember.role}</p>
                 </div>

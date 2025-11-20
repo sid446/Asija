@@ -159,7 +159,7 @@ const Values = () => {
                 <div className="sticky bottom-0 p-6 border-t border-gray-200 dark:border-white/10 bg-white dark:bg-[#2a2a2a] flex gap-3 flex-shrink-0">
                   <button
                     onClick={() => setSelectedCard(null)}
-                    className="flex-1 px-6 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-medium rounded-lg transition-colors"
+                    className="flex-1 px-6 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600  font-medium rounded-lg transition-colors"style={{color:"white"}}
                   >
                     Close
                   </button>

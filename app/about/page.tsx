@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar';
 import { Timeline } from '@/components/Timeline';
 import Values from '@/components/Values';
 import Footer from '@/components/Footer';
+
  const data = [
   {
     title: "1986",
@@ -156,13 +157,13 @@ Today, with decades of trust earned and hundreds of success stories written, we 
 
       {/* Hero Overlay Content – unchanged */}
       <div className="absolute text-left  top-[70%] sm:top-[60%] left-1/2 sm:left-[35%] transform -translate-x-1/2 -translate-y-1/2 px-4 w-full sm:w-auto">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white drop-shadow-lg">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold  drop-shadow-lg" style={{color:"white"}}>
           Who We Are <span className='text-[#2BC99C] text-4xl sm:text-5xl md:text-6xl lg:text-7xl'>.</span>
         </h1>
-        <p className="mt-6 sm:mt-4 text-lg sm:text-lg md:text-xl lg:text-2xl text-gray-100 drop-shadow-md">
+        <p className="mt-6 sm:mt-4 text-lg sm:text-lg md:text-xl lg:text-2xl drop-shadow-md"style={{color:"white"}}>
           Unwavering dedication to financial excellence and professional integrity.
         </p>
-        <p className='mt-8 sm:mt-8 text-base sm:text-base md:text-lg lg:text-xl text-gray-200 border-l-4 border-[#2BC99C] pl-3 sm:pl-4'>
+        <p className='mt-8 sm:mt-8 text-base sm:text-base md:text-lg lg:text-xl  border-l-4 border-[#2BC99C] pl-3 sm:pl-4' style={{color:"white"}}>
           We are not just your accountants; we are your strategic allies. <span className='font-bold'>Asija</span> combines deep-seated expertise with a forward-thinking mindset to deliver more than just numbers...
         </p>
       </div>
