@@ -447,7 +447,7 @@ export default function ServicesContent() {
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className={`fixed bottom-0 left-0 right-0 h-screen z-50 overflow-hidden shadow-2xl border-t ${theme === 'light' ? 'bg-gradient-to-br from-gray-50 via-white to-gray-100 border-gray-300' : 'bg-gradient-to-br from-[#0a0a0a] via-[#111111] to-[#0f0f0f] border-gray-800'}`}
+              className={`fixed bottom-0 left-0 right-0 h-[80vh] z-50 overflow-hidden shadow-2xl border-t ${theme === 'light' ? 'bg-gradient-to-br from-gray-50 via-white to-gray-100 border-gray-300' : 'bg-gradient-to-br from-[#0a0a0a] via-[#111111] to-[#0f0f0f] border-gray-800'}`}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="relative h-48 md:h-64 overflow-hidden">
