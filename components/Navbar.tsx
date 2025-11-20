@@ -289,7 +289,7 @@ export default function Navbar() {
     if (!subs || subs.length === 0) return <p className="text-white/50 italic text-sm">No subitems available.</p>;
 
     return (
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-x-12 gap-y-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6">
         {subs.map((sub, index) => {
           if (typeof sub === 'string') {
             return (
@@ -304,30 +304,12 @@ export default function Navbar() {
             // This is a service item with title and items array
             return (
               <div key={(sub as any).title} className="space-y-3">
-                <h4 className="text-[#1DCD9F] font-semibold text-base mb-1">{(sub as any).title}</h4>
-                <ul className="space-y-2">
-                  {(sub as any).items.map((item: string, idx: number) => (
-                    <li key={idx}>
-                      <Link 
-                        href={(sub as any).href || '/services'}
-                        className="text-left text-white/70 hover:text-white text-sm transition-all hover:translate-x-1 inline-block py-0.5"
-                      >
-                        {item}
-                      </Link>
-                    </li>
-                  ))}
-                  {(sub as any).insights && (
-                    <li className="pt-1">
-                      <Link 
-                        href={(sub as any).href || '/services'}
-                        className="text-left text-[#1DCD9F] text-sm font-medium hover:underline inline-flex items-center gap-1 group"
-                      >
-                        View Insights
-                        <ArrowRightIcon />
-                      </Link>
-                    </li>
-                  )}
-                </ul>
+                <Link 
+                  href={(sub as any).href || '/services'}
+                  className="text-[#1DCD9F] font-semibold text-base mb-1 hover:text-white transition-colors block"
+                >
+                  {(sub as any).title}
+                </Link>
               </div>
             );
           } else if ('href' in sub && 'label' in sub) {
@@ -378,22 +360,12 @@ export default function Navbar() {
               // This is a service item with title and items array
               return (
                 <div key={(sub as any).title} className="space-y-2">
-                  <h5 className="text-[#1DCD9F] font-semibold text-sm">{(sub as any).title}</h5>
-                  <ul className="space-y-1.5 pl-3">
-                    {(sub as any).items.map((item: string, idx: number) => (
-                      <li key={idx}>
-                        <Link 
-                          href={(sub as any).href || '/services'}
-                          style={{
-                            color: theme === 'light' ? '#6b7280' : '#ffffff',
-                          }}
-                          className="text-left text-xs transition-all hover:translate-x-1 inline-block"
-                        >
-                          {item}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+                  <Link 
+                    href={(sub as any).href || '/services'}
+                    className="text-[#1DCD9F] font-semibold text-sm block hover:underline"
+                  >
+                    {(sub as any).title}
+                  </Link>
                 </div>
               );
             } else if ('href' in sub && 'label' in sub) {
