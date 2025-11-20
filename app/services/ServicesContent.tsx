@@ -351,13 +351,13 @@ export default function ServicesContent() {
     <div className="min-h-screen bg-theme text-white">
       <Navbar />
       {/* Hero */}
-      <section className="relative h-[50vh] sm:h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className='absolute inset-x-0 top-0 h-[100vh] bg-gradient-to-t from-black via-black to-black/70 pointer-events-none'></div>
         <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop" alt="Financial Excellence" className="absolute inset-0 w-full h-full object-cover opacity-40" />
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }} className="absolute left-[0%] sm:left-[2%] top-[40%] sm:top-[50%] z-10 text-left px-4 sm:px-6 max-w-6xl mx-auto w-full">
+        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }} className="absolute left-[0%] sm:left-[2%] top-[60%] sm:top-[50%] z-10 text-left px-4 sm:px-6 max-w-6xl mx-auto w-full">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-6 text-white">Our Services<span className="text-[#1DCD9F]">.</span></h1>
-          <p className="mt-1 sm:mt-4 text-lg sm:text-lg md:text-xl lg:text-2xl drop-shadow-md text-white">Comprehensive Financial Solutions for Your Success</p>
-          <p className="mt-2 sm:mt-8 text-base sm:text-base md:text-lg lg:text-xl border-l-4 border-[#2BC99C] pl-3 sm:pl-4 text-white">
+          <p className="mt-2 sm:mt-4 text-lg sm:text-lg md:text-xl lg:text-2xl drop-shadow-md text-white">Comprehensive Financial Solutions for Your Success</p>
+          <p className="mt-6 sm:mt-8 text-base sm:text-base md:text-lg lg:text-xl border-l-4 border-[#2BC99C] pl-3 sm:pl-4 text-white">
             Delivering excellence from audit to advisory, we guide your financial journey with expertise and integrity.<br />
             We turn compliance into confidence and challenges into growth opportunities.
           </p>
