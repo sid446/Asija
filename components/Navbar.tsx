@@ -625,30 +625,50 @@ export default function Navbar() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: idx * 0.05 }}
                     >
-                      <button
-                        onClick={() => {
-                          if (item.subs && item.subs.length > 0) {
-                            setMobileOpenItem(mobileOpenItem === item.label ? null : item.label);
-                          } else {
-                            setMobileMenuOpen(false);
-                          }
-                        }}
+                      <div
+                        className="flex items-center justify-between hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#1DCD9F] w-full"
                         style={{
                           color: theme === 'light' ? '#1f2937' : '#ffffff',
-                          backgroundColor: theme === 'light' ? 'transparent' : 'transparent',
                         }}
-                        className="text-left font-medium text-base py-3 px-4 hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#1DCD9F] w-full flex items-center justify-between"
                       >
-                        {item.translationKey ? t(item.translationKey) : item.label}
-                        {item.subs && item.subs.length > 0 && (
-                          <motion.div
-                            animate={{ rotate: mobileOpenItem === item.label ? 180 : 0 }}
-                            transition={{ duration: 0.2 }}
+                        {item.href ? (
+                          <Link
+                            href={item.href}
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="text-left font-medium text-base py-3 px-4 flex-1"
                           >
-                            <ChevronDownIcon />
-                          </motion.div>
+                            {item.translationKey ? t(item.translationKey) : item.label}
+                          </Link>
+                        ) : (
+                          <button
+                            onClick={() => {
+                              if (item.subs && item.subs.length > 0) {
+                                setMobileOpenItem(mobileOpenItem === item.label ? null : item.label);
+                              }
+                            }}
+                            className="text-left font-medium text-base py-3 px-4 flex-1"
+                          >
+                            {item.translationKey ? t(item.translationKey) : item.label}
+                          </button>
                         )}
-                      </button>
+
+                        {item.subs && item.subs.length > 0 && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setMobileOpenItem(mobileOpenItem === item.label ? null : item.label);
+                            }}
+                            className="p-3"
+                          >
+                            <motion.div
+                              animate={{ rotate: mobileOpenItem === item.label ? 180 : 0 }}
+                              transition={{ duration: 0.2 }}
+                            >
+                              <ChevronDownIcon />
+                            </motion.div>
+                          </button>
+                        )}
+                      </div>
                       <AnimatePresence>
                         {mobileOpenItem === item.label && renderMobileSubItems(item.subs)}
                       </AnimatePresence>
