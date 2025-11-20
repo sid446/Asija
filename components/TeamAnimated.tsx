@@ -499,17 +499,25 @@ export default function TeamAnimated() {
                 <div className="space-y-5 mb-10">
                   {selectedMember.specialization && (
                     <div className="flex items-start gap-4">
-                      <span className="text-gray-400 font-semibold min-w-[180px] text-sm">Specialization</span>
-                      <span className="text-gray-500">:</span>
-                      <span className="text-white flex-1 text-sm leading-relaxed">{selectedMember.specialization}</span>
+                      <span className={`font-semibold min-w-[180px] text-sm ${
+                        theme === 'light' ? 'text-gray-700' : 'text-gray-400'
+                      }`}>Specialization</span>
+                      <span className={theme === 'light' ? 'text-gray-600' : 'text-gray-500'}>:</span>
+                      <span className={`flex-1 text-sm leading-relaxed ${
+                        theme === 'light' ? 'text-gray-900' : 'text-white'
+                      }`}>{selectedMember.specialization}</span>
                     </div>
                   )}
 
                   {selectedMember.experience && (
                     <div className="flex items-start gap-4">
-                      <span className="text-gray-400 font-semibold min-w-[180px] text-sm">Years of Experience {selectedMember.membership && `/ Membership`}</span>
-                      <span className="text-gray-500">:</span>
-                      <span className="text-white flex-1 text-sm">
+                      <span className={`font-semibold min-w-[180px] text-sm ${
+                        theme === 'light' ? 'text-gray-700' : 'text-gray-400'
+                      }`}>Years of Experience {selectedMember.membership && `/ Membership`}</span>
+                      <span className={theme === 'light' ? 'text-gray-600' : 'text-gray-500'}>:</span>
+                      <span className={`flex-1 text-sm ${
+                        theme === 'light' ? 'text-gray-900' : 'text-white'
+                      }`}>
                         {selectedMember.experience} {selectedMember.membership && `/ ${selectedMember.membership}`}
                       </span>
                     </div>
@@ -517,16 +525,22 @@ export default function TeamAnimated() {
 
                   {selectedMember.associationYears && (
                     <div className="flex items-start gap-4">
-                      <span className="text-gray-400 font-semibold min-w-[180px] text-sm">Association with the firm</span>
-                      <span className="text-gray-500">:</span>
-                      <span className="text-white flex-1 text-sm">{selectedMember.associationYears}</span>
+                      <span className={`font-semibold min-w-[180px] text-sm ${
+                        theme === 'light' ? 'text-gray-700' : 'text-gray-400'
+                      }`}>Association with the firm</span>
+                      <span className={theme === 'light' ? 'text-gray-600' : 'text-gray-500'}>:</span>
+                      <span className={`flex-1 text-sm ${
+                        theme === 'light' ? 'text-gray-900' : 'text-white'
+                      }`}>{selectedMember.associationYears}</span>
                     </div>
                   )}
 
                   {selectedMember.mobile && (
                     <div className="flex items-start gap-4">
-                      <span className="text-gray-400 font-semibold min-w-[180px] text-sm">Mobile No.</span>
-                      <span className="text-gray-500">:</span>
+                      <span className={`font-semibold min-w-[180px] text-sm ${
+                        theme === 'light' ? 'text-gray-700' : 'text-gray-400'
+                      }`}>Mobile No.</span>
+                      <span className={theme === 'light' ? 'text-gray-600' : 'text-gray-500'}>:</span>
                       <a href={`tel:${selectedMember.mobile}`} className="text-[#1DCD9F] hover:text-[#19b892] flex-1 text-sm transition-colors">
                         {selectedMember.mobile}
                       </a>
@@ -535,8 +549,10 @@ export default function TeamAnimated() {
 
                   {selectedMember.email && (
                     <div className="flex items-start gap-4">
-                      <span className="text-gray-400 font-semibold min-w-[180px] text-sm">Email</span>
-                      <span className="text-gray-500">:</span>
+                      <span className={`font-semibold min-w-[180px] text-sm ${
+                        theme === 'light' ? 'text-gray-700' : 'text-gray-400'
+                      }`}>Email</span>
+                      <span className={theme === 'light' ? 'text-gray-600' : 'text-gray-500'}>:</span>
                       <a href={`mailto:${selectedMember.email}`} className="text-[#1DCD9F] hover:text-[#19b892] flex-1 text-sm break-all transition-colors">
                         {selectedMember.email}
                       </a>
@@ -548,7 +564,9 @@ export default function TeamAnimated() {
 
                 {/* Description */}
                 <div className="mb-12">
-                  <p className="text-gray-300 leading-relaxed whitespace-pre-line text-justify text-sm">
+                  <p className={`leading-relaxed whitespace-pre-line text-justify text-sm ${
+                    theme === 'light' ? 'text-gray-800' : 'text-gray-300'
+                  }`}>
                     {selectedMember.description}
                   </p>
                 </div>
