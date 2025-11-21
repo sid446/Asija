@@ -358,10 +358,10 @@ export default function IndustriesContent() {
                     
                     {page.leftContent && (
                       <div className={`relative z-10 flex flex-col items-center justify-center h-full px-8 text-center pointer-events-auto transition-all duration-1000 pt-24 ${isExpandedLeft ? 'max-w-4xl mx-auto' : 'max-w-md mx-auto'}`}>
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6 drop-shadow-lg">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 drop-shadow-lg">
                           {page.leftContent.heading}
                         </h2>
-                        <p className="text-md sm:text-lg text-gray-300 leading-relaxed mb-8">
+                        <p className="text-md sm:text-lg text-gray-300 leading-relaxed mb-4">
                           {page.leftContent.description}
                         </p>
                         
@@ -410,11 +410,11 @@ export default function IndustriesContent() {
                     {page.rightBgImage && <div className="absolute inset-0 bg-black/40" />}
                     
                     {page.rightContent && (
-                      <div className={`relative z-10 flex flex-col items-center justify-center h-full px-8 text-center pointer-events-auto transition-all duration-1000 ${isExpandedRight ? 'max-w-4xl mx-auto' : 'max-w-md mx-auto'} ${isMobile ? 'pb-24' : 'pt-24'}`}>
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6 drop-shadow-lg">
+                      <div className={`relative z-10 flex flex-col items-center justify-center h-full px-8 text-center pointer-events-auto transition-all duration-1000 ${isExpandedRight ? 'max-w-4xl mx-auto' : 'max-w-md mx-auto'} ${isMobile ? 'pb-15' : 'pt-24'}`}>
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 drop-shadow-lg">
                           {page.rightContent.heading}
                         </h2>
-                        <p className="text-sm sm:text-lg text-gray-300 leading-relaxed mb-8">
+                        <p className="text-sm sm:text-lg text-gray-300 leading-relaxed mb-4">
                           {page.rightContent.description}
                         </p>
 
