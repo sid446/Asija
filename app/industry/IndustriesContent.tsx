@@ -270,7 +270,7 @@ export default function IndustriesContent() {
 
   return (
     <>
-      <div className="relative w-full h-screen bg-black text-white overflow-hidden">
+      <div className="relative w-full h-dvh bg-black text-white overflow-hidden touch-none">
         <Navbar />
 
         {/* Full-Screen Scroll Adventure */}
@@ -357,7 +357,7 @@ export default function IndustriesContent() {
                     {page.leftBgImage && <div className="absolute inset-0 bg-black/40" />}
                     
                     {page.leftContent && (
-                      <div className={`relative z-10 flex flex-col items-center justify-center h-full px-8 text-center pointer-events-auto transition-all duration-1000 ${isExpandedLeft ? 'max-w-4xl mx-auto' : 'max-w-md mx-auto'}`}>
+                      <div className={`relative z-10 flex flex-col items-center justify-center h-full px-8 text-center pointer-events-auto transition-all duration-1000 pt-24 ${isExpandedLeft ? 'max-w-4xl mx-auto' : 'max-w-md mx-auto'}`}>
                         <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 drop-shadow-lg">
                           {page.leftContent.heading}
                         </h2>
@@ -410,7 +410,7 @@ export default function IndustriesContent() {
                     {page.rightBgImage && <div className="absolute inset-0 bg-black/40" />}
                     
                     {page.rightContent && (
-                      <div className={`relative z-10 flex flex-col items-center justify-center h-full px-8 text-center pointer-events-auto transition-all duration-1000 ${isExpandedRight ? 'max-w-4xl mx-auto' : 'max-w-md mx-auto'}`}>
+                      <div className={`relative z-10 flex flex-col items-center justify-center h-full px-8 text-center pointer-events-auto transition-all duration-1000 ${isExpandedRight ? 'max-w-4xl mx-auto' : 'max-w-md mx-auto'} ${isMobile ? 'pb-24' : 'pt-24'}`}>
                         <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 drop-shadow-lg">
                           {page.rightContent.heading}
                         </h2>
@@ -479,7 +479,7 @@ export default function IndustriesContent() {
           <div 
             ref={footerRef}
             tabIndex={0} // Make focusable for keyboard scrolling
-            className={`absolute inset-0 w-full  bg-[#2a2a2a] overflow-y-auto transition-transform duration-1000 ease-in-out z-30 outline-none pointer-events-auto [&::-webkit-scrollbar]:hidden ${
+            className={`absolute inset-0 w-full  bg-[#2a2a2a] overflow-y-auto transition-transform duration-1000 ease-in-out z-30 outline-none pointer-events-auto touch-pan-y [&::-webkit-scrollbar]:hidden ${
               showFooter ? 'translate-y-0' : 'translate-y-full'
             }`}
             style={{ overscrollBehavior: 'contain', scrollbarWidth: 'none' }}
