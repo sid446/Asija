@@ -8,6 +8,8 @@ import { ArrowRight, Calendar, ShieldCheck, Users, Zap, GraduationCap, Globe, Ch
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import { useTheme } from '@/components/ThemeProvider';
+import CTA from '@/components/ui/CTA';
+import WhyChooseUs from '@/components/ui/WhyChooseUs';
 
 interface ServiceGroup {
   title: string;
@@ -381,61 +383,10 @@ export default function ServicesContent() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-10 sm:py-20 px-4 sm:px-6 md:px-12 lg:px-20" style={{ backgroundColor: theme === 'dark' ? '#1a1a1a' : '#f0f0f0' }}>
-        <div className="mx-auto max-w-5xl space-y-8 sm:space-y-12">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="relative z-10 mx-auto max-w-2xl space-y-3 sm:space-y-6 text-center">
-            <h2 className="text-balance text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold">
-              Why Choose <span className="text-[#1DCD9F]">Us</span>
-            </h2>
-            <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-400">
-              13+ years of expertise, 500+ trusted clients, and one partner for all your financial needs.
-            </p>
-          </motion.div>
-
-          <div className="relative mx-auto max-w-7xl divide-x divide-y divide-[#2c2c2c] border border-[#2c2c2c] *:p-4 sm:*:p-6 md:*:p-8 grid sm:grid-cols-2 lg:grid-cols-3" style={{ backgroundColor: theme === 'dark' ? '#202020' : '#ffffff' }}>
-            {[
-              { title: "13+ Years Expertise", desc: "Deep domain knowledge across audit, tax, corporate law, banking, and advisory.", icon: Calendar },
-              { title: "500+ Happy Clients", desc: "From startups to listed companies across diverse industries trust us.", icon: Users },
-              { title: "One-Stop Partner", desc: "Audit, tax, corporate law, banking, and risk advisory under one roof.", icon: ShieldCheck },
-              { title: "Proactive Approach", desc: "We optimize tax, reduce risk, and drive sustainable growth.", icon: Zap },
-              { title: "Expert Team", desc: "Qualified CAs, Company Secretaries, and Lawyers as your extended team.", icon: GraduationCap },
-              { title: "Pan-India Presence", desc: "Seamless virtual and physical support with secure, paperless processes.", icon: Globe },
-            ].map((item, i) => {
-              const Icon = item.icon;
-              return (
-                <motion.div key={i} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.05, duration: 0.5 }} className="space-y-3">
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <Icon className="h-3 sm:h-4 w-3 sm:w-4 text-[#1DCD9F] shrink-0" />
-                    <h3 className="text-xs sm:text-sm font-semibold text-white">{item.title}</h3>
-                  </div>
-                  <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">{item.desc}</p>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      <WhyChooseUs/>
 
       {/* CTA */}
-      <section className="py-8 sm:py-12 bg-[#265B4D]">
-        <div className="max-w-5xl mx-auto text-center px-4 sm:px-6">
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 text-white">Ready to Transform Your Business?</h2>
-          <p className="text-sm sm:text-base md:text-lg mb-6 sm:mb-12 max-w-3xl mx-auto text-gray-300">
-            Let's discuss how our expertise can help you achieve financial excellence and sustainable growth.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
-            <a href="#contact" className="inline-flex items-center justify-center gap-2 sm:gap-3 bg-[#1DCD9F] hover:bg-[#19b892] text-black font-bold px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm transition-all transform hover:scale-105 shadow-2xl">
-              Get Started Now
-              <svg className="w-4 sm:w-6 h-4 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
-            <a href="tel:+911234567890" className="inline-flex items-center justify-center gap-2 sm:gap-3 border-2 border-[#1DCD9F] text-[#1DCD9F] hover:bg-[#1DCD9F] hover:text-black font-bold px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm transition-all">
-              Call Us Today
-            </a>
-          </div>
-        </div>
-      </section>
+      <CTA />
 
       {/* Modal */}
       <AnimatePresence>
