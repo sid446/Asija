@@ -358,7 +358,7 @@ export default function IndustriesContent() {
                     
                     {page.leftContent && (
                       <div className={`relative z-10 flex flex-col items-center justify-center h-full px-8 text-center pointer-events-auto transition-all duration-1000 pt-24 ${isExpandedLeft ? 'max-w-4xl mx-auto' : 'max-w-md mx-auto'}`}>
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 drop-shadow-lg">
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-4 drop-shadow-lg">
                           {page.leftContent.heading}
                         </h2>
                         <p className="text-md sm:text-lg text-gray-300 leading-relaxed mb-4">
@@ -367,7 +367,7 @@ export default function IndustriesContent() {
                         
                         {isExpandedLeft && page.leftContent.details && (
                            <div className="animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-100">
-                             <p className="text-lg sm:text-xl text-gray-200 leading-relaxed mb-8">
+                             <p className="text-md sm:text-lg text-gray-200 leading-relaxed mb-8">
                                {page.leftContent.details}
                              </p>
                              <button
