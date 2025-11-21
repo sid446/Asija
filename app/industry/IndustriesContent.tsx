@@ -410,7 +410,7 @@ export default function IndustriesContent() {
                     {page.rightBgImage && <div className="absolute inset-0 bg-black/40" />}
                     
                     {page.rightContent && (
-                      <div className={`relative z-10 flex flex-col items-center justify-center h-full px-8 text-center pointer-events-auto transition-all duration-1000 ${isExpandedRight ? 'max-w-4xl mx-auto' : 'max-w-md mx-auto'} ${isMobile ? 'pb-15' : 'pt-24'}`}>
+                      <div className={`relative z-10 flex flex-col items-center justify-center h-full px-8 text-center pointer-events-auto transition-all duration-1000 ${isExpandedRight ? 'max-w-4xl mx-auto' : 'max-w-md mx-auto'} ${isMobile ? (isExpandedRight ? 'pt-24 pb-24' : 'pb-24') : 'pt-24'}`}>
                         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 drop-shadow-lg">
                           {page.rightContent.heading}
                         </h2>
