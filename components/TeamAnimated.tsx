@@ -342,26 +342,26 @@ export default function TeamAnimated() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
+            className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4"
           >
             {members.map((member, index) => (
               <motion.div
                 key={index}
                 variants={item}
-                className="group cursor-pointer"
+                className="group cursor-pointer flex flex-col items-center"
                 onClick={() => setSelectedMember(member)}
                 whileTap={{ scale: 0.98 }}
               >
-                <div className="relative overflow-hidden rounded-lg">
+                <div className="relative overflow-hidden rounded-lg w-64">
                   <img
-                    className="w-full h-96 object-cover object-top group-hover:h-93 grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
+                    className="w-full h-75 object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
                     src={member.avatar}
                     alt={`${member.name} - ${member.role}`}
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#1DCD9F]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
-                <div className="mt-4">
+                <div className="mt-4 text-center">
                   <h3 className="text-lg font-semibold text-white group-hover:text-[#1DCD9F] transition-colors duration-300">
                     {member.name}
                   </h3>

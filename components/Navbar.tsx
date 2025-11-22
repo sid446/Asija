@@ -110,6 +110,7 @@ const leftMenu: MenuItem[] = [
   { 
     label: 'Industries',
     translationKey: 'navbar.industries',
+    href: '/industry',
     subs: [
       { label: 'Banking and Financial Institutions', href: '/industry?section=Banking and Financial Institutions' },
       { label: 'Education', href: '/industry?section=Education' },
