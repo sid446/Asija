@@ -118,17 +118,24 @@ const HeroSection = ({ isActive }: { isActive: boolean }) => (
         : '-translate-y-full'
     }`}
   >
-    <div 
-      className="relative w-full h-full bg-cover bg-center"
-      style={{ backgroundImage: "url(https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop)" }}
-    >
-      <div className="absolute inset-0  bg-black/50" />
-      <div className="absolute  text-left  top-[70%] sm:top-[70%] left-1/2 sm:left-[25%] transform -translate-x-1/2 -translate-y-1/2 px-4 w-full sm:w-auto">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 drop-shadow-lg">
+    <div className="relative w-full h-full">
+      <video
+        className="absolute inset-0 w-full h-full object-cover"
+        autoPlay
+        loop
+        muted
+        playsInline
+      >
+        <source src="/vid1.mp4" type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 bg-black/50" />
+      <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/10 to-transparent" />
+      <div className="absolute text-left top-[70%] sm:top-[75%] left-1/2 sm:left-[33%] transform -translate-x-1/2 -translate-y-1/2 px-4 w-full sm:w-auto">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-10 drop-shadow-lg">
           Industries We Serve<span className='text-[#2BC99C] text-4xl sm:text-5xl md:text-6xl lg:text-7xl'> .</span>
         </h1>
-        <p className="text-lg sm:text-lg md:text-xl lg:text-2xl border-l-4  border-[#2BC99C] pl-3 sm:pl-4 text-gray-200 max-w-2xl leading-relaxed  drop-shadow-md">
-          Deep expertise across sectors. One trusted partner for all your financial needs.
+        <p className="text-md sm:text-md md:text-lg lg:text-xl border-l-4 border-[#2BC99C] pl-3 sm:pl-4 text-gray-200 w-4xl leading-relaxed drop-shadow-md">
+          Deep expertise across sectors. From banking and infrastructure to healthcare and retail, we are your one trusted partner for comprehensive financial solutions, regulatory compliance, and strategic growth.
         </p>
       </div>
     </div>

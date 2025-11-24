@@ -354,10 +354,18 @@ export default function ServicesContent() {
       <Navbar />
       {/* Hero */}
       <div className='relative w-full h-[100vh]'>
-        <div className='absolute inset-x-0 top-0 h-[100vh] bg-gradient-to-t from-black/70 via-black/40 to-transparent pointer-events-none'></div>
-        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop" alt="Financial Excellence" className="w-full h-[100vh] object-cover" />
+        <div className='absolute inset-x-0 top-0 h-[100vh] bg-gradient-to-t from-black/70 via-black/40 to-transparent pointer-events-none z-10'></div>
+        <video
+          className="absolute inset-0 w-full h-full object-cover"
+          autoPlay
+          loop
+          muted
+          playsInline
+        >
+          <source src="/vid124.mp4" type="video/mp4" />
+        </video>
         
-        <div className="absolute text-left top-[60%] sm:top-[60%] left-1/2 sm:left-[35%] transform -translate-x-1/2 -translate-y-1/2 px-4 w-full sm:w-auto">
+        <div className="absolute text-left top-[60%] sm:top-[60%] left-1/2 sm:left-[35%] transform -translate-x-1/2 -translate-y-1/2 px-4 w-full sm:w-auto z-20">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold drop-shadow-lg" style={{color:"white"}}>Our Services<span className="text-[#2BC99C] text-4xl sm:text-5xl md:text-6xl lg:text-7xl">.</span></h1>
           <p className="mt-4 sm:mt-4 text-lg sm:text-lg md:text-xl lg:text-2xl drop-shadow-md" style={{color:"white"}}>Comprehensive Financial Solutions for Your Success</p>
           <p className="mt-6 sm:mt-8 text-base sm:text-base md:text-lg lg:text-xl border-l-4 border-[#2BC99C] pl-3 sm:pl-4" style={{color:"white"}}>
@@ -399,12 +407,12 @@ export default function ServicesContent() {
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className={`fixed inset-0 z-50 overflow-hidden shadow-2xl border-t ${theme === 'light' ? 'bg-gradient-to-br from-gray-50 via-white to-gray-100 border-gray-300' : 'bg-gradient-to-br from-[#0a0a0a] via-[#111111] to-[#0f0f0f] border-gray-800'}`}
+              className={`fixed inset-0 z-50 overflow-hidden shadow-2xl border-t ${theme === 'light' ? 'bg-linear-to-br from-gray-50 via-white to-gray-100 border-gray-300' : 'bg-linear-to-br from-[#0a0a0a] via-[#111111] to-[#0f0f0f] border-gray-800'}`}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="relative h-48 md:h-64 overflow-hidden">
                 <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${selectedService.imgSrc})` }} />
-                <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/70 to-[#0a0a0a]" />
+                <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/70 to-[#0a0a0a]" />
                 <button onClick={() => setSelectedService(null)} className="absolute top-6 right-6 w-12 h-12 rounded-full backdrop-blur-sm transition-all group border bg-black/40 border-white/20 hover:bg-[#1DCD9F]">
                   <svg className="w-6 h-6 mx-auto text-white group-hover:text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -447,14 +455,14 @@ export default function ServicesContent() {
                     </div>
                     <div className="space-y-4">
                       {selectedService.benefits.map((benefit, i) => (
-                        <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} className={`flex items-start gap-4 p-5 rounded-lg border-l-4 border-[#1DCD9F] bg-gradient-to-r from-gray-900/30 to-transparent`}>
+                        <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} className={`flex items-start gap-4 p-5 rounded-lg border-l-4 border-[#1DCD9F] bg-linear-to-r from-gray-900/30 to-transparent`}>
                           <span className={`text-sm leading-relaxed ${theme === 'light' ? 'text-gray-700' : 'text-gray-400'}`}>{benefit}</span>
                         </motion.div>
                       ))}
                     </div>
                   </div>
 
-                  <div className="relative overflow-hidden bg-gradient-to-r p-10 rounded-xl border border-[#1DCD9F]/20 from-[#1DCD9F]/5 via-[#1DCD9F]/10 to-transparent">
+                  <div className="relative overflow-hidden bg-linear-to-r p-10 rounded-xl border border-[#1DCD9F]/20 from-[#1DCD9F]/5 via-[#1DCD9F]/10 to-transparent">
                     <div className="relative text-center">
                       <h3 className={`text-2xl md:text-3xl font-bold mb-3 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Ready to Get Started?</h3>
                       <p className={`mb-8 text-base max-w-2xl mx-auto ${theme === 'light' ? 'text-gray-700' : 'text-gray-400'}`}>
