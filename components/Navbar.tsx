@@ -4,6 +4,8 @@ import { useTheme } from './ThemeProvider';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation, LanguageSwitcher } from './TranslationProvider';
 import Link from 'next/link';
+import { useSession, signOut } from "next-auth/react";
+import { LogIn } from 'lucide-react';
 
 type MenuItem = {
   label: string;
@@ -180,17 +182,19 @@ const LinkedInIcon = () => (
   </svg>
 );
 
+const WhatsAppIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
+    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+  </svg>
+);
+
 const ChevronDownIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4">
     <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
   </svg>
 );
 
-const ArrowRightIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-  </svg>
-);
+
 
 /* --------------------------------------------------------------- */
 /*  NAV ITEM                                                       */
@@ -270,10 +274,12 @@ const NavItem = ({ label, isIcon, icon, isActive, hasDropdown, href }: NavItemPr
 export default function Navbar() {
   const { t } = useTranslation();
   const { theme } = useTheme();
+  const { data: session } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [mobileOpenItem, setMobileOpenItem] = useState<string | null>(null);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -401,7 +407,7 @@ export default function Navbar() {
             : 'h-20 bg-[#2a2a2a]'
         }`}
       >
-        <div className="h-full flex justify-between items-center px-4 md:px-20 w-full mx-auto">
+        <div className="h-full flex justify-between items-center px-4 md:px-8 w-full mx-auto">
           {/* LEFT SIDE */}
           <div className="flex gap-8 lg:gap-10 items-center">
             
@@ -453,6 +459,18 @@ export default function Navbar() {
                   />
                 </motion.div>
               ))}
+              {session && (
+                <motion.div
+                  className="relative"
+                  onMouseEnter={() => setHoveredItem(null)}
+                  onMouseLeave={() => setHoveredItem(null)}
+                >
+                  <NavItem 
+                    label="Policies"
+                    href="/policies"
+                  />
+                </motion.div>
+              )}
             </nav>
           </div>
 
@@ -474,13 +492,82 @@ export default function Navbar() {
                 />
               </motion.div>
             ))}
+
+            {/* Social Icons Desktop */}
+            <div className="flex items-center gap-4 mr-2">
+               <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" className="w-5 h-5 text-white/70 hover:text-[#1DCD9F] transition-colors"><LinkedInIcon /></a>
+               <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="w-5 h-5 text-white/70 hover:text-[#1DCD9F] transition-colors"><InstagramIcon /></a>
+               <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" className="w-5 h-5 text-white/70 hover:text-[#1DCD9F] transition-colors"><WhatsAppIcon /></a>
+            </div>
+
             <div className='w-0.5 h-6 bg-zinc-500 mr-4' ></div>
 
             {/* Theme Toggle (moved from ThemeProvider) */}
-            <ThemeToggle />
+            {!session && <ThemeToggle />}
 
             {/* Language Switcher */}
-            <LanguageSwitcher />
+            {!session && <LanguageSwitcher />}
+
+            {/* Login/User Menu */}
+            {session ? (
+              <div className="relative ml-4">
+                <button 
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                  className="w-9 h-9 rounded-full bg-[#1DCD9F] text-black font-bold text-lg flex items-center justify-center hover:bg-[#17a380] transition-colors shadow-lg shadow-[#1DCD9F]/20"
+                >
+                  {session.user?.name ? session.user.name.charAt(0).toUpperCase() : 'U'}
+                </button>
+                
+                <AnimatePresence>
+                  {userMenuOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute right-0 mt-3 w-56 bg-[#2a2a2a] border border-white/10 rounded-xl shadow-2xl z-50"
+                    >
+                      <div className="py-1">
+                        <div className="px-4 py-3 border-b border-white/10">
+                          <p className="text-sm text-white font-medium truncate">{session.user?.name}</p>
+                          <p className="text-xs text-white/50 truncate">{session.user?.email}</p>
+                        </div>
+                        
+                        <div className="px-4 py-2 flex items-center justify-between hover:bg-white/5 transition-colors">
+                           <span className="text-sm text-white/90">Theme</span>
+                           <ThemeToggle />
+                        </div>
+                        <div className="px-4 py-2 flex items-center justify-between border-b border-white/10 hover:bg-white/5 transition-colors">
+                           <span className="text-sm text-white/90">Language</span>
+                           <LanguageSwitcher />
+                        </div>
+
+                        <Link 
+                          href="/policies" 
+                          className="block px-4 py-2.5 text-sm text-white/90 hover:bg-white/10 hover:text-[#1DCD9F] transition-colors"
+                          onClick={() => setUserMenuOpen(false)}
+                        >
+                          Account
+                        </Link>
+                        <button
+                          onClick={() => {
+                            setUserMenuOpen(false);
+                            signOut();
+                          }}
+                          className="block w-full text-left px-4 py-2.5 text-sm text-white/90 hover:bg-white/10 hover:text-red-400 transition-colors"
+                        >
+                          Logout
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
+               <Link href="/login" className="text-white hover:text-[#1DCD9F] text-sm font-medium ml-4 flex items-center justify-center gap-1">
+                 Login <LogIn size={15}/>
+               </Link>
+            )}
           </nav>
 
           {/* Mobile Menu Button */}
@@ -539,7 +626,7 @@ export default function Navbar() {
                     <motion.div
                       className="group-hover:translate-x-1 transition-transform"
                     >
-                      <ArrowRightIcon />
+                      <LogIn size={15}/>
                     </motion.div>
                   </button>
                 </div>
@@ -577,7 +664,7 @@ export default function Navbar() {
                 {/* Close Button + Top Controls */}
                 <div className="flex justify-between items-center mb-6">
                   <div className="flex items-center gap-2">
-                    <LanguageSwitcher />
+                    <LanguageSwitcher align="left" />
                     <ThemeToggle />
                   </div>
                   <button
@@ -648,7 +735,59 @@ export default function Navbar() {
                     </motion.div>
                   ))}
 
+                  {session && (
+                    <motion.div
+                      initial={{ opacity: 0, x: 50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: leftMenu.length * 0.05 }}
+                    >
+                      <Link
+                        href="/policies"
+                        onClick={() => setMobileMenuOpen(false)}
+                        style={{
+                          color: theme === 'light' ? '#1f2937' : '#ffffff',
+                        }}
+                        className="text-left font-medium text-base py-3 px-4 hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#1DCD9F] w-full block"
+                      >
+                        Policies
+                      </Link>
+                    </motion.div>
+                  )}
+
                   <div className="h-px bg-linear-to-r from-white/20 to-transparent my-2" />
+
+                  {/* Mobile Login/Logout */}
+                  <motion.div
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: (leftMenu.length + 1) * 0.05 }}
+                  >
+                     {session ? (
+                        <button
+                          onClick={() => {
+                            signOut();
+                            setMobileMenuOpen(false);
+                          }}
+                          style={{
+                            color: theme === 'light' ? '#1f2937' : '#ffffff',
+                          }}
+                          className="text-left font-medium text-base py-3 px-4 hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#1DCD9F] w-full block"
+                        >
+                          Logout
+                        </button>
+                     ) : (
+                        <Link
+                          href="/login"
+                          onClick={() => setMobileMenuOpen(false)}
+                          style={{
+                            color: theme === 'light' ? '#1f2937' : '#ffffff',
+                          }}
+                          className="text-left font-medium text-base py-3 px-4 hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#1DCD9F] w-full block"
+                        >
+                          Login
+                        </Link>
+                     )}
+                  </motion.div>
 
                   <motion.div
                     initial={{ opacity: 0, x: 50 }}
@@ -709,6 +848,15 @@ export default function Navbar() {
                     >
                       <LinkedInIcon />
                     </button>
+                    <button 
+                      style={{
+                        backgroundColor: theme === 'light' ? '#f3f4f6' : 'rgba(255,255,255,0.08)',
+                        color: theme === 'light' ? '#1f2937' : '#ffffff',
+                      }}
+                      className="w-12 h-12 flex items-center justify-center rounded-lg transition-all hover:scale-110"
+                    >
+                      <WhatsAppIcon />
+                    </button>
                   </motion.div>
                 </nav>
               </div>
@@ -732,16 +880,16 @@ function ThemeToggle() {
         color: theme === 'light' ? '#1f2937' : '#ffffff',
         borderColor: theme === 'light' ? '#e5e7eb' : '#374151',
       }}
-      className="p-2 rounded-md shadow-sm border transition-all duration-200"
+      className="p-1 rounded-md shadow-sm border transition-all duration-200"
       title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
     >
       {theme === 'dark' ? (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <circle cx="12" cy="12" r="4" />
           <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
         </svg>
       ) : (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
         </svg>
       )}

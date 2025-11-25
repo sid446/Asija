@@ -23,7 +23,7 @@ export default function Home() {
         <Hero />
 
         <div className="relative z-40">
-          <div className="h-[100vh] sm:h-[90vh]" />
+          <div className="h-screen sm:h-[90vh]" />
           <AboutUs />
           <Services />
           <IndustriesFlowMenu />

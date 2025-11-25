@@ -393,12 +393,12 @@ export default function TeamAnimated() {
     viewport={{ once: true }}
     transition={{ duration: 1, ease: "easeOut" }}
   >
-    <h2 className="text-2xl md:text-4xl font-bold text-white mb-6 leading-tight">
+    <h2 className="text-2xl md:text-4xl font-bold mb-6 leading-tight" style={{color:"white"}}>
       Your Success Is Our Legacy
       <span className="text-[#1DCD9F]">.</span>
     </h2>
     
-    <p className="text-sm md:text-md text-gray-200 mb-10 max-w-3xl mx-auto leading-relaxed">
+    <p className="text-sm md:text-md mb-10 max-w-3xl mx-auto leading-relaxed" style={{color:"white"}}>
       With over 39 years of excellence, Asija & Associates LLP continues to deliver trust, precision, 
       and strategic financial leadership to businesses and institutions across India and beyond.
     </p>

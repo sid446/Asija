@@ -3,6 +3,7 @@
 
 import { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Triangle, Texture, Geometry, Vec2 } from 'ogl';
+import { useTheme } from './ThemeProvider';
 
 // === SHADERS ===
 const vertexShader = `#version 300 es
@@ -173,7 +174,11 @@ void main() {
   col *= edgeFade(frag, uResolution, uOffset);
   col *= uIntensity;
 
-  fragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
+  float alpha = (col.r + col.g + col.b) / 3.0;
+  // Boost alpha slightly to make beams more visible
+  alpha = smoothstep(0.0, 0.2, alpha);
+
+  fragColor = vec4(col, alpha);
 }
 `;
 
@@ -212,7 +217,7 @@ interface BeamsProps {
   offset?: { x?: string | number; y?: string | number };
   hoverDampness?: number;
   rayCount?: number;
-  mixBlendMode?: 'lighten' | 'screen' | 'overlay' | 'none';
+  mixBlendMode?: 'lighten' | 'screen' | 'overlay' | 'normal' | 'none';
 }
 
 // === COMPONENT ===
@@ -228,6 +233,7 @@ const Beams: React.FC<BeamsProps> = ({
   rayCount,
   mixBlendMode = 'lighten',
 }) => {
+  const { theme } = useTheme();
   const containerRef = useRef<HTMLDivElement>(null);
   const programRef = useRef<Program | null>(null);
   const rendererRef = useRef<Renderer | null>(null);
@@ -420,10 +426,24 @@ const Beams: React.FC<BeamsProps> = ({
     program.uniforms.uOffset.value = [toPx(offset.x), toPx(offset.y)];
     program.uniforms.uRayCount.value = Math.max(0, Math.floor(rayCount ?? 0));
 
+    let activeColors = colors;
+    let activeMixBlendMode = mixBlendMode;
+
+    if (theme === 'light') {
+      // Green essence for light background
+      activeColors = ['#1DCD9F', '#34D399', '#059669']; 
+      activeMixBlendMode = 'normal';
+    }
+
+    const canvas = rendererRef.current?.gl?.canvas;
+    if (canvas) {
+      canvas.style.mixBlendMode = activeMixBlendMode !== 'none' ? activeMixBlendMode : '';
+    }
+
     let count = 0;
-    if (Array.isArray(colors) && colors.length > 0) {
+    if (Array.isArray(activeColors) && activeColors.length > 0) {
       const gl = renderer.gl;
-      const capped = colors.slice(0, 64);
+      const capped = activeColors.slice(0, 64);
       count = capped.length;
       const data = new Uint8Array(count * 4);
       for (let i = 0; i < count; i++) {
@@ -447,7 +467,7 @@ const Beams: React.FC<BeamsProps> = ({
       gradTex.needsUpdate = true;
     }
     program.uniforms.uColorCount.value = count;
-  }, [intensity, speed, animationType, colors, distort, offset, rayCount]);
+  }, [intensity, speed, animationType, colors, distort, offset, rayCount, theme, mixBlendMode]);
 
   return <div className="w-full h-full relative overflow-hidden" ref={containerRef} />;
 };

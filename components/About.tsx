@@ -2,7 +2,8 @@
 import React from 'react';
 import AboutCard from './AboutCard';
 import Beams from './Beams';
-import { useTranslation } from './TranslationProvider'; // ADD THIS
+import { useTranslation } from './TranslationProvider';
+import { useTheme } from './ThemeProvider';
 
 const cardsData = [
   {
@@ -62,30 +63,32 @@ const cardsData = [
 ];
 
 const About = () => {
-  const { t } = useTranslation(); // ADD THIS
+  const { t } = useTranslation();
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
   
   return (
-    <section className="relative bg-[#2a2a2a] w-full overflow-hidden">
+    <section className={`relative w-full overflow-hidden transition-colors duration-300 ${isLight ? 'bg-[#F0FDF9]' : 'bg-[#0D1F1A]'}`}>
       <div className="relative z-10 px-4 py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24">
         
         <div className="absolute inset-0 z-0">
           <Beams
-            intensity={1.3}
+            intensity={1.8}
             speed={0.5}
             animationType="rotate3d"
-            colors={['#1DCD9F', '#0EA578']}
+            colors={['#1DCD9F', '#34D399', '#0EA578']}
             distort={10}
             rayCount={10}
             mixBlendMode="lighten"
           />
         </div>
 
-        <div className="absolute inset-0 bg-black/20 z-10" />
+        <div className={`absolute inset-0 z-10 ${isLight ? 'bg-[#F0FDF9]/30' : 'bg-[#0D1F1A]/40'}`} />
 
         <div className="relative z-20 max-w-7xl mx-auto max-h-screen overflow-y-auto px-2 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 md:py-10 lg:py-12">
           <div className="pb-12 sm:pb-16 md:pb-20 lg:pb-28">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-center" style={{ color: '#ffffff' }}>
-              {t('about.title')} {/* UPDATED */}
+            <h1 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-center transition-colors ${isLight ? 'text-gray-900' : 'text-white'}`}>
+              {t('about.title')}
               <span className="text-[#1DCD9F] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold"> .</span>
             </h1>
 
@@ -93,20 +96,19 @@ const About = () => {
               mt-4 sm:mt-6 md:mt-8 lg:mt-10 text-sm sm:text-base md:text-lg lg:text-xl 
               italic font-light leading-relaxed text-center
               ${'sm:border-l-4 sm:border-[#1DCD9F] sm:pl-6 sm:text-left'} py-1 sm:py-2
-            `}
-              style={{ color: '#ffffff' }}
-            >
-              {t('about.quote')} {/* UPDATED */}
+              transition-colors ${isLight ? 'text-gray-700' : 'text-white'}
+            `}>
+              {t('about.quote')}
             </blockquote>
 
-            <div className="mt-6 sm:mt-8 md:mt-10 space-y-3 sm:space-y-4 text-gray-300 text-sm sm:text-base leading-relaxed font-light text-center sm:text-left">
-              <p style={{ color: '#ffffff' }}>{t('about.description1')}</p> {/* UPDATED */}
-              <p style={{ color: '#ffffff' }}>{t('about.description2')}</p> {/* UPDATED */}
+            <div className={`mt-6 sm:mt-8 md:mt-10 space-y-3 sm:space-y-4 text-sm sm:text-base leading-relaxed font-light text-center sm:text-left transition-colors ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
+              <p>{t('about.description1')}</p>
+              <p>{t('about.description2')}</p>
 
               <div className="hidden sm:block space-y-3 text-left">
-                <p style={{ color: '#ffffff' }}>{t('about.description3')}</p> {/* UPDATED */}
-                <p className="mt-3 text-sm sm:text-base" style={{ color: '#ffffff' }}>
-                  {t('about.description4')} {/* UPDATED */}
+                <p>{t('about.description3')}</p>
+                <p className="mt-3 text-sm sm:text-base">
+                  {t('about.description4')}
                 </p>
               </div>
             </div>
@@ -115,13 +117,12 @@ const About = () => {
       </div>
 
       <div className="relative z-30 -mt-12 sm:-mt-16 lg:-mt-20">
-        <div className="bg-[#2a2a2a]  shadow-2xl">
+        <div className={`shadow-2xl transition-colors duration-300 ${isLight ? 'bg-[#F0FDF9] border-t border-[#1DCD9F]/20' : 'bg-[#0D1F1A] border-t border-[#1DCD9F]/10'}`}>
           <div className="px-4 py-10 sm:px-6 sm:py-12 md:px-8 lg:px-12 xl:px-20">
             <div className="max-w-7xl mx-auto">
 
-              <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight  mb-8 sm:mb-12" 
-              >
-                {t('about.exploreStrengths')} {/* UPDATED */}
+              <h2 className={`text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight mb-8 sm:mb-12 transition-colors ${isLight ? 'text-gray-900' : 'text-white'}`}>
+                {t('about.exploreStrengths')}
                 <span className="text-[#1DCD9F] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold"> .</span>
               </h2>
 

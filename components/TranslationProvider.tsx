@@ -102,7 +102,7 @@ const languages = [
   { code: 'dz' as Language, name: 'Dzongkha', flag: '🇧🇹', nativeName: 'རྫོང་ཁ་' },
 ];
 
-export const LanguageSwitcher: React.FC = () => {
+export const LanguageSwitcher: React.FC<{ align?: 'left' | 'right' }> = ({ align = 'right' }) => {
   const { language, setLanguage, loading } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -111,34 +111,23 @@ export const LanguageSwitcher: React.FC = () => {
   return (
     <div className="relative">
       {/* ---------- Trigger ---------- */}
-      <motion.button
+            <motion.button
         onClick={() => setIsOpen(!isOpen)}
         disabled={loading}
-        className="flex items-center justify-center gap-2 px-2 py-1 bg-white/8 hover:bg-white/15 border border-white/15 rounded-lg transition-all disabled:opacity-50"
+        className="flex items-center justify-center gap-1 p-1 bg-white/8 hover:bg-white/15 border border-white/15 rounded-lg transition-all disabled:opacity-50"
         whileHover={{ scale: loading ? 1 : 1.05 }}
         whileTap={{ scale: loading ? 1 : 0.95 }}
+        title={currentLang.nativeName}
       >
-        <span className="text-sm text-white">{currentLang.flag}</span>
-        <span className="text-white text-xs font-medium hidden sm:inline">
-          {currentLang.nativeName}
-        </span>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 text-white">
+          <path strokeLinecap="round" strokeLinejoin="round" d="m10.5 21 5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 0 1 6-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 0 1-3.827-5.802" />
+        </svg>
         {loading ? (
-          <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin h-2 w-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
           </svg>
-        ) : (
-          <motion.svg
-            animate={{ rotate: isOpen ? 180 : 0 }}
-            transition={{ duration: 0.2 }}
-            className="w-4 h-4 text-white/70"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </motion.svg>
-        )}
+        ) : null}
       </motion.button>
 
       {/* ---------- Dropdown (inside the sidebar) ---------- */}
@@ -149,7 +138,7 @@ export const LanguageSwitcher: React.FC = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="absolute top-full left-0 mt-2 w-40 bg-[#252525] border border-white/10 rounded-xl shadow-2xl overflow-hidden z-10"
+            className={`absolute top-full ${align === 'right' ? 'right-0' : 'left-0'} mt-2 w-40 bg-[#252525] border border-white/10 rounded-xl shadow-2xl overflow-hidden z-10`}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-2 space-y-1">
