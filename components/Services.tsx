@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from './TranslationProvider'; // ADD THIS
+import Link from 'next/link';
 
 // Service data stays the same
 const serviceGroups = [
@@ -139,14 +140,16 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ group, index }) => {
                 )}
 
                 {group.insights && (
-                  <motion.button
-                    whileHover={{ x: 4 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="inline-flex items-center gap-2 text-accent text-sm font-semibold hover:underline"
-                  >
-                    {t('services.viewInsights')} {/* UPDATED */}
-                    <ChevronRight className="w-4 h-4" />
-                  </motion.button>
+                  <Link href={`/services?service=${encodeURIComponent(group.title)}`}>
+                    <motion.button
+                      whileHover={{ x: 4 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="inline-flex items-center gap-2 text-accent text-sm font-semibold hover:underline"
+                    >
+                      {t('services.viewInsights')} {/* UPDATED */}
+                      <ChevronRight className="w-4 h-4" />
+                    </motion.button>
+                  </Link>
                 )}
 
                 <div className="mt-6 pt-5 border-t border-theme">

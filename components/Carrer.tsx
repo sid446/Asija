@@ -1,5 +1,6 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
 
 import { useTranslation } from './TranslationProvider'
 import { useTheme } from './ThemeProvider'
@@ -88,19 +89,23 @@ function Career() {
             
             {/* Mobile-optimized button layout */}
             <div className='flex flex-col sm:flex-row gap-3 sm:gap-4 transition-all duration-1000 delay-800'>
-              <button 
-                className='w-full sm:w-auto px-6 sm:px-8 md:px-10 py-3.5 sm:py-4 bg-accent text-white text-base sm:text-lg font-semibold rounded-lg hover:opacity-95 transition-all hover:scale-105 active:scale-95 shadow-lg touch-manipulation'
-                aria-label={t('career.applyNow')}
-              >
-                {t('career.applyNow')}
-              </button>
+              <Link href="/#contact" className='w-full sm:w-auto'>
+                <button 
+                  className='w-full px-6 sm:px-8 md:px-10 py-3.5 sm:py-4 bg-accent text-white text-base sm:text-lg font-semibold rounded-lg hover:opacity-95 transition-all hover:scale-105 active:scale-95 shadow-lg touch-manipulation'
+                  aria-label={t('career.applyNow')}
+                >
+                  {t('career.applyNow')}
+                </button>
+              </Link>
               
-              <button 
-                className='w-full sm:w-auto px-6 sm:px-8 md:px-10 py-3.5 sm:py-4 bg-white border border-white/30 text-black text-base sm:text-lg font-semibold rounded-lg hover:bg-white/95 transition-all active:scale-95 touch-manipulation'
-                aria-label={t('career.viewPositions')}
-              >
-                {t('career.viewPositions')}
-              </button>
+              <Link href="/#career" className='w-full sm:w-auto'>
+                <button 
+                  className='w-full px-6 sm:px-8 md:px-10 py-3.5 sm:py-4 bg-white border border-white/30 text-black text-base sm:text-lg font-semibold rounded-lg hover:bg-white/95 transition-all active:scale-95 touch-manipulation'
+                  aria-label={t('career.viewPositions')}
+                >
+                  {t('career.viewPositions')}
+                </button>
+              </Link>
             </div>
           </div>
         </div>

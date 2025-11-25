@@ -136,7 +136,10 @@ const leftMenu: MenuItem[] = [
   { 
     label: 'Career',
     translationKey: 'navbar.career',
-    subs: ['Apply Form', 'Current Openings'], 
+    subs: [
+      { label: 'Apply Form', href: '/#career' },
+      { label: 'Current Openings', href: '/#career' }
+    ], 
     overview: 'navbar.overview.career'
   },
 ];
@@ -146,10 +149,10 @@ const rightMenu: MenuItem[] = [
     label: 'Contact Us',
     translationKey: 'navbar.contactUs',
     subs: [
-      'Office Locations',
-      'Contact No.',
-      'Emails',
-      'Enquiry Form / Consult Us'
+      { label: 'Office Locations', href: '/#contact' },
+      { label: 'Contact No.', href: '/#contact' },
+      { label: 'Emails', href: '/#contact' },
+      { label: 'Enquiry Form / Consult Us', href: '/#contact' }
     ], 
     overview: 'navbar.overview.contactUs'
   },

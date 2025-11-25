@@ -14,6 +14,7 @@ const cardsData = [
       'Achieve significant presence in every region of the country. Provide client-defined, quality services on global standards...',
     descriptionKey: 'about.visionDesc',
     buttonContentKey: 'about.buttonVision',
+    link: '/about',
   },
   {
     image: '/histoy.jpg',
@@ -23,6 +24,7 @@ const cardsData = [
       'With over 39 years of excellence, founded on 1st April 1986 by CA Uttam Chandra Asija...',
     descriptionKey: 'about.historyDesc',
     buttonContentKey: 'about.buttonHistory',
+    link: '/about',
   },
   {
     image: '/img1.jpg',
@@ -32,6 +34,7 @@ const cardsData = [
       'Spanning 6,050 sq.ft. — one of Lucknow largest CA offices...',
     descriptionKey: 'about.areaDesc',
     buttonContentKey: 'about.buttonArea',
+    link: '/about',
   },
   {
     image: '/img2.jpg',
@@ -41,6 +44,7 @@ const cardsData = [
       'High-speed Wi-Fi across all terminals. Multiple laser & inkjet printers...',
     descriptionKey: 'about.networkingDesc',
     buttonContentKey: 'about.buttonNetworking',
+    link: '/about',
   },
   {
     image: '/about1.jpg',
@@ -50,6 +54,7 @@ const cardsData = [
       'Client confidentiality is paramount. Multi-layered protection...',
     descriptionKey: 'about.dataSecurityDesc',
     buttonContentKey: 'about.buttonSecurity',
+    link: '/about',
   },
   {
     image: '/about2.jpg',
@@ -59,6 +64,7 @@ const cardsData = [
       'We are a family. We value integrity, teamwork, and growth...',
     descriptionKey: 'about.cultureDesc',
     buttonContentKey: 'about.buttonCulture',
+    link: '/about',
   },
 ];
 
@@ -136,6 +142,7 @@ const About = () => {
                     buttonContent={card.buttonContentKey ? t(card.buttonContentKey) : t('common.learnMore')}
                     isMobile={false}
                     index={index}
+                    link={card.link}
                   />
                 ))}
               </div>

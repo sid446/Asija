@@ -47,8 +47,8 @@ function Hero() {
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 justify-center items-center md:justify-start">
-            <Button label={t('hero.learnMore')} link="/get-started" color1="#1DCD9F" textColor="#000000" /> {/* UPDATED */}
-            <Button label={t('hero.contactUs')} link="/contact" color1="#323232" textColor="#1DCD9F" /> {/* UPDATED */}
+            <Button label={t('hero.learnMore')} link="/about" color1="#1DCD9F" textColor="#000000" /> {/* UPDATED */}
+            <Button label={t('hero.contactUs')} link="/#contact" color1="#323232" textColor="#1DCD9F" /> {/* UPDATED */}
           </div>
         </div>
       </div>
