@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar';
 import { Timeline } from '@/components/Timeline';
 import Values from '@/components/Values';
 import Footer from '@/components/Footer';
+import Loader from '@/components/ui/Loader';
 
  const data = [
   {
@@ -141,6 +142,7 @@ Today, with decades of trust earned and hundreds of success stories written, we 
 
   return (
     <div className='w-full h-auto flex flex-col justify-center items-center'>
+      <Loader pageName="About Us" />
       <Navbar />
 
       {/* Background Image + Gradient Overlay */}

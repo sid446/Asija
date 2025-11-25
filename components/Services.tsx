@@ -3,8 +3,7 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useTranslation } from './TranslationProvider';
-import { useTheme } from './ThemeProvider';
+import { useTranslation } from './TranslationProvider'; // ADD THIS
 
 // Service data stays the same
 const serviceGroups = [
@@ -72,9 +71,7 @@ type ServiceCardProps = {
 };
 
 const ServiceCard: React.FC<ServiceCardProps> = ({ group, index }) => {
-  const { t } = useTranslation();
-  const { theme } = useTheme();
-  const isLight = theme === 'light';
+  const { t } = useTranslation(); // ADD THIS
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -87,12 +84,11 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ group, index }) => {
     >
       <div
         className={`
-          relative overflow-hidden
-          border backdrop-blur-sm
+          relative overflow-hidden bg-card
+          border border-theme backdrop-blur-sm
           shadow-sm transition-all duration-500
           hover:shadow-lg hover:shadow-(--theme-accent)/10
           ${isOpen ? 'ring-2 ring-(--theme-accent)/20' : ''}
-          ${isLight ? 'bg-[#1a1a1a] border-white/10' : 'bg-card border-theme'}
         `}
       >
   <div className="h-1 bg-linear-to-r from-(--theme-accent) to-[#0EA578]" />
@@ -101,8 +97,8 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ group, index }) => {
           onClick={() => setIsOpen(!isOpen)}
           className="w-full flex items-center justify-between p-5 sm:p-6 text-left"
         >
-          <h3 className={`text-lg sm:text-xl md:text-2xl font-bold group-hover:accent transition-colors duration-300 ${isLight ? 'text-[#ffffff]' : 'text-theme'}`}>
-            {t(group.translationKey)}
+          <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-theme group-hover:accent transition-colors duration-300">
+            {t(group.translationKey)} {/* UPDATED */}
           </h3>
           <motion.div
             animate={{ rotate: isOpen ? 90 : 0 }}
@@ -122,7 +118,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ group, index }) => {
               transition={{ duration: 0.4, ease: 'easeInOut' }}
               className="overflow-hidden"
             >
-                <div className={`px-5 pb-6 sm:px-6 sm:pb-7 space-y-5 pt-5 border-t ${isLight ? 'border-white/10' : 'border-theme'}`}>
+                <div className="px-5 pb-6 sm:px-6 sm:pb-7 space-y-5  border-t border-theme pt-5">
                 {group.items.length > 0 ? (
                   <ul className="space-y-3">
                     {group.items.map((item, i) => (
@@ -131,7 +127,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ group, index }) => {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: i * 0.05 }}
-                        className={`flex items-center gap-3 text-sm sm:text-base ${isLight ? 'text-gray-400' : 'text-muted'}`}
+                        className="flex items-center gap-3 text-muted text-sm sm:text-base"
                       >
                           <div className="w-2 h-2 bg-accent rounded-full shrink-0" />
                           <span className="hover:accent transition-colors">{item}</span>
@@ -148,13 +144,13 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ group, index }) => {
                     whileTap={{ scale: 0.95 }}
                     className="inline-flex items-center gap-2 text-accent text-sm font-semibold hover:underline"
                   >
-                    {t('services.viewInsights')}
+                    {t('services.viewInsights')} {/* UPDATED */}
                     <ChevronRight className="w-4 h-4" />
                   </motion.button>
                 )}
 
-                <div className={`mt-6 pt-5 border-t ${isLight ? 'border-white/10' : 'border-theme'}`}>
-                  <p className={`text-xs italic leading-relaxed ${isLight ? 'text-gray-500' : 'text-muted'}`}>
+                <div className="mt-6 pt-5 border-t border-theme">
+                  <p className="text-muted text-xs italic leading-relaxed">
                     Detailed insights, case studies, and expert guidance coming soon…
                   </p>
                 </div>

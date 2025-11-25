@@ -10,6 +10,7 @@ import Navbar from '@/components/Navbar';
 import { useTheme } from '@/components/ThemeProvider';
 import CTA from '@/components/ui/CTA';
 import WhyChooseUs from '@/components/ui/WhyChooseUs';
+import Loader from '@/components/ui/Loader';
 
 interface ServiceGroup {
   title: string;
@@ -215,7 +216,12 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, onClick }) => {
       <div className="absolute inset-0 bg-cover bg-center transition-all duration-700 group-hover:scale-110 md:saturate-0 md:group-hover:saturate-100"
         style={{ backgroundImage: `url(${service.imgSrc})` }}
       />
-      <div className="absolute inset-0 bg-black/50 transition-all duration-500 group-hover:bg-black/70" />
+      <motion.div 
+        className="absolute inset-0"
+        style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+        variants={{ hover: { backgroundColor: 'rgba(0, 0, 0, 0.7)' } }}
+        transition={{ duration: 0.5 }}
+      />
 
       <div className="relative z-10 flex h-full flex-col justify-between p-4 sm:p-6 md:p-8 text-white">
         <svg className="ml-auto w-6 sm:w-8 md:w-9 h-6 sm:h-8 md:h-9 transition-transform duration-500 group-hover:-rotate-45 group-hover:text-[#1DCD9F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -245,13 +251,15 @@ const ExpandableMainItem: React.FC<{
   isExpanded: boolean;
   onToggle: () => void;
 }> = ({ mainItem, service, serviceTitle, isExpanded, onToggle }) => {
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
   const hasSubItems = service.subItems?.[mainItem];
   const hasDeepSubItems = service.deepSubItems?.[serviceTitle]?.[mainItem];
 
   return (
-    <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="border border-gray-800 rounded-xl overflow-hidden bg-gray-900/30">
-      <button onClick={onToggle} className="w-full flex items-center gap-4 p-5 transition-colors hover:bg-gray-800/50">
-        <span className="font-semibold text-lg flex-1 text-left text-white">{mainItem}</span>
+    <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className={`border rounded-xl overflow-hidden ${isLight ? 'bg-white border-gray-200' : 'bg-gray-900/30 border-gray-800'}`}>
+      <button onClick={onToggle} className={`w-full flex items-center gap-4 p-5 transition-colors ${isLight ? 'hover:bg-gray-50' : 'hover:bg-gray-800/50'}`}>
+        <span className={`font-semibold text-lg flex-1 text-left ${isLight ? 'text-gray-900' : 'text-white'}`}>{mainItem}</span>
         {(hasSubItems || hasDeepSubItems) && (
           <motion.div animate={{ rotate: isExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
             <ChevronDown className="w-5 h-5 text-[#1DCD9F]" />
@@ -261,13 +269,13 @@ const ExpandableMainItem: React.FC<{
 
       <AnimatePresence>
         {isExpanded && (hasSubItems || hasDeepSubItems) && (
-          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3 }} className="px-6 py-4 space-y-2 bg-gray-900/90">
+          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3 }} className={`px-6 py-4 space-y-2 ${isLight ? 'bg-[#F0FDF9]' : 'bg-gray-900/90'}`}>
             {hasSubItems && !hasDeepSubItems && (
               <div className="space-y-2">
                 {hasSubItems.map((sub, j) => (
                   <div key={j} className="flex items-start gap-3 ml-10 text-sm">
                     <span className="mt-1.5 text-[#1DCD9F]">•</span>
-                    <span className="text-gray-300">{sub}</span>
+                    <span className={`${isLight ? 'text-gray-700' : 'text-gray-300'}`}>{sub}</span>
                   </div>
                 ))}
               </div>
@@ -280,16 +288,16 @@ const ExpandableMainItem: React.FC<{
                     <p className="font-semibold text-sm mb-3 ml-10 text-[#1DCD9F]">{cat}</p>
                     {Object.entries(items).map(([subCat, subItems]) => (
                       <div key={subCat} className="ml-10">
-                        <p className="font-medium text-sm mb-2 ml-6 text-gray-200">{subCat}</p>
+                        <p className={`font-medium text-sm mb-2 ml-6 ${isLight ? 'text-gray-800' : 'text-gray-200'}`}>{subCat}</p>
                         {Array.isArray(subItems) ? (
                           subItems.map((item, k) => (
                             <div key={k} className="flex items-start gap-3 ml-16 text-xs">
                               <span className="mt-1.5 text-gray-500">◦</span>
-                              <span className="text-gray-400">{item}</span>
+                              <span className={`${isLight ? 'text-gray-600' : 'text-gray-400'}`}>{item}</span>
                             </div>
                           ))
                         ) : (
-                          <div className="ml-16 text-xs text-gray-400">{String(subItems)}</div>
+                          <div className={`ml-16 text-xs ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>{String(subItems)}</div>
                         )}
                       </div>
                     ))}
@@ -351,6 +359,7 @@ export default function ServicesContent() {
 
   return (
     <div className="w-full h-auto bg-theme text-white">
+      <Loader pageName="Services" />
       <Navbar />
       {/* Hero */}
       <div className='relative w-full h-[100vh]'>
@@ -414,7 +423,7 @@ export default function ServicesContent() {
                 <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${selectedService.imgSrc})` }} />
                 <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/70 to-[#0a0a0a]" />
                 <button onClick={() => setSelectedService(null)} className="absolute top-6 right-6 w-12 h-12 rounded-full backdrop-blur-sm transition-all group border bg-black/40 border-white/20 hover:bg-[#1DCD9F]">
-                  <svg className="w-6 h-6 mx-auto text-white group-hover:text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-6 h-6 mx-auto " style={{color:"white"}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
@@ -455,7 +464,7 @@ export default function ServicesContent() {
                     </div>
                     <div className="space-y-4">
                       {selectedService.benefits.map((benefit, i) => (
-                        <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} className={`flex items-start gap-4 p-5 rounded-lg border-l-4 border-[#1DCD9F] bg-linear-to-r from-gray-900/30 to-transparent`}>
+                        <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} className={`flex items-start gap-4 p-5 rounded-lg border-l-4 border-[#1DCD9F] ${theme === 'light' ? 'bg-[#F0FDF9]' : 'bg-linear-to-r from-gray-900/30 to-transparent'}`}>
                           <span className={`text-sm leading-relaxed ${theme === 'light' ? 'text-gray-700' : 'text-gray-400'}`}>{benefit}</span>
                         </motion.div>
                       ))}

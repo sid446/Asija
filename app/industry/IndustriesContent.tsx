@@ -8,6 +8,7 @@ import Footer from '@/components/Footer';
 import Values from '@/components/Values'; // Import Values component
 import WhyChooseUs from '@/components/ui/WhyChooseUs';
 import CTA from '@/components/ui/CTA';
+import Loader from '@/components/ui/Loader';
 
 interface PageContent {
   heading: string;
@@ -131,10 +132,10 @@ const HeroSection = ({ isActive }: { isActive: boolean }) => (
       <div className="absolute inset-0 bg-black/50" />
       <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/10 to-transparent" />
       <div className="absolute text-left top-[70%] sm:top-[75%] left-1/2 sm:left-[33%] transform -translate-x-1/2 -translate-y-1/2 px-4 w-full sm:w-auto">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-10 drop-shadow-lg">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold  mb-10 drop-shadow-lg" style={{color:"white"}}>
           Industries We Serve<span className='text-[#2BC99C] text-4xl sm:text-5xl md:text-6xl lg:text-7xl'> .</span>
         </h1>
-        <p className="text-md sm:text-md md:text-lg lg:text-xl border-l-4 border-[#2BC99C] pl-3 sm:pl-4 text-gray-200 w-4xl leading-relaxed drop-shadow-md">
+        <p className="text-md sm:text-md md:text-lg lg:text-xl border-l-4 border-[#2BC99C] pl-3 sm:pl-4 w-4xl leading-relaxed drop-shadow-md" style={{color:"white"}}>
           Deep expertise across sectors. From banking and infrastructure to healthcare and retail, we are your one trusted partner for comprehensive financial solutions, regulatory compliance, and strategic growth.
         </p>
       </div>
@@ -277,6 +278,7 @@ export default function IndustriesContent() {
 
   return (
     <>
+      <Loader pageName="Industries" />
       <div className="relative w-full h-dvh bg-black text-white overflow-hidden touch-none">
         <Navbar />
 
