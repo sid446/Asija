@@ -85,7 +85,7 @@ const About = () => {
             colors={['#1DCD9F', '#34D399', '#0EA578']}
             distort={10}
             rayCount={10}
-            mixBlendMode="lighten"
+            mixBlendMode="normal"
           />
         </div>
 

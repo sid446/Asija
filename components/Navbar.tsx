@@ -437,7 +437,7 @@ export default function Navbar() {
               }}
               transition={{ duration: 0.3, ease: 'easeInOut' }}
             >
-              <div className="font-semibold text-zinc-200 text-xs md:text-sm  tracking-loose">
+              <div className="font-semibold text-white text-xs md:text-sm  tracking-loose">
                 ASIJA & ASSOCIATES LLP
               </div>
               <div className="text-[10px] md:text-[10px] mt-0.5 text-theme-green tracking-wide">
