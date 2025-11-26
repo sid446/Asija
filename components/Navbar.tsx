@@ -416,11 +416,13 @@ export default function Navbar() {
             
             <motion.div className="flex items-center gap-2.5 md:gap-3 cursor-pointer">
             <Link href="/">
-            <motion.img
-              src="/logo.png"
-              alt="Asija Logo"
-              className={`transition-all duration-300 ${scrolled ? 'w-12 md:w-13' : 'w-9 md:w-11'}`}
-            />
+              <div className="bg-[#1DCD9F] rounded-full p-1.5">
+                <motion.img
+                  src="/logo.png"
+                  alt="Asija Logo"
+                  className={`transition-all duration-300 ${scrolled ? 'w-9 md:w-11' : 'w-9 md:w-9'}`}
+                />
+              </div>
             </Link>
             
             {/* TEXT: Hidden on scroll with smooth collapse */}
@@ -435,10 +437,10 @@ export default function Navbar() {
               }}
               transition={{ duration: 0.3, ease: 'easeInOut' }}
             >
-              <div className="font-extrabold text-white text-xs md:text-sm tracking-tight">
+              <div className="font-semibold text-zinc-200 text-xs md:text-sm  tracking-loose">
                 ASIJA & ASSOCIATES LLP
               </div>
-              <div className="text-[10px] md:text-xs font-medium text-theme-green tracking-wide">
+              <div className="text-[10px] md:text-[10px] mt-0.5 text-theme-green tracking-wide">
                 {t('common.charteredAccountants')}
               </div>
             </motion.div>

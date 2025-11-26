@@ -429,12 +429,6 @@ const Beams: React.FC<BeamsProps> = ({
     let activeColors = colors;
     let activeMixBlendMode = mixBlendMode;
 
-    if (theme === 'light') {
-      // Green essence for light background
-      activeColors = ['#1DCD9F', '#34D399', '#059669']; 
-      activeMixBlendMode = 'normal';
-    }
-
     const canvas = rendererRef.current?.gl?.canvas;
     if (canvas) {
       canvas.style.mixBlendMode = activeMixBlendMode !== 'none' ? activeMixBlendMode : '';
