@@ -130,11 +130,11 @@ const HeroSection = ({ isActive }: { isActive: boolean }) => (
         poster="https://res.cloudinary.com/db2qa9dzs/video/upload/so_0,w_1280,q_auto,f_jpg/v1764130459/vid1_yd3gmn.jpg"
       >
         <source
-          src="https://res.cloudinary.com/db2qa9dzs/video/upload/f_webm,q_auto:eco,vc_auto,w_1280/v1764130459/vid1_yd3gmn.webm"
+          src="https://res.cloudinary.com/db2qa9dzs/video/upload/f_webm,q_auto:eco,vc_auto,w_1920/v1764130459/vid1_yd3gmn.webm"
           type="video/webm"
         />
         <source
-          src="https://res.cloudinary.com/db2qa9dzs/video/upload/f_mp4,q_auto:eco,vc_auto,w_1280/v1764130459/vid1_yd3gmn.mp4"
+          src="https://res.cloudinary.com/db2qa9dzs/video/upload/f_mp4,q_auto:eco,vc_auto,w_1920/v1764130459/vid1_yd3gmn.mp4"
           type="video/mp4"
         />
         Your browser does not support the video tag.

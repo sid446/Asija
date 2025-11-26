@@ -374,11 +374,11 @@ export default function ServicesContent() {
           poster="https://res.cloudinary.com/db2qa9dzs/video/upload/so_0,w_1280,q_auto,f_jpg/v1764130416/vid124_xmfn8i.jpg"
         >
           <source
-            src="https://res.cloudinary.com/db2qa9dzs/video/upload/f_webm,q_auto:eco,vc_auto,w_1280/v1764130416/vid124_xmfn8i.webm"
+            src="https://res.cloudinary.com/db2qa9dzs/video/upload/f_webm,q_auto:eco,vc_auto,w_1920/v1764130416/vid124_xmfn8i.webm"
             type="video/webm"
           />
           <source
-            src="https://res.cloudinary.com/db2qa9dzs/video/upload/f_mp4,q_auto:eco,vc_auto,w_1280/v1764130416/vid124_xmfn8i.mp4"
+            src="https://res.cloudinary.com/db2qa9dzs/video/upload/f_mp4,q_auto:eco,vc_auto,w_1920/v1764130416/vid124_xmfn8i.mp4"
             type="video/mp4"
           />
           Your browser does not support the video tag.
