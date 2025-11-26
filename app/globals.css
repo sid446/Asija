@@ -9,7 +9,7 @@
   left: 0;
   right: 0;
   height: 6rem;
-  background: linear-gradient(to bottom, rgba(42,42,42,0.6), transparent);
+  background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
   pointer-events: none;
   z-index: 10;
 }
@@ -59,26 +59,28 @@
   }
 }
 
-/* Theme variables (defaults = dark theme) */
+/* Theme variables (defaults = light theme) */
 :root {
-  --theme-bg: #2a2a2a;
-  --theme-surface: #252525;
-  --theme-card: #323232;
-  --theme-text: #ffffff;
-  --theme-muted: #9ca3af;
-  --theme-border: rgba(255,255,255,0.06);
-  --theme-accent: #1DCD9F;
+  --theme-bg: #ffffff;
+  --theme-surface: #f4f4f5;
+  --theme-card: #ffffff;
+  --theme-text: #000000;
+  --theme-muted: #52525b;
+  --theme-border: rgba(0,0,0,0.1);
+  --theme-primary: #009edb;
+  --theme-accent: #009edb;
 }
 
-/* Light theme overrides */
-[data-theme="light"] {
-  --theme-bg: #ffffff;
-  --theme-surface: #f8fafc;
-  --theme-card: #ffffff;
-  --theme-text: #111827;
-  --theme-muted: #6b7280;
-  --theme-border: rgba(0,0,0,0.06);
-  --theme-accent: #1DCD9F;
+/* Dark theme overrides */
+[data-theme="dark"] {
+  --theme-bg: #020617;
+  --theme-surface: #0f172a;
+  --theme-card: #1e293b;
+  --theme-text: #ffffff;
+  --theme-muted: #94a3b8;
+  --theme-border: rgba(255,255,255,0.1);
+  --theme-primary: #009edb;
+  --theme-accent: #009edb;
 }
 
 /* Apply base colors */
@@ -100,7 +102,8 @@ body {
 
 /* Override frequently-used dark Tailwind classes when light theme active.
    This lets the toggle affect existing components without changing each file. */
-[data-theme="light"] [class*="bg-[#2a2a2a]"] { background-color: var(--theme-bg) !important; }
+[data-theme="light"] [class*="bg-[#000000]"] { background-color: var(--theme-bg) !important; }
+[data-theme="light"] [class*="bg-slate-950"] { background-color: var(--theme-bg) !important; }
 [data-theme="light"] [class*="bg-[#252525]"] { background-color: var(--theme-surface) !important; }
 [data-theme="light"] [class*="bg-[#323232]"] { background-color: var(--theme-card) !important; }
 [data-theme="light"] [class*="text-white"] { color: var(--theme-text) !important; }
@@ -111,6 +114,7 @@ body {
 [data-theme="light"] [class*="border-white/10"] { border-color: var(--theme-border) !important; }
 [data-theme="light"] [class*="bg-white/8"] { background-color: rgba(255,255,255,0.08) !important; }
 [data-theme="light"] [class*="bg-black/"] { background-color: transparent !important; }
+[data-theme="light"] [class*="bg-slate-950/"] { background-color: transparent !important; }
 
 /* Special-purpose helpers for targeted visibility tweaks */
 /* Always render FAQ question text white for maximum contrast in both themes */
@@ -160,7 +164,7 @@ body {
 /* Prefer using theme-accent-based subtle ring in light mode for focus states */
 [data-theme="light"] .ring-white,
 [data-theme="light"] .ring-white\/20 {
-  box-shadow: 0 0 0 4px rgba(29,205,159,0.06) !important;
+  box-shadow: 0 0 0 4px rgba(0,158,219,0.06) !important;
 }
 
 /* Re-assert special-purpose helpers so they win after the broad remaps above */

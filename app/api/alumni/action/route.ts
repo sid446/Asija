@@ -16,11 +16,16 @@ export async function GET(req: Request) {
 
     const status = action === 'approve' ? 'Approved' : 'Rejected';
     
-    const alumni = await Alumni.findByIdAndUpdate(
-      id, 
-      { status }, 
-      { new: true }
-    );
+    let alumni;
+    if (action === 'reject') {
+      alumni = await Alumni.findByIdAndDelete(id);
+    } else {
+      alumni = await Alumni.findByIdAndUpdate(
+        id, 
+        { status }, 
+        { new: true }
+      );
+    }
 
     if (!alumni) {
       return NextResponse.json({ message: 'Alumni not found' }, { status: 404 });

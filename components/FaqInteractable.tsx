@@ -68,22 +68,22 @@ export default function FAQAccordion() {
   };
 
   return (
-    <section className="bg-[#1DCD9F] min-h-[400px] py-12 sm:py-16 md:py-20">
+    <section className="bg-[#009edb] min-h-[400px] py-12 sm:py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
         <div className="flex flex-col gap-8 md:gap-12 lg:gap-16">
           
           {/* Title Section - Not sticky on mobile */}
           <div className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             <div className="md:sticky md:top-24">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-zinc-900 leading-tight">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight">
                 Frequently Asked <br className="sm:hidden" />
                 <span >Questions</span>
               </h2>
-              <p className="text-zinc-800 mt-3 sm:mt-4 text-base sm:text-lg leading-relaxed">
+              <p className="text-white/90 mt-3 sm:mt-4 text-base sm:text-lg leading-relaxed">
                 Can't find what you're looking for? Reach our{' '}
                 <a
                   href="mailto:support@asija.in"
-                  className="text-zinc-900 font-semibold  hover:text-white transition-colors"
+                  className="text-white font-semibold  hover:text-white/80 transition-colors"
                 >
                   support team
                 </a>
@@ -107,7 +107,7 @@ export default function FAQAccordion() {
                     <AccordionItem
                       value={item.id}
                       className="rounded-lg sm:rounded-xl shadow-lg border border-white/10 overflow-hidden hover:border-white/20 transition-all"
-                      style={{ backgroundColor: '#2A2A2A' }}
+                      style={{ backgroundColor: '#000000' }}
                     >
                       <AccordionTrigger 
                         className="px-4 sm:px-6 py-4 sm:py-5 group touch-manipulation"
@@ -115,10 +115,10 @@ export default function FAQAccordion() {
                       >
                         <div className="flex items-center justify-between w-full gap-3">
                           <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
-                            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#1DCD9F]/20 rounded-full flex items-center justify-center group-hover:bg-[#1DCD9F]/30 transition-colors shrink-0">
-                              <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#1DCD9F]" />
+                            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#009edb]/20 rounded-full flex items-center justify-center group-hover:bg-[#009edb]/30 transition-colors shrink-0">
+                              <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#009edb]" />
                             </div>
-                            <span className="text-sm sm:text-base font-medium group-hover:text-[#1DCD9F] transition-colors text-left" style={{ color: 'white' }}>
+                            <span className="text-sm sm:text-base font-medium group-hover:text-[#009edb] transition-colors text-left" style={{ color: 'white' }}>
                               {item.question}
                             </span>
                           </div>

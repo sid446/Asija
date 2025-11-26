@@ -214,7 +214,7 @@ type NavItemProps = {
 const NavItem = ({ label, isIcon, icon, isActive, hasDropdown, href }: NavItemProps) => {
   if (isIcon) {
     return (
-      <div className="w-8 h-8 text-white/70 hover:text-[#1DCD9F] transition-all hover:scale-110 cursor-pointer">
+      <div className="w-8 h-8 text-white/70 hover:text-[#009edb] transition-all hover:scale-110 cursor-pointer">
         {icon}
       </div>
     );
@@ -234,7 +234,7 @@ const NavItem = ({ label, isIcon, icon, isActive, hasDropdown, href }: NavItemPr
         )}
         {isActive && (
           <motion.div
-            className="absolute h-1 bg-linear-to-r from-[#1DCD9F] to-[#0EA578] rounded-full left-4 right-4"
+            className="absolute h-1 bg-linear-to-r from-[#009edb] to-[#0077a3] rounded-full left-4 right-4"
             style={{ bottom: -2 }}
             layoutId="nav-underline"
             initial={{ opacity: 0, scaleX: 0.8 }}
@@ -259,7 +259,7 @@ const NavItem = ({ label, isIcon, icon, isActive, hasDropdown, href }: NavItemPr
       )}
       {isActive && (
         <motion.div
-          className="absolute h-1 bg-linear-to-r from-[#1DCD9F] to-[#0EA578] rounded-full left-4 right-4"
+          className="absolute h-1 bg-linear-to-r from-[#009edb] to-[#0077a3] rounded-full left-4 right-4"
           style={{ bottom: -2 }}
           layoutId="nav-underline"
           initial={{ opacity: 0, scaleX: 0.8 }}
@@ -296,7 +296,7 @@ export default function Navbar() {
   const findMenuItem = (label: string) => allMenu.find(item => item.label === label);
 
   const renderSubItems = (subs: MenuItem['subs']) => {
-    if (!subs || subs.length === 0) return <p className="text-white/50 italic text-sm">No subitems available.</p>;
+    if (!subs || subs.length === 0) return <p className={`${theme === 'light' ? 'text-gray-400' : 'text-white/50'} italic text-sm`}>No subitems available.</p>;
 
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6">
@@ -304,8 +304,8 @@ export default function Navbar() {
           if (typeof sub === 'string') {
             return (
               <div key={index} className="group">
-                <button className="text-left text-white/90 group-hover:text-[#1DCD9F] text-base font-medium transition-all flex items-center gap-2 py-1 hover:translate-x-1">
-                  <span className="w-1.5 h-1.5 bg-[#1DCD9F] rounded-full opacity-0 group-hover:opacity-100 transition-all" />
+                <button className={`text-left ${theme === 'light' ? 'text-gray-700' : 'text-white/90'} group-hover:text-[#009edb] text-base font-medium transition-all flex items-center gap-2 py-1 hover:translate-x-1`}>
+                  <span className="w-1.5 h-1.5 bg-[#009edb] rounded-full opacity-0 group-hover:opacity-100 transition-all" />
                   {sub}
                 </button>
               </div>
@@ -316,7 +316,7 @@ export default function Navbar() {
               <div key={(sub as any).title} className="space-y-3">
                 <Link 
                   href={(sub as any).href || '/services'}
-                  className="text-[#1DCD9F] font-semibold text-base mb-1 hover:text-white transition-colors block"
+                  className={`text-[#009edb] font-semibold text-base mb-1 ${theme === 'light' ? 'hover:text-black' : 'hover:text-white'} transition-colors block`}
                 >
                   {(sub as any).title}
                 </Link>
@@ -328,9 +328,9 @@ export default function Navbar() {
               <div key={index} className="group">
                 <Link 
                   href={sub.href}
-                  className="text-left text-white/90 group-hover:text-[#1DCD9F] text-base font-medium transition-all flex items-center gap-2 py-1 hover:translate-x-1"
+                  className={`text-left ${theme === 'light' ? 'text-gray-700' : 'text-white/90'} group-hover:text-[#009edb] text-base font-medium transition-all flex items-center gap-2 py-1 hover:translate-x-1`}
                 >
-                  <span className="w-1.5 h-1.5 bg-[#1DCD9F] rounded-full opacity-0 group-hover:opacity-100 transition-all" />
+                  <span className="w-1.5 h-1.5 bg-[#009edb] rounded-full opacity-0 group-hover:opacity-100 transition-all" />
                   {sub.label}
                 </Link>
               </div>
@@ -372,7 +372,7 @@ export default function Navbar() {
                 <div key={(sub as any).title} className="space-y-2">
                   <Link 
                     href={(sub as any).href || '/services'}
-                    className="text-[#1DCD9F] font-semibold text-sm block hover:underline"
+                    className="text-[#009edb] font-semibold text-sm block hover:underline"
                   >
                     {(sub as any).title}
                   </Link>
@@ -406,8 +406,8 @@ export default function Navbar() {
         animate={{ y: 0 }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled 
-            ? 'h-16 bg-[#2a2a2a]/95 backdrop-blur-lg shadow-lg shadow-black/20' 
-            : 'h-20 bg-[#2a2a2a]'
+            ? (theme === 'light' ? 'h-16 bg-white/90 backdrop-blur-lg shadow-lg shadow-black/5' : 'h-16 bg-slate-950/95 backdrop-blur-lg shadow-lg shadow-slate-950/20')
+            : 'h-20 bg-slate-950'
         }`}
       >
         <div className="h-full flex justify-between items-center px-4 md:px-8 w-full mx-auto">
@@ -416,7 +416,7 @@ export default function Navbar() {
             
             <motion.div className="flex items-center gap-2.5 md:gap-3 cursor-pointer">
             <Link href="/">
-              <div className="bg-[#1DCD9F] rounded-full p-1.5">
+              <div className="bg-[#009edb] rounded-full p-1.5">
                 <motion.img
                   src="/logo.png"
                   alt="Asija Logo"
@@ -500,9 +500,9 @@ export default function Navbar() {
 
             {/* Social Icons Desktop */}
             <div className="flex items-center gap-4 mr-2">
-               <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" className="w-5 h-5 text-white/70 hover:text-[#1DCD9F] transition-colors"><LinkedInIcon /></a>
-               <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="w-5 h-5 text-white/70 hover:text-[#1DCD9F] transition-colors"><InstagramIcon /></a>
-               <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" className="w-5 h-5 text-white/70 hover:text-[#1DCD9F] transition-colors"><WhatsAppIcon /></a>
+               <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" className="w-5 h-5 text-white/70 hover:text-[#009edb] transition-colors"><LinkedInIcon /></a>
+               <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="w-5 h-5 text-white/70 hover:text-[#009edb] transition-colors"><InstagramIcon /></a>
+               <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" className="w-5 h-5 text-white/70 hover:text-[#009edb] transition-colors"><WhatsAppIcon /></a>
             </div>
 
             <div className='w-0.5 h-6 bg-zinc-500 mr-4' ></div>
@@ -518,7 +518,7 @@ export default function Navbar() {
               <div className="relative ml-4">
                 <button 
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  className="w-9 h-9 rounded-full bg-[#1DCD9F] text-black font-bold text-lg flex items-center justify-center hover:bg-[#17a380] transition-colors shadow-lg shadow-[#1DCD9F]/20"
+                  className="w-9 h-9 rounded-full bg-[#009edb] text-black font-bold text-lg flex items-center justify-center hover:bg-[#0077a3] transition-colors shadow-lg shadow-[#009edb]/20"
                 >
                   {session.user?.name ? session.user.name.charAt(0).toUpperCase() : 'U'}
                 </button>
@@ -530,7 +530,7 @@ export default function Navbar() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute right-0 mt-3 w-56 bg-[#2a2a2a] border border-white/10 rounded-xl shadow-2xl z-50"
+                      className="absolute right-0 mt-3 w-56 bg-slate-950 border border-white/10 rounded-xl shadow-2xl z-50"
                     >
                       <div className="py-1">
                         <div className="px-4 py-3 border-b border-white/10">
@@ -549,7 +549,7 @@ export default function Navbar() {
 
                         <Link 
                           href="/policies" 
-                          className="block px-4 py-2.5 text-sm text-white/90 hover:bg-white/10 hover:text-[#1DCD9F] transition-colors"
+                          className="block px-4 py-2.5 text-sm text-white/90 hover:bg-white/10 hover:text-[#009edb] transition-colors"
                           onClick={() => setUserMenuOpen(false)}
                         >
                           Account
@@ -569,7 +569,7 @@ export default function Navbar() {
                 </AnimatePresence>
               </div>
             ) : (
-               <Link href="/login" className="text-white hover:text-[#1DCD9F] text-sm font-medium ml-4 flex items-center justify-center gap-1">
+               <Link href="/login" className="text-white hover:text-[#009edb] text-sm font-medium ml-4 flex items-center justify-center gap-1">
                  Login <LogIn size={15}/>
                </Link>
             )}
@@ -587,7 +587,7 @@ export default function Navbar() {
 
         {/* Bottom border gradient */}
         <motion.div 
-          className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-[#1DCD9F]/50 to-transparent"
+          className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-[#009edb]/50 to-transparent"
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
           transition={{ delay: 0.5, duration: 0.8 }}
@@ -598,7 +598,11 @@ export default function Navbar() {
       <AnimatePresence>
         {hoveredItem && (
           <motion.div
-            className="fixed left-0 right-0 bg-[#2a2a2a]/98 backdrop-blur-xl shadow-2xl z-50 border-t border-white/5"
+            className={`fixed left-0 right-0 backdrop-blur-xl shadow-2xl z-50 border-t ${
+              theme === 'light' 
+                ? 'bg-white/98 border-gray-200 shadow-black/5' 
+                : 'bg-slate-950/98 border-white/5 shadow-slate-950/20'
+            }`}
             style={{ top: scrolled ? '4rem' : '5rem' }}
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -611,7 +615,7 @@ export default function Navbar() {
               <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-10">
                 {/* Submenu Columns */}
                 <div>
-                  <h3 className="text-[#1DCD9F] font-semibold text-xl mb-6 tracking-wide flex items-center gap-2">
+                  <h3 className="text-[#009edb] font-semibold text-xl mb-6 tracking-wide flex items-center gap-2">
                     {(() => {
                       const menuItem = findMenuItem(hoveredItem);
                       return menuItem?.translationKey ? t(menuItem.translationKey) : hoveredItem;
@@ -621,12 +625,16 @@ export default function Navbar() {
                 </div>
 
                 {/* Overview Panel */}
-                <div className="bg-linear-to-b from-white/5 to-white/3 backdrop-blur-sm p-6 rounded-2xl border border-white/10 h-fit">
-                  <h4 className="text-white font-semibold text-lg mb-3">Overview</h4>
-                  <p className="text-white/70 text-sm leading-relaxed">
+                <div className={`backdrop-blur-sm p-6 rounded-2xl border h-fit ${
+                  theme === 'light'
+                    ? 'bg-gray-50 border-gray-200'
+                    : 'bg-linear-to-b from-white/5 to-white/3 border-white/10'
+                }`}>
+                  <h4 className={`font-semibold text-lg mb-3 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Overview</h4>
+                  <p className={`text-sm leading-relaxed ${theme === 'light' ? 'text-gray-600' : 'text-white/70'}`}>
                     {findMenuItem(hoveredItem)?.overview ? t(findMenuItem(hoveredItem)?.overview || '') : t('common.exploreInsights')}
                   </p>
-                  <button className="mt-5 text-[#1DCD9F] text-sm font-medium hover:underline inline-flex items-center gap-1 group">
+                  <button className="mt-5 text-[#009edb] text-sm font-medium hover:underline inline-flex items-center gap-1 group">
                     {t('common.learnMore')}
                     <motion.div
                       className="group-hover:translate-x-1 transition-transform"
@@ -651,7 +659,7 @@ export default function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/45 backdrop-blur-sm z-40 min-[1100px]:hidden"
+              className="fixed inset-0 bg-slate-950/45 backdrop-blur-sm z-40 min-[1100px]:hidden"
             />
             
             {/* Menu Panel */}
@@ -661,7 +669,7 @@ export default function Navbar() {
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
               style={{
-                backgroundColor: theme === 'light' ? '#ffffff' : '#252525',
+                backgroundColor: theme === 'light' ? '#ffffff' : '#020617',
               }}
               className="fixed top-0 right-0 bottom-0 w-80 z-50 min-[1100px]:hidden shadow-2xl overflow-y-auto"
             >
@@ -691,7 +699,7 @@ export default function Navbar() {
                       transition={{ delay: idx * 0.05 }}
                     >
                       <div
-                        className="flex items-center justify-between hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#1DCD9F] w-full"
+                        className="flex items-center justify-between hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#009edb] w-full"
                         style={{
                           color: theme === 'light' ? '#1f2937' : '#ffffff',
                         }}
@@ -752,7 +760,7 @@ export default function Navbar() {
                         style={{
                           color: theme === 'light' ? '#1f2937' : '#ffffff',
                         }}
-                        className="text-left font-medium text-base py-3 px-4 hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#1DCD9F] w-full block"
+                        className="text-left font-medium text-base py-3 px-4 hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#009edb] w-full block"
                       >
                         Policies
                       </Link>
@@ -776,7 +784,7 @@ export default function Navbar() {
                           style={{
                             color: theme === 'light' ? '#1f2937' : '#ffffff',
                           }}
-                          className="text-left font-medium text-base py-3 px-4 hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#1DCD9F] w-full block"
+                          className="text-left font-medium text-base py-3 px-4 hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#009edb] w-full block"
                         >
                           Logout
                         </button>
@@ -787,7 +795,7 @@ export default function Navbar() {
                           style={{
                             color: theme === 'light' ? '#1f2937' : '#ffffff',
                           }}
-                          className="text-left font-medium text-base py-3 px-4 hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#1DCD9F] w-full block"
+                          className="text-left font-medium text-base py-3 px-4 hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#009edb] w-full block"
                         >
                           Login
                         </Link>
@@ -811,7 +819,7 @@ export default function Navbar() {
                       style={{
                         color: theme === 'light' ? '#1f2937' : '#ffffff',
                       }}
-                      className="text-left font-medium text-base py-3 px-4 hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#1DCD9F] w-full flex items-center justify-between"
+                      className="text-left font-medium text-base py-3 px-4 hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#009edb] w-full flex items-center justify-between"
                     >
                       {rightMenu[0].translationKey ? t(rightMenu[0].translationKey) : 'Contact Us'}
                       {rightMenu[0].subs && rightMenu[0].subs.length > 0 && (

@@ -13,7 +13,7 @@ import Loader from '@/components/ui/Loader';
     content: (
       <div className="space-y-6">
         <p className="mb-8 text-xl font-medium text-gray-300">
-          Founded by <span className="text-[#2BC99C] font-bold">CA. Uttam Chandra Asija</span> in Lucknow
+          Founded by <span className="text-[#009edb] font-bold">CA. Uttam Chandra Asija</span> in Lucknow
         </p>
         <p className="text-sm text-gray-400 leading-relaxed">
           A humble beginning with a vision to redefine trust and excellence in accounting and financial advisory.
@@ -30,8 +30,8 @@ import Loader from '@/components/ui/Loader';
             className="h-40 w-full rounded-lg object-cover shadow-lg border border-gray-800"
           />
         </div>
-        <div className="pt-4 bg-gradient-to-r from-[#2BC99C]/10 to-transparent p-4 rounded-lg">
-          <p className="text-2xl font-bold text-[#2BC99C]">3 Core Services Launched</p>
+        <div className="pt-4 bg-gradient-to-r from-[#009edb]/10 to-transparent p-4 rounded-lg">
+          <p className="text-2xl font-bold text-[#009edb]">3 Core Services Launched</p>
           <p className="text-sm text-gray-400">Audit • Taxation • Advisory</p>
         </div>
       </div>
@@ -58,8 +58,8 @@ import Loader from '@/components/ui/Loader';
           />
          
         </div>
-        <div className="pt-4 bg-gradient-to-r from-[#2BC99C]/10 to-transparent p-4 rounded-lg">
-          <p className="text-2xl font-bold text-[#2BC99C]">₹99,99,999</p>
+        <div className="pt-4 bg-gradient-to-r from-[#009edb]/10 to-transparent p-4 rounded-lg">
+          <p className="text-2xl font-bold text-[#009edb]">₹99,99,999</p>
           <p className="text-sm text-gray-300">Strategic Funding Secured</p>
         </div>
       </div>
@@ -86,8 +86,8 @@ import Loader from '@/components/ui/Loader';
           />
           
         </div>
-        <div className="pt-4 bg-gradient-to-r from-[#2BC99C]/10 to-transparent p-4 rounded-lg">
-          <p className="text-2xl font-bold text-[#2BC99C]">₹99,99,999</p>
+        <div className="pt-4 bg-gradient-to-r from-[#009edb]/10 to-transparent p-4 rounded-lg">
+          <p className="text-2xl font-bold text-[#009edb]">₹99,99,999</p>
           <p className="text-sm text-gray-300">Investment for National Growth</p>
         </div>
       </div>
@@ -115,7 +115,7 @@ import Loader from '@/components/ui/Loader';
          
         </div>
         <div className="pt-6 text-center">
-          <p className="text-5xl font-bold text-[#2BC99C] mb-2">500+</p>
+          <p className="text-5xl font-bold text-[#009edb] mb-2">500+</p>
           <p className="text-lg text-gray-300">Enterprise Clients & Growing Strong</p>
         </div>
       </div>
@@ -160,12 +160,12 @@ Today, with decades of trust earned and hundreds of success stories written, we 
       {/* Hero Overlay Content – unchanged */}
       <div className="absolute text-left  top-[70%] sm:top-[60%] left-1/2 sm:left-[35%] transform -translate-x-1/2 -translate-y-1/2 px-4 w-full sm:w-auto">
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold  drop-shadow-lg" style={{color:"white"}}>
-          Who We Are <span className='text-[#2BC99C] text-4xl sm:text-5xl md:text-6xl lg:text-7xl'>.</span>
+          Who We Are <span className='text-[#009edb] text-4xl sm:text-5xl md:text-6xl lg:text-7xl'>.</span>
         </h1>
         <p className="mt-6 sm:mt-4 text-lg sm:text-lg md:text-xl lg:text-2xl drop-shadow-md"style={{color:"white"}}>
           Unwavering dedication to financial excellence and professional integrity.
         </p>
-        <p className='mt-8 sm:mt-8 text-base sm:text-base md:text-lg lg:text-xl  border-l-4 border-[#2BC99C] pl-3 sm:pl-4' style={{color:"white"}}>
+        <p className='mt-8 sm:mt-8 text-base sm:text-base md:text-lg lg:text-xl  border-l-4 border-[#009edb] pl-3 sm:pl-4' style={{color:"white"}}>
           We are not just your accountants; we are your strategic allies. <span className='font-bold'>Asija</span> combines deep-seated expertise with a forward-thinking mindset to deliver more than just numbers...
         </p>
       </div>
@@ -173,7 +173,7 @@ Today, with decades of trust earned and hundreds of success stories written, we 
       {/* OUR STORY – RESPONSIVE LAYOUT */}
       <div className='w-full h-auto flex flex-col lg:flex-row gap-6 sm:gap-8 p-6 sm:p-8 md:p-12 lg:p-20'>
         <div className='w-full lg:w-[40%] flex flex-col gap-4 sm:gap-10'>
-          <h1 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold border-l-4 sm:border-l-10 px-3 sm:px-6 border-[#2BC99C] text-white drop-shadow-lg'>
+          <h1 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold border-l-4 sm:border-l-10 px-3 sm:px-6 border-[#009edb] text-white drop-shadow-lg'>
             Our Story
           </h1>
           <blockquote className='text-base sm:text-lg md:text-xl font-semibold text-gray-300'>
@@ -204,7 +204,7 @@ Today, with decades of trust earned and hundreds of success stories written, we 
           {showButton && (
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="mt-4 sm:mt-6 flex items-center gap-2 text-[#2BC99C] font-semibold hover:text-white transition-all duration-300"
+              className="mt-4 sm:mt-6 flex items-center gap-2 text-[#009edb] font-semibold hover:text-white transition-all duration-300"
             >
               <span className="relative overflow-hidden inline-block">
                 <span className={`inline-block transition-transform duration-500 ${isExpanded ? '-translate-y-full' : ''}`}>

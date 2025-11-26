@@ -19,7 +19,7 @@ export const useTheme = () => {
 };
 
 export default function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('dark');
+  const [theme, setThemeState] = useState<Theme>('light');
 
   useEffect(() => {
     // read saved preference or system preference
@@ -27,13 +27,13 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
       const saved = localStorage.getItem('theme');
       if (saved === 'light' || saved === 'dark') {
         setThemeState(saved as Theme);
-      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-        setThemeState('light');
-      } else {
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         setThemeState('dark');
+      } else {
+        setThemeState('light');
       }
     } catch (e) {
-      setThemeState('dark');
+      setThemeState('light');
     }
   }, []);
 
@@ -51,10 +51,10 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
       if (meta) meta.content = '#ffffff';
     } else {
       root.setAttribute('data-theme', 'dark');
-      body.style.backgroundColor = '#2a2a2a';
+      body.style.backgroundColor = '#000000';
       body.style.color = '#ffffff';
       const meta = document.querySelector('meta[name=theme-color]') as HTMLMetaElement | null;
-      if (meta) meta.content = '#2a2a2a';
+      if (meta) meta.content = '#000000';
     }
 
     try {

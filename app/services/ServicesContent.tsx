@@ -224,7 +224,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, onClick }) => {
       />
 
       <div className="relative z-10 flex h-full flex-col justify-between p-4 sm:p-6 md:p-8 text-white">
-        <svg className="ml-auto w-6 sm:w-8 md:w-9 h-6 sm:h-8 md:h-9 transition-transform duration-500 group-hover:-rotate-45 group-hover:text-[#1DCD9F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="ml-auto w-6 sm:w-8 md:w-9 h-6 sm:h-8 md:h-9 transition-transform duration-500 group-hover:-rotate-45 group-hover:text-[#009edb]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
         </svg>
 
@@ -235,7 +235,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, onClick }) => {
             ))}
           </h3>
           <p className="mb-3 sm:mb-5 text-xs sm:text-sm line-clamp-2 opacity-90" style={{color:'white'}}>{service.description}</p>
-          <span className="inline-block border border-[#1DCD9F] px-2 sm:px-4 py-1 sm:py-2 rounded-full text-xs sm:text-sm font-medium bg-[#1DCD9F]/20 text-[#1DCD9F]">
+          <span className="inline-block border border-[#009edb] px-2 sm:px-4 py-1 sm:py-2 rounded-full text-xs sm:text-sm font-medium bg-[#009edb]/20 text-[#009edb]">
             {service.items.length} Services
           </span>
         </div>
@@ -262,7 +262,7 @@ const ExpandableMainItem: React.FC<{
         <span className={`font-semibold text-lg flex-1 text-left ${isLight ? 'text-gray-900' : 'text-white'}`}>{mainItem}</span>
         {(hasSubItems || hasDeepSubItems) && (
           <motion.div animate={{ rotate: isExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
-            <ChevronDown className="w-5 h-5 text-[#1DCD9F]" />
+            <ChevronDown className="w-5 h-5 text-[#009edb]" />
           </motion.div>
         )}
       </button>
@@ -274,7 +274,7 @@ const ExpandableMainItem: React.FC<{
               <div className="space-y-2">
                 {hasSubItems.map((sub, j) => (
                   <div key={j} className="flex items-start gap-3 ml-10 text-sm">
-                    <span className="mt-1.5 text-[#1DCD9F]">•</span>
+                    <span className="mt-1.5 text-[#009edb]">•</span>
                     <span className={`${isLight ? 'text-gray-700' : 'text-gray-300'}`}>{sub}</span>
                   </div>
                 ))}
@@ -285,7 +285,7 @@ const ExpandableMainItem: React.FC<{
               <div className="space-y-5">
                 {Object.entries(hasDeepSubItems).map(([cat, items]) => (
                   <div key={cat}>
-                    <p className="font-semibold text-sm mb-3 ml-10 text-[#1DCD9F]">{cat}</p>
+                    <p className="font-semibold text-sm mb-3 ml-10 text-[#009edb]">{cat}</p>
                     {Object.entries(items).map(([subCat, subItems]) => (
                       <div key={subCat} className="ml-10">
                         <p className={`font-medium text-sm mb-2 ml-6 ${isLight ? 'text-gray-800' : 'text-gray-200'}`}>{subCat}</p>
@@ -363,7 +363,7 @@ export default function ServicesContent() {
       <Navbar />
       {/* Hero */}
       <div className='relative w-full h-[100vh]'>
-        <div className='absolute inset-x-0 top-0 h-[100vh] bg-linear-to-t from-black/70 via-black/40 to-transparent pointer-events-none z-10'></div>
+        <div className='absolute inset-x-0 top-0 h-[100vh] bg-linear-to-t from-slate-950/70 via-slate-950/40 to-transparent pointer-events-none z-10'></div>
         <video
           className="absolute inset-0 w-full h-full object-cover"
           autoPlay
@@ -385,9 +385,9 @@ export default function ServicesContent() {
         </video>
         
         <div className="absolute text-left top-[60%] sm:top-[75%] left-1/2 sm:left-[35%] transform -translate-x-1/2 -translate-y-1/2 px-4 w-full sm:w-auto z-20">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold drop-shadow-lg" style={{color:"white"}}>Our Services<span className="text-[#2BC99C] text-4xl sm:text-5xl md:text-6xl lg:text-7xl">.</span></h1>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold drop-shadow-lg" style={{color:"white"}}>Our Services<span className="text-[#009edb] text-4xl sm:text-5xl md:text-6xl lg:text-7xl">.</span></h1>
           <p className="mt-4 sm:mt-4 text-lg sm:text-lg md:text-xl lg:text-2xl drop-shadow-md" style={{color:"white"}}>Comprehensive Financial Solutions for Your Success</p>
-          <p className="mt-6 sm:mt-8 text-base sm:text-base md:text-lg lg:text-xl border-l-4 border-[#2BC99C] pl-3 sm:pl-4" style={{color:"white"}}>
+          <p className="mt-6 sm:mt-8 text-base sm:text-base md:text-lg lg:text-xl border-l-4 border-[#009edb] pl-3 sm:pl-4" style={{color:"white"}}>
             Delivering excellence from audit to advisory, we guide your financial journey with expertise and integrity.<br />
             We turn compliance into confidence and challenges into growth opportunities.
           </p>
@@ -397,7 +397,7 @@ export default function ServicesContent() {
       {/* Services Grid */}
       <section className="py-10 sm:py-20 px-3 sm:px-6 md:px-12 lg:px-20">
         <div className='p-4 sm:p-10 flex flex-col gap-4 sm:gap-8'>
-          <h1 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold'>Our Core Services <span className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#1DCD9F]'>.</span></h1>
+          <h1 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold'>Our Core Services <span className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#009edb]'>.</span></h1>
           <p className='text-xs sm:text-sm md:text-base lg:text-lg max-w-3xl text-gray-300'>We deliver precise, compliant, and value-driven solutions tailored to your business needs.</p>
         </div>
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
@@ -419,7 +419,7 @@ export default function ServicesContent() {
       <AnimatePresence>
         {selectedService && (
           <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedService(null)} className={`fixed inset-0 backdrop-blur-md z-40 cursor-pointer ${theme === 'light' ? 'bg-black/40' : 'bg-black/90'}`} />
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedService(null)} className={`fixed inset-0 backdrop-blur-md z-40 cursor-pointer ${theme === 'light' ? 'bg-slate-950/40' : 'bg-slate-950/90'}`} />
             <motion.div
               ref={modalRef}
               initial={{ y: '100%' }}
@@ -431,8 +431,8 @@ export default function ServicesContent() {
             >
               <div className="relative h-48 md:h-64 overflow-hidden">
                 <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${selectedService.imgSrc})` }} />
-                <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/70 to-[#0a0a0a]" />
-                <button onClick={() => setSelectedService(null)} className="absolute top-6 right-6 w-12 h-12 rounded-full backdrop-blur-sm transition-all group border bg-black/40 border-white/20 hover:bg-[#1DCD9F]">
+                <div className="absolute inset-0 bg-linear-to-b from-slate-950/60 via-slate-950/70 to-[#0a0a0a]" />
+                <button onClick={() => setSelectedService(null)} className="absolute top-6 right-6 w-12 h-12 rounded-full backdrop-blur-sm transition-all group border bg-slate-950/40 border-white/20 hover:bg-[#009edb]">
                   <svg className="w-6 h-6 mx-auto " style={{color:"white"}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
@@ -447,7 +447,7 @@ export default function ServicesContent() {
                 <div className="p-8 md:p-12 space-y-12">
                   <div>
                     <div className="flex items-center gap-3 mb-6">
-                      <div className="h-8 w-1 bg-[#1DCD9F]" />
+                      <div className="h-8 w-1 bg-[#009edb]" />
                       <h3 className={`text-xl md:text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Overview</h3>
                     </div>
                     <p className={`text-base leading-relaxed whitespace-pre-line border-l-2 pl-6 ${theme === 'light' ? 'text-gray-700 border-gray-300' : 'text-gray-400 border-gray-800'}`}>
@@ -457,7 +457,7 @@ export default function ServicesContent() {
 
                   <div>
                     <div className="flex items-center gap-3 mb-8">
-                      <div className="h-8 w-1 bg-[#1DCD9F]" />
+                      <div className="h-8 w-1 bg-[#009edb]" />
                       <h3 className={`text-xl md:text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Our Services Include</h3>
                     </div>
                     <div className="space-y-6">
@@ -469,25 +469,25 @@ export default function ServicesContent() {
 
                   <div>
                     <div className="flex items-center gap-3 mb-8">
-                      <div className="h-8 w-1 bg-[#1DCD9F]" />
+                      <div className="h-8 w-1 bg-[#009edb]" />
                       <h3 className={`text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Key Benefits</h3>
                     </div>
                     <div className="space-y-4">
                       {selectedService.benefits.map((benefit, i) => (
-                        <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} className={`flex items-start gap-4 p-5 rounded-lg border-l-4 border-[#1DCD9F] ${theme === 'light' ? 'bg-[#F0FDF9]' : 'bg-linear-to-r from-gray-900/30 to-transparent'}`}>
+                        <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} className={`flex items-start gap-4 p-5 rounded-lg border-l-4 border-[#009edb] ${theme === 'light' ? 'bg-[#F0FDF9]' : 'bg-linear-to-r from-gray-900/30 to-transparent'}`}>
                           <span className={`text-sm leading-relaxed ${theme === 'light' ? 'text-gray-700' : 'text-gray-400'}`}>{benefit}</span>
                         </motion.div>
                       ))}
                     </div>
                   </div>
 
-                  <div className="relative overflow-hidden bg-linear-to-r p-10 rounded-xl border border-[#1DCD9F]/20 from-[#1DCD9F]/5 via-[#1DCD9F]/10 to-transparent">
+                  <div className="relative overflow-hidden bg-linear-to-r p-10 rounded-xl border border-[#009edb]/20 from-[#009edb]/5 via-[#009edb]/10 to-transparent">
                     <div className="relative text-center">
                       <h3 className={`text-2xl md:text-3xl font-bold mb-3 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Ready to Get Started?</h3>
                       <p className={`mb-8 text-base max-w-2xl mx-auto ${theme === 'light' ? 'text-gray-700' : 'text-gray-400'}`}>
                         Contact us today for a personalized consultation tailored to your business needs.
                       </p>
-                      <a href="#contact" className="inline-flex items-center gap-3 bg-[#1DCD9F] hover:bg-[#19b892] text-black font-bold px-8 py-4 rounded-full text-base transition-all transform hover:scale-105 shadow-lg">
+                      <a href="#contact" className="inline-flex items-center gap-3 bg-[#009edb] hover:bg-[#008bbd] text-black font-bold px-8 py-4 rounded-full text-base transition-all transform hover:scale-105 shadow-lg">
                         Schedule a Consultation <ArrowRight className="w-5 h-5" />
                       </a>
                     </div>

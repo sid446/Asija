@@ -19,7 +19,7 @@ export function WaveLoader({
   bars = 5,
   message,
   messagePlacement = 'bottom',
-  barClass = 'bg-[#1DCD9F]',
+  barClass = 'bg-[#009edb]',
 }: WaveLoaderProps) {
   const layout = {
     bottom: 'flex-col',

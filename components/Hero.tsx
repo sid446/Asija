@@ -8,7 +8,7 @@ function Hero() {
   const { t } = useTranslation(); 
   
   return (
-    <div className="fixed top-0 left-0 w-screen h-[100vh] sm:h-[90vh] overflow-hidden border-b-4 border-[#1DCD9F] z-10">
+    <div className="fixed top-0 left-0 w-screen h-[100vh] sm:h-[90vh] overflow-hidden border-b-4 border-[#009edb] z-10">
       {/* Video Background */}
       <video
         className="absolute inset-0 w-full h-full object-cover"
@@ -17,14 +17,14 @@ function Hero() {
         muted
         playsInline
         preload="auto"
-        poster="/thumbnail.jpg"
+        poster="https://res.cloudinary.com/db2qa9dzs/video/upload/so_0,w_1920,q_auto,f_jpg/v1764139755/855507-hd_1920_1080_25fps_kyxlva.jpg"
       >
         <source
-          src="https://res.cloudinary.com/db2qa9dzs/video/upload/f_webm,q_auto,vc_auto,w_1920/v1762886458/vid1_izwyyc.webm"
+          src="https://res.cloudinary.com/db2qa9dzs/video/upload/f_webm,q_auto:eco,vc_auto,w_1920/v1764139755/855507-hd_1920_1080_25fps_kyxlva.webm"
           type="video/webm"
         />
         <source
-          src="https://res.cloudinary.com/db2qa9dzs/video/upload/f_mp4,q_auto,vc_auto,w_1920/v1762886458/vid1_izwyyc.mp4"
+          src="https://res.cloudinary.com/db2qa9dzs/video/upload/f_mp4,q_auto:eco,vc_auto,w_1920/v1764139755/855507-hd_1920_1080_25fps_kyxlva.mp4"
           type="video/mp4"
         />
         Your browser does not support the video tag.
@@ -32,27 +32,27 @@ function Hero() {
 
       {/* Gradient + Blur Overlay */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/35 to-transparent md:from-black/60 md:via-black/35 md:to-transparent bg-black/40" />
-        <div className="absolute inset-0 bg-black/25 backdrop-blur-sm md:backdrop-blur-md" />
+        <div className="absolute inset-0 bg-linear-to-r from-slate-950/60 via-slate-950/35 to-transparent md:from-slate-950/60 md:via-slate-950/35 md:to-transparent bg-slate-950/40" />
+        <div className="absolute inset-0 bg-slate-950/25 backdrop-blur-sm md:backdrop-blur-md" />
       </div>
 
       {/* Content */}
       <div className="relative z-30 flex h-full items-center justify-center md:justify-start px-4 sm:px-6 md:px-10 lg:px-16 pt-20">
         <div className="w-full max-w-lg space-y-4 sm:space-y-5 md:space-y-6 text-center md:text-left">
-          <p className="font-bold text-xs sm:text-sm md:text-base tracking-widest uppercase" style={{ color: '#1DCD9F' }}>
+          <p className="font-bold text-xs sm:text-sm md:text-base tracking-widest uppercase" style={{ color: '#009edb' }}>
             {t('hero.tagline')} {/* UPDATED */}
           </p>
           <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight" style={{ color: '#ffffff' }}>
             {t('hero.title')} {/* UPDATED */}
           </h1>
-          <div className="border-0 md:border-l-4 pl-0 md:pl-4 mx-auto md:mx-0 max-w-md md:max-w-none" style={{ borderColor: '#169976' }}>
+          <div className="border-0 md:border-l-4 pl-0 md:pl-4 mx-auto md:mx-0 max-w-md md:max-w-none" style={{ borderColor: '#009edb' }}>
             <p className="text-sm sm:text-base md:text-lg leading-relaxed" style={{ color: '#d1d5db' }}>
               {t('hero.description')} {/* UPDATED */}
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 justify-center items-center md:justify-start">
-            <Button label={t('hero.learnMore')} link="/about" color1="#1DCD9F" textColor="#000000" /> {/* UPDATED */}
-            <Button label={t('hero.contactUs')} link="/#contact" color1="#323232" textColor="#1DCD9F" /> {/* UPDATED */}
+            <Button label={t('hero.learnMore')} link="/about" color1="#009edb" textColor="#ffffff" /> {/* UPDATED */}
+            <Button label={t('hero.contactUs')} link="/#contact" color1="#1e1e1e" textColor="#009edb" /> {/* UPDATED */}
           </div>
         </div>
       </div>

@@ -38,7 +38,7 @@ export default function Loader({ pageName }: LoaderProps) {
           >
             <WaveLoader
               bars={5}
-              barClass="bg-[#1DCD9F]"
+              barClass="bg-[#009edb]"
               message={pageName}
             />
           </motion.div>

@@ -138,7 +138,7 @@ export const LanguageSwitcher: React.FC<{ align?: 'left' | 'right' }> = ({ align
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className={`absolute top-full ${align === 'right' ? 'right-0' : 'left-0'} mt-2 w-40 bg-[#252525] border border-white/10 rounded-xl shadow-2xl overflow-hidden z-10`}
+            className={`absolute top-full ${align === 'right' ? 'right-0' : 'left-0'} mt-2 w-40 bg-[#121212] border border-white/10 rounded-xl shadow-2xl overflow-hidden z-10`}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-2 space-y-1">
@@ -156,7 +156,7 @@ export const LanguageSwitcher: React.FC<{ align?: 'left' | 'right' }> = ({ align
                     w-full flex items-center gap-3 px-3 py-2.5 rounded-lg
                     transition-all text-left
                     ${language === lang.code 
-                      ? 'bg-[#1DCD9F]/20 text-[#1DCD9F]' 
+                      ? 'bg-[#009edb]/20 text-[#009edb]' 
                       : 'text-white/80 hover:bg-white/8 hover:text-white'
                     }
                   `}
@@ -170,7 +170,7 @@ export const LanguageSwitcher: React.FC<{ align?: 'left' | 'right' }> = ({ align
                     <motion.svg
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      className="w-5 h-5 text-[#1DCD9F]"
+                      className="w-5 h-5 text-[#009edb]"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >

@@ -59,7 +59,7 @@ export default function PoliciesPage() {
   }, [status, router]);
 
   if (status === "loading") {
-    return <div className={`min-h-screen flex items-center justify-center ${isLight ? 'bg-[#F0FDF9] text-gray-900' : 'bg-[#0D1F1A] text-white'}`}>Loading...</div>;
+    return <div className={`min-h-screen flex items-center justify-center ${isLight ? 'bg-white text-gray-900' : 'bg-slate-950 text-white'}`}>Loading...</div>;
   }
 
   if (!session) {
@@ -67,14 +67,14 @@ export default function PoliciesPage() {
   }
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${isLight ? 'bg-[#F0FDF9] text-gray-900' : 'bg-[#0D1F1A] text-white'}`}>
+    <div className={`min-h-screen transition-colors duration-300 ${isLight ? 'bg-white text-gray-900' : 'bg-slate-950 text-white'}`}>
       <Navbar />
       
       <main className="pt-30 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-12 text-center lg:text-left">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Company <span className="text-[#1DCD9F]">Policies</span>
+            Company <span className="text-[#009edb]">Policies</span>
           </h1>
           <p className={`text-lg max-w-2xl ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
             Transparency and integrity are at the core of our operations. Review our policies to understand how we operate and serve you.
@@ -88,7 +88,7 @@ export default function PoliciesPage() {
             {/* General Policies Section */}
             <section>
               <h2 className={`text-2xl font-semibold mb-6 flex items-center gap-2 ${isLight ? 'text-gray-800' : 'text-gray-100'}`}>
-                <span className="w-2 h-8 bg-[#1DCD9F] rounded-full"></span>
+                <span className="w-2 h-8 bg-[#009edb] rounded-full"></span>
                 General Policies
               </h2>
               <div className="space-y-8">
@@ -101,11 +101,11 @@ export default function PoliciesPage() {
                     transition={{ delay: index * 0.1 }}
                     className={`p-6 rounded-2xl border transition-all duration-300 hover:shadow-lg ${
                       isLight 
-                        ? 'bg-white border-gray-100 hover:border-[#1DCD9F]/30' 
-                        : 'bg-[#1a2e29] border-white/5 hover:border-[#1DCD9F]/30'
+                        ? 'bg-white border-gray-100 hover:border-[#009edb]/30' 
+                        : 'bg-slate-950 border-white/5 hover:border-[#009edb]/30'
                     }`}
                   >
-                    <h3 className="text-xl font-bold mb-3 text-[#1DCD9F]">{policy.title}</h3>
+                    <h3 className="text-xl font-bold mb-3 text-[#009edb]">{policy.title}</h3>
                     <p className={`leading-relaxed ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
                       {policy.content}
                     </p>
@@ -117,7 +117,7 @@ export default function PoliciesPage() {
             {/* Employee Policies Section */}
             <section>
               <h2 className={`text-2xl font-semibold mb-6 flex items-center gap-2 ${isLight ? 'text-gray-800' : 'text-gray-100'}`}>
-                <span className="w-2 h-8 bg-[#1DCD9F] rounded-full"></span>
+                <span className="w-2 h-8 bg-[#009edb] rounded-full"></span>
                 Employee & Internal Policies
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -131,10 +131,10 @@ export default function PoliciesPage() {
                     className={`p-6 rounded-2xl border transition-all duration-300 ${
                       isLight 
                         ? 'bg-white border-gray-100' 
-                        : 'bg-[#1a2e29] border-white/5'
+                        : 'bg-slate-950 border-white/5'
                     }`}
                   >
-                    <h3 className="text-lg font-bold mb-2 text-[#1DCD9F]">{policy.title}</h3>
+                    <h3 className="text-lg font-bold mb-2 text-[#009edb]">{policy.title}</h3>
                     <p className={`text-sm leading-relaxed ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
                       {policy.content}
                     </p>
@@ -149,7 +149,7 @@ export default function PoliciesPage() {
           <div className="w-full lg:w-[30%]">
             <div className="sticky top-24 space-y-6">
               <div className="relative rounded-2xl overflow-hidden aspect-3/4 shadow-2xl">
-                <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent z-10" />
+                <div className="absolute inset-0 bg-linear-to-t from-slate-950/60 to-transparent z-10" />
                 <img 
                   src="/about1.jpg" 
                   alt="Office Culture" 
@@ -162,14 +162,14 @@ export default function PoliciesPage() {
 
               <div className={`p-6 rounded-2xl border ${
                 isLight 
-                  ? 'bg-[#1DCD9F]/10 border-[#1DCD9F]/20' 
-                  : 'bg-[#1DCD9F]/5 border-[#1DCD9F]/10'
+                  ? 'bg-[#009edb]/10 border-[#009edb]/20' 
+                  : 'bg-[#009edb]/5 border-[#009edb]/10'
               }`}>
                 <h4 className={`font-bold mb-2 ${isLight ? 'text-gray-900' : 'text-white'}`}>Need Assistance?</h4>
                 <p className={`text-sm mb-4 ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>
                   If you have questions regarding our policies, please contact our HR department.
                 </p>
-                <button className="text-sm font-bold text-[#1DCD9F] hover:underline">
+                <button className="text-sm font-bold text-[#009edb] hover:underline">
                   Contact HR &rarr;
                 </button>
               </div>

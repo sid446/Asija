@@ -67,18 +67,18 @@ const Values = () => {
   const [selectedCard, setSelectedCard] = useState<typeof cardsData[0] | null>(null);
   
   return (
-    <section id="values" className="relative bg-[#2a2a2a] w-full overflow-hidden mt-10 sm:mt-20 lg:mt-30">
+    <section id="values" className="relative bg-slate-950 w-full overflow-hidden mt-10 sm:mt-20 lg:mt-30">
       
 
       <div className="relative z-30 -mt-12 sm:-mt-16 lg:-mt-20">
-        <div className="bg-[#2a2a2a]  shadow-2xl">
+        <div className="bg-slate-950  shadow-2xl">
           <div className="px-4 py-10 sm:px-6 sm:py-12 md:px-8 lg:px-12 xl:px-20">
             <div className="max-w-7xl mx-auto">
 
               <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight  mb-8 sm:mb-12" 
               >
                 {t('about.exploreStrengths')} {/* UPDATED */}
-                <span className="text-[#1DCD9F] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold"> .</span>
+                <span className="text-[#009edb] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold"> .</span>
               </h2>
 
               <div className="grid grid-cols-2 sm:grid-cols-2  lg:grid-cols-3 gap-4 mt-0  sm:mt-15 sm:gap-6 mb-10">
@@ -110,7 +110,7 @@ const Values = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedCard(null)}
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
+              className="fixed inset-0 bg-slate-950/50 backdrop-blur-sm z-50"
             />
             
             {/* Bottom Sheet Modal */}
@@ -124,10 +124,10 @@ const Values = () => {
             >
               <motion.div
                 onClick={(e) => e.stopPropagation()}
-                className="w-full md:w-1/2 md:h-screen bg-white dark:bg-[#2a2a2a] rounded-t-3xl md:rounded-none shadow-2xl max-h-[90vh] md:max-h-full overflow-y-auto flex flex-col"
+                className="w-full md:w-1/2 md:h-screen bg-white dark:bg-slate-950 rounded-t-3xl md:rounded-none shadow-2xl max-h-[90vh] md:max-h-full overflow-y-auto flex flex-col"
               >
                 {/* Close Button */}
-                <div className="sticky top-0 flex justify-between items-center p-6 border-b border-gray-200 dark:border-white/10 bg-white dark:bg-[#2a2a2a]">
+                <div className="sticky top-0 flex justify-between items-center p-6 border-b border-gray-200 dark:border-white/10 bg-white dark:bg-slate-950">
                   <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                     {selectedCard.titleKey ? t(selectedCard.titleKey) : selectedCard.title}
                   </h2>
@@ -156,7 +156,7 @@ const Values = () => {
                 </div>
 
                 {/* Modal Footer */}
-                <div className="sticky bottom-0 p-6 border-t border-gray-200 dark:border-white/10 bg-white dark:bg-[#2a2a2a] flex gap-3 flex-shrink-0">
+                <div className="sticky bottom-0 p-6 border-t border-gray-200 dark:border-white/10 bg-white dark:bg-slate-950 flex gap-3 flex-shrink-0">
                   <button
                     onClick={() => setSelectedCard(null)}
                     className="flex-1 px-6 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600  font-medium rounded-lg transition-colors"style={{color:"white"}}

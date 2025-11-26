@@ -139,13 +139,13 @@ const HeroSection = ({ isActive }: { isActive: boolean }) => (
         />
         Your browser does not support the video tag.
       </video>
-      <div className="absolute inset-0 bg-black/50" />
-      <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/10 to-transparent" />
+      <div className="absolute inset-0 bg-slate-950/50" />
+      <div className="absolute inset-0 bg-linear-to-t from-slate-950/60 via-slate-950/10 to-transparent" />
       <div className="absolute text-left top-[70%] sm:top-[75%] left-1/2 sm:left-[33%] transform -translate-x-1/2 -translate-y-1/2 px-4 w-full sm:w-auto">
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold  mb-10 drop-shadow-lg" style={{color:"white"}}>
-          Industries We Serve<span className='text-[#2BC99C] text-4xl sm:text-5xl md:text-6xl lg:text-7xl'> .</span>
+          Industries We Serve<span className='text-[#009edb] text-4xl sm:text-5xl md:text-6xl lg:text-7xl'> .</span>
         </h1>
-        <p className="text-md sm:text-md md:text-lg lg:text-xl border-l-4 border-[#2BC99C] pl-3 sm:pl-4 w-4xl leading-relaxed drop-shadow-md" style={{color:"white"}}>
+        <p className="text-md sm:text-md md:text-lg lg:text-xl border-l-4 border-[#009edb] pl-3 sm:pl-4 w-4xl leading-relaxed drop-shadow-md" style={{color:"white"}}>
           Deep expertise across sectors. From banking and infrastructure to healthcare and retail, we are your one trusted partner for comprehensive financial solutions, regulatory compliance, and strategic growth.
         </p>
       </div>
@@ -289,7 +289,7 @@ export default function IndustriesContent() {
   return (
     <>
       <Loader pageName="Industries" />
-      <div className="relative w-full h-dvh bg-black text-white overflow-hidden touch-none">
+      <div className="relative w-full h-dvh bg-slate-950 text-white overflow-hidden touch-none">
         <Navbar />
 
         {/* Full-Screen Scroll Adventure */}
@@ -373,7 +373,7 @@ export default function IndustriesContent() {
                     className="relative w-full h-full bg-cover bg-center"
                     style={{ backgroundImage: page.leftBgImage ? `url(${page.leftBgImage})` : 'none' }}
                   >
-                    {page.leftBgImage && <div className="absolute inset-0 bg-black/40" />}
+                    {page.leftBgImage && <div className="absolute inset-0 bg-slate-950/40" />}
                     
                     {page.leftContent && (
                       <div className={`relative z-10 flex flex-col items-center justify-center h-full px-8 text-center pointer-events-auto transition-all duration-1000 pt-24 ${isExpandedLeft ? 'max-w-4xl mx-auto' : 'max-w-md mx-auto'}`}>
@@ -401,7 +401,7 @@ export default function IndustriesContent() {
                         {!isExpandedLeft && page.leftContent.details && (
                           <button
                             onClick={() => setExpandedSection('left')}
-                            className="px-6 py-2 border-2 border-[#2BC99C] text-[#2BC99C] font-semibold rounded-full hover:bg-[#2BC99C] hover:text-white transition-all duration-300"
+                            className="px-6 py-2 border-2 border-[#009edb] text-[#009edb] font-semibold rounded-full hover:bg-[#009edb] hover:text-white transition-all duration-300"
                           >
                             Read More
                           </button>
@@ -413,7 +413,7 @@ export default function IndustriesContent() {
 
                 {/* Right Half (Desktop) / Bottom Half (Mobile) */}
                 <motion.div
-                  className={`absolute ${isMobile ? 'bottom-0 left-0 w-full' : 'inset-y-0 right-0'} bg-theme ${isMobile ? 'border-t-4' : 'border-l-4'} border-[#1DCD9F] overflow-hidden`}
+                  className={`absolute ${isMobile ? 'bottom-0 left-0 w-full' : 'inset-y-0 right-0'} bg-theme ${isMobile ? 'border-t-4' : 'border-l-4'} border-[#009edb] overflow-hidden`}
                   initial={false}
                   animate={{
                     width: isMobile ? '100%' : (isExpandedRight ? '100%' : isExpandedLeft ? '0%' : '50%'),
@@ -426,7 +426,7 @@ export default function IndustriesContent() {
                     className="relative w-full h-full bg-cover bg-center"
                     style={{ backgroundImage: page.rightBgImage ? `url(${page.rightBgImage})` : 'none' }}
                   >
-                    {page.rightBgImage && <div className="absolute inset-0 bg-black/40" />}
+                    {page.rightBgImage && <div className="absolute inset-0 bg-slate-950/40" />}
                     
                     {page.rightContent && (
                       <div className={`relative z-10 flex flex-col items-center justify-center h-full px-8 text-center pointer-events-auto transition-all duration-1000 ${isExpandedRight ? 'max-w-4xl mx-auto' : 'max-w-md mx-auto'} ${isMobile ? (isExpandedRight ? 'pt-24 pb-24' : 'pb-24') : 'pt-24'}`}>
@@ -454,7 +454,7 @@ export default function IndustriesContent() {
                         {!isExpandedRight && page.rightContent.details && (
                           <button
                             onClick={() => setExpandedSection('right')}
-                            className="px-6 py-2 border-2 border-[#2BC99C] text-[#2BC99C] font-semibold rounded-full hover:bg-[#2BC99C] hover:text-white transition-all duration-300"
+                            className="px-6 py-2 border-2 border-[#009edb] text-[#009edb] font-semibold rounded-full hover:bg-[#009edb] hover:text-white transition-all duration-300"
                           >
                             Read More
                           </button>
@@ -474,7 +474,7 @@ export default function IndustriesContent() {
             <div className="fixed bottom-4 md:bottom-8 left-0 right-0 z-50 flex justify-center pointer-events-none">
               <div 
                 ref={scrollIndicatorRef}
-                className="flex gap-2 overflow-x-auto max-w-[95vw] p-3 pointer-events-auto [&::-webkit-scrollbar]:hidden bg-black/40 backdrop-blur-lg rounded-xl border border-white/10" 
+                className="flex gap-2 overflow-x-auto max-w-[95vw] p-3 pointer-events-auto [&::-webkit-scrollbar]:hidden bg-slate-950/40 backdrop-blur-lg rounded-xl border border-white/10" 
                 style={{ scrollbarWidth: 'none' }}
               >
                 {industries.map((industry, i) => (
@@ -483,8 +483,8 @@ export default function IndustriesContent() {
                     onClick={() => setCurrentPage(i)}
                     className={`px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-medium transition-all duration-300 rounded-md border backdrop-blur-sm whitespace-nowrap shrink-0 ${
                       currentPage === i 
-                        ? 'bg-[#1DCD9F] text-black border-[#1DCD9F] shadow-lg shadow-[#1DCD9F]/20 scale-105' 
-                        : 'bg-black/30 text-white/60 border-white/10 hover:bg-white/10 hover:text-white hover:border-white/30'
+                        ? 'bg-[#009edb] text-black border-[#009edb] shadow-lg shadow-[#009edb]/20 scale-105' 
+                        : 'bg-slate-950/30 text-white/60 border-white/10 hover:bg-white/10 hover:text-white hover:border-white/30'
                     }`}
                     aria-label={`Go to ${industry.title}`}
                   >
@@ -498,7 +498,7 @@ export default function IndustriesContent() {
           <div 
             ref={footerRef}
             tabIndex={0} // Make focusable for keyboard scrolling
-            className={`absolute inset-0 w-full  bg-[#2a2a2a] overflow-y-auto transition-transform duration-1000 ease-in-out z-30 outline-none pointer-events-auto touch-pan-y [&::-webkit-scrollbar]:hidden ${
+            className={`absolute inset-0 w-full  bg-slate-950 overflow-y-auto transition-transform duration-1000 ease-in-out z-30 outline-none pointer-events-auto touch-pan-y [&::-webkit-scrollbar]:hidden ${
               showFooter ? 'translate-y-0' : 'translate-y-full'
             }`}
             style={{ overscrollBehavior: 'contain', scrollbarWidth: 'none' }}

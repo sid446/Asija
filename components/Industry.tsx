@@ -241,7 +241,7 @@ const industriesSlides = [
     description: "End-to-end audit, tax planning, and compliance for banks, NBFCs, and fintech startups.",
     descriptionKey: 'industries.bankingDesc', // ADD THIS to your JSON
     image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?q=80&w=2070&auto=format&fit=crop",
-    bgColor: "#2a2a2a",
+    bgColor: "#000000",
     textColor: "#ffffff",
     slug: "banking"
   },
@@ -251,7 +251,7 @@ const industriesSlides = [
     description: "Financial advisory for schools, universities, and edtech platforms with grant compliance.",
     descriptionKey: 'industries.educationDesc', // ADD THIS to your JSON
     image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop",
-    bgColor: "#2a2a2a",
+    bgColor: "#000000",
     textColor: "#ffffff",
     slug: "education"
   },
@@ -261,7 +261,7 @@ const industriesSlides = [
     description: "Hospital accounting, medical billing, and regulatory compliance under NABH & HIPAA.",
     descriptionKey: 'industries.healthcareDesc', // ADD THIS to your JSON
     image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=2070&auto=format&fit=crop",
-    bgColor: "#2a2a2a",
+    bgColor: "#000000",
     textColor: "#ffffff",
     slug: "healthcare"
   },
@@ -271,7 +271,7 @@ const industriesSlides = [
     description: "Project finance, PPP models, and cost audits for roads, metro, and smart cities.",
     descriptionKey: 'industries.infrastructureDesc', // ADD THIS to your JSON
     image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2070&auto=format&fit=crop",
-    bgColor: "#2a2a2a",
+    bgColor: "#000000",
     textColor: "#ffffff",
     slug: "infrastructure"
   },
@@ -281,7 +281,7 @@ const industriesSlides = [
     description: "RERA compliance, project funding, and valuation for developers and REITs.",
     descriptionKey: 'industries.realtyDesc', // ADD THIS to your JSON
     image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=2070&auto=format&fit=crop",
-    bgColor: "#2a2a2a",
+    bgColor: "#000000",
     textColor: "#ffffff",
     slug: "realestate"
   },
@@ -352,7 +352,7 @@ export default function Industries() {
                         <motion.button
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
-                          className="self-start sm:self-end shrink-0 group relative overflow-hidden bg-accent hover:opacity-95 text-black font-bold px-6 py-3 rounded-lg transition-all duration-300 shadow-lg hover:shadow-(--theme-accent)/50"
+                          className="self-start sm:self-end shrink-0 group relative overflow-hidden bg-[#009edb] hover:opacity-95 text-white font-bold px-6 py-3 rounded-lg transition-all duration-300 shadow-lg hover:shadow-(--theme-accent)/50"
                         >
                           <span className="relative z-10 flex items-center gap-2">
                             {t('common.learnMore')}
@@ -389,7 +389,7 @@ export default function Industries() {
                 className='group relative overflow-hidden bg-card border border-theme rounded-xl p-4 sm:p-5 text-left cursor-pointer transition-all duration-300 hover:border-accent/50 hover:shadow-xl hover:shadow-(--theme-accent)/20 touch-manipulation select-none'
                 progressBarClass='bg-accent h-full'
               >
-                        <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-(--theme-accent) to-[#0EA578] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-(--theme-accent) to-[#009edb] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 
                 <h3 className='text-sm sm:text-base font-bold text-theme mb-2 group-hover:accent transition-colors duration-300'>
                   {t(item.translationKey)} {/* UPDATED */}

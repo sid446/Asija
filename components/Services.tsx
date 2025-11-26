@@ -92,7 +92,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ group, index }) => {
           ${isOpen ? 'ring-2 ring-(--theme-accent)/20' : ''}
         `}
       >
-  <div className="h-1 bg-linear-to-r from-(--theme-accent) to-[#0EA578]" />
+  <div className="h-1 bg-linear-to-r from-(--theme-accent) to-[#0077a3]" />
 
         <button
           onClick={() => setIsOpen(!isOpen)}

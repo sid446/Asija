@@ -6,7 +6,7 @@ export interface IAlumni extends Document {
   phone: string;
   yearOfLeaving: number;
   designationAtAsija: string;
-  currentOrganization: string;
+  currentProfessionalQualification: string;
   currentDesignation: string;
   linkedinProfile?: string;
   status: 'Pending' | 'Approved' | 'Rejected';
@@ -19,12 +19,17 @@ const AlumniSchema: Schema = new Schema({
   phone: { type: String, required: true },
   yearOfLeaving: { type: Number, required: true },
   designationAtAsija: { type: String, required: true },
-  currentOrganization: { type: String, required: true },
+  currentProfessionalQualification: { type: String, required: true },
   currentDesignation: { type: String, required: true },
   linkedinProfile: { type: String },
   status: { type: String, enum: ['Pending', 'Approved', 'Rejected'], default: 'Pending' },
   createdAt: { type: Date, default: Date.now },
 });
+
+// Delete the model if it exists to prevent OverwriteModelError and ensure schema updates in dev
+if (process.env.NODE_ENV === 'development' && mongoose.models.Alumni) {
+  delete mongoose.models.Alumni;
+}
 
 const Alumni: Model<IAlumni> = mongoose.models.Alumni || mongoose.model<IAlumni>('Alumni', AlumniSchema);
 

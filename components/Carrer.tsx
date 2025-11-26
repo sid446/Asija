@@ -70,7 +70,7 @@ function Career() {
             {/* Title with improved mobile sizing */}
             <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-3 sm:mb-4 transition-all duration-1000 delay-400 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'}`} style={{ color: '#ffffff' }}>
               {t('career.title')}
-              <span style={{ color: '#1DCD9F' }}>.</span>
+              <span style={{ color: '#009edb' }}>.</span>
             </h1>
             
             {/* Subtitle with better mobile readability */}
@@ -91,7 +91,7 @@ function Career() {
             <div className='flex flex-col sm:flex-row gap-3 sm:gap-4 transition-all duration-1000 delay-800'>
               <Link href="/#contact" className='w-full sm:w-auto'>
                 <button 
-                  className='w-full px-6 sm:px-8 md:px-10 py-3.5 sm:py-4 bg-accent text-white text-base sm:text-lg font-semibold rounded-lg hover:opacity-95 transition-all hover:scale-105 active:scale-95 shadow-lg touch-manipulation'
+                  className='w-full px-6 sm:px-8 md:px-10 py-3.5 sm:py-4 bg-[#009edb] text-white text-base sm:text-lg font-semibold rounded-lg hover:opacity-95 transition-all hover:scale-105 active:scale-95 shadow-lg touch-manipulation'
                   aria-label={t('career.applyNow')}
                 >
                   {t('career.applyNow')}

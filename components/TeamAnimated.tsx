@@ -316,8 +316,8 @@ export default function TeamAnimated() {
   return (
     <>
       {/* Team Grid Section */}
-      <section className="relative bg-[#2a2a2a] w-full overflow-hidden pt-32 md:pt-32">
-        <div className="absolute inset-0 bg-black/20 z-10" />
+      <section className="relative bg-slate-950 w-full overflow-hidden pt-32 md:pt-32">
+        <div className="absolute inset-0 bg-slate-950/20 z-10" />
         <div className="relative z-20 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
             className="mb-12 md:mb-20"
@@ -327,12 +327,12 @@ export default function TeamAnimated() {
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-10 text-white text-left">
-              Meet Our Team<span className="text-[#1DCD9F]">.</span>
+              Meet Our Team<span className="text-[#009edb]">.</span>
             </h2>
             <h3 className="text-2xl md:text-4xl mb-6 text-white text-left">
               The Experts Guiding Your Finances
             </h3>
-            <p className="text-gray-300 text-lg text-left mt-10 border-l-4 border-[#1DCD9F] pl-4 leading-relaxed">
+            <p className="text-gray-300 text-lg text-left mt-10 border-l-4 border-[#009edb] pl-4 leading-relaxed">
               Meet the dedicated professionals who make your financial success their top priority. We believe that accounting is more than just numbers; it's about building lasting relationships...
             </p>
           </motion.div>
@@ -359,10 +359,10 @@ export default function TeamAnimated() {
                     alt={`${member.name} - ${member.role}`}
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1DCD9F]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#009edb]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
                 <div className="mt-4 text-center">
-                  <h3 className="text-lg font-semibold text-white group-hover:text-[#1DCD9F] transition-colors duration-300">
+                  <h3 className="text-lg font-semibold text-white group-hover:text-[#009edb] transition-colors duration-300">
                     {member.name}
                   </h3>
                   <p className="text-gray-400 text-sm mt-1">{member.role}</p>
@@ -383,7 +383,7 @@ export default function TeamAnimated() {
   />
 
   {/* Dark Overlay */}
-  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/40" />
+  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/60 to-slate-950/40" />
 
   {/* Content */}
   <motion.div 
@@ -395,7 +395,7 @@ export default function TeamAnimated() {
   >
     <h2 className="text-2xl md:text-4xl font-bold mb-6 leading-tight" style={{color:"white"}}>
       Your Success Is Our Legacy
-      <span className="text-[#1DCD9F]">.</span>
+      <span className="text-[#009edb]">.</span>
     </h2>
     
     <p className="text-sm md:text-md mb-10 max-w-3xl mx-auto leading-relaxed" style={{color:"white"}}>
@@ -406,7 +406,7 @@ export default function TeamAnimated() {
     <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
       <a 
         href="/contact" 
-        className="inline-flex items-center gap-3 bg-[#1DCD9F] hover:bg-[#19b892] text-black font-bold px-8  py-3 rounded-full text-sm transition-all transform hover:scale-105 shadow-xl"
+        className="inline-flex items-center gap-3 bg-[#009edb] hover:bg-[#008bc0] text-white font-bold px-8  py-3 rounded-full text-sm transition-all transform hover:scale-105 shadow-xl"
       >
         Start a Conversation
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -416,7 +416,7 @@ export default function TeamAnimated() {
 
       <a 
         href="tel:+911234567890" 
-        className="inline-flex items-center gap-3 border-2 border-[#1DCD9F] text-[#1DCD9F] hover:bg-[#1DCD9F] hover:text-black font-semibold px-8 py-3 rounded-full text-sm transition-all"
+        className="inline-flex items-center gap-3 border-2 border-[#009edb] text-[#009edb] hover:bg-[#009edb] hover:text-white font-semibold px-8 py-3 rounded-full text-sm transition-all"
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -443,7 +443,7 @@ export default function TeamAnimated() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedMember(null)}
-              className={`fixed inset-0 backdrop-blur-sm z-40 cursor-pointer pr-0 sm:pr-[500px] lg:pr-[600px] ${theme === 'light' ? 'bg-black/30' : 'bg-black/60'}`}
+              className={`fixed inset-0 backdrop-blur-sm z-40 cursor-pointer pr-0 sm:pr-[500px] lg:pr-[600px] ${theme === 'light' ? 'bg-slate-950/30' : 'bg-slate-950/60'}`}
             />
 
             {/* Sidebar - smooth scrolling + custom scrollbar */}
@@ -455,19 +455,19 @@ export default function TeamAnimated() {
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
               className={`fixed inset-y-0 right-0 w-full sm:w-[500px] lg:w-[600px] shadow-2xl z-50 overflow-y-auto overscroll-contain scrollbar-thin ${
                 theme === 'light'
-                  ? 'bg-gray-50 scrollbar-thumb-[#1DCD9F]/60 scrollbar-track-gray-200 hover:scrollbar-thumb-[#1DCD9F]'
-                  : 'bg-[#1a1a1a] scrollbar-thumb-[#1DCD9F]/70 scrollbar-track-[#2a2a2a] hover:scrollbar-thumb-[#1DCD9F]'
+                  ? 'bg-gray-50 scrollbar-thumb-[#009edb]/60 scrollbar-track-gray-200 hover:scrollbar-thumb-[#009edb]'
+                  : 'bg-slate-900 scrollbar-thumb-[#009edb]/70 scrollbar-track-slate-950 hover:scrollbar-thumb-[#009edb]'
               }`}
               style={{ WebkitOverflowScrolling: 'touch' }}
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={() => setSelectedMember(null)}
-                className={`absolute top-6 right-6 w-12 h-12 flex items-center justify-center rounded-full hover:bg-[#1DCD9F] transition-all group z-10 ${
-                  theme === 'light' ? 'bg-gray-300' : 'bg-[#2a2a2a]'
+                className={`absolute top-6 right-6 w-12 h-12 flex items-center justify-center rounded-full hover:bg-[#009edb] transition-all group z-10 ${
+                  theme === 'light' ? 'bg-gray-300' : 'bg-slate-950'
                 }`}
               >
-                <svg className={`w-7 h-7 group-hover:text-black ${
+                <svg className={`w-7 h-7 group-hover:text-white ${
                   theme === 'light' ? 'text-gray-700' : 'text-gray-400'
                 }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -477,7 +477,7 @@ export default function TeamAnimated() {
               <div className="p-8 pt-24 sm:pt-8">
                 {/* Header Section */}
                 <div className="mb-8">
-                  <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-[#1DCD9F] mb-6 mx-auto sm:mx-0">
+                  <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-[#009edb] mb-6 mx-auto sm:mx-0">
                     <img src={selectedMember.avatar} alt={selectedMember.name} className="w-full h-full object-cover" />
                   </div>
                   <h2 className={`text-3xl font-bold mb-2 text-center sm:text-left uppercase tracking-wide ${
@@ -490,10 +490,10 @@ export default function TeamAnimated() {
                       theme === 'light' ? 'text-gray-700' : 'text-gray-400'
                     }`}>{selectedMember.qualifications}</p>
                   )}
-                  <p className="text-[#1DCD9F] text-xl font-medium text-center sm:text-left">{selectedMember.role}</p>
+                  <p className="text-[#009edb] text-xl font-medium text-center sm:text-left">{selectedMember.role}</p>
                 </div>
 
-                <div className="h-px bg-gradient-to-r from-transparent via-[#1DCD9F] to-transparent mb-8" />
+                <div className="h-px bg-gradient-to-r from-transparent via-[#009edb] to-transparent mb-8" />
 
                 {/* Structured Information */}
                 <div className="space-y-5 mb-10">
@@ -541,7 +541,7 @@ export default function TeamAnimated() {
                         theme === 'light' ? 'text-gray-700' : 'text-gray-400'
                       }`}>Mobile No.</span>
                       <span className={theme === 'light' ? 'text-gray-600' : 'text-gray-500'}>:</span>
-                      <a href={`tel:${selectedMember.mobile}`} className="text-[#1DCD9F] hover:text-[#19b892] flex-1 text-sm transition-colors">
+                      <a href={`tel:${selectedMember.mobile}`} className="text-[#009edb] hover:text-[#008bc0] flex-1 text-sm transition-colors">
                         {selectedMember.mobile}
                       </a>
                     </div>
@@ -553,14 +553,14 @@ export default function TeamAnimated() {
                         theme === 'light' ? 'text-gray-700' : 'text-gray-400'
                       }`}>Email</span>
                       <span className={theme === 'light' ? 'text-gray-600' : 'text-gray-500'}>:</span>
-                      <a href={`mailto:${selectedMember.email}`} className="text-[#1DCD9F] hover:text-[#19b892] flex-1 text-sm break-all transition-colors">
+                      <a href={`mailto:${selectedMember.email}`} className="text-[#009edb] hover:text-[#008bc0] flex-1 text-sm break-all transition-colors">
                         {selectedMember.email}
                       </a>
                     </div>
                   )}
                 </div>
 
-                <div className="h-px bg-gradient-to-r from-transparent via-[#1DCD9F] to-transparent mb-10" />
+                <div className="h-px bg-gradient-to-r from-transparent via-[#009edb] to-transparent mb-10" />
 
                 {/* Description */}
                 <div className="mb-12">
@@ -572,7 +572,7 @@ export default function TeamAnimated() {
                 </div>
 
                 {/* LinkedIn Connect */}
-                <div className="pt-8 border-t border-[#1DCD9F]/20">
+                <div className="pt-8 border-t border-[#009edb]/20">
                   <a
                     href={selectedMember.linkedin}
                     target="_blank"

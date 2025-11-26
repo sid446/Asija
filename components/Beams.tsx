@@ -431,7 +431,7 @@ const Beams: React.FC<BeamsProps> = ({
 
     if (theme === 'light') {
       // Green essence for light background
-      activeColors = ['#1DCD9F', '#34D399', '#059669']; 
+      activeColors = ['#009edb', '#009edb', '#0077b6']; 
       activeMixBlendMode = 'normal';
     }
 

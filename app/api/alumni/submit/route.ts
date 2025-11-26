@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { 
       fullName, email, phone, yearOfLeaving, designationAtAsija, 
-      currentOrganization, currentDesignation, linkedinProfile, otp 
+      currentProfessionalQualification, currentDesignation, linkedinProfile, otp 
     } = body;
 
     // Verify OTP again to ensure security before submission
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
       phone,
       yearOfLeaving,
       designationAtAsija,
-      currentOrganization,
+      currentProfessionalQualification,
       currentDesignation,
       linkedinProfile,
       status: 'Pending'
@@ -59,7 +59,7 @@ export async function POST(req: Request) {
         <p><strong>Phone:</strong> ${phone}</p>
         <p><strong>Year of Leaving Asija:</strong> ${yearOfLeaving}</p>
         <p><strong>Designation at Asija:</strong> ${designationAtAsija}</p>
-        <p><strong>Current Organization:</strong> ${currentOrganization}</p>
+        <p><strong>Current Professional Qualification:</strong> ${currentProfessionalQualification}</p>
         <p><strong>Current Designation:</strong> ${currentDesignation}</p>
         <p><strong>LinkedIn:</strong> ${linkedinProfile || 'N/A'}</p>
         <br/>

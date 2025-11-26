@@ -11,7 +11,7 @@ export default function AlumniPage() {
     <main className="min-h-screen bg-theme flex flex-col">
       <Navbar />
       
-      <div className="grow flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <div className="grow flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden mt-12">
         {/* Background Elements */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
           <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-accent/5 rounded-full blur-3xl" />
