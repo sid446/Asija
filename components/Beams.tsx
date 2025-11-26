@@ -3,6 +3,7 @@
 
 import { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Triangle, Texture, Geometry, Vec2 } from 'ogl';
+import { useTheme } from './ThemeProvider';
 
 // === SHADERS ===
 const vertexShader = `#version 300 es
@@ -232,6 +233,7 @@ const Beams: React.FC<BeamsProps> = ({
   rayCount,
   mixBlendMode = 'lighten',
 }) => {
+  const { theme } = useTheme();
   const containerRef = useRef<HTMLDivElement>(null);
   const programRef = useRef<Program | null>(null);
   const rendererRef = useRef<Renderer | null>(null);
@@ -427,6 +429,12 @@ const Beams: React.FC<BeamsProps> = ({
     let activeColors = colors;
     let activeMixBlendMode = mixBlendMode;
 
+    if (theme === 'light') {
+      // Green essence for light background
+      activeColors = ['#1DCD9F', '#34D399', '#059669']; 
+      activeMixBlendMode = 'normal';
+    }
+
     const canvas = rendererRef.current?.gl?.canvas;
     if (canvas) {
       canvas.style.mixBlendMode = activeMixBlendMode !== 'none' ? activeMixBlendMode : '';
@@ -459,7 +467,7 @@ const Beams: React.FC<BeamsProps> = ({
       gradTex.needsUpdate = true;
     }
     program.uniforms.uColorCount.value = count;
-  }, [intensity, speed, animationType, colors, distort, offset, rayCount, mixBlendMode]);
+  }, [intensity, speed, animationType, colors, distort, offset, rayCount, theme, mixBlendMode]);
 
   return <div className="w-full h-full relative overflow-hidden" ref={containerRef} />;
 };

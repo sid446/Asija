@@ -74,26 +74,26 @@ const About = () => {
   const isLight = theme === 'light';
   
   return (
-    <section className={`relative w-full overflow-hidden transition-colors duration-300 ${isLight ? 'bg-[#F0FDF9]' : 'bg-[#0D1F1A]'}`}>
+    <section className={`relative w-full overflow-hidden transition-colors duration-300 ${isLight ? 'bg-[#124231]' : 'bg-[#0D1F1A]'}`}>
       <div className="relative z-10 px-4 py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24">
         
         <div className="absolute inset-0 z-0">
           <Beams
-            intensity={1.8}
+            intensity={theme === 'light' ? 6 : 1.8}
             speed={0.5}
             animationType="rotate3d"
-            colors={['#1DCD9F', '#34D399', '#0EA578']}
+            colors={theme === 'light' ? ['#4DFFB5', '#80FFD4', '#B3FFE6'] : ['#1DCD9F', '#34D399', '#0EA578']}
             distort={10}
             rayCount={10}
             mixBlendMode="normal"
           />
         </div>
 
-        <div className={`absolute inset-0 z-10 ${isLight ? 'bg-[#F0FDF9]/30' : 'bg-[#0D1F1A]/40'}`} />
+        <div className={`absolute inset-0 z-10 ${isLight ? 'bg-[#20644c]/30' : 'bg-[#0D1F1A]/40'}`} />
 
         <div className="relative z-20 max-w-7xl mx-auto max-h-screen overflow-y-auto px-2 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 md:py-10 lg:py-12">
           <div className="pb-12 sm:pb-16 md:pb-20 lg:pb-28">
-            <h1 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-center transition-colors ${isLight ? 'text-gray-900' : 'text-white'}`}>
+            <h1 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-center transition-colors` }style={{color:"white"}}>
               {t('about.title')}
               <span className="text-[#1DCD9F] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold"> .</span>
             </h1>
@@ -102,12 +102,12 @@ const About = () => {
               mt-4 sm:mt-6 md:mt-8 lg:mt-10 text-sm sm:text-base md:text-lg lg:text-xl 
               italic font-light leading-relaxed text-center
               ${'sm:border-l-4 sm:border-[#1DCD9F] sm:pl-6 sm:text-left'} py-1 sm:py-2
-              transition-colors ${isLight ? 'text-gray-700' : 'text-white'}
-            `}>
+              transition-colors
+            `} style={{color:"white"}}>
               {t('about.quote')}
             </blockquote>
 
-            <div className={`mt-6 sm:mt-8 md:mt-10 space-y-3 sm:space-y-4 text-sm sm:text-base leading-relaxed font-light text-center sm:text-left transition-colors ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
+            <div className={`mt-6 sm:mt-8 md:mt-10 space-y-3 sm:space-y-4 text-sm sm:text-base leading-relaxed font-light text-center sm:text-left transition-colors`} style={{color:"white"}}>
               <p>{t('about.description1')}</p>
               <p>{t('about.description2')}</p>
 
@@ -123,7 +123,7 @@ const About = () => {
       </div>
 
       <div className="relative z-30 -mt-12 sm:-mt-16 lg:-mt-20">
-        <div className={`shadow-2xl transition-colors duration-300 ${isLight ? 'bg-[#F0FDF9] border-t border-[#1DCD9F]/20' : 'bg-[#0D1F1A] border-t border-[#1DCD9F]/10'}`}>
+        <div className={`shadow-2xl transition-colors duration-300 ${isLight ? 'bg-[#E0F5EE] border-t border-[#1DCD9F]/20' : 'bg-[#0D1F1A] border-t border-[#1DCD9F]/10'}`}>
           <div className="px-4 py-10 sm:px-6 sm:py-12 md:px-8 lg:px-12 xl:px-20">
             <div className="max-w-7xl mx-auto">
 
