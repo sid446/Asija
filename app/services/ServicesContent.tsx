@@ -363,15 +363,25 @@ export default function ServicesContent() {
       <Navbar />
       {/* Hero */}
       <div className='relative w-full h-[100vh]'>
-        <div className='absolute inset-x-0 top-0 h-[100vh] bg-gradient-to-t from-black/70 via-black/40 to-transparent pointer-events-none z-10'></div>
+        <div className='absolute inset-x-0 top-0 h-[100vh] bg-linear-to-t from-black/70 via-black/40 to-transparent pointer-events-none z-10'></div>
         <video
           className="absolute inset-0 w-full h-full object-cover"
           autoPlay
           loop
           muted
           playsInline
+          preload="auto"
+          poster="https://res.cloudinary.com/db2qa9dzs/video/upload/so_0,w_1280,q_auto,f_jpg/v1764130416/vid124_xmfn8i.jpg"
         >
-          <source src="/vid124.mp4" type="video/mp4" />
+          <source
+            src="https://res.cloudinary.com/db2qa9dzs/video/upload/f_webm,q_auto:eco,vc_auto,w_1280/v1764130416/vid124_xmfn8i.webm"
+            type="video/webm"
+          />
+          <source
+            src="https://res.cloudinary.com/db2qa9dzs/video/upload/f_mp4,q_auto:eco,vc_auto,w_1280/v1764130416/vid124_xmfn8i.mp4"
+            type="video/mp4"
+          />
+          Your browser does not support the video tag.
         </video>
         
         <div className="absolute text-left top-[60%] sm:top-[75%] left-1/2 sm:left-[35%] transform -translate-x-1/2 -translate-y-1/2 px-4 w-full sm:w-auto z-20">

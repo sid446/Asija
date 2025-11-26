@@ -126,8 +126,18 @@ const HeroSection = ({ isActive }: { isActive: boolean }) => (
         loop
         muted
         playsInline
+        preload="auto"
+        poster="https://res.cloudinary.com/db2qa9dzs/video/upload/so_0,w_1280,q_auto,f_jpg/v1764130459/vid1_yd3gmn.jpg"
       >
-        <source src="/vid1.mp4" type="video/mp4" />
+        <source
+          src="https://res.cloudinary.com/db2qa9dzs/video/upload/f_webm,q_auto:eco,vc_auto,w_1280/v1764130459/vid1_yd3gmn.webm"
+          type="video/webm"
+        />
+        <source
+          src="https://res.cloudinary.com/db2qa9dzs/video/upload/f_mp4,q_auto:eco,vc_auto,w_1280/v1764130459/vid1_yd3gmn.mp4"
+          type="video/mp4"
+        />
+        Your browser does not support the video tag.
       </video>
       <div className="absolute inset-0 bg-black/50" />
       <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/10 to-transparent" />

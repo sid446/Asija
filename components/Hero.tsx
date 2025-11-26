@@ -16,11 +16,15 @@ function Hero() {
         loop
         muted
         playsInline
-        preload="metadata"
+        preload="auto"
         poster="/thumbnail.jpg"
       >
         <source
-          src="https://res.cloudinary.com/db2qa9dzs/video/upload/v1762886458/vid1_izwyyc.mp4"
+          src="https://res.cloudinary.com/db2qa9dzs/video/upload/f_webm,q_auto,vc_auto,w_1920/v1762886458/vid1_izwyyc.webm"
+          type="video/webm"
+        />
+        <source
+          src="https://res.cloudinary.com/db2qa9dzs/video/upload/f_mp4,q_auto,vc_auto,w_1920/v1762886458/vid1_izwyyc.mp4"
           type="video/mp4"
         />
         Your browser does not support the video tag.
@@ -28,7 +32,7 @@ function Hero() {
 
       {/* Gradient + Blur Overlay */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-r from-black/6zz0 via-black/35 to-transparent md:from-black/60 md:via-black/35 md:to-transparent bg-black/40" />
+        <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/35 to-transparent md:from-black/60 md:via-black/35 md:to-transparent bg-black/40" />
         <div className="absolute inset-0 bg-black/25 backdrop-blur-sm md:backdrop-blur-md" />
       </div>
 

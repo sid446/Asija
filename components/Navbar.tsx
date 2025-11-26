@@ -446,7 +446,7 @@ export default function Navbar() {
           </motion.div>
 
             {/* Desktop Navigation - Left */}
-            <nav className="hidden lg:flex gap-1 relative">
+            <nav className="hidden min-[1100px]:flex gap-1 relative">
               {leftMenu.map((item) => (
                 <motion.div
                   key={item.label}
@@ -478,7 +478,7 @@ export default function Navbar() {
           </div>
 
           {/* RIGHT SIDE – Desktop */}
-          <nav className="hidden md:flex gap-4 items-center">
+          <nav className="hidden min-[1100px]:flex gap-4 items-center">
             {rightMenu.map((item) => (
               <motion.div
                 key={item.label}
@@ -576,7 +576,7 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-white p-2 hover:bg-white/15 rounded-lg transition-colors"
+            className="min-[1100px]:hidden text-white p-2 hover:bg-white/15 rounded-lg transition-colors"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
@@ -649,7 +649,7 @@ export default function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/45 backdrop-blur-sm z-40 md:hidden"
+              className="fixed inset-0 bg-black/45 backdrop-blur-sm z-40 min-[1100px]:hidden"
             />
             
             {/* Menu Panel */}
@@ -661,7 +661,7 @@ export default function Navbar() {
               style={{
                 backgroundColor: theme === 'light' ? '#ffffff' : '#252525',
               }}
-              className="fixed top-0 right-0 bottom-0 w-80 z-50 md:hidden shadow-2xl overflow-y-auto"
+              className="fixed top-0 right-0 bottom-0 w-80 z-50 min-[1100px]:hidden shadow-2xl overflow-y-auto"
             >
               <div className="flex flex-col h-full p-6">
                 {/* Close Button + Top Controls */}
