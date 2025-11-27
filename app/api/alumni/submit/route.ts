@@ -53,19 +53,64 @@ export async function POST(req: Request) {
       to: adminEmail,
       subject: 'New Alumni Registration Request',
       html: `
-        <h2>New Alumni Registration</h2>
-        <p><strong>Name:</strong> ${fullName}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Phone:</strong> ${phone}</p>
-        <p><strong>Year of Leaving Asija:</strong> ${yearOfLeaving}</p>
-        <p><strong>Designation at Asija:</strong> ${designationAtAsija}</p>
-        <p><strong>Current Professional Qualification:</strong> ${currentProfessionalQualification}</p>
-        <p><strong>Current Designation:</strong> ${currentDesignation}</p>
-        <p><strong>LinkedIn:</strong> ${linkedinProfile || 'N/A'}</p>
-        <br/>
-        <p>Please take action:</p>
-        <a href="${approveLink}" style="padding: 10px 20px; background-color: green; color: white; text-decoration: none; margin-right: 10px;">Approve</a>
-        <a href="${rejectLink}" style="padding: 10px 20px; background-color: red; color: white; text-decoration: none;">Reject</a>
+        <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px;">
+          <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+            <div style="background-color: #009edb; color: #ffffff; padding: 25px; text-align: center;">
+              <h1 style="margin: 0; font-size: 24px; font-weight: 600;">New Alumni Registration</h1>
+              <p style="margin: 5px 0 0 0; opacity: 0.9;">Action Required</p>
+            </div>
+            
+            <div style="padding: 30px;">
+              <h2 style="color: #333; font-size: 18px; border-bottom: 2px solid #009edb; padding-bottom: 8px; margin-bottom: 20px; margin-top: 0;">Alumni Details</h2>
+              
+              <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px;">
+                <tr>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600; width: 40%;">Full Name</td>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${fullName}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Email</td>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;"><a href="mailto:${email}" style="color: #009edb; text-decoration: none;">${email}</a></td>
+                </tr>
+                <tr>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Phone</td>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${phone}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Year of Leaving</td>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${yearOfLeaving}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Designation at Asija</td>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${designationAtAsija}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Current Qualification</td>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${currentProfessionalQualification}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Current Designation</td>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${currentDesignation}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">LinkedIn</td>
+                  <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${linkedinProfile ? `<a href="${linkedinProfile}" style="color: #009edb; text-decoration: none;">View Profile</a>` : 'N/A'}</td>
+                </tr>
+              </table>
+
+              <h2 style="color: #333; font-size: 18px; border-bottom: 2px solid #009edb; padding-bottom: 8px; margin-bottom: 20px;">Approval Action</h2>
+              <div style="text-align: center; padding: 10px 0;">
+                <a href="${approveLink}" style="display: inline-block; padding: 12px 30px; background-color: #10b981; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 600; margin-right: 15px; box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);">Approve</a>
+                <a href="${rejectLink}" style="display: inline-block; padding: 12px 30px; background-color: #ef4444; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 600; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);">Reject</a>
+              </div>
+              <p style="text-align: center; color: #666; font-size: 13px; margin-top: 15px;">Clicking these buttons will directly process the request.</p>
+            </div>
+            
+            <div style="background-color: #f4f4f4; padding: 15px; text-align: center; font-size: 12px; color: #888; border-top: 1px solid #eee;">
+              &copy; ${new Date().getFullYear()} Asija & Associates LLP. All rights reserved.
+            </div>
+          </div>
+        </div>
       `,
     });
 
