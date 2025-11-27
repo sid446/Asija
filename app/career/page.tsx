@@ -1,10 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useTheme } from '@/components/ThemeProvider';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2, MapPin, Briefcase, Clock, CheckCircle2, X } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Loader2, MapPin, Briefcase, ArrowRight } from 'lucide-react';
 import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import RotatingText from '@/components/ui/RotatingText';
 
 type Job = {
   _id: string;
@@ -18,10 +21,9 @@ type Job = {
 
 export default function CareerPage() {
   const { theme } = useTheme();
+  const router = useRouter();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
-  const [isFormOpen, setIsFormOpen] = useState(false);
 
   useEffect(() => {
     fetchJobs();
@@ -42,21 +44,68 @@ export default function CareerPage() {
   };
 
   const handleApply = (job: Job) => {
-    setSelectedJob(job);
-    setIsFormOpen(true);
+    router.push(`/career/apply/${job._id}`);
   };
 
+  const isLight = theme === 'light';
+
   return (
-    <div className={`min-h-screen pt-24 pb-16 px-4 md:px-8 ${theme === 'light' ? 'bg-gray-50' : 'bg-slate-950'}`}>
-        <Navbar/>
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h1 className={`text-4xl md:text-5xl font-bold mb-4 ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
-            Join Our <span className="text-[#009edb]">Team</span>
-          </h1>
-          <p className={`text-lg max-w-2xl mx-auto ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
-            Build your career with Asija & Associates LLP. We are always looking for talented individuals to join our growing family.
-          </p>
+    <div className={`min-h-screen flex flex-col ${isLight ? 'bg-white' : 'bg-slate-950'}`}>
+      <Navbar />
+      
+      {/* Hero Section */}
+      <div className="relative pt-32 pb-20 lg:pt-48 lg:pb-3 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+           {/* Background Image/Gradient */}
+           <div className={`absolute inset-0 ${isLight ? 'bg-[#149ffb]/70' : 'bg-slate-950'}`} />
+           <div className={`absolute inset-0 opacity-30 ${isLight ? 'bg-[radial-gradient(#009edb_1px,transparent_1px)] [background-size:16px_16px]' : 'bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]'}`} />
+           <div className={`absolute inset-0 bg-gradient-to-b ${isLight ? 'from-transparent via-white/50 to-white' : 'from-transparent via-slate-950/50 to-slate-950'}`} />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h1 className={`text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight ${isLight ? 'text-slate-900' : 'text-white'}`}>
+              Build Your Career <br className="hidden md:block" />
+              <span className="flex flex-wrap justify-center items-center gap-2 md:gap-3">
+                With
+                <RotatingText
+                  texts={['Excellence', 'Innovation', 'Integrity', 'Passion']}
+                  mainClassName="text-[#009edb] overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
+                  staggerFrom="last"
+                  initial={{ y: "100%" }}
+                  animate={{ y: 0 }}
+                  exit={{ y: "-120%" }}
+                  staggerDuration={0.025}
+                  splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
+                  transition={{ type: "spring", damping: 30, stiffness: 400 }}
+                  rotationInterval={4000}
+                />
+              </span>
+            </h1>
+            <p className={`text-lg md:text-xl max-w-2xl mx-auto leading-relaxed ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>
+              Join Asija & Associates LLP and become part of a team that values integrity, innovation, and professional growth.
+            </p>
+          </motion.div>
+        </div>
+      </div>
+
+     
+
+      {/* Job Listings */}
+      <div id="openings" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+          <div>
+            <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${isLight ? 'text-slate-900' : 'text-white'}`}>
+              Current <span className="text-[#009edb]">Openings</span>
+            </h2>
+            <p className={`${isLight ? 'text-gray-600' : 'text-gray-400'}`}>
+              Explore opportunities to make an impact.
+            </p>
+          </div>
         </div>
 
         {loading ? (
@@ -64,321 +113,73 @@ export default function CareerPage() {
             <Loader2 className="w-8 h-8 animate-spin text-[#009edb]" />
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {jobs.map((job) => (
+          <div className="grid gap-6">
+            {jobs.map((job, idx) => (
               <motion.div
                 key={job._id}
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className={`rounded-2xl p-6 border transition-all hover:shadow-lg ${
-                  theme === 'light' 
-                    ? 'bg-white border-gray-200 hover:border-[#009edb]/30' 
-                    : 'bg-white/5 border-white/10 hover:border-[#009edb]/30'
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className={`group relative p-6 md:p-8 rounded-2xl border transition-all duration-300 hover:shadow-lg ${
+                  isLight 
+                    ? 'bg-white border-gray-200 hover:border-[#009edb]' 
+                    : 'bg-slate-900/50 border-white/10 hover:border-[#009edb]/50'
                 }`}
               >
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-[#009edb]/10 text-[#009edb] mb-2">
-                      {job.department}
-                    </span>
-                    <h3 className={`text-xl font-bold ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className="px-3 py-1 rounded-full text-xs font-medium bg-[#009edb]/10 text-[#009edb]">
+                        {job.department}
+                      </span>
+                      <span className={`text-xs flex items-center gap-1 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
+                        <Briefcase size={12} /> {job.type}
+                      </span>
+                      <span className={`text-xs flex items-center gap-1 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
+                        <MapPin size={12} /> {job.location}
+                      </span>
+                    </div>
+                    <h3 className={`text-2xl font-bold mb-3 group-hover:text-[#009edb] transition-colors ${isLight ? 'text-slate-900' : 'text-white'}`}>
                       {job.title}
                     </h3>
+                    <p className={`mb-4 max-w-3xl line-clamp-2 ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>
+                      {job.description}
+                    </p>
+                    
+                    {/* Requirements Preview */}
+                    <div className="flex flex-wrap gap-2">
+                      {job.requirements.slice(0, 3).map((req, i) => (
+                        <span key={i} className={`text-xs px-2 py-1 rounded border ${isLight ? 'bg-gray-50 border-gray-200 text-gray-600' : 'bg-white/5 border-white/10 text-gray-400'}`}>
+                          {req}
+                        </span>
+                      ))}
+                      {job.requirements.length > 3 && (
+                        <span className={`text-xs px-2 py-1 rounded border ${isLight ? 'bg-gray-50 border-gray-200 text-gray-600' : 'bg-white/5 border-white/10 text-gray-400'}`}>
+                          +{job.requirements.length - 3} more
+                        </span>
+                      )}
+                    </div>
                   </div>
-                  {/* <span className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
-                    {new Date(job.createdAt).toLocaleDateString()}
-                  </span> */}
-                </div>
 
-                <div className="flex flex-wrap gap-4 mb-6 text-sm">
-                  <div className={`flex items-center gap-1.5 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
-                    <MapPin size={16} />
-                    {job.location}
-                  </div>
-                  <div className={`flex items-center gap-1.5 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
-                    <Briefcase size={16} />
-                    {job.type}
+                  <div className="flex items-center">
+                    <button
+                      onClick={() => handleApply(job)}
+                      className="w-full md:w-auto px-6 py-3 rounded-lg bg-[#009edb] text-white font-medium hover:bg-[#008ac0] transition-all flex items-center justify-center gap-2 group-hover:scale-105"
+                    >
+                      Apply Now <ArrowRight size={18} />
+                    </button>
                   </div>
                 </div>
-
-                <p className={`mb-6 text-sm leading-relaxed ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
-                  {job.description}
-                </p>
-
-                <div className="mb-6">
-                  <h4 className={`text-sm font-semibold mb-2 ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>Requirements:</h4>
-                  <ul className="space-y-1">
-                    {job.requirements.map((req, idx) => (
-                      <li key={idx} className={`text-sm flex items-start gap-2 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
-                        <span className="mt-1.5 w-1 h-1 rounded-full bg-[#009edb]" />
-                        {req}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <button
-                  onClick={() => handleApply(job)}
-                  className="w-full py-3 rounded-lg bg-[#009edb] text-white font-medium hover:bg-[#008ac0] transition-colors"
-                >
-                  Apply Now
-                </button>
               </motion.div>
             ))}
           </div>
         )}
       </div>
 
-      <ApplicationModal 
-        isOpen={isFormOpen} 
-        onClose={() => setIsFormOpen(false)} 
-        job={selectedJob}
-        theme={theme}
-      />
+      <Footer />
     </div>
   );
 }
 
-function ApplicationModal({ isOpen, onClose, job, theme }: { isOpen: boolean; onClose: () => void; job: Job | null; theme: string }) {
-  const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    qualification: '',
-    experience: '',
-    currentCTC: '',
-    expectedCTC: '',
-    resumeLink: '',
-    coverLetter: ''
-  });
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
 
-  if (!isOpen || !job) return null;
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-
-    try {
-      const res = await fetch('/api/career/apply', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, jobId: job._id }),
-      });
-      
-      const data = await res.json();
-      if (data.success) {
-        setSubmitted(true);
-        setTimeout(() => {
-          setSubmitted(false);
-          setFormData({
-            fullName: '',
-            email: '',
-            phone: '',
-            qualification: '',
-            experience: '',
-            currentCTC: '',
-            expectedCTC: '',
-            resumeLink: '',
-            coverLetter: ''
-          });
-          onClose();
-        }, 2000);
-      }
-    } catch (error) {
-      console.error('Error submitting application:', error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const inputClasses = `w-full px-4 py-2.5 rounded-lg border outline-none transition-all ${
-    theme === 'light' 
-      ? 'bg-white border-gray-300 focus:border-[#009edb] text-gray-900' 
-      : 'bg-white/5 border-white/10 focus:border-[#009edb] text-white'
-  }`;
-
-  const labelClasses = `block text-sm font-medium mb-1.5 ${
-    theme === 'light' ? 'text-gray-700' : 'text-gray-300'
-  }`;
-
-  return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className={`w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl ${
-          theme === 'light' ? 'bg-white' : 'bg-slate-900 border border-white/10'
-        }`}
-      >
-        <div className={`sticky top-0 z-10 px-6 py-4 border-b flex justify-between items-center ${
-          theme === 'light' ? 'bg-white border-gray-100' : 'bg-slate-900 border-white/10'
-        }`}>
-          <div>
-            <h2 className={`text-xl font-bold ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
-              Apply for {job.title}
-            </h2>
-            <p className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
-              {job.department} • {job.location}
-            </p>
-          </div>
-          <button 
-            onClick={onClose}
-            className={`p-2 rounded-full hover:bg-gray-100 transition-colors ${
-              theme === 'light' ? 'text-gray-500 hover:bg-gray-100' : 'text-gray-400 hover:bg-white/10'
-            }`}
-          >
-            <X size={20} />
-          </button>
-        </div>
-
-        <div className="p-6">
-          {submitted ? (
-            <div className="text-center py-12">
-              <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <CheckCircle2 size={32} />
-              </div>
-              <h3 className={`text-xl font-bold mb-2 ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
-                Application Submitted!
-              </h3>
-              <p className={theme === 'light' ? 'text-gray-600' : 'text-gray-400'}>
-                Thank you for your interest. We will review your application and get back to you soon.
-              </p>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className={labelClasses}>Full Name *</label>
-                  <input 
-                    type="text" 
-                    required
-                    className={inputClasses}
-                    value={formData.fullName}
-                    onChange={e => setFormData({...formData, fullName: e.target.value})}
-                  />
-                </div>
-                <div>
-                  <label className={labelClasses}>Email *</label>
-                  <input 
-                    type="email" 
-                    required
-                    className={inputClasses}
-                    value={formData.email}
-                    onChange={e => setFormData({...formData, email: e.target.value})}
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className={labelClasses}>Phone Number *</label>
-                  <input 
-                    type="tel" 
-                    required
-                    className={inputClasses}
-                    value={formData.phone}
-                    onChange={e => setFormData({...formData, phone: e.target.value})}
-                  />
-                </div>
-                <div>
-                  <label className={labelClasses}>Qualification *</label>
-                  <select 
-                    required
-                    className={inputClasses}
-                    value={formData.qualification}
-                    onChange={e => setFormData({...formData, qualification: e.target.value})}
-                  >
-                    <option value="">Select Qualification</option>
-                    <option value="CA Final">CA Final</option>
-                    <option value="CA Intermediate">CA Intermediate</option>
-                    <option value="CA Foundation">CA Foundation</option>
-                    <option value="B.Com">B.Com</option>
-                    <option value="M.Com">M.Com</option>
-                    <option value="MBA">MBA</option>
-                    <option value="CS">CS</option>
-                    <option value="CMA">CMA</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className={labelClasses}>Experience (Years) *</label>
-                  <input 
-                    type="text" 
-                    required
-                    placeholder="e.g. Fresher, 2 years"
-                    className={inputClasses}
-                    value={formData.experience}
-                    onChange={e => setFormData({...formData, experience: e.target.value})}
-                  />
-                </div>
-                <div>
-                  <label className={labelClasses}>Resume Link (Google Drive/LinkedIn)</label>
-                  <input 
-                    type="url" 
-                    placeholder="https://..."
-                    className={inputClasses}
-                    value={formData.resumeLink}
-                    onChange={e => setFormData({...formData, resumeLink: e.target.value})}
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className={labelClasses}>Current CTC (Optional)</label>
-                  <input 
-                    type="text" 
-                    className={inputClasses}
-                    value={formData.currentCTC}
-                    onChange={e => setFormData({...formData, currentCTC: e.target.value})}
-                  />
-                </div>
-                <div>
-                  <label className={labelClasses}>Expected CTC (Optional)</label>
-                  <input 
-                    type="text" 
-                    className={inputClasses}
-                    value={formData.expectedCTC}
-                    onChange={e => setFormData({...formData, expectedCTC: e.target.value})}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className={labelClasses}>Cover Letter / Message</label>
-                <textarea 
-                  rows={4}
-                  className={inputClasses}
-                  value={formData.coverLetter}
-                  onChange={e => setFormData({...formData, coverLetter: e.target.value})}
-                />
-              </div>
-
-              <div className="pt-4">
-                <button 
-                  type="submit" 
-                  disabled={submitting}
-                  className="w-full py-3.5 bg-[#009edb] text-white font-semibold rounded-lg hover:bg-[#008ac0] transition-colors disabled:opacity-70 flex items-center justify-center gap-2"
-                >
-                  {submitting ? (
-                    <>
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                      Submitting...
-                    </>
-                  ) : (
-                    'Submit Application'
-                  )}
-                </button>
-              </div>
-            </form>
-          )}
-        </div>
-      </motion.div>
-    </div>
-  );
-}
