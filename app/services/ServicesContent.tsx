@@ -342,16 +342,7 @@ export default function ServicesContent() {
     }
   }, [selectedService]);
 
-  useEffect(() => {
-    if (!selectedService || !modalRef.current) return;
-    const modal = modalRef.current;
-    const handleWheel = (e: WheelEvent) => {
-      e.stopPropagation();
-      modal.scrollBy({ top: e.deltaY * 1.2, behavior: 'auto' });
-    };
-    modal.addEventListener('wheel', handleWheel, { passive: false });
-    return () => modal.removeEventListener('wheel', handleWheel);
-  }, [selectedService]);
+
 
   const toggleItemExpanded = (itemName: string) => {
     setExpandedItems(prev => ({ ...prev, [itemName]: !prev[itemName] }));
@@ -419,80 +410,105 @@ export default function ServicesContent() {
       <AnimatePresence>
         {selectedService && (
           <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedService(null)} className={`fixed inset-0 backdrop-blur-md z-40 cursor-pointer ${theme === 'light' ? 'bg-slate-950/40' : 'bg-slate-950/90'}`} />
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }} 
+              onClick={() => setSelectedService(null)} 
+              className={`fixed inset-0 backdrop-blur-md z-40 cursor-pointer ${theme === 'light' ? 'bg-slate-950/40' : 'bg-slate-950/90'}`} 
+            />
             <motion.div
               ref={modalRef}
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className={`fixed inset-0 z-50 overflow-hidden shadow-2xl border-t ${theme === 'light' ? 'bg-linear-to-br from-gray-50 via-white to-gray-100 border-gray-300' : 'bg-linear-to-br from-[#0a0a0a] via-[#111111] to-[#0f0f0f] border-gray-800'}`}
+              className={`fixed inset-0 z-50 flex flex-col shadow-2xl ${theme === 'light' ? 'bg-white' : 'bg-[#0a0a0a]'}`}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="relative h-48 md:h-64 overflow-hidden">
+              {/* Header */}
+              <div className="relative h-40 md:h-48 shrink-0 overflow-hidden">
                 <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${selectedService.imgSrc})` }} />
                 <div className="absolute inset-0 bg-linear-to-b from-slate-950/60 via-slate-950/70 to-[#0a0a0a]" />
-                <button onClick={() => setSelectedService(null)} className="absolute top-6 right-6 w-12 h-12 rounded-full backdrop-blur-sm transition-all group border bg-slate-950/40 border-white/20 hover:bg-[#009edb]">
-                  <svg className="w-6 h-6 mx-auto " style={{color:"white"}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button onClick={() => setSelectedService(null)} className="absolute top-4 right-4 md:top-6 md:right-6 w-10 h-10 md:w-12 md:h-12 rounded-full backdrop-blur-sm transition-all group border bg-slate-950/40 border-white/20 hover:bg-[#009edb] flex items-center justify-center z-10">
+                  <svg className="w-5 h-5 md:w-6 md:h-6 !text-white" style={{ color: '#ffffff' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
-                <div className="absolute bottom-8 left-8 right-8">
-                  <h2 className="text-2xl md:text-5xl font-bold mb-3 " style={{color:'white'}}>{selectedService.title}</h2>
-                  <p className="text-sm md:text-lg "style={{color:'white'}}>{selectedService.description}</p>
+                <div className="absolute bottom-4 left-6 right-6 md:bottom-6 md:left-8 md:right-8">
+                  <h2 className="text-2xl md:text-4xl font-bold mb-2 !text-white" style={{ color: '#ffffff' }}>{selectedService.title}</h2>
+                  <p className="text-sm md:text-base !text-gray-200 line-clamp-1" style={{ color: '#e5e7eb' }}>{selectedService.description}</p>
                 </div>
               </div>
 
-              <div className={`overflow-y-auto h-[calc(100%-12rem)] md:h-[calc(100%-16rem)] scrollbar-thin ${theme === 'light' ? 'scrollbar-thumb-gray-300' : 'scrollbar-thumb-gray-700'}`}>
-                <div className="p-8 md:p-12 space-y-12">
-                  <div>
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="h-8 w-1 bg-[#009edb]" />
-                      <h3 className={`text-xl md:text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Overview</h3>
+              {/* Content - Split View */}
+              <div 
+                className="flex-1 overflow-y-auto md:overflow-hidden flex flex-col md:flex-row"
+                data-lenis-prevent
+              >
+                
+                {/* Left Panel: Overview & Benefits */}
+                <div 
+                  className={`contents md:block md:order-1 md:w-5/12 lg:w-2/5 md:p-8 md:overflow-y-auto md:border-r [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] ${theme === 'light' ? 'border-gray-200' : 'border-gray-800'}`}
+                  data-lenis-prevent
+                >
+                  {/* Overview */}
+                  <div className="order-1 p-6 md:p-0 mb-8">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="h-6 w-1 bg-[#009edb]" />
+                      <h3 className={`text-lg md:text-xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Overview</h3>
                     </div>
-                    <p className={`text-base leading-relaxed whitespace-pre-line border-l-2 pl-6 ${theme === 'light' ? 'text-gray-700 border-gray-300' : 'text-gray-400 border-gray-800'}`}>
+                    <p className={`text-sm md:text-base leading-relaxed whitespace-pre-line ${theme === 'light' ? 'text-gray-700' : 'text-gray-400'}`}>
                       {selectedService.detailedDescription}
                     </p>
                   </div>
 
-                  <div>
-                    <div className="flex items-center gap-3 mb-8">
-                      <div className="h-8 w-1 bg-[#009edb]" />
-                      <h3 className={`text-xl md:text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Our Services Include</h3>
+                  {/* Benefits */}
+                  <div className="order-3 p-6 md:p-0 mb-8">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="h-6 w-1 bg-[#009edb]" />
+                      <h3 className={`text-lg md:text-xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Key Benefits</h3>
                     </div>
-                    <div className="space-y-6">
-                      {selectedService.items.map((mainItem, i) => (
-                        <ExpandableMainItem key={i} mainItem={mainItem} service={selectedService} serviceTitle={selectedService.title} isExpanded={expandedItems[mainItem] || false} onToggle={() => toggleItemExpanded(mainItem)} />
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="flex items-center gap-3 mb-8">
-                      <div className="h-8 w-1 bg-[#009edb]" />
-                      <h3 className={`text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Key Benefits</h3>
-                    </div>
-                    <div className="space-y-4">
+                    <div className="space-y-3">
                       {selectedService.benefits.map((benefit, i) => (
-                        <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} className={`flex items-start gap-4 p-5 rounded-lg border-l-4 border-[#009edb] ${theme === 'light' ? 'bg-[#F0FDF9]' : 'bg-linear-to-r from-gray-900/30 to-transparent'}`}>
-                          <span className={`text-sm leading-relaxed ${theme === 'light' ? 'text-gray-700' : 'text-gray-400'}`}>{benefit}</span>
+                        <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }} className={`flex items-start gap-3 p-3 rounded-lg border-l-2 border-[#009edb] ${theme === 'light' ? 'bg-[#F0FDF9]' : 'bg-gray-900/50'}`}>
+                          <span className={`text-sm ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>{benefit}</span>
                         </motion.div>
                       ))}
                     </div>
                   </div>
 
-                  <div className="relative overflow-hidden bg-linear-to-r p-10 rounded-xl border border-[#009edb]/20 from-[#009edb]/5 via-[#009edb]/10 to-transparent">
-                    <div className="relative text-center">
-                      <h3 className={`text-2xl md:text-3xl font-bold mb-3 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Ready to Get Started?</h3>
-                      <p className={`mb-8 text-base max-w-2xl mx-auto ${theme === 'light' ? 'text-gray-700' : 'text-gray-400'}`}>
-                        Contact us today for a personalized consultation tailored to your business needs.
-                      </p>
-                      <a href="#contact" className="inline-flex items-center gap-3 bg-[#009edb] hover:bg-[#008bbd] text-black font-bold px-8 py-4 rounded-full text-base transition-all transform hover:scale-105 shadow-lg">
-                        Schedule a Consultation <ArrowRight className="w-5 h-5" />
-                      </a>
-                    </div>
+                  {/* CTA */}
+                  <div className="order-4 p-6 md:p-0 pt-4">
+                    <a href="#contact" className="inline-flex items-center justify-center w-full gap-2 bg-[#009edb] hover:bg-[#008bbd] text-white font-semibold px-6 py-3 rounded-lg transition-all shadow-lg hover:shadow-[#009edb]/20">
+                      Schedule a Consultation <ArrowRight className="w-4 h-4" />
+                    </a>
                   </div>
                 </div>
+
+                {/* Right Panel: Services List */}
+                <div 
+                  className={`order-2 md:order-2 md:w-7/12 lg:w-3/5 p-6 md:p-8 md:overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] ${theme === 'light' ? 'bg-gray-50' : 'bg-black/20'}`}
+                  data-lenis-prevent
+                >
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="h-6 w-1 bg-[#009edb]" />
+                    <h3 className={`text-lg md:text-xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Our Services Include</h3>
+                  </div>
+                  <div className="space-y-4 pb-8">
+                    {selectedService.items.map((mainItem, i) => (
+                      <ExpandableMainItem 
+                        key={i} 
+                        mainItem={mainItem} 
+                        service={selectedService} 
+                        serviceTitle={selectedService.title} 
+                        isExpanded={expandedItems[mainItem] || false} 
+                        onToggle={() => toggleItemExpanded(mainItem)} 
+                      />
+                    ))}
+                  </div>
+                </div>
+
               </div>
             </motion.div>
           </>
