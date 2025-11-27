@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Home } from "lucide-react";
 
 export default function RegisterPage() {
   const [name, setName] = useState("");
@@ -60,7 +61,15 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex bg-theme">
+    <div className="min-h-screen w-full flex bg-theme relative">
+      <Link 
+        href="/" 
+        className="absolute top-6 right-6 z-50 p-3 rounded-full bg-surface border border-theme text-theme hover:bg-[#009edb] hover:text-white hover:border-[#009edb] transition-all duration-300 shadow-lg group"
+        title="Back to Home"
+      >
+        <Home className="w-5 h-5" />
+      </Link>
+
       {/* Left Side - Image & Text */}
       <div className="hidden lg:flex w-1/2 relative items-center justify-center overflow-hidden">
          <div className="absolute inset-0 bg-slate-950/40 z-10" />
