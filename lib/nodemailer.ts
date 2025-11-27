@@ -5,11 +5,11 @@ const pass = process.env.EMAIL_PASS;
 
 export const transporter = nodemailer.createTransport({
   host: "smtp.mail.yahoo.com",
-  port: 465,          // OR 587 (if you want STARTTLS)
-  secure: true,       // true for port 465, false for 587
+  port: 465,
+  secure: true,
   auth: {
     user: email,
-    pass,             // use your Yahoo app password
+    pass: pass?.replace(/\s+/g, ''),
   },
 });
 

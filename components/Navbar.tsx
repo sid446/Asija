@@ -137,8 +137,8 @@ const leftMenu: MenuItem[] = [
     label: 'Career',
     translationKey: 'navbar.career',
     subs: [
-      { label: 'Apply Form', href: '/#career' },
-      { label: 'Current Openings', href: '/#career' }
+      { label: 'Apply Form', href: '/career' },
+      { label: 'Current Openings', href: '/career' }
     ], 
     overview: 'navbar.overview.career'
   },

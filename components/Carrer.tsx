@@ -98,7 +98,7 @@ function Career() {
                 </button>
               </Link>
               
-              <Link href="/#career" className='w-full sm:w-auto'>
+              <Link href="/career" className='w-full sm:w-auto'>
                 <button 
                   className='w-full px-6 sm:px-8 md:px-10 py-3.5 sm:py-4 bg-white border border-white/30 text-black text-base sm:text-lg font-semibold rounded-lg hover:bg-white/95 transition-all active:scale-95 touch-manipulation'
                   aria-label={t('career.viewPositions')}
