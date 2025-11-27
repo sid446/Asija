@@ -69,7 +69,9 @@ const Footer = () => {
               </motion.a>
               
               <motion.a
-                href="#"
+                href="https://www.linkedin.com/company/asija-&-associates-llp/"
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 className="w-10 h-10 flex items-center justify-center bg-card hover:bg-accent rounded-lg transition-all duration-300 text-muted hover:text-white border-theme"
