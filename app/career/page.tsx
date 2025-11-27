@@ -97,7 +97,7 @@ export default function CareerPage() {
 
       {/* Job Listings */}
       <div id="openings" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+        <div className="flex flex-col md:flex-row justify-between items-left  mb-12 gap-4">
           <div>
             <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${isLight ? 'text-slate-900' : 'text-white'}`}>
               Current <span className="text-[#009edb]">Openings</span>
