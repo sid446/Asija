@@ -149,7 +149,7 @@ Today, with decades of trust earned and hundreds of success stories written, we 
       <div className='absolute inset-x-0 top-0 h-[100vh] bg-gradient-to-t from-black/70 via-black/40 to-transparent pointer-events-none'></div>
       
       <Image
-        src="/aboutUs.jpg"
+        src="/Culture.jpg"
         alt="About Us"
         width={1920}
         height={1080}
@@ -158,7 +158,7 @@ Today, with decades of trust earned and hundreds of success stories written, we 
       />
 
       {/* Hero Overlay Content – unchanged */}
-      <div className="absolute text-left  top-[70%] sm:top-[60%] left-1/2 sm:left-[35%] transform -translate-x-1/2 -translate-y-1/2 px-4 w-full sm:w-auto">
+      <div className="absolute text-left  top-[70%] sm:top-[75%] left-1/2 sm:left-[35%] transform -translate-x-1/2 -translate-y-1/2 px-4 w-full sm:w-auto">
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold  drop-shadow-lg" style={{color:"white"}}>
           Who We Are <span className='text-[#009edb] text-4xl sm:text-5xl md:text-6xl lg:text-7xl'>.</span>
         </h1>

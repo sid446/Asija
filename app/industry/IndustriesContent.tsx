@@ -145,7 +145,7 @@ const HeroSection = ({ isActive }: { isActive: boolean }) => (
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold  mb-10 drop-shadow-lg" style={{color:"white"}}>
           Industries We Serve<span className='text-[#009edb] text-4xl sm:text-5xl md:text-6xl lg:text-7xl'> .</span>
         </h1>
-        <p className="text-md sm:text-md md:text-lg lg:text-xl border-l-4 border-[#009edb] pl-3 sm:pl-4 w-4xl leading-relaxed drop-shadow-md" style={{color:"white"}}>
+        <p className="text-md sm:text-md md:text-lg lg:text-xl border-l-4 border-[#009edb] pl-3 sm:pl-4 w-full sm:4xl leading-relaxed drop-shadow-md" style={{color:"white"}}>
           Deep expertise across sectors. From banking and infrastructure to healthcare and retail, we are your one trusted partner for comprehensive financial solutions, regulatory compliance, and strategic growth.
         </p>
       </div>
