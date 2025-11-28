@@ -509,7 +509,7 @@ export default function Navbar() {
             {/* Social Icons Desktop */}
             <div className="flex items-center gap-4 mr-2">
                <a href="https://www.linkedin.com/company/asija-&-associates-llp/" target="_blank" rel="noopener noreferrer" className="w-5 h-5 text-white/70 hover:text-[#009edb] transition-colors"><LinkedInIcon /></a>
-               <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="w-5 h-5 text-white/70 hover:text-[#009edb] transition-colors"><InstagramIcon /></a>
+               <a href="https://www.instagram.com/teamasija/" target="_blank" rel="noopener noreferrer" className="w-5 h-5 text-white/70 hover:text-[#009edb] transition-colors"><InstagramIcon /></a>
                <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" className="w-5 h-5 text-white/70 hover:text-[#009edb] transition-colors"><WhatsAppIcon /></a>
             </div>
 
@@ -851,7 +851,10 @@ export default function Navbar() {
                     transition={{ delay: (leftMenu.length + 1) * 0.05 }}
                     className="flex gap-6 mt-auto pt-8"
                   >
-                    <button 
+                    <a 
+                      href="https://www.instagram.com/teamasija/"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       style={{
                         backgroundColor: theme === 'light' ? '#f3f4f6' : 'rgba(255,255,255,0.08)',
                         color: theme === 'light' ? '#1f2937' : '#ffffff',
@@ -859,7 +862,7 @@ export default function Navbar() {
                       className="w-12 h-12 flex items-center justify-center rounded-lg transition-all hover:scale-110"
                     >
                       <InstagramIcon />
-                    </button>
+                    </a>
                     <a 
                       href="https://www.linkedin.com/company/asija-&-associates-llp/"
                       target="_blank"

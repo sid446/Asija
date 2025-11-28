@@ -18,7 +18,7 @@ function CTA() {
             <InteractiveHoverButton 
               text="Call Us Today" 
               className="bg-transparent  border-[#009edb] hover:bg-[#009edb] " 
-              onClick={() => window.location.href = 'tel:+911234567890'}
+              onClick={() => window.location.href = 'tel:05224004652'}
             />
           </div>
         </div>

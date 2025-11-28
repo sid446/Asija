@@ -1,115 +1,125 @@
 'use client';
-
-import { Mail, Phone, MapPin } from 'lucide-react';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
+import React from 'react';
 import { useTranslation } from './TranslationProvider';
+import { useTheme } from './ThemeProvider';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { MapPin, Phone, Mail, ArrowRight } from 'lucide-react';
 
-export default function Contact() {
+const Contact = () => {
   const { t } = useTranslation();
-  
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
+
   return (
-    <div id="contact" className="w-full min-h-screen bg-theme flex flex-col items-center px-6 md:px-20 lg:px-32 pb-20 overflow-hidden">
-      {/* Content Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7 }}
-        className="w-full max-w-7xl flex flex-col lg:flex-row justify-between gap-12 mb-8 sm:mb-16 mt-10"
-      >
-        {/* LEFT: Text */}
-        <div className="lg:w-1/2 space-y-2 sm:space-y-5">
-          <p className="accent font-medium text-xl sm:text-lg tracking-wider">
-            {t('contact.tagline')}
-          </p>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight text-theme">
-            {t('contact.title')} <span className='text-6xl accent'>.</span>
-          </h1>
-          <p className="text-xl text-muted max-w-lg">
-            {t('contact.description')}
-          </p>
-        </div>
-
-        {/* RIGHT: Contact Info */}
-        <div className="lg:w-1/2 space-y-3 sm:space-y-8">
-          {/* Mobile */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="flex items-start gap-4 group"
+    <section id="contact" className={`relative py-20 overflow-hidden transition-colors duration-300 ${isLight ? 'bg-white' : 'bg-slate-950'}`}>
+      <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12">
+        <div className=" gap-12 lg:gap-20 items-center">
+          
+          {/* Left Content */}
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            
           >
-            <div className="w-10 h-10 bg-card rounded-full flex items-center justify-center group-hover:bg-accent transition-colors">
-              <Phone className="w-5 h-5 text-accent" />
-            </div>
-            <div>
-              <h3 className="font-bold text-lg text-theme">{t('contact.mobile')}</h3>
-              <p className="text-muted text-md">{t('contact.phone1')}</p>
-            </div>
-          </motion.div>
+            <h2 className="text-[#009edb] font-medium text-lg tracking-wider mb-2 uppercase">
+              {t('contact.tagline')}
+            </h2>
+            <h1 className={`text-4xl md:text-5xl font-bold mb-6 ${isLight ? 'text-gray-900' : 'text-white'}`}>
+              {t('contact.title')} <span className="text-[#009edb]">.</span>
+            </h1>
+            <p className={`text-lg mb-10 leading-relaxed ${isLight ? 'text-gray-600' : 'text-white/70'}`}>
+              {t('contact.description')}
+            </p>
 
-          {/* Email */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3 }}
-            className="flex items-start gap-4 group"
-          >
-            <div className="w-10 h-10 bg-card rounded-full flex items-center justify-center group-hover:bg-accent transition-colors">
-              <Mail className="w-5 h-5 text-accent" />
+            <div className="space-y-8 flex  gap-50">
+              {/* Location */}
+              <div className="flex  items-start gap-4 group">
+                <div className={`p-3 rounded-full shrink-0 transition-colors ${isLight ? 'bg-blue-50 text-[#009edb] group-hover:bg-[#009edb] group-hover:text-white' : 'bg-white/5 text-[#009edb] group-hover:bg-[#009edb] group-hover:text-white'}`}>
+                  <MapPin size={24} />
+                </div>
+                <div>
+                  <h3 className={`font-semibold text-lg mb-1 ${isLight ? 'text-gray-900' : 'text-white'}`}>
+                    {t('contact.officeLocations')}
+                  </h3>
+                  <p className={`${isLight ? 'text-gray-600' : 'text-white/70'}`}>
+                    {t('contact.officeLocation1')} <br />
+                    {t('contact.officeLocation2')}
+                  </p>
+                </div>
+              </div>
+
+              {/* Phone */}
+              <div className="flex items-start gap-4 group">
+                <div className={`p-3 rounded-full shrink-0 transition-colors ${isLight ? 'bg-blue-50 text-[#009edb] group-hover:bg-[#009edb] group-hover:text-white' : 'bg-white/5 text-[#009edb] group-hover:bg-[#009edb] group-hover:text-white'}`}>
+                  <Phone size={24} />
+                </div>
+                <div>
+                  <h3 className={`font-semibold text-lg mb-1 ${isLight ? 'text-gray-900' : 'text-white'}`}>
+                    {t('contact.contactNo')}
+                  </h3>
+                  <div className={`${isLight ? 'text-gray-600' : 'text-white/70'}`}>
+                    <p>{t('contact.phone1')}</p>
+                    <p>{t('contact.phone2')}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Email */}
+              <div className="flex items-start gap-4 group">
+                <div className={`p-3 rounded-full shrink-0 transition-colors ${isLight ? 'bg-blue-50 text-[#009edb] group-hover:bg-[#009edb] group-hover:text-white' : 'bg-white/5 text-[#009edb] group-hover:bg-[#009edb] group-hover:text-white'}`}>
+                  <Mail size={24} />
+                </div>
+                <div>
+                  <h3 className={`font-semibold text-lg mb-1 ${isLight ? 'text-gray-900' : 'text-white'}`}>
+                    {t('contact.emails')}
+                  </h3>
+                  <div className={`${isLight ? 'text-gray-600' : 'text-white/70'}`}>
+                    <a href={`mailto:${t('contact.email1')}`} className="block hover:text-[#009edb] transition-colors">{t('contact.email1')}</a>
+                    <a href={`mailto:${t('contact.email2')}`} className="block hover:text-[#009edb] transition-colors">{t('contact.email2')}</a>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div>
-              <h3 className="font-bold text-lg text-theme">{t('contact.emails')}</h3>
-              <a
-                href={`mailto:${t('contact.email1')}`}
-                className="text-muted text-md hover:text-accent transition-colors"
+
+            <div className="mt-12 mb-12">
+              <Link 
+                href="/contact" 
+                className="inline-flex items-center gap-2 px-8 py-4 bg-[#009edb] text-white font-semibold rounded-lg hover:bg-[#0077a3] transition-all hover:gap-3 shadow-lg shadow-[#009edb]/20"
               >
-                {t('contact.email1')}
-              </a>
+                {t('contact.enquiryForm')} <ArrowRight size={20} />
+              </Link>
             </div>
           </motion.div>
 
-          {/* Location */}
-          <motion.div
+          
+          <motion.div 
             initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4 }}
-            className="flex items-start gap-4 group"
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="relative"
           >
-            <div className="w-10 h-10 bg-card rounded-full flex items-center justify-center group-hover:bg-accent transition-colors">
-              <MapPin className="w-5 h-5 text-accent" />
+            <div className=" overflow-hidden shadow-2xl w-ful">
+              <img 
+                src="/aboutUs.jpg" 
+                alt={t('contact.imageAlt')} 
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
             </div>
-            <div>
-              <h3 className="font-bold text-lg text-theme">{t('contact.officeLocations')}</h3>
-              <p className="text-muted text-md">
-                {t('contact.location')}
-              </p>
-            </div>
+            
+            {/* Decorative elements */}
+            <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-[#009edb]/10 rounded-full blur-2xl" />
+            <div className="absolute -top-6 -left-6 w-32 h-32 bg-[#009edb]/10 rounded-full blur-3xl" />
           </motion.div>
-        </div>
-      </motion.div>
 
-      {/* Full-width Image with Bottom Fade */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.98 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.9, delay: 0.3 }}
-        className="w-full max-w-7xl relative overflow-hidden "
-      >
-        
-
-        <div className="relative">
-          <Image
-            src="/hey.jpg"
-            alt={t('contact.imageAlt')}
-            width={1920}
-            height={1080}
-            className="w-full h-[60vh] md:h-[70vh] object-cover"
-            priority
-          />
-          <div className="absolute inset-x-0 bottom-0 h-40 bg-linear-to-t from-theme via-transparent to-transparent pointer-events-none" />
         </div>
-      </motion.div>
-    </div>
+      </div>
+    </section>
   );
-}
+};
+
+export default Contact;
