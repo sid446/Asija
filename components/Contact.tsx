@@ -14,7 +14,7 @@ const Contact = () => {
   return (
     <section id="contact" className={`relative py-20 overflow-hidden transition-colors duration-300 ${isLight ? 'bg-white' : 'bg-slate-950'}`}>
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12">
-        <div className=" gap-12 lg:gap-20 items-center">
+        <div className="flex flex-col gap-12 lg:gap-20">
           
           {/* Left Content */}
           <motion.div 
@@ -22,19 +22,18 @@ const Contact = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            
           >
-            <h2 className="text-[#009edb] font-medium text-lg tracking-wider mb-2 uppercase">
+            <h2 className="text-[#009edb] font-medium text-sm md:text-lg tracking-wider mb-2 uppercase">
               {t('contact.tagline')}
             </h2>
-            <h1 className={`text-4xl md:text-5xl font-bold mb-6 ${isLight ? 'text-gray-900' : 'text-white'}`}>
+            <h1 className={`text-3xl md:text-5xl font-bold mb-6 ${isLight ? 'text-gray-900' : 'text-white'}`}>
               {t('contact.title')} <span className="text-[#009edb]">.</span>
             </h1>
-            <p className={`text-lg mb-10 leading-relaxed ${isLight ? 'text-gray-600' : 'text-white/70'}`}>
+            <p className={`text-base md:text-lg mb-8 md:mb-10 leading-relaxed ${isLight ? 'text-gray-600' : 'text-white/70'}`}>
               {t('contact.description')}
             </p>
 
-            <div className="space-y-8 flex  gap-50">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
               {/* Location */}
               <div className="flex  items-start gap-4 group">
                 <div className={`p-3 rounded-full shrink-0 transition-colors ${isLight ? 'bg-blue-50 text-[#009edb] group-hover:bg-[#009edb] group-hover:text-white' : 'bg-white/5 text-[#009edb] group-hover:bg-[#009edb] group-hover:text-white'}`}>
@@ -96,19 +95,19 @@ const Contact = () => {
 
           
           <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="relative"
+            className="relative w-full"
           >
-            <div className=" overflow-hidden shadow-2xl w-ful">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl w-full aspect-video lg:aspect-[21/9]">
               <img 
                 src="/aboutUs.jpg" 
                 alt={t('contact.imageAlt')} 
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent pointer-events-none" />
             </div>
             
             {/* Decorative elements */}
