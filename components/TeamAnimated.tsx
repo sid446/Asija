@@ -2,7 +2,10 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { useTheme } from './ThemeProvider';
+import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
+import { Maximize2, Minimize2 } from 'lucide-react';
 
 const members = [
   {
@@ -198,7 +201,7 @@ His core areas of expertise include Tax Litigation in Direct Tax matters, repres
   },
    
   {
-    name: 'Aniket Gupta',
+    name: 'CA Aniket Gupta',
     role: 'Associate Director',
     avatar: '/AniketGupta.jpeg',
     linkedin: 'https://www.linkedin.com/in/ca-aniket-gupta-8b230431b/',
@@ -216,7 +219,7 @@ Aniket is a certified QuickBooks and Xero bookkeeper and has gained extensive ex
 Committed to continuous learning and professional development, Aniket has also completed the Forensic Accounting and Fraud Detection (FAFD) certification from the Institute of Chartered Accountants of India. His skill set combines technical accounting proficiency with analytical rigor, enabling him to deliver accurate, insightful, and value-added financial solutions to clients.`,
   },
   {
-    name: 'Naeem Khan',
+    name: 'CA Naeem Khan',
     role: 'Associate Director',
     avatar: '/NaeemKhan.jpeg',
     linkedin: 'https://www.linkedin.com/in/ca-naeem-khan-a04402331/',
@@ -236,7 +239,7 @@ Naeem also brings strong expertise in GST and income tax return filings, ensurin
 Presently Naeem is driving the firm’s international expansion initiatives, with a special focus on the UK Desk and other global projects. His global outlook and diverse expertise strengthen the firm’s capability to serve clients across borders.`,
   },
   {
-    name: 'Narayan Singh',
+    name: 'CMA Narayan Singh',
     role: 'Associate Director',
     avatar: '/narayan.png',
     linkedin: '#',
@@ -262,6 +265,7 @@ const item = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } };
 export default function TeamAnimated() {
   const { theme } = useTheme();
   const [selectedMember, setSelectedMember] = useState<any>(null);
+  const [isFullScreen, setIsFullScreen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
 
   // LOCK BODY SCROLL + HIDE SCROLLBAR WHEN SIDEBAR IS OPEN
@@ -280,6 +284,7 @@ export default function TeamAnimated() {
       // Optional: hide scrollbar visually (no layout jump)
       document.documentElement.style.overflow = 'hidden';
     } else {
+      setIsFullScreen(false);
       // Restore scroll
       const scrollY = document.body.style.top;
       document.body.style.position = '';
@@ -359,7 +364,7 @@ export default function TeamAnimated() {
                     alt={`${member.name} - ${member.role}`}
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#009edb]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute inset-0 bg-linear-to-t from-[#009edb]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
                 <div className="mt-4 text-center">
                   <h3 className="text-lg font-semibold text-white group-hover:text-[#009edb] transition-colors duration-300">
@@ -383,7 +388,7 @@ export default function TeamAnimated() {
   />
 
   {/* Dark Overlay */}
-  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/60 to-slate-950/40" />
+  <div className="absolute inset-0 bg-linear-to-t from-slate-950/90 via-slate-950/60 to-slate-950/40" />
 
   {/* Content */}
   <motion.div 
@@ -404,24 +409,18 @@ export default function TeamAnimated() {
     </p>
 
     <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-      <a 
-        href="/contact" 
-        className="inline-flex items-center gap-3 bg-[#009edb] hover:bg-[#008bc0] text-white font-bold px-8  py-3 rounded-full text-sm transition-all transform hover:scale-105 shadow-xl"
-      >
-        Start a Conversation
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-        </svg>
-      </a>
+      <Link href="/contact">
+        <InteractiveHoverButton
+          text="Start a Conversation"
+          className="px-8 py-3"
+        />
+      </Link>
 
-      <a 
-        href="tel:+911234567890" 
-        className="inline-flex items-center gap-3 border-2 border-[#009edb] text-[#009edb] hover:bg-[#009edb] hover:text-white font-semibold px-8 py-3 rounded-full text-sm transition-all"
-      >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-        </svg>
-        Call Us Today
+      <a href="tel:+911234567890">
+        <InteractiveHoverButton
+          text="Call Us Today"
+          className="px-8 py-3 bg-transparent border-2 border-[#009edb] text-[#009edb] hover:bg-[#009edb] hover:text-white"
+        />
       </a>
     </div>
 
@@ -453,7 +452,7 @@ export default function TeamAnimated() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className={`fixed inset-y-0 right-0 w-full sm:w-[500px] lg:w-[600px] shadow-2xl z-50 overflow-y-auto overscroll-contain scrollbar-thin ${
+              className={`fixed inset-y-0 right-0 ${isFullScreen ? 'w-full' : 'w-full sm:w-[500px] lg:w-[600px]'} shadow-2xl z-50 overflow-y-auto overscroll-contain scrollbar-thin ${
                 theme === 'light'
                   ? 'bg-gray-50 scrollbar-thumb-[#009edb]/60 scrollbar-track-gray-200 hover:scrollbar-thumb-[#009edb]'
                   : 'bg-slate-900 scrollbar-thumb-[#009edb]/70 scrollbar-track-slate-950 hover:scrollbar-thumb-[#009edb]'
@@ -461,18 +460,38 @@ export default function TeamAnimated() {
               style={{ WebkitOverflowScrolling: 'touch' }}
               onClick={(e) => e.stopPropagation()}
             >
-              <button
-                onClick={() => setSelectedMember(null)}
-                className={`absolute top-6 right-6 w-12 h-12 flex items-center justify-center rounded-full hover:bg-[#009edb] transition-all group z-10 ${
-                  theme === 'light' ? 'bg-gray-300' : 'bg-slate-950'
-                }`}
-              >
-                <svg className={`w-7 h-7 group-hover:text-white ${
-                  theme === 'light' ? 'text-gray-700' : 'text-gray-400'
-                }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
+              <div className="absolute top-6 right-6 flex gap-3 z-10">
+                <button
+                  onClick={() => setIsFullScreen(!isFullScreen)}
+                  className={`w-12 h-12 flex items-center justify-center rounded-full hover:bg-[#009edb] transition-all group ${
+                    theme === 'light' ? 'bg-gray-300' : 'bg-slate-950'
+                  }`}
+                  title={isFullScreen ? "Exit Full Screen" : "Full Screen"}
+                >
+                  {isFullScreen ? (
+                    <Minimize2 className={`w-6 h-6 group-hover:text-white ${
+                      theme === 'light' ? 'text-gray-700' : 'text-gray-400'
+                    }`} />
+                  ) : (
+                    <Maximize2 className={`w-6 h-6 group-hover:text-white ${
+                      theme === 'light' ? 'text-gray-700' : 'text-gray-400'
+                    }`} />
+                  )}
+                </button>
+
+                <button
+                  onClick={() => setSelectedMember(null)}
+                  className={`w-12 h-12 flex items-center justify-center rounded-full hover:bg-[#009edb] transition-all group ${
+                    theme === 'light' ? 'bg-gray-300' : 'bg-slate-950'
+                  }`}
+                >
+                  <svg className={`w-7 h-7 group-hover:text-white ${
+                    theme === 'light' ? 'text-gray-700' : 'text-gray-400'
+                  }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
 
               <div className="p-8 pt-24 sm:pt-8">
                 {/* Header Section */}
@@ -493,7 +512,7 @@ export default function TeamAnimated() {
                   <p className="text-[#009edb] text-xl font-medium text-center sm:text-left">{selectedMember.role}</p>
                 </div>
 
-                <div className="h-px bg-gradient-to-r from-transparent via-[#009edb] to-transparent mb-8" />
+                <div className="h-px bg-linear-to-r from-transparent via-[#009edb] to-transparent mb-8" />
 
                 {/* Structured Information */}
                 <div className="space-y-5 mb-10">
@@ -560,7 +579,7 @@ export default function TeamAnimated() {
                   )}
                 </div>
 
-                <div className="h-px bg-gradient-to-r from-transparent via-[#009edb] to-transparent mb-10" />
+                <div className="h-px bg-linear-to-r from-transparent via-[#009edb] to-transparent mb-10" />
 
                 {/* Description */}
                 <div className="mb-12">
@@ -572,20 +591,17 @@ export default function TeamAnimated() {
                 </div>
 
                 {/* LinkedIn Connect */}
-                <div className="pt-8 border-t border-[#009edb]/20">
+                <div className="pt-8 border-t border-[#009edb]/20 flex justify-center sm:justify-start">
                   <a
                     href={selectedMember.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-3 bg-[#0077B5] hover:bg-[#006399] text-white px-8 py-4 rounded-lg font-semibold transition-all shadow-lg hover:shadow-[#0077B5]/50 group w-full justify-center sm:w-auto"
+                    className="w-full sm:w-auto"
                   >
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                    </svg>
-                    Connect on LinkedIn
-                    <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
+                    <InteractiveHoverButton
+                      text="Connect on LinkedIn"
+                      className="w-full sm:w-auto bg-[#0077B5] hover:bg-[#006399] border-[#0077B5] text-white"
+                    />
                   </a>
                 </div>
               </div>

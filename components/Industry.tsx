@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from './TranslationProvider';
 import { useTheme } from './ThemeProvider';
+import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
 
 // ============================================================
 // PROGRESSIVE CAROUSEL COMPONENT (copied from your spec)
@@ -349,30 +350,10 @@ export default function Industries() {
                       </div>
                       
                       <Link href="/industry">
-                        <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          className="self-start sm:self-end shrink-0 group relative overflow-hidden bg-[#009edb] hover:opacity-95 text-white font-bold px-6 py-3 rounded-lg transition-all duration-300 shadow-lg hover:shadow-(--theme-accent)/50"
-                        >
-                          <span className="relative z-10 flex items-center gap-2">
-                            {t('common.learnMore')}
-                            <svg 
-                              className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" 
-                              fill="none" 
-                              stroke="currentColor" 
-                              viewBox="0 0 24 24"
-                            >
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                            </svg>
-                          </span>
-                          
-                          <div className={
-                            `absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ` +
-                            (theme === 'light'
-                              ? 'bg-linear-to-r from-transparent via-white/20 to-transparent'
-                              : 'bg-linear-to-r from-transparent via-black/20 to-transparent')
-                          } />
-                        </motion.button>
+                        <InteractiveHoverButton
+                          text={t('common.learnMore')}
+                          className="self-start sm:self-end shrink-0"
+                        />
                       </Link>
                     </motion.div>
                   </div>

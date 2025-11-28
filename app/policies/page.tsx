@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useTheme } from "@/components/ThemeProvider";
 import { motion } from "framer-motion";
+import { InteractiveHoverButton } from "@/components/ui/InteractiveHoverButton";
 
 const policies = [
   {
@@ -166,12 +167,17 @@ export default function PoliciesPage() {
                   : 'bg-[#009edb]/5 border-[#009edb]/10'
               }`}>
                 <h4 className={`font-bold mb-2 ${isLight ? 'text-gray-900' : 'text-white'}`}>Need Assistance?</h4>
+import InteractiveHoverButton from '@/components/ui/InteractiveHoverButton';
+
+// ...existing code...
+
                 <p className={`text-sm mb-4 ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>
                   If you have questions regarding our policies, please contact our HR department.
                 </p>
-                <button className="text-sm font-bold text-[#009edb] hover:underline">
-                  Contact HR &rarr;
-                </button>
+                <InteractiveHoverButton
+                  text="Contact HR"
+                  className="w-full justify-center"
+                />
               </div>
             </div>
           </div>

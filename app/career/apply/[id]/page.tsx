@@ -8,6 +8,8 @@ import { Loader2, CheckCircle, XCircle, ArrowRight, Briefcase, MapPin, ArrowLeft
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
+import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
+
 // Reusable UI Components (from AlumniForm)
 const Label = ({
 	htmlFor,
@@ -51,30 +53,6 @@ const TextArea = (props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) => (
 			props.className || ''
 		}`}
 	/>
-);
-
-const Button = ({
-	children,
-	variant = 'primary',
-	className = '',
-	...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement> & {
-	variant?: 'primary' | 'ghost' | 'outline';
-}) => (
-	<button
-		{...props}
-		className={`inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 
-      ${
-				variant === 'primary'
-					? 'bg-accent text-white hover:bg-accent/90'
-					: variant === 'outline'
-                    ? 'border border-theme/20 hover:bg-theme/5 text-theme'
-					: 'hover:bg-theme/10 text-theme'
-			} 
-      ${className}`}
-	>
-		{children}
-	</button>
 );
 
 type Job = {
@@ -186,7 +164,7 @@ export default function JobApplicationPage() {
         <Navbar />
         <div className="flex-1 flex flex-col justify-center items-center p-4">
             <h2 className="text-2xl font-bold text-theme mb-4">Job Not Found</h2>
-            <Button onClick={() => router.push('/career')}>Back to Careers</Button>
+            <InteractiveHoverButton onClick={() => router.push('/career')} text="Back to Careers" />
         </div>
         <Footer />
       </div>
@@ -198,9 +176,12 @@ export default function JobApplicationPage() {
       <Navbar />
       
       <div className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-        <Button variant="ghost" onClick={() => router.back()} className="mb-8 pl-0 hover:bg-transparent hover:text-accent">
+        <button 
+            onClick={() => router.back()} 
+            className="mb-8 pl-0 hover:bg-transparent hover:text-accent inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 h-10 py-2 text-theme"
+        >
             <ArrowLeft className="mr-2 h-4 w-4" /> Back to Openings
-        </Button>
+        </button>
 
         {/* Job Description Section */}
         <div className="mb-12">
@@ -255,9 +236,9 @@ export default function JobApplicationPage() {
                     <p className="text-lg text-muted max-w-md mx-auto mb-8">
                         Thank you for your interest. We will review your application and get back to you soon.
                     </p>
-                    <Button onClick={() => router.push('/career')}>
-                        Browse More Jobs
-                    </Button>
+                    <div className="flex justify-center">
+                        <InteractiveHoverButton onClick={() => router.push('/career')} text="Browse More Jobs" />
+                    </div>
                 </div>
             ) : (
                 <form onSubmit={handleSubmit} className="space-y-6 bg-surface p-6 md:p-10 rounded-xl border border-theme/10 shadow-sm">
@@ -393,23 +374,13 @@ export default function JobApplicationPage() {
                         />
                     </div>
 
-                    <div className="pt-4">
-                        <Button 
+                    <div className="pt-4 flex justify-center">
+                        <InteractiveHoverButton 
                             type="submit" 
                             disabled={submitting}
-                            className="w-full py-6 text-lg"
-                        >
-                            {submitting ? (
-                                <>
-                                    <Loader2 className="w-5 h-5 animate-spin mr-2" />
-                                    Submitting Application...
-                                </>
-                            ) : (
-                                <>
-                                    Submit Application <ArrowRight className="ml-2 h-5 w-5" />
-                                </>
-                            )}
-                        </Button>
+                            className="w-full md:w-auto"
+                            text={submitting ? "Submitting..." : "Submit Application"}
+                        />
                     </div>
                 </form>
             )}

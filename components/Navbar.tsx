@@ -6,6 +6,7 @@ import { useTranslation, LanguageSwitcher } from './TranslationProvider';
 import Link from 'next/link';
 import { useSession, signOut } from "next-auth/react";
 import { LogIn } from 'lucide-react';
+import { InteractiveHoverButton } from './ui/InteractiveHoverButton';
 
 type MenuItem = {
   label: string;
@@ -130,7 +131,14 @@ const leftMenu: MenuItem[] = [
   { 
     label: 'Asija Global Services',
     translationKey: 'navbar.asijaGlobal',
-    subs: [], 
+    href: '/global-services',
+    subs: [
+      { label: 'UAE', href: '/global-services/uae' },
+      { label: 'UK', href: '/global-services/uk' },
+      { label: 'Australia', href: '/global-services/australia' },
+      { label: 'Canada', href: '/global-services/canada' },
+      { label: 'USA', href: '/global-services/usa' },
+    ], 
     overview: 'navbar.overview.asijaGlobal'
   },
   { 
@@ -631,17 +639,17 @@ export default function Navbar() {
                     : 'bg-linear-to-b from-white/5 to-white/3 border-white/10'
                 }`}>
                   <h4 className={`font-semibold text-lg mb-3 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Overview</h4>
+
+
                   <p className={`text-sm leading-relaxed ${theme === 'light' ? 'text-gray-600' : 'text-white/70'}`}>
                     {findMenuItem(hoveredItem)?.overview ? t(findMenuItem(hoveredItem)?.overview || '') : t('common.exploreInsights')}
                   </p>
-                  <button className="mt-5 text-[#009edb] text-sm font-medium hover:underline inline-flex items-center gap-1 group">
-                    {t('common.learnMore')}
-                    <motion.div
-                      className="group-hover:translate-x-1 transition-transform"
-                    >
-                      <LogIn size={15}/>
-                    </motion.div>
-                  </button>
+                  <div className="mt-5">
+                    <InteractiveHoverButton
+                      text={t('common.learnMore')}
+                      className="w-auto"
+                    />
+                  </div>
                 </div>
               </div>
             </div>

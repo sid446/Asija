@@ -6,6 +6,7 @@ import { Timeline } from '@/components/Timeline';
 import Values from '@/components/Values';
 import Footer from '@/components/Footer';
 import Loader from '@/components/ui/Loader';
+import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
 
  const data = [
   {
@@ -200,24 +201,16 @@ Today, with decades of trust earned and hundreds of success stories written, we 
             />
           </div>
 
+
+
           {/* Premium button */}
           {showButton && (
-            <button
-              onClick={() => setIsExpanded(!isExpanded)}
-              className="mt-4 sm:mt-6 flex items-center gap-2 text-[#009edb] font-semibold hover:text-white transition-all duration-300"
-            >
-              <span className="relative overflow-hidden inline-block">
-                <span className={`inline-block transition-transform duration-500 ${isExpanded ? '-translate-y-full' : ''}`}>
-                  Read more
-                </span>
-                <span className={`absolute top-0 left-0 inline-block transition-transform duration-500 ${isExpanded ? '' : 'translate-y-full'}`}>
-                  Read less
-                </span>
-              </span>
-              <span className="text-xl sm:text-2xl">
-                {isExpanded ? '↑' : '↓'}
-              </span>
-            </button>
+            <div className="mt-4 sm:mt-6">
+              <InteractiveHoverButton
+                onClick={() => setIsExpanded(!isExpanded)}
+                text={isExpanded ? 'Read less' : 'Read more'}
+              />
+            </div>
           )}
         </div>
       </div>

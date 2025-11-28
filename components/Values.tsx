@@ -4,6 +4,7 @@ import AboutCard from './AboutCard';
 import Beams from './Beams';
 import { useTranslation } from './TranslationProvider'; // ADD THIS
 import { motion, AnimatePresence } from 'framer-motion';
+import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
 
 const cardsData = [
   {
@@ -157,12 +158,11 @@ const Values = () => {
 
                 {/* Modal Footer */}
                 <div className="sticky bottom-0 p-6 border-t border-gray-200 dark:border-white/10 bg-white dark:bg-slate-950 flex gap-3 flex-shrink-0">
-                  <button
+                  <InteractiveHoverButton
                     onClick={() => setSelectedCard(null)}
-                    className="flex-1 px-6 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600  font-medium rounded-lg transition-colors"style={{color:"white"}}
-                  >
-                    Close
-                  </button>
+                    text="Close"
+                    className="flex-1 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-white border-none"
+                  />
                 </div>
               </motion.div>
             </motion.div>

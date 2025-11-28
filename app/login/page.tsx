@@ -5,6 +5,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Home } from "lucide-react";
+import { InteractiveHoverButton } from "@/components/ui/InteractiveHoverButton";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -85,9 +86,10 @@ export default function LoginPage() {
               />
             </div>
             
-            <button className="w-full bg-[#009edb] text-white font-bold text-lg cursor-pointer py-4 rounded-lg hover:bg-[#008bc0] transition-all hover:scale-[1.02] active:scale-[0.98] mt-2">
-              Sign In
-            </button>
+            <InteractiveHoverButton 
+              text="Sign In" 
+              className="w-full mt-2 bg-[#009edb] text-white border-[#009edb]" 
+            />
             
             {error && (
               <div className="bg-red-500/10 border border-red-500/20 text-red-500 text-sm py-3 px-4 rounded-lg text-center">

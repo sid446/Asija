@@ -5,6 +5,8 @@ import { ChevronDown, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from './TranslationProvider'; // ADD THIS
 import Link from 'next/link';
+import { InteractiveHoverButton } from './ui/InteractiveHoverButton';
+
 
 // Service data stays the same
 const serviceGroups = [
@@ -139,16 +141,16 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ group, index }) => {
                   <p className="text-gray-500 italic text-sm">No sub-services listed yet.</p>
                 )}
 
+import InteractiveHoverButton from '@/components/ui/InteractiveHoverButton';
+
+// ...existing code...
+
                 {group.insights && (
                   <Link href={`/services?service=${encodeURIComponent(group.title)}`}>
-                    <motion.button
-                      whileHover={{ x: 4 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="inline-flex items-center gap-2 text-accent text-sm font-semibold hover:underline"
-                    >
-                      {t('services.viewInsights')} {/* UPDATED */}
-                      <ChevronRight className="w-4 h-4" />
-                    </motion.button>
+                    <InteractiveHoverButton
+                      text={t('services.viewInsights')}
+                      className="w-auto"
+                    />
                   </Link>
                 )}
 

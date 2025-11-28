@@ -3,6 +3,7 @@ import React from 'react';
 import { useInView } from 'react-intersection-observer';
 import Image from 'next/image';
 import Link from 'next/link';
+import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
 
 type AboutCardProps = {
   image: string;
@@ -34,29 +35,13 @@ const AboutCard = ({
   const delay = index * 75; // Faster stagger
 
   const ButtonContent = () => (
-    <button
+    <InteractiveHoverButton
       onClick={onButtonClick}
+      text={buttonContent}
       className={`
-        relative inline-flex items-center justify-center gap-1.5 
-        px-1 sm:px-3 py-1.5 text-xs font-medium text-theme bg-accent rounded-full 
-        overflow-hidden transition-all duration-300 group-hover:bg-[#86dec6] 
-        group-hover:text-black focus:outline-none focus:ring-2 focus:ring-(--theme-accent) 
-        focus:ring-offset-2 focus:ring-offset-(--theme-card) min-h-8
-        ${isMobile ? 'w-full text-[10px]' : 'w-auto sm:w-auto'}
+        ${isMobile ? 'w-full text-[10px] min-w-0 px-4 py-2' : 'w-auto sm:w-auto'}
       `}
-      style={{ backgroundColor: 'var(--theme-accent)' }}
-    >
-      <span className="relative z-10">{buttonContent}</span>
-      <svg
-        className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-0.5"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-      </svg>
-      <span className="absolute inset-0 bg-white/20 scale-0 group-hover:scale-100 transition-transform duration-300 rounded-full" />
-    </button>
+    />
   );
 
   return (

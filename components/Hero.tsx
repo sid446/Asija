@@ -1,14 +1,16 @@
 'use client';
 import React from 'react';
 import Navbar from './Navbar';
-import Button from './Button';
+import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
 import { useTranslation } from './TranslationProvider';
+import { useRouter } from 'next/navigation';
 
 function Hero() {
   const { t } = useTranslation(); 
+  const router = useRouter();
   
   return (
-    <div className="fixed top-0 left-0 w-screen h-[100vh] sm:h-[90vh] overflow-hidden border-b-4 border-[#009edb] z-10">
+    <div className="fixed top-0 left-0 w-screen h-screen sm:h-[90vh] overflow-hidden border-b-4 border-[#009edb] z-10">
       {/* Video Background */}
       <video
         className="absolute inset-0 w-full h-full object-cover"
@@ -51,8 +53,16 @@ function Hero() {
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 justify-center items-center md:justify-start">
-            <Button label={t('hero.learnMore')} link="/about" color1="#009edb" textColor="#ffffff" /> {/* UPDATED */}
-            <Button label={t('hero.contactUs')} link="/#contact" color1="#1e1e1e" textColor="#009edb" /> {/* UPDATED */}
+            <InteractiveHoverButton 
+              text={t('hero.learnMore')} 
+              className="bg-transparent! text-white border-[#009edb]"
+              onClick={() => router.push('/about')}
+            />
+            <InteractiveHoverButton 
+              text={t('hero.contactUs')} 
+              className="bg-[#1e1e1e]! text-[#009edb] border-[#009edb]"
+              onClick={() => window.location.href = '/#contact'}
+            />
           </div>
         </div>
       </div>

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Loader2, CheckCircle, XCircle, ExternalLink, CircleCheck, Mail, ArrowRight } from 'lucide-react';
+import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
 
 const benefits = [
 	{
@@ -48,28 +49,6 @@ const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => (
 			props.className || ''
 		}`}
 	/>
-);
-
-const Button = ({
-	children,
-	variant = 'primary',
-	className = '',
-	...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement> & {
-	variant?: 'primary' | 'ghost';
-}) => (
-	<button
-		{...props}
-		className={`inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 
-      ${
-				variant === 'primary'
-					? 'bg-accent text-black hover:bg-accent/90'
-					: 'hover:bg-theme/10 text-theme'
-			} 
-      ${className}`}
-	>
-		{children}
-	</button>
 );
 
 export default function AlumniForm() {
@@ -228,17 +207,12 @@ export default function AlumniForm() {
 									</div>
 								</div>
 								<div className="flex justify-end">
-									<Button
+									<InteractiveHoverButton
 										type="submit"
 										disabled={loading}
 										className="w-full sm:w-auto"
-									>
-										{loading ? (
-											<Loader2 className="animate-spin mr-2 h-4 w-4" />
-										) : null}
-										Send OTP{' '}
-										<ArrowRight className="ml-2 h-4 w-4" />
-									</Button>
+										text={loading ? "Sending..." : "Send OTP"}
+									/>
 								</div>
 							</form>
 						)}
@@ -259,20 +233,19 @@ export default function AlumniForm() {
 										maxLength={6}
 									/>
 								</div>
-								<div className="flex flex-col sm:flex-row gap-3 justify-end">
-									<Button
+								<div className="flex flex-col sm:flex-row gap-3 justify-end items-center">
+									<button
 										type="button"
-										variant="ghost"
 										onClick={() => setStep('email')}
+										className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 hover:bg-theme/10 text-theme"
 									>
 										Change Email
-									</Button>
-									<Button type="submit" disabled={loading}>
-										{loading ? (
-											<Loader2 className="animate-spin mr-2 h-4 w-4" />
-										) : null}
-										Verify OTP
-									</Button>
+									</button>
+									<InteractiveHoverButton 
+										type="submit" 
+										disabled={loading}
+										text={loading ? "Verifying..." : "Verify OTP"}
+									/>
 								</div>
 							</form>
 						)}
@@ -372,16 +345,12 @@ export default function AlumniForm() {
 								</div>
 
 								<div className="flex justify-end pt-4">
-									<Button
+									<InteractiveHoverButton
 										type="submit"
 										disabled={loading}
 										className="w-full sm:w-auto"
-									>
-										{loading ? (
-											<Loader2 className="animate-spin mr-2 h-4 w-4" />
-										) : null}
-										Complete Registration
-									</Button>
+										text={loading ? "Submitting..." : "Complete Registration"}
+									/>
 								</div>
 							</form>
 						)}
@@ -394,16 +363,16 @@ export default function AlumniForm() {
 								<h3 className="text-xl font-bold text-theme mb-2">
 									Registration Submitted!
 								</h3>
-								<p className="text-muted max-w-md mx-auto">
+								<p className="text-muted max-w-md mx-auto mb-6">
 									Your details have been sent to the admin for approval. You will
 									receive an email once your profile is approved.
 								</p>
-								<Button
-									className="mt-6"
-									onClick={() => (window.location.href = '/')}
-								>
-									Return Home
-								</Button>
+								<div className="flex justify-center">
+									<InteractiveHoverButton
+										onClick={() => (window.location.href = '/')}
+										text="Return Home"
+									/>
+								</div>
 							</div>
 						)}
 					</div>

@@ -9,6 +9,7 @@ import Values from '@/components/Values'; // Import Values component
 import WhyChooseUs from '@/components/ui/WhyChooseUs';
 import CTA from '@/components/ui/CTA';
 import Loader from '@/components/ui/Loader';
+import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
 
 interface PageContent {
   heading: string;
@@ -389,22 +390,20 @@ export default function IndustriesContent() {
                              <p className="text-md sm:text-lg text-gray-200 leading-relaxed mb-8">
                                {page.leftContent.details}
                              </p>
-                             <button
+                             <InteractiveHoverButton
                                onClick={() => setExpandedSection(null)}
-                               className="px-8 py-3 border-2 border-white/50 text-white font-semibold rounded-full hover:bg-white hover:text-black transition-all duration-300"
-                             >
-                               Show Less
-                             </button>
+                               text="Show Less"
+                               className="border-2 border-white/50 text-white hover:bg-white hover:text-black"
+                             />
                            </div>
                         )}
 
                         {!isExpandedLeft && page.leftContent.details && (
-                          <button
+                          <InteractiveHoverButton
                             onClick={() => setExpandedSection('left')}
-                            className="px-6 py-2 border-2 border-[#009edb] text-[#009edb] font-semibold rounded-full hover:bg-[#009edb] hover:text-white transition-all duration-300"
-                          >
-                            Read More
-                          </button>
+                            text="Read More"
+                            className="border-2 border-[#009edb] text-[#009edb] hover:bg-[#009edb] hover:text-white"
+                          />
                         )}
                       </div>
                     )}
@@ -442,22 +441,20 @@ export default function IndustriesContent() {
                              <p className="text-lg sm:text-xl text-gray-200 leading-relaxed mb-8">
                                {page.rightContent.details}
                              </p>
-                             <button
+                             <InteractiveHoverButton
                                onClick={() => setExpandedSection(null)}
-                               className="px-8 py-3 border-2 border-white/50 text-white font-semibold rounded-full hover:bg-white hover:text-black transition-all duration-300"
-                             >
-                               Show Less
-                             </button>
+                               text="Show Less"
+                               className="border-2 border-white/50 text-white hover:bg-white hover:text-black"
+                             />
                            </div>
                         )}
 
                         {!isExpandedRight && page.rightContent.details && (
-                          <button
+                          <InteractiveHoverButton
                             onClick={() => setExpandedSection('right')}
-                            className="px-6 py-2 border-2 border-[#009edb] text-[#009edb] font-semibold rounded-full hover:bg-[#009edb] hover:text-white transition-all duration-300"
-                          >
-                            Read More
-                          </button>
+                            text="Read More"
+                            className="border-2 border-[#009edb] text-[#009edb] hover:bg-[#009edb] hover:text-white"
+                          />
                         )}
                       </div>
                     )}

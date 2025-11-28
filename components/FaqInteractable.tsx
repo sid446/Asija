@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Clock, CreditCard, Truck, ChevronDown } from 'lucide-react';
+import { InteractiveHoverButton } from './ui/InteractiveHoverButton';
 
 type FAQItem = {
   id: string;
@@ -143,13 +144,16 @@ export default function FAQAccordion() {
             </Accordion>
           </div>
 
+
+
+
           {/* Mobile CTA */}
           <div className={`md:hidden text-center transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-            <a 
-              href="mailto:support@asija.in"
-              className="inline-block px-6 py-3 bg-zinc-900 text-white font-semibold rounded-lg hover:bg-zinc-800 transition-all active:scale-95 touch-manipulation shadow-lg"
-            >
-              Contact Support
+            <a href="mailto:support@asija.in">
+              <InteractiveHoverButton
+                text="Contact Support"
+                className="w-full justify-center"
+              />
             </a>
           </div>
         </div>

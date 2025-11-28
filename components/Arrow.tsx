@@ -4,7 +4,8 @@ import React, { useRef } from 'react';
 import { Inter } from 'next/font/google';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import Button from './Button';
+import Link from 'next/link';
+import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -186,13 +187,11 @@ function About() {
             );
           })}
         </section>
-        <Button 
-  label="Learn More"
-  link="/test"
-  color1="#69213f"      // red background
-  textColor="#ffffff"    // white text/arrow
-  position="left"
-/>
+        <div className="flex justify-start m-1 sm:m-2">
+          <Link href="/test">
+            <InteractiveHoverButton text="Learn More" />
+          </Link>
+        </div>
       </main>
 
       {/* ── RIGHT SIDEBAR - SCROLL UP 100px ── */}

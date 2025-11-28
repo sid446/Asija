@@ -11,6 +11,7 @@ import { useTheme } from '@/components/ThemeProvider';
 import CTA from '@/components/ui/CTA';
 import WhyChooseUs from '@/components/ui/WhyChooseUs';
 import Loader from '@/components/ui/Loader';
+import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
 
 interface ServiceGroup {
   title: string;
@@ -480,9 +481,11 @@ export default function ServicesContent() {
 
                   {/* CTA */}
                   <div className="order-4 p-6 md:p-0 pt-4">
-                    <a href="#contact" className="inline-flex items-center justify-center w-full gap-2 bg-[#009edb] hover:bg-[#008bbd] text-white font-semibold px-6 py-3 rounded-lg transition-all shadow-lg hover:shadow-[#009edb]/20">
-                      Schedule a Consultation <ArrowRight className="w-4 h-4" />
-                    </a>
+                    <InteractiveHoverButton 
+                      text="Schedule a Consultation" 
+                      className="w-full bg-[#009edb] text-white border-[#009edb]"
+                      onClick={() => window.location.href = '#contact'}
+                    />
                   </div>
                 </div>
 

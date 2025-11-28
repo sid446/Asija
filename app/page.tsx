@@ -22,15 +22,17 @@ export default function Home() {
         <Navbar />
         <Hero />
 
-        <div className="relative z-40">
+        <div className="relative z-40 pointer-events-none">
           <div className="h-screen sm:h-[90vh]" />
-          <AboutUs />
-          <Services />
-          <IndustriesFlowMenu />
-          <Career />
-          <Contact />
-          <FAQAccordion/>
-          <Footer />
+          <div className="pointer-events-auto">
+            <AboutUs />
+            <Services />
+            <IndustriesFlowMenu />
+            <Career />
+            <Contact />
+            <FAQAccordion/>
+            <Footer />
+          </div>
         </div>
       </div>
     </>

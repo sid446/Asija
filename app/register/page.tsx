@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Home } from "lucide-react";
+import { InteractiveHoverButton } from "@/components/ui/InteractiveHoverButton";
 
 export default function RegisterPage() {
   const [name, setName] = useState("");
@@ -121,9 +122,10 @@ export default function RegisterPage() {
               />
             </div>
             
-            <button className="w-full bg-[#009edb] text-black font-bold text-lg cursor-pointer py-4 rounded-lg hover:bg-[#008bbd] transition-all hover:scale-[1.02] active:scale-[0.98] mt-2">
-              Register
-            </button>
+            <InteractiveHoverButton 
+              text="Register" 
+              className="w-full mt-2 bg-[#009edb] text-white border-[#009edb]" 
+            />
             
             {error && (
               <div className="bg-red-500/10 border border-red-500/20 text-red-500 text-sm py-3 px-4 rounded-lg text-center">

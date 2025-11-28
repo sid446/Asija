@@ -8,6 +8,7 @@ import { Loader2, MapPin, Briefcase, ArrowRight } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import RotatingText from '@/components/ui/RotatingText';
+import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
 
 type Job = {
   _id: string;
@@ -163,12 +164,11 @@ export default function CareerPage() {
                   </div>
 
                   <div className="flex items-center">
-                    <button
+                    <InteractiveHoverButton
                       onClick={() => handleApply(job)}
-                      className="w-full md:w-auto px-6 py-3 rounded-lg bg-[#009edb] text-white font-medium hover:bg-[#008ac0] transition-all flex items-center justify-center gap-2 group-hover:scale-105"
-                    >
-                      Apply Now <ArrowRight size={18} />
-                    </button>
+                      text="Apply Now"
+                      className="w-full md:w-auto"
+                    />
                   </div>
                 </div>
               </motion.div>
