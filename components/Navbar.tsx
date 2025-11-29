@@ -156,11 +156,12 @@ const rightMenu: MenuItem[] = [
   { 
     label: 'Contact Us',
     translationKey: 'navbar.contactUs',
+    href: '/contact',
     subs: [
-      { label: 'Office Locations', href: '/#contact' },
-      { label: 'Contact No.', href: '/#contact' },
-      { label: 'Emails', href: '/#contact' },
-      { label: 'Enquiry Form / Consult Us', href: '/#contact' }
+      { label: 'Office Locations', href: '/contact' },
+      { label: 'Contact No.', href: '/contact' },
+      { label: 'Emails', href: '/contact' },
+      { label: 'Enquiry Form / Consult Us', href: '/contact' }
     ], 
     overview: 'navbar.overview.contactUs'
   },
@@ -502,6 +503,7 @@ export default function Navbar() {
                   icon={item.icon}
                   isActive={hoveredItem === item.label}
                   hasDropdown={item.subs && item.subs.length > 0}
+                  href={item.href}
                 />
               </motion.div>
             ))}
