@@ -44,28 +44,7 @@ She is also Chief Finance Officer of our organization as she optimizes the finan
 
 Being detail-oriented person, dedicated to perfection she drives changes with ease. She acts as Principal point-of-contact for the clients and helps them in troubleshooting and resolving issues while overseeing the activities around client delivery, billing/revenue collection, team management, adherence to compliance of ethics, guidelines and norms of the engagement.`,
   },
-  {
-    name: 'CA Anand Srivastav',
-    role: 'Sr. Consultant',
-    avatar: '/AnanadShrivastav.jpeg',
-    linkedin: 'https://www.linkedin.com/in/anandpsrivastava/',
-    qualifications: 'FCA (ICAI), CPA Australia, ACA (ICAEW), FAFD',
-    specialization: 'Audit, Assurance, Compliance, Corporate Governance, Forensic Accounting, UN HACT Assignments',
-    experience: '22+ Years',
-    membership: '',
-    associationYears: '',
-    mobile: '',
-    email: '',
-    description: `CA. Anand Prakash Srivastava is a Fellow Chartered Accountant (ICAI, India), Certified Public Accountant (CPA, Australia), Associate Chartered Accountant (ICAEW, England) with over 22 years of professional experience across industry and public practice. His career spans leadership roles in the telecom and insurance sectors for over 15 years, followed by public practice, where he has advised a diverse portfolio of clients in India and internationally.
-
-During his industry tenure, Anand held senior finance leadership positions with HDFC Life Insurance, Essar Telecom, Tata Teleservices, and Reliance Communications. Notably, he was part of the core finance team at HDFC Life during its IPO in 2017, leading zonal accounts across seven states and managing consolidation for the company’s Dubai subsidiary. He also led compliance, governance, and finance operations across multiple geographies, driving efficiency, regulatory alignment, and business strategy.
-
-In public practice, Anand brings expertise in audit, assurance and compliance including UN HACT assignments, knowledge process outsourcing (KPO), corporate governance, financial planning, forensic accounting, and systems audit. His certifications in Forensic Accounting, Wealth Management, Government Accounting, and Ind-AS further strengthen his ability to provide comprehensive advisory services to corporates, institutions, and startups.
-
-Anand has also enriched his leadership skills through executive education at IIM Ahmedabad (Innovate, Disrupt & Change) and ISB Hyderabad (Analytical Thinking, Managerial Effectiveness, Leading in Times of Change). His professional interests lie in combining strategic finance, risk management, and technology-driven insights to help businesses adapt and grow in an evolving regulatory and digital landscape.
-
-Known for his strategic mindset, governance expertise, and mentoring approach, Anand continues to contribute as a trusted advisor to organizations seeking robust financial, compliance, and operational frameworks.`,
-  },
+ 
   {
     name: 'CA Kamal Ferwani',
     role: 'Sr. Partner',
@@ -111,6 +90,28 @@ Since over a decade, Mr. Kamal has obtained good experience in almost every fiel
 The KRTQ vertical under her leadership conducts training programs and workshops for Corporates, Govt entities, UN bodies and Pvt Clients for knowledge upgradation and training of their staff and management on various topics in Taxation, Corporate Law, Audit. Her vertical addresses various queries raised by clients, especially in GST and Customs and issues advisories to them from time to time.
 
 Padmaja has a PAN India experience working in Pune, Bengaluru, Bareilly, Lucknow, Gurgaon expanding the footprint of the firm in very diverse working conditions. She has a flair for languages and speaks English, Hindi, Marathi, Kannada. She has been a regular speaker at sessions on various topics in GST conducted by NACIN, NADT. She has also been a faculty to CA students on technical topics and a soft skills trainer as well and has undertaken confidential assignments with the Institute of Chartered Accountants of India (ICAI).`,
+  },
+   {
+    name: 'CA Anand Srivastav',
+    role: 'Sr. Consultant',
+    avatar: '/AnanadShrivastav.jpeg',
+    linkedin: 'https://www.linkedin.com/in/anandpsrivastava/',
+    qualifications: 'FCA (ICAI), CPA Australia, ACA (ICAEW), FAFD',
+    specialization: 'Audit, Assurance, Compliance, Corporate Governance, Forensic Accounting, UN HACT Assignments',
+    experience: '22+ Years',
+    membership: '',
+    associationYears: '',
+    mobile: '',
+    email: '',
+    description: `CA. Anand Prakash Srivastava is a Fellow Chartered Accountant (ICAI, India), Certified Public Accountant (CPA, Australia), Associate Chartered Accountant (ICAEW, England) with over 22 years of professional experience across industry and public practice. His career spans leadership roles in the telecom and insurance sectors for over 15 years, followed by public practice, where he has advised a diverse portfolio of clients in India and internationally.
+
+During his industry tenure, Anand held senior finance leadership positions with HDFC Life Insurance, Essar Telecom, Tata Teleservices, and Reliance Communications. Notably, he was part of the core finance team at HDFC Life during its IPO in 2017, leading zonal accounts across seven states and managing consolidation for the company’s Dubai subsidiary. He also led compliance, governance, and finance operations across multiple geographies, driving efficiency, regulatory alignment, and business strategy.
+
+In public practice, Anand brings expertise in audit, assurance and compliance including UN HACT assignments, knowledge process outsourcing (KPO), corporate governance, financial planning, forensic accounting, and systems audit. His certifications in Forensic Accounting, Wealth Management, Government Accounting, and Ind-AS further strengthen his ability to provide comprehensive advisory services to corporates, institutions, and startups.
+
+Anand has also enriched his leadership skills through executive education at IIM Ahmedabad (Innovate, Disrupt & Change) and ISB Hyderabad (Analytical Thinking, Managerial Effectiveness, Leading in Times of Change). His professional interests lie in combining strategic finance, risk management, and technology-driven insights to help businesses adapt and grow in an evolving regulatory and digital landscape.
+
+Known for his strategic mindset, governance expertise, and mentoring approach, Anand continues to contribute as a trusted advisor to organizations seeking robust financial, compliance, and operational frameworks.`,
   },
   {
     name: 'CA Mohammad Hassan Shuaib',
