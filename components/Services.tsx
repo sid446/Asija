@@ -141,9 +141,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ group, index }) => {
                   <p className="text-gray-500 italic text-sm">No sub-services listed yet.</p>
                 )}
 
-import InteractiveHoverButton from '@/components/ui/InteractiveHoverButton';
 
-// ...existing code...
 
                 {group.insights && (
                   <Link href={`/services?service=${encodeURIComponent(group.title)}`}>

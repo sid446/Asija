@@ -39,7 +39,10 @@ const AboutCard = ({
       onClick={onButtonClick}
       text={buttonContent}
       className={`
-        ${isMobile ? 'w-full text-[10px] min-w-0 px-4 py-2' : 'w-auto sm:w-auto'}
+        ${isMobile 
+          ? 'w-full text-[10px] min-w-0 px-4 py-2' 
+          : 'w-full sm:w-auto min-w-0 sm:min-w-32 text-[10px] sm:text-base px-3 py-1.5 sm:px-6 sm:py-2'
+        }
       `}
     />
   );
