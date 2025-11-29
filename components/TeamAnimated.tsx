@@ -46,7 +46,7 @@ Being detail-oriented person, dedicated to perfection she drives changes with ea
   },
   {
     name: 'CA Anand Srivastav',
-    role: 'Sr. Partner',
+    role: 'Sr. Consultant',
     avatar: '/AnanadShrivastav.jpeg',
     linkedin: 'https://www.linkedin.com/in/anandpsrivastava/',
     qualifications: 'FCA (ICAI), CPA Australia, ACA (ICAEW), FAFD',
