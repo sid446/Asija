@@ -66,8 +66,8 @@ float edgeFade(vec2 frag, vec2 res, vec2 offset) {
   float x = clamp(r, 0.0, 1.0);
   float q = x * x * x * (x * (x * 6.0 - 15.0) + 10.0);
   float s = q * 0.5;
-  s = pow(s, 1.5);
-  float tail = 1.0 - pow(1.0 - s, 2.0);
+  s = s * sqrt(s);
+  float tail = 1.0 - (1.0 - s) * (1.0 - s);
   s = mix(s, tail, 0.2);
   float dn = (layeredNoise(frag * 0.15) - 0.5) * 0.0015 * s;
   return clamp(s + dn, 0.0, 1.0);
@@ -118,7 +118,7 @@ void main() {
     hoverMat = rotY(ang.y) * rotX(ang.x);
   }
 
-  for (int i = 0; i < 44; ++i) {
+  for (int i = 0; i < 20; ++i) {
     vec3 P = marchT * dir;
     P.z -= 2.0;
     float rad = length(P);
@@ -149,7 +149,7 @@ void main() {
     if (uRayCount > 0) {
       float ang = atan(Pb.y, Pb.x);
       float comb = 0.5 + 0.5 * cos(float(uRayCount) * ang);
-      comb = pow(comb, 3.0);
+      comb = comb * comb * comb;
       rayPattern *= smoothstep(0.15, 0.95, comb);
     }
 
@@ -258,7 +258,7 @@ const Beams: React.FC<BeamsProps> = ({
     const container = containerRef.current;
     if (!container) return;
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, 1);
     const renderer = new Renderer({ dpr, alpha: true, antialias: false });
     rendererRef.current = renderer;
 
