@@ -12,7 +12,8 @@ import {
   Loader2,
   Trash2,
   Pencil,
-  X
+  X,
+  Menu
 } from 'lucide-react';
 
 type TeamItem = {
@@ -38,6 +39,7 @@ export default function AdminPage() {
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -174,241 +176,315 @@ export default function AdminPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50 text-gray-900 font-sans">
+    <div className="min-h-screen bg-gray-50/50 text-gray-900 font-sans">
+      {/* Mobile Header */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 z-30 flex items-center justify-between px-4 shadow-sm">
+        <span className="text-lg font-bold text-blue-600">Asija Admin</span>
+        <button 
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+        >
+          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+      </div>
+
+      {/* Overlay */}
+      {mobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-30 lg:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-gray-200 flex flex-col fixed h-full">
-        <div className="p-6 border-b border-gray-100">
-          <h1 className="text-xl font-bold text-blue-600">Asija Admin</h1>
-        </div>
-        <nav className="flex-1 p-4 space-y-1">
-          <button 
-            onClick={() => setActiveTab('dashboard')}
-            className={`flex items-center w-full px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${activeTab === 'dashboard' ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50'}`}
-          >
-            <LayoutDashboard className="w-4 h-4 mr-3" />
-            Dashboard
-          </button>
-          <button 
-            onClick={() => setActiveTab('team')}
-            className={`flex items-center w-full px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${activeTab === 'team' ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50'}`}
-          >
-            <Users className="w-4 h-4 mr-3" />
-            Team Management
-          </button>
-          <button 
-            className="flex items-center w-full px-4 py-2.5 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            <Settings className="w-4 h-4 mr-3" />
-            Settings
-          </button>
-        </nav>
-        <div className="p-4 border-t border-gray-100">
-          <Link href="/" className="flex items-center w-full px-4 py-2.5 text-sm font-medium text-red-600 rounded-lg hover:bg-red-50 transition-colors">
-            <LogOut className="w-4 h-4 mr-3" />
-            Exit to Site
-          </Link>
+      <aside className={`
+        fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-gray-200 
+        transform transition-transform duration-300 ease-in-out shadow-xl lg:shadow-none
+        ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} 
+        lg:translate-x-0
+      `}>
+        <div className="h-full flex flex-col">
+          <div className="h-16 flex items-center px-6 border-b border-gray-100">
+            <h1 className="text-xl font-bold text-blue-600">Asija Admin</h1>
+          </div>
+          
+          <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+            <button 
+              onClick={() => { setActiveTab('dashboard'); setMobileMenuOpen(false); }}
+              className={`flex items-center w-full px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${activeTab === 'dashboard' ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
+            >
+              <LayoutDashboard className="w-5 h-5 mr-3" />
+              Dashboard
+            </button>
+            <button 
+              onClick={() => { setActiveTab('team'); setMobileMenuOpen(false); }}
+              className={`flex items-center w-full px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${activeTab === 'team' ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
+            >
+              <Users className="w-5 h-5 mr-3" />
+              Team Management
+            </button>
+            <button 
+              className="flex items-center w-full px-4 py-3 text-sm font-medium text-gray-600 rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-all duration-200"
+            >
+              <Settings className="w-5 h-5 mr-3" />
+              Settings
+            </button>
+          </nav>
+
+          <div className="p-4 border-t border-gray-100">
+            <Link href="/" className="flex items-center w-full px-4 py-3 text-sm font-medium text-red-600 rounded-xl hover:bg-red-50 transition-all duration-200">
+              <LogOut className="w-5 h-5 mr-3" />
+              Exit to Site
+            </Link>
+          </div>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 ml-64 p-8">
-        {activeTab === 'team' && (
-          <div className="max-w-5xl mx-auto">
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900">Team Members</h2>
-                <p className="text-gray-500 mt-1">Manage your team profiles and details.</p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Form Section */}
-              <div className="lg:col-span-1">
-                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sticky top-8">
-                  <h3 className="font-semibold text-lg mb-4 flex items-center justify-between">
-                    <span className="flex items-center">
-                      {editingId ? <Pencil className="w-4 h-4 mr-2" /> : <Plus className="w-4 h-4 mr-2" />}
-                      {editingId ? 'Edit Member' : 'Add New Member'}
-                    </span>
-                    {editingId && (
-                      <button onClick={handleCancelEdit} className="text-xs text-red-500 hover:text-red-700 flex items-center">
-                        <X className="w-3 h-3 mr-1" /> Cancel
-                      </button>
-                    )}
-                  </h3>
-                  
-                  {message && (
-                    <div className={`p-3 rounded-lg text-sm mb-4 ${message.includes('success') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
-                      {message}
-                    </div>
-                  )}
-
-                  <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">Full Name</label>
-                      <input 
-                        name="name"
-                        value={formData.name} 
-                        onChange={handleInputChange} 
-                        placeholder="e.g. John Doe" 
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-sm"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">Role / Title</label>
-                      <input 
-                        name="role"
-                        value={formData.role} 
-                        onChange={handleInputChange} 
-                        placeholder="e.g. Senior Partner" 
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-sm"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">Profile Image</label>
-                      <div className="flex items-center justify-center w-full">
-                        <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
-                          <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                            <ImageIcon className="w-8 h-8 text-gray-400 mb-2" />
-                            <p className="text-xs text-gray-500">{imageFile ? imageFile.name : 'Click to upload image'}</p>
-                          </div>
-                          <input type="file" className="hidden" onChange={(e) => setImageFile(e.target.files?.[0] || null)} accept="image/*" />
-                        </label>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-1">Mobile</label>
-                        <input name="mobile" value={formData.mobile} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-1">Email</label>
-                        <input name="email" value={formData.email} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">LinkedIn URL</label>
-                      <input name="linkedin" value={formData.linkedin} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">Qualifications</label>
-                      <input name="qualifications" value={formData.qualifications} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">Specialization</label>
-                      <input name="specialization" value={formData.specialization} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-1">Experience</label>
-                        <input name="experience" value={formData.experience} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-1">Assoc. Years</label>
-                        <input name="associationYears" value={formData.associationYears} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">Membership No.</label>
-                      <input name="membership" value={formData.membership} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">Description / Bio</label>
-                      <textarea 
-                        name="description" 
-                        value={formData.description} 
-                        onChange={handleInputChange} 
-                        rows={4} 
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                      />
-                    </div>
-
-                    <button 
-                      type="submit" 
-                      disabled={submitting}
-                      className={`w-full flex items-center justify-center px-4 py-2.5 text-white font-medium rounded-lg focus:ring-4 transition-all disabled:opacity-70 ${editingId ? 'bg-amber-600 hover:bg-amber-700 focus:ring-amber-200' : 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-200'}`}
-                    >
-                      {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : (editingId ? 'Update Member' : 'Add Member')}
-                    </button>
-                  </form>
+      <main className="lg:ml-64 min-h-screen pt-16 lg:pt-0 transition-all duration-300">
+        <div className="p-4 lg:p-8 max-w-7xl mx-auto">
+          {activeTab === 'team' && (
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Team Members</h2>
+                  <p className="text-gray-500 mt-1 text-sm">Manage your team profiles and details.</p>
                 </div>
               </div>
 
-              {/* List Section */}
-              <div className="lg:col-span-2">
-                <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                  <div className="p-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
-                    <h3 className="font-semibold text-gray-700">Current Team ({items.length})</h3>
-                  </div>
-                  
-                  {loading ? (
-                    <div className="p-8 text-center text-gray-500">Loading...</div>
-                  ) : items.length === 0 ? (
-                    <div className="p-8 text-center text-gray-500">No team members found. Add one to get started.</div>
-                  ) : (
-                    <div className="divide-y divide-gray-100">
-                      {items.map((item) => (
-                        <div key={item._id} className="p-4 hover:bg-gray-50 transition-colors flex items-start space-x-4">
-                          <div className="w-12 h-12 rounded-full bg-gray-200 flex-shrink-0 overflow-hidden">
-                            {item.avatar ? (
-                              <img src={item.avatar} alt={item.name} className="w-full h-full object-cover" />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center text-gray-400">
-                                <Users className="w-6 h-6" />
+              <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8">
+                {/* Form Section */}
+                <div className="xl:col-span-1 order-2 xl:order-1">
+                  <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 lg:p-6 sticky top-24 transition-all duration-300 hover:shadow-md">
+                    <h3 className="font-semibold text-lg mb-5 flex items-center justify-between text-gray-800">
+                      <span className="flex items-center gap-2">
+                        <div className={`p-2 rounded-lg ${editingId ? 'bg-amber-100 text-amber-600' : 'bg-blue-100 text-blue-600'}`}>
+                          {editingId ? <Pencil className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+                        </div>
+                        {editingId ? 'Edit Member' : 'Add New Member'}
+                      </span>
+                      {editingId && (
+                        <button onClick={handleCancelEdit} className="text-xs font-medium text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-full transition-colors flex items-center gap-1">
+                          <X className="w-3 h-3" /> Cancel
+                        </button>
+                      )}
+                    </h3>
+                    
+                    {message && (
+                      <div className={`p-4 rounded-xl text-sm mb-6 flex items-center gap-3 ${message.includes('success') ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-red-50 text-red-700 border border-red-100'}`}>
+                        <div className={`w-2 h-2 rounded-full ${message.includes('success') ? 'bg-green-500' : 'bg-red-500'}`} />
+                        {message}
+                      </div>
+                    )}
+
+                    <form onSubmit={handleSubmit} className="space-y-5">
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Full Name</label>
+                          <input 
+                            name="name"
+                            value={formData.name} 
+                            onChange={handleInputChange} 
+                            placeholder="e.g. John Doe" 
+                            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm"
+                            required
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Role / Title</label>
+                          <input 
+                            name="role"
+                            value={formData.role} 
+                            onChange={handleInputChange} 
+                            placeholder="e.g. Senior Partner" 
+                            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm"
+                            required
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Profile Image</label>
+                          <div className="flex items-center justify-center w-full group">
+                            <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-200 border-dashed rounded-xl cursor-pointer bg-gray-50 group-hover:bg-blue-50/50 group-hover:border-blue-300 transition-all duration-300">
+                              <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                <div className="p-3 bg-white rounded-full shadow-sm mb-2 group-hover:scale-110 transition-transform">
+                                  <ImageIcon className="w-5 h-5 text-gray-400 group-hover:text-blue-500" />
+                                </div>
+                                <p className="text-xs text-gray-500 font-medium">{imageFile ? <span className="text-blue-600">{imageFile.name}</span> : 'Click to upload image'}</p>
                               </div>
-                            )}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="text-sm font-semibold text-gray-900">{item.name}</h4>
-                            <p className="text-xs text-gray-500">{item.role}</p>
-                            <div className="mt-1 flex flex-wrap gap-2">
-                              {item.email && <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded">{item.email}</span>}
-                              {item.mobile && <span className="text-xs bg-green-50 text-green-600 px-2 py-0.5 rounded">{item.mobile}</span>}
-                            </div>
-                          </div>
-                          <div className="flex space-x-1">
-                            <button 
-                              onClick={() => handleEdit(item)}
-                              className="text-gray-400 hover:text-blue-500 transition-colors p-2"
-                              title="Edit"
-                            >
-                              <Pencil className="w-4 h-4" />
-                            </button>
-                            <button 
-                              onClick={() => handleDelete(item._id)}
-                              className="text-gray-400 hover:text-red-500 transition-colors p-2"
-                              title="Delete"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
+                              <input type="file" className="hidden" onChange={(e) => setImageFile(e.target.files?.[0] || null)} accept="image/*" />
+                            </label>
                           </div>
                         </div>
-                      ))}
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Mobile</label>
+                            <input name="mobile" value={formData.mobile} onChange={handleInputChange} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm" />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Email</label>
+                            <input name="email" value={formData.email} onChange={handleInputChange} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm" />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">LinkedIn URL</label>
+                          <input name="linkedin" value={formData.linkedin} onChange={handleInputChange} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm" />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Qualifications</label>
+                          <input name="qualifications" value={formData.qualifications} onChange={handleInputChange} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm" />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Specialization</label>
+                          <input name="specialization" value={formData.specialization} onChange={handleInputChange} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm" />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Experience</label>
+                            <input name="experience" value={formData.experience} onChange={handleInputChange} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm" />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Assoc. Years</label>
+                            <input name="associationYears" value={formData.associationYears} onChange={handleInputChange} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm" />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Membership No.</label>
+                          <input name="membership" value={formData.membership} onChange={handleInputChange} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm" />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Description / Bio</label>
+                          <textarea 
+                            name="description" 
+                            value={formData.description} 
+                            onChange={handleInputChange} 
+                            rows={4} 
+                            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
+                          />
+                        </div>
+                      </div>
+
+                      <button 
+                        type="submit" 
+                        disabled={submitting}
+                        className={`w-full flex items-center justify-center px-6 py-3 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 focus:ring-4 transition-all disabled:opacity-70 disabled:cursor-not-allowed transform active:scale-[0.98] ${editingId ? 'bg-amber-600 hover:bg-amber-700 focus:ring-amber-200' : 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-200'}`}
+                      >
+                        {submitting ? <Loader2 className="w-5 h-5 animate-spin" /> : (editingId ? 'Update Member' : 'Add Member')}
+                      </button>
+                    </form>
+                  </div>
+                </div>
+
+                {/* List Section */}
+                <div className="xl:col-span-2 order-1 xl:order-2">
+                  <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div className="p-5 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center backdrop-blur-sm">
+                      <h3 className="font-semibold text-gray-800 flex items-center gap-2">
+                        <Users className="w-4 h-4 text-blue-500" />
+                        Current Team <span className="bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded-full">{items.length}</span>
+                      </h3>
                     </div>
-                  )}
+                    
+                    {loading ? (
+                      <div className="p-12 flex flex-col items-center justify-center text-gray-400">
+                        <Loader2 className="w-8 h-8 animate-spin mb-3" />
+                        <p>Loading team members...</p>
+                      </div>
+                    ) : items.length === 0 ? (
+                      <div className="p-12 text-center text-gray-500 bg-gray-50/30">
+                        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                          <Users className="w-8 h-8 text-gray-400" />
+                        </div>
+                        <p className="font-medium text-gray-900">No team members yet</p>
+                        <p className="text-sm mt-1">Add your first team member using the form.</p>
+                      </div>
+                    ) : (
+                      <div className="divide-y divide-gray-100">
+                        {items.map((item) => (
+                          <div key={item._id} className="p-4 sm:p-5 hover:bg-gray-50/80 transition-colors group">
+                            <div className="flex items-start gap-4 sm:gap-6">
+                              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gray-100 shrink-0 overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition-all">
+                                {item.avatar ? (
+                                  <img src={item.avatar} alt={item.name} className="w-full h-full object-cover" />
+                                ) : (
+                                  <div className="w-full h-full flex items-center justify-center text-gray-400 bg-gray-50">
+                                    <Users className="w-6 h-6 sm:w-8 sm:h-8 opacity-50" />
+                                  </div>
+                                )}
+                              </div>
+                              
+                              <div className="flex-1 min-w-0 pt-1">
+                                <div className="flex items-start justify-between gap-4">
+                                  <div>
+                                    <h4 className="text-base sm:text-lg font-bold text-gray-900 leading-tight group-hover:text-blue-600 transition-colors">{item.name}</h4>
+                                    <p className="text-sm text-blue-600 font-medium mt-0.5">{item.role}</p>
+                                  </div>
+                                  
+                                  <div className="flex items-center gap-1 sm:gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                                    <button 
+                                      onClick={() => handleEdit(item)}
+                                      className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+                                      title="Edit"
+                                    >
+                                      <Pencil className="w-4 h-4" />
+                                    </button>
+                                    <button 
+                                      onClick={() => handleDelete(item._id)}
+                                      className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                                      title="Delete"
+                                    >
+                                      <Trash2 className="w-4 h-4" />
+                                    </button>
+                                  </div>
+                                </div>
+                                
+                                <div className="mt-3 flex flex-wrap gap-2">
+                                  {item.email && (
+                                    <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-600 border border-gray-200">
+                                      {item.email}
+                                    </span>
+                                  )}
+                                  {item.mobile && (
+                                    <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-600 border border-gray-200">
+                                      {item.mobile}
+                                    </span>
+                                  )}
+                                  {item.linkedin && (
+                                    <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-blue-50 text-blue-600 border border-blue-100">
+                                      LinkedIn
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {activeTab === 'dashboard' && (
-          <div className="flex flex-col items-center justify-center h-full text-gray-500">
-            <LayoutDashboard className="w-16 h-16 mb-4 opacity-20" />
-            <p>Dashboard Overview Coming Soon</p>
-          </div>
-        )}
+          {activeTab === 'dashboard' && (
+            <div className="flex flex-col items-center justify-center h-[80vh] text-gray-400">
+              <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-6 animate-pulse">
+                <LayoutDashboard className="w-10 h-10 opacity-50" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Dashboard Overview</h3>
+              <p className="text-gray-500">Analytics and stats coming soon.</p>
+            </div>
+          )}
+        </div>
       </main>
     </div>
   );

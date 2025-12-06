@@ -604,7 +604,7 @@ export default function Navbar() {
 
         {/* Bottom border gradient */}
         <motion.div 
-          className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-[#009edb]/50 to-transparent"
+          className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-[#009edb] to-transparent"
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
           transition={{ delay: 0.5, duration: 0.8 }}
@@ -764,6 +764,25 @@ export default function Navbar() {
                       </AnimatePresence>
                     </motion.div>
                   ))}
+
+                  {session?.user?.email === 'service@asija.in' && (
+                    <motion.div
+                      initial={{ opacity: 0, x: 50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: leftMenu.length * 0.05 }}
+                    >
+                      <Link
+                        href="/admin"
+                        onClick={() => setMobileMenuOpen(false)}
+                        style={{
+                          color: theme === 'light' ? '#1f2937' : '#ffffff',
+                        }}
+                        className="text-left font-medium text-base py-3 px-4 hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#009edb] w-full block"
+                      >
+                        Dashboard
+                      </Link>
+                    </motion.div>
+                  )}
 
                   {session && (
                     <motion.div
