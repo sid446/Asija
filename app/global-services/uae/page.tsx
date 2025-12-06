@@ -14,7 +14,7 @@ export default function UAEPage() {
       
       {/* Hero Section */}
       <section className="relative w-full h-[60vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-black/50 z-10" />
+        <div className="absolute inset-0 bg-white/50 dark:bg-black/50 z-10" />
         <img 
           src="https://plus.unsplash.com/premium_photo-1661964303354-f0496d6d6e0b?q=80&w=1320&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
           alt="UAE Business" 

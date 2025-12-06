@@ -515,6 +515,13 @@ export default function Navbar() {
                <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" className="w-5 h-5 text-white/70 hover:text-[#009edb] transition-colors"><WhatsAppIcon /></a>
             </div>
 
+            {/* Admin Dashboard (visible only to service@asija.in) */}
+            {session?.user?.email === 'service@asija.in' && (
+              <Link href="/admin" className="ml-4 px-3 py-2 rounded-md bg-[#0b76a3] hover:bg-[#0077a3] text-white text-sm font-medium">
+                Dashboard
+              </Link>
+            )}
+
             <div className='w-0.5 h-6 bg-zinc-500 mr-4' ></div>
 
             {/* Theme Toggle (moved from ThemeProvider) */}

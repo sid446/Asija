@@ -14,7 +14,7 @@ export default function UKPage() {
       
       {/* Hero Section */}
       <section className="relative w-full h-[60vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-black/50 z-10" />
+        <div className="absolute inset-0 bg-white/50 dark:bg-black/50 z-10" />
         <img 
           src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=1470&auto=format&fit=crop" 
           alt="UK Business" 

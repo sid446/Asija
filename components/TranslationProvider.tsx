@@ -1,8 +1,7 @@
 'use client';
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-type Language = 'en' | 'ur' | 'ar' | 'hi' | 'dz';
+import { translations, Language } from '@/lib/translations';
 
 interface TranslationContextType {
   language: Language;
@@ -38,50 +37,26 @@ const getNestedTranslation = (obj: any, path: string): string => {
 
 export const TranslationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>('en');
-  const [translations, setTranslations] = useState<Record<string, any>>({});
   const [loading, setLoading] = useState(true);
 
   const dir = language === 'ar' || language === 'ur' ? 'rtl' : 'ltr';
 
-  // Load translations from JSON file
-  const loadTranslations = async (lang: Language) => {
-    try {
-      setLoading(true);
-      const response = await fetch(`/locales/${lang}/translation.json`);
-      if (!response.ok) throw new Error(`Failed to load ${lang} translations`);
-      const data = await response.json();
-      setTranslations(data);
-    } catch (error) {
-      console.error(`Error loading translations for ${lang}:`, error);
-      // Fallback to English if translation fails
-      if (lang !== 'en') {
-        const fallback = await fetch('/locales/en/translation.json');
-        const data = await fallback.json();
-        setTranslations(data);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
   // Translation function
   const t = (key: string): string => {
-    return getNestedTranslation(translations, key);
+    return getNestedTranslation(translations[language], key);
   };
 
   // Load saved language preference on mount
   useEffect(() => {
     const savedLang = localStorage.getItem('preferredLanguage') as Language;
-    if (savedLang && ['en', 'ur', 'ar', 'hi', 'dz'].includes(savedLang)) {
+    if (savedLang && translations[savedLang]) {
       setLanguage(savedLang);
-    } else {
-      loadTranslations('en');
     }
+    setLoading(false);
   }, []);
 
-  // Load translations when language changes
+  // Update document attributes when language changes
   useEffect(() => {
-    loadTranslations(language);
     localStorage.setItem('preferredLanguage', language);
     document.documentElement.dir = dir;
     document.documentElement.lang = language;

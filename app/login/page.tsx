@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [otpStatus, setOtpStatus] = useState<string | null>(null);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -31,6 +32,34 @@ export default function LoginPage() {
       router.replace("/");
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const sendOtp = async () => {
+    setOtpStatus(null);
+    setError('');
+    if (!email) {
+      setError('Please enter your @asija.in email first');
+      return;
+    }
+
+    try {
+      const resp = await fetch('/api/auth/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await resp.json();
+      if (!resp.ok) {
+        setError(data?.message || 'Failed to send OTP');
+        return;
+      }
+
+      setOtpStatus('OTP sent to your email (valid for 5 minutes). Enter it in the password field to login.');
+    } catch (err) {
+      console.error(err);
+      setError('Failed to send OTP');
     }
   };
 
@@ -75,6 +104,10 @@ export default function LoginPage() {
                 placeholder="name@company.com"
                 className="w-full p-4 rounded-lg bg-surface border border-theme text-theme focus:outline-none focus:border-[#009edb] focus:ring-1 focus:ring-[#009edb] transition-all"
               />
+              <div className="flex items-center gap-3 mt-2">
+                <button type="button" onClick={sendOtp} className="px-3 py-2 rounded-md bg-[#009edb] text-white text-sm">Send OTP</button>
+                <div className="text-sm text-muted">Only <strong>@asija.in</strong> emails are allowed.</div>
+              </div>
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium text-muted">Password</label>
@@ -94,6 +127,11 @@ export default function LoginPage() {
             {error && (
               <div className="bg-red-500/10 border border-red-500/20 text-red-500 text-sm py-3 px-4 rounded-lg text-center">
                 {error}
+              </div>
+            )}
+            {otpStatus && (
+              <div className="bg-green-500/10 border border-green-500/20 text-green-600 text-sm py-3 px-4 rounded-lg text-center">
+                {otpStatus}
               </div>
             )}
             
