@@ -1,80 +1,31 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useTranslation } from './TranslationProvider'; // ADD THIS
 import Link from 'next/link';
 import { InteractiveHoverButton } from './ui/InteractiveHoverButton';
+import { WaveLoader } from './ui/WaveLoader';
 
-
-// Service data stays the same
-const serviceGroups = [
-  {
-    title: 'Audit and Assurance',
-    translationKey: 'services.auditAssurance', // ADD THIS
-    items: [
-      'Statutory Audit',
-      'Internal Audit',
-      'Procurement Audit',
-      'Special Audit',
-      'Fund Audit',
-      'Externally Funded Project Audit',
-      'Management Audit',
-    ],
-    insights: true,
-  },
-  {
-    title: 'Direct Tax',
-    translationKey: 'services.directTax', // ADD THIS
-    items: ['Income Tax Services', 'Benami Transaction'],
-    insights: true,
-  },
-  {
-    title: 'Corporate Law Services',
-    translationKey: 'services.corporateLaw', // ADD THIS
-    items: [
-      'Companies Act 2013',
-      'Limited Liability Partnership Act 2008',
-      'Partnership Act 1932',
-      'NGO Registration & Consultancy',
-      'Foreign Contribution Regulation Act 2010',
-      'Assurance Services',
-    ],
-    insights: true,
-  },
-  {
-    title: 'Consultancy',
-    translationKey: 'services.consultancy', // ADD THIS
-    items: [
-      'Process Re-Engineering',
-      'Business Advisory',
-      'Start-up Consultancy',
-      'MIS System Designing',
-    ],
-    insights: true,
-  },
-  {
-    title: 'Indirect Tax',
-    translationKey: 'services.indirectTax', // ADD THIS
-    items: ['Goods and Service Tax', 'Custom', 'Professional Tax'],
-    insights: true,
-  },
-  {
-    title: 'Risk Advisory Services',
-    translationKey: 'services.riskAdvisory', // ADD THIS
-    items: [],
-    insights: true,
-  },
-];
+interface Service {
+  _id: string;
+  title: string;
+  translationKey: string;
+  items: string[];
+  insights: boolean;
+  description?: string;
+  detailedDescription?: string;
+  benefits?: string[];
+  subItems?: any;
+  deepSubItems?: any;
+}
 
 type ServiceCardProps = {
-  group: typeof serviceGroups[number];
+  group: Service;
   index: number;
 };
 
 const ServiceCard: React.FC<ServiceCardProps> = ({ group, index }) => {
-  const { t } = useTranslation(); // ADD THIS
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -101,7 +52,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ group, index }) => {
           className="w-full flex items-center justify-between p-5 sm:p-6 text-left"
         >
           <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-theme group-hover:accent transition-colors duration-300">
-            {t(group.translationKey)} {/* UPDATED */}
+            {group.title}
           </h3>
           <motion.div
             animate={{ rotate: isOpen ? 90 : 0 }}
@@ -146,7 +97,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ group, index }) => {
                 {group.insights && (
                   <Link href={`/services?service=${encodeURIComponent(group.title)}`}>
                     <InteractiveHoverButton
-                      text={t('services.viewInsights')}
+                      text="View Insights"
                       className="w-auto"
                     />
                   </Link>
@@ -171,7 +122,36 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ group, index }) => {
 };
 
 export default function Services() {
-  const { t } = useTranslation(); // ADD THIS
+  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const res = await fetch('/api/services');
+        const data = await res.json();
+        if (data.services && Array.isArray(data.services)) {
+            setServices(data.services);
+        } else if (Array.isArray(data)) {
+            setServices(data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch services:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-[50vh] flex items-center justify-center bg-theme">
+        <WaveLoader message="Loading Services..." />
+      </div>
+    );
+  }
   
   return (
     <section className="bg-theme w-full py-16 sm:py-20 md:py-24 px-4 sm:px-6 md970 md:px-8 lg:px-12 xl:px-20">
@@ -184,7 +164,7 @@ export default function Services() {
           className="text-center"
         >
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-theme leading-tight">
-            {t('services.title')} {/* UPDATED */}
+            Our Services
             <span className="accent text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold"> .</span>
           </h1>
         </motion.div>
@@ -196,12 +176,12 @@ export default function Services() {
           transition={{ delay: 0.3, duration: 0.8 }}
           className="mt-6 text-muted text-base sm:text-lg leading-relaxed text-center max-w-3xl mx-auto"
         >
-          {t('services.description')} {/* UPDATED */}
+          Comprehensive financial and legal solutions tailored to your business needs.
         </motion.p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mt-16 sm:mt-20">
-          {serviceGroups.map((group, idx) => (
-            <ServiceCard key={group.title} group={group} index={idx} />
+          {services.map((group, idx) => (
+            <ServiceCard key={group._id || idx} group={group} index={idx} />
           ))}
         </div>
       </div>

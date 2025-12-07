@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from './TranslationProvider';
 import { useTheme } from './ThemeProvider';
 import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
+import { WaveLoader } from './ui/WaveLoader';
 
 // ============================================================
 // PROGRESSIVE CAROUSEL COMPONENT (copied from your spec)
@@ -51,6 +52,10 @@ const ProgressSlider: FC<ProgressSliderProps> = ({
   const firstFrameTime = useRef<number>(performance.now());
   const targetValue = useRef<string | null>(null);
   const [sliderValues, setSliderValues] = useState<string[]>([]);
+
+  useEffect(() => {
+    setActive(activeSlider);
+  }, [activeSlider]);
 
   useEffect(() => {
     const getChildren = React.Children.toArray(children).find(
@@ -235,62 +240,54 @@ const SliderBtn: FC<{
 // INDUSTRIES DATA
 // ============================================================
 
-const industriesSlides = [
-  {
-    title: "Banking & Finance",
-    translationKey: 'industries.banking', // ADD THIS
-    description: "End-to-end audit, tax planning, and compliance for banks, NBFCs, and fintech startups.",
-    descriptionKey: 'industries.bankingDesc', // ADD THIS to your JSON
-    image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?q=80&w=2070&auto=format&fit=crop",
-    bgColor: "#000000",
-    textColor: "#ffffff",
-    slug: "banking"
-  },
-  {
-    title: "Education",
-    translationKey: 'industries.education', // ADD THIS
-    description: "Financial advisory for schools, universities, and edtech platforms with grant compliance.",
-    descriptionKey: 'industries.educationDesc', // ADD THIS to your JSON
-    image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop",
-    bgColor: "#000000",
-    textColor: "#ffffff",
-    slug: "education"
-  },
-  {
-    title: "Healthcare",
-    translationKey: 'industries.healthcare', // ADD THIS
-    description: "Hospital accounting, medical billing, and regulatory compliance under NABH & HIPAA.",
-    descriptionKey: 'industries.healthcareDesc', // ADD THIS to your JSON
-    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=2070&auto=format&fit=crop",
-    bgColor: "#000000",
-    textColor: "#ffffff",
-    slug: "healthcare"
-  },
-  {
-    title: "Infrastructure",
-    translationKey: 'industries.infrastructure', // ADD THIS
-    description: "Project finance, PPP models, and cost audits for roads, metro, and smart cities.",
-    descriptionKey: 'industries.infrastructureDesc', // ADD THIS to your JSON
-    image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2070&auto=format&fit=crop",
-    bgColor: "#000000",
-    textColor: "#ffffff",
-    slug: "infrastructure"
-  },
-  {
-    title: "Real Estate",
-    translationKey: 'industries.realty', // ADD THIS
-    description: "RERA compliance, project funding, and valuation for developers and REITs.",
-    descriptionKey: 'industries.realtyDesc', // ADD THIS to your JSON
-    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=2070&auto=format&fit=crop",
-    bgColor: "#000000",
-    textColor: "#ffffff",
-    slug: "realestate"
-  },
-];
+interface Industry {
+  _id: string;
+  title: string;
+  description: string;
+  details: string;
+  image: string;
+  order: number;
+}
 
 export default function Industries() {
   const { t } = useTranslation(); // ADD THIS
   const { theme } = useTheme();
+  const [industries, setIndustries] = useState<Industry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeSlider, setActiveSlider] = useState<string>('');
+
+  useEffect(() => {
+    const fetchIndustries = async () => {
+      try {
+        const res = await fetch('/api/industries');
+        const data = await res.json();
+        if (data.industries && Array.isArray(data.industries)) {
+          setIndustries(data.industries);
+          if (data.industries.length > 0) {
+            setActiveSlider(data.industries[0]._id);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch industries:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchIndustries();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-[50vh] flex items-center justify-center bg-theme">
+        <WaveLoader message="Loading Industries..." />
+      </div>
+    );
+  }
+
+  if (industries.length === 0) {
+    return null; 
+  }
   
   return (
   <section className="bg-theme w-full py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-20">
@@ -319,16 +316,16 @@ export default function Industries() {
           {t('industries.description')} {/* UPDATED */}
         </motion.p>
 
-        <ProgressSlider vertical={false} activeSlider='banking' duration={6000}>
+        <ProgressSlider vertical={false} activeSlider={activeSlider} duration={6000}>
           
           <SliderContent className="relative w-full h-[350px] sm:h-[450px] md:h-[550px] lg:h-[600px] overflow-hidden">
-            {industriesSlides.map((item, index) => (
-              <SliderWrapper key={index} value={item.slug} className="absolute inset-0">
+            {industries.map((item, index) => (
+              <SliderWrapper key={item._id} value={item._id} className="absolute inset-0">
                 <div className="relative w-full h-full rounded-xl sm:rounded-2xl overflow-hidden">
                   <img
                     className='absolute inset-0 w-full h-full object-cover'
                     src={item.image}
-                    alt={t(item.translationKey)}
+                    alt={item.title}
                   />
                   {/* Dark gradient overlay at bottom for text visibility */}
                   <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent pointer-events-none" />
@@ -342,10 +339,10 @@ export default function Industries() {
                     >
                       <div className="flex-1">
                         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 md:mb-4" style={{ color: '#ffffff' }}>
-                          {t(item.translationKey)} {/* UPDATED */}
+                          {item.title}
                         </h2>
                         <p className="text-sm sm:text-base md:text-lg lg:text-xl max-w-2xl leading-relaxed" style={{ color: '#ffffff' }}>
-                          {item.descriptionKey ? t(item.descriptionKey) : item.description} {/* UPDATED */}
+                          {item.description}
                         </p>
                       </div>
                       
@@ -363,20 +360,20 @@ export default function Industries() {
           </SliderContent>
 
           <SliderBtnGroup className='mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 touch-manipulation'>
-            {industriesSlides.map((item, index) => (
+            {industries.map((item, index) => (
               <SliderBtn
-                key={index}
-                value={item.slug}
+                key={item._id}
+                value={item._id}
                 className='group relative overflow-hidden bg-card border border-theme rounded-xl p-4 sm:p-5 text-left cursor-pointer transition-all duration-300 hover:border-accent/50 hover:shadow-xl hover:shadow-(--theme-accent)/20 touch-manipulation select-none'
                 progressBarClass='bg-accent h-full'
               >
                         <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-(--theme-accent) to-[#009edb] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 
                 <h3 className='text-sm sm:text-base font-bold text-theme mb-2 group-hover:accent transition-colors duration-300'>
-                  {t(item.translationKey)} {/* UPDATED */}
+                  {item.title}
                 </h3>
                 <p className='text-xs sm:text-sm text-muted line-clamp-2 leading-relaxed'>
-                  {item.descriptionKey ? t(item.descriptionKey) : item.description} {/* UPDATED */}
+                  {item.description}
                 </p>
 
                   <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
@@ -392,3 +389,5 @@ export default function Industries() {
     </section>
   );
 }
+
+
