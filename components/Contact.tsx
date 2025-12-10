@@ -1,15 +1,51 @@
 'use client';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from './TranslationProvider';
 import { useTheme } from './ThemeProvider';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { MapPin, Phone, Mail, ArrowRight } from 'lucide-react';
 
+type ContactContent = {
+  tagline: string;
+  title: string;
+  description: string;
+  officeLocations: string;
+  officeLocation1: string;
+  officeLocation2: string;
+  contactNo: string;
+  phone1: string;
+  phone2: string;
+  emails: string;
+  email1: string;
+  email2: string;
+  enquiryForm: string;
+  imageAlt: string;
+  image: string;
+};
+
 const Contact = () => {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const isLight = theme === 'light';
+  const [content, setContent] = useState<ContactContent | null>(null);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const res = await fetch('/api/admin/contact-content');
+        const data = await res.json();
+        if (data && !data.error) {
+          setContent(data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch contact content:', err);
+      }
+    };
+    fetchContent();
+  }, []);
+
+  if (!content) return null;
 
   return (
     <section id="contact" className={`relative py-20 overflow-hidden transition-colors duration-300 ${isLight ? 'bg-white' : 'bg-slate-950'}`}>
@@ -24,13 +60,13 @@ const Contact = () => {
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-[#009edb] font-medium text-sm md:text-lg tracking-wider mb-2 uppercase">
-              {t('contact.tagline')}
+              {content.tagline}
             </h2>
             <h1 className={`text-3xl md:text-5xl font-bold mb-6 ${isLight ? 'text-gray-900' : 'text-white'}`}>
-              {t('contact.title')} <span className="text-[#009edb]">.</span>
+              {content.title} <span className="text-[#009edb]">.</span>
             </h1>
             <p className={`text-base md:text-lg mb-8 md:mb-10 leading-relaxed ${isLight ? 'text-gray-600' : 'text-white/70'}`}>
-              {t('contact.description')}
+              {content.description}
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
@@ -41,11 +77,11 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className={`font-semibold text-lg mb-1 ${isLight ? 'text-gray-900' : 'text-white'}`}>
-                    {t('contact.officeLocations')}
+                    {content.officeLocations}
                   </h3>
                   <p className={`${isLight ? 'text-gray-600' : 'text-white/70'}`}>
-                    {t('contact.officeLocation1')} <br />
-                    {t('contact.officeLocation2')}
+                    {content.officeLocation1} <br />
+                    {content.officeLocation2}
                   </p>
                 </div>
               </div>
@@ -57,11 +93,11 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className={`font-semibold text-lg mb-1 ${isLight ? 'text-gray-900' : 'text-white'}`}>
-                    {t('contact.contactNo')}
+                    {content.contactNo}
                   </h3>
                   <div className={`${isLight ? 'text-gray-600' : 'text-white/70'}`}>
-                    <p>{t('contact.phone1')}</p>
-                    <p>{t('contact.phone2')}</p>
+                    <p>{content.phone1}</p>
+                    <p>{content.phone2}</p>
                   </div>
                 </div>
               </div>
@@ -73,11 +109,11 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className={`font-semibold text-lg mb-1 ${isLight ? 'text-gray-900' : 'text-white'}`}>
-                    {t('contact.emails')}
+                    {content.emails}
                   </h3>
                   <div className={`${isLight ? 'text-gray-600' : 'text-white/70'}`}>
-                    <a href={`mailto:${t('contact.email1')}`} className="block hover:text-[#009edb] transition-colors">{t('contact.email1')}</a>
-                    <a href={`mailto:${t('contact.email2')}`} className="block hover:text-[#009edb] transition-colors">{t('contact.email2')}</a>
+                    <a href={`mailto:${content.email1}`} className="block hover:text-[#009edb] transition-colors">{content.email1}</a>
+                    <a href={`mailto:${content.email2}`} className="block hover:text-[#009edb] transition-colors">{content.email2}</a>
                   </div>
                 </div>
               </div>
@@ -88,7 +124,7 @@ const Contact = () => {
                 href="/contact" 
                 className="inline-flex items-center gap-2 px-8 py-4 bg-[#009edb] text-white font-semibold rounded-lg hover:bg-[#0077a3] transition-all hover:gap-3 shadow-lg shadow-[#009edb]/20"
               >
-                {t('contact.enquiryForm')} <ArrowRight size={20} />
+                {content.enquiryForm} <ArrowRight size={20} />
               </Link>
             </div>
           </motion.div>
@@ -103,8 +139,8 @@ const Contact = () => {
           >
             <div className="relative rounded-2xl overflow-hidden shadow-2xl w-full aspect-video lg:aspect-[21/9]">
               <img 
-                src="/aboutUs.jpg" 
-                alt={t('contact.imageAlt')} 
+                src={content.image} 
+                alt={content.imageAlt} 
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent pointer-events-none" />

@@ -17,13 +17,6 @@
       "contactUs": "Get in touch with our experts. We are here to help."
     }
   },
-  "hero": {
-    "tagline": "Build the Future with Clarity",
-    "title": "Transformation",
-    "description": "Asija teams give you the confidence to shape the future and create new value by reimagining and realizing transformations across the entire enterprise.",
-    "learnMore": "Learn More",
-    "contactUs": "Contact Us"
-  },
   "about": {
     "title": "Our Legacy of Trust",
     "quote": "Coming together is a beginning, keeping together is progress, working together is success.",
@@ -93,24 +86,6 @@
     "description2": "Competitive compensation • Flexible work culture • Growth opportunities • Collaborative environment",
     "applyNow": "Apply Now",
     "viewPositions": "View Open Positions"
-  },
-  "contact": {
-    "title": "Connect With Us",
-    "tagline": "Contact us",
-    "description": "We'd love to hear from you! Please get in touch.",
-    "officeLocations": "Office Locations",
-    "officeLocation1": "1st floor, 34/5 Gokhale Marg,",
-    "officeLocation2": "Lucknow, U.P. (India) – 226001",
-    "contactNo": "Contact No.",
-    "phone1": "0522-4004652",
-    "phone2": "0522-2205072",
-    "mobile": "Mobile",
-    "location": "1st floor, 34/5 Gokhale Marg, Lucknow, U.P. (India) – 226001",
-    "emails": "Email",
-    "email1": "admin@asija.in",
-    "email2": "contact@asija.in",
-    "enquiryForm": "Enquiry Form / Consult Us",
-    "imageAlt": "Asija team in creative studio"
   },
   "footer": {
     "description": "Professional audit, tax, and advisory services across multiple industries.",

@@ -8,13 +8,18 @@ import {
   Settings, 
   LogOut, 
   Plus, 
+  Save, 
   Image as ImageIcon,
   Loader2,
   Trash2,
   Pencil,
   X,
   Menu,
-  Briefcase
+  Briefcase,
+  ChevronDown,
+  ChevronRight,
+  Home,
+  Phone
 } from 'lucide-react';
 
 type TeamItem = {
@@ -67,18 +72,74 @@ type HierarchyItem = {
   subItems: HierarchySubItem[];
 };
 
+type AboutContentData = {
+  _id?: string;
+  title: string;
+  quote: string;
+  description1: string;
+  description2: string;
+  description3: string;
+  description4: string;
+};
+
+type HeroContentData = {
+  _id?: string;
+  tagline: string;
+  title: string;
+  description: string;
+  learnMore: string;
+  contactUs: string;
+  videoPoster: string;
+  videoWebm: string;
+  videoMp4: string;
+};
+
+type ContactContentData = {
+  _id?: string;
+  tagline: string;
+  title: string;
+  description: string;
+  officeLocations: string;
+  officeLocation1: string;
+  officeLocation2: string;
+  contactNo: string;
+  phone1: string;
+  phone2: string;
+  emails: string;
+  email1: string;
+  email2: string;
+  enquiryForm: string;
+  imageAlt: string;
+  image: string;
+};
+
+type AboutCardItem = {
+  _id: string;
+  image: string;
+  title: string;
+  description: string;
+  buttonContent: string;
+  link: string;
+  order: number;
+};
+
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('team');
   const [items, setItems] = useState<TeamItem[]>([]);
   const [industries, setIndustries] = useState<IndustryItem[]>([]);
   const [services, setServices] = useState<ServiceItem[]>([]);
+  const [aboutCards, setAboutCards] = useState<AboutCardItem[]>([]);
+  const [heroContent, setHeroContent] = useState<HeroContentData | null>(null);
+  const [contactContent, setContactContent] = useState<ContactContentData | null>(null);
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingIndustryId, setEditingIndustryId] = useState<string | null>(null);
   const [editingServiceId, setEditingServiceId] = useState<string | null>(null);
+  const [editingAboutCardId, setEditingAboutCardId] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [homeMenuOpen, setHomeMenuOpen] = useState(false);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -113,7 +174,216 @@ export default function AdminPage() {
     deepSubItems: '' // JSON string
   });
 
+  const [aboutCardFormData, setAboutCardFormData] = useState({
+    title: '',
+    description: '',
+    buttonContent: '',
+    link: '/about',
+    order: 0
+  });
+
+  const [heroFormData, setHeroFormData] = useState({
+    tagline: '',
+    title: '',
+    description: '',
+    learnMore: '',
+    contactUs: '',
+    videoPoster: '',
+    videoWebm: '',
+    videoMp4: ''
+  });
+
+  const [contactFormData, setContactFormData] = useState({
+    tagline: '',
+    title: '',
+    description: '',
+    officeLocations: '',
+    officeLocation1: '',
+    officeLocation2: '',
+    contactNo: '',
+    phone1: '',
+    phone2: '',
+    emails: '',
+    email1: '',
+    email2: '',
+    enquiryForm: '',
+    imageAlt: '',
+    image: ''
+  });
+
   const [serviceHierarchy, setServiceHierarchy] = useState<HierarchyItem[]>([]);
+
+  const [aboutContent, setAboutContent] = useState<AboutContentData>({
+    title: '',
+    quote: '',
+    description1: '',
+    description2: '',
+    description3: '',
+    description4: ''
+  });
+
+  const fetchAboutContent = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/admin/about-content');
+      const data = await res.json();
+      if (data && !data.error) {
+        setAboutContent(data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAboutContentChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setAboutContent(prev => ({ ...prev, [name]: value }));
+  };
+
+  const fetchHeroContent = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/admin/hero-content');
+      const data = await res.json();
+      if (data && !data.error) {
+        setHeroContent(data);
+        setHeroFormData({
+          tagline: data.tagline || '',
+          title: data.title || '',
+          description: data.description || '',
+          learnMore: data.learnMore || '',
+          contactUs: data.contactUs || '',
+          videoPoster: data.videoPoster || '',
+          videoWebm: data.videoWebm || '',
+          videoMp4: data.videoMp4 || ''
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleHeroContentChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setHeroFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleHeroContentSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setMessage(null);
+
+    try {
+      const res = await fetch('/api/admin/hero-content', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(heroFormData),
+      });
+
+      if (res.ok) {
+        setMessage('Hero content updated successfully!');
+        fetchHeroContent();
+      } else {
+        setMessage('Failed to update hero content.');
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage('An error occurred.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleAboutContentSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      const res = await fetch('/api/admin/about-content', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(aboutContent),
+      });
+      
+      if (res.ok) {
+        setMessage('About content updated successfully');
+        setTimeout(() => setMessage(null), 3000);
+      } else {
+        setMessage('Failed to update content');
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage('Error updating content');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const fetchContactContent = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/admin/contact-content');
+      const data = await res.json();
+      if (data && !data.error) {
+        setContactContent(data);
+        setContactFormData({
+          tagline: data.tagline || '',
+          title: data.title || '',
+          description: data.description || '',
+          officeLocations: data.officeLocations || '',
+          officeLocation1: data.officeLocation1 || '',
+          officeLocation2: data.officeLocation2 || '',
+          contactNo: data.contactNo || '',
+          phone1: data.phone1 || '',
+          phone2: data.phone2 || '',
+          emails: data.emails || '',
+          email1: data.email1 || '',
+          email2: data.email2 || '',
+          enquiryForm: data.enquiryForm || '',
+          imageAlt: data.imageAlt || '',
+          image: data.image || ''
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleContactContentChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setContactFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleContactContentSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setMessage(null);
+
+    try {
+      const res = await fetch('/api/admin/contact-content', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(contactFormData),
+      });
+
+      if (res.ok) {
+        setMessage('Contact content updated successfully!');
+        fetchContactContent();
+      } else {
+        setMessage('Failed to update contact content.');
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage('An error occurred.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const generateId = () => Math.random().toString(36).substr(2, 9);
 
@@ -228,6 +498,7 @@ export default function AdminPage() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [industryImageFile, setIndustryImageFile] = useState<File | null>(null);
   const [serviceImageFile, setServiceImageFile] = useState<File | null>(null);
+  const [aboutCardImageFile, setAboutCardImageFile] = useState<File | null>(null);
 
   const fetchItems = async () => {
     setLoading(true);
@@ -268,10 +539,27 @@ export default function AdminPage() {
     }
   };
 
+  const fetchAboutCards = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/admin/about-cards');
+      const data = await res.json();
+      setAboutCards(data.items || []);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (activeTab === 'team') fetchItems();
     if (activeTab === 'industries') fetchIndustries();
     if (activeTab === 'services') fetchServices();
+    if (activeTab === 'about-content') fetchAboutContent();
+    if (activeTab === 'about-cards') fetchAboutCards();
+    if (activeTab === 'hero-content') fetchHeroContent();
+    if (activeTab === 'contact-content') fetchContactContent();
   }, [activeTab]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -287,6 +575,11 @@ export default function AdminPage() {
   const handleServiceInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setServiceFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleAboutCardInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setAboutCardFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleEdit = (item: TeamItem) => {
@@ -392,6 +685,14 @@ export default function AdminPage() {
     setServiceImageFile(null);
   };
 
+  const handleCancelAboutCardEdit = () => {
+    setEditingAboutCardId(null);
+    setAboutCardFormData({
+      title: '', description: '', buttonContent: '', link: '/about', order: 0
+    });
+    setAboutCardImageFile(null);
+  };
+
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this member?')) return;
     
@@ -431,6 +732,32 @@ export default function AdminPage() {
     } catch (err) {
       console.error(err);
       setMessage('Failed to delete service');
+    }
+  };
+
+  const handleAboutCardEdit = (item: AboutCardItem) => {
+    setEditingAboutCardId(item._id);
+    setAboutCardFormData({
+      title: item.title,
+      description: item.description,
+      buttonContent: item.buttonContent,
+      link: item.link,
+      order: item.order
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleAboutCardDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this card?')) return;
+    
+    try {
+      const res = await fetch(`/api/admin/about-cards/${id}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Failed to delete');
+      setMessage('Card deleted successfully');
+      fetchAboutCards();
+    } catch (err) {
+      console.error(err);
+      setMessage('Failed to delete card');
     }
   };
 
@@ -636,6 +963,59 @@ export default function AdminPage() {
     }
   };
 
+  const handleAboutCardSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setMessage(null);
+    setSubmitting(true);
+
+    try {
+      let image = '';
+
+      if (aboutCardImageFile) {
+        const form = new FormData();
+        form.append('file', aboutCardImageFile);
+
+        const uploadRes = await fetch('/api/upload', {
+          method: 'POST',
+          body: form,
+        });
+
+        if (!uploadRes.ok) {
+          throw new Error('Image upload failed');
+        }
+
+        const uploadData = await uploadRes.json();
+        image = uploadData.secure_url;
+      }
+
+      const url = editingAboutCardId ? `/api/admin/about-cards/${editingAboutCardId}` : '/api/admin/about-cards';
+      const method = editingAboutCardId ? 'PUT' : 'POST';
+      
+      const body: any = { ...aboutCardFormData };
+      if (image) body.image = image;
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || 'Operation failed');
+      }
+
+      setMessage(editingAboutCardId ? 'Card updated successfully' : 'Card created successfully');
+      handleCancelAboutCardEdit(); // Reset form
+      fetchAboutCards();
+    } catch (err: any) {
+      console.error(err);
+      setMessage(err.message || 'Operation failed');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50/50 text-gray-900 font-sans">
       {/* Mobile Header */}
@@ -698,6 +1078,52 @@ export default function AdminPage() {
               <Briefcase className="w-5 h-5 mr-3" />
               Services
             </button>
+
+            <div>
+              <button 
+                onClick={() => setHomeMenuOpen(!homeMenuOpen)}
+                className="flex items-center justify-between w-full px-4 py-3 text-sm font-medium text-gray-600 rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-all duration-200"
+              >
+                <div className="flex items-center">
+                  <Home className="w-5 h-5 mr-3" />
+                  Home Page
+                </div>
+                {homeMenuOpen ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+              </button>
+
+              {homeMenuOpen && (
+                <div className="pl-4 space-y-1 mt-1">
+                  <button 
+                    onClick={() => { setActiveTab('hero-content'); setMobileMenuOpen(false); }}
+                    className={`flex items-center w-full px-4 py-2 text-sm font-medium rounded-xl transition-all duration-200 ${activeTab === 'hero-content' ? 'bg-blue-50 text-blue-700' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
+                  >
+                    <Settings className="w-4 h-4 mr-3" />
+                    Hero Content
+                  </button>
+                  <button 
+                    onClick={() => { setActiveTab('about-content'); setMobileMenuOpen(false); }}
+                    className={`flex items-center w-full px-4 py-2 text-sm font-medium rounded-xl transition-all duration-200 ${activeTab === 'about-content' ? 'bg-blue-50 text-blue-700' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
+                  >
+                    <Settings className="w-4 h-4 mr-3" />
+                    About Content
+                  </button>
+                  <button 
+                    onClick={() => { setActiveTab('about-cards'); setMobileMenuOpen(false); }}
+                    className={`flex items-center w-full px-4 py-2 text-sm font-medium rounded-xl transition-all duration-200 ${activeTab === 'about-cards' ? 'bg-blue-50 text-blue-700' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
+                  >
+                    <ImageIcon className="w-4 h-4 mr-3" />
+                    About Cards
+                  </button>
+                  <button 
+                    onClick={() => { setActiveTab('contact-content'); setMobileMenuOpen(false); }}
+                    className={`flex items-center w-full px-4 py-2 text-sm font-medium rounded-xl transition-all duration-200 ${activeTab === 'contact-content' ? 'bg-blue-50 text-blue-700' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
+                  >
+                    <Phone className="w-4 h-4 mr-3" />
+                    Contact Content
+                  </button>
+                </div>
+              )}
+            </div>
             <button 
               className="flex items-center w-full px-4 py-3 text-sm font-medium text-gray-600 rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-all duration-200"
             >
@@ -1414,6 +1840,670 @@ export default function AdminPage() {
                       </div>
                     )}
                   </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'about-content' && (
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900 tracking-tight">About Content</h2>
+                  <p className="text-gray-500 mt-1 text-sm">Manage the main content of the About page.</p>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                {message && (
+                  <div className={`p-4 rounded-xl text-sm mb-6 flex items-center gap-3 ${message.includes('success') ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-red-50 text-red-700 border border-red-100'}`}>
+                    <div className={`w-2 h-2 rounded-full ${message.includes('success') ? 'bg-green-500' : 'bg-red-500'}`} />
+                    {message}
+                  </div>
+                )}
+
+                <form onSubmit={handleAboutContentSubmit} className="space-y-6">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Title</label>
+                    <input 
+                      name="title"
+                      value={aboutContent.title} 
+                      onChange={handleAboutContentChange} 
+                      className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Quote</label>
+                    <textarea 
+                      name="quote"
+                      value={aboutContent.quote} 
+                      onChange={handleAboutContentChange} 
+                      rows={2}
+                      className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
+                      required
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Description 1</label>
+                      <textarea 
+                        name="description1"
+                        value={aboutContent.description1} 
+                        onChange={handleAboutContentChange} 
+                        rows={4}
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Description 2</label>
+                      <textarea 
+                        name="description2"
+                        value={aboutContent.description2} 
+                        onChange={handleAboutContentChange} 
+                        rows={4}
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Description 3</label>
+                      <textarea 
+                        name="description3"
+                        value={aboutContent.description3} 
+                        onChange={handleAboutContentChange} 
+                        rows={4}
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Description 4</label>
+                      <textarea 
+                        name="description4"
+                        value={aboutContent.description4} 
+                        onChange={handleAboutContentChange} 
+                        rows={4}
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end">
+                    <button 
+                      type="submit" 
+                      disabled={submitting}
+                      className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/20 hover:bg-blue-700 hover:shadow-blue-500/30 focus:ring-4 focus:ring-blue-200 transition-all disabled:opacity-70 disabled:cursor-not-allowed transform active:scale-[0.98] flex items-center gap-2"
+                    >
+                      {submitting ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Save Changes'}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'about-cards' && (
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900 tracking-tight">About Cards</h2>
+                  <p className="text-gray-500 mt-1 text-sm">Manage the cards displayed on the About page.</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8">
+                {/* Form Section */}
+                <div className="xl:col-span-1 order-2 xl:order-1">
+                  <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 lg:p-6 sticky top-24 transition-all duration-300 hover:shadow-md">
+                    <h3 className="font-semibold text-lg mb-5 flex items-center justify-between text-gray-800">
+                      <span className="flex items-center gap-2">
+                        <div className={`p-2 rounded-lg ${editingAboutCardId ? 'bg-amber-100 text-amber-600' : 'bg-blue-100 text-blue-600'}`}>
+                          {editingAboutCardId ? <Pencil className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+                        </div>
+                        {editingAboutCardId ? 'Edit Card' : 'Add New Card'}
+                      </span>
+                      {editingAboutCardId && (
+                        <button onClick={handleCancelAboutCardEdit} className="text-xs font-medium text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-full transition-colors flex items-center gap-1">
+                          <X className="w-3 h-3" /> Cancel
+                        </button>
+                      )}
+                    </h3>
+                    
+                    {message && (
+                      <div className={`p-4 rounded-xl text-sm mb-6 flex items-center gap-3 ${message.includes('success') ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-red-50 text-red-700 border border-red-100'}`}>
+                        <div className={`w-2 h-2 rounded-full ${message.includes('success') ? 'bg-green-500' : 'bg-red-500'}`} />
+                        {message}
+                      </div>
+                    )}
+
+                    <form onSubmit={handleAboutCardSubmit} className="space-y-5">
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Title</label>
+                          <input 
+                            name="title"
+                            value={aboutCardFormData.title} 
+                            onChange={handleAboutCardInputChange} 
+                            placeholder="e.g. Vision & Mission" 
+                            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm"
+                            required
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Card Image</label>
+                          <div className="flex items-center justify-center w-full group">
+                            <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-200 border-dashed rounded-xl cursor-pointer bg-gray-50 group-hover:bg-blue-50/50 group-hover:border-blue-300 transition-all duration-300">
+                              <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                <div className="p-3 bg-white rounded-full shadow-sm mb-2 group-hover:scale-110 transition-transform">
+                                  <ImageIcon className="w-5 h-5 text-gray-400 group-hover:text-blue-500" />
+                                </div>
+                                <p className="text-xs text-gray-500 font-medium">{aboutCardImageFile ? <span className="text-blue-600">{aboutCardImageFile.name}</span> : 'Click to upload image'}</p>
+                              </div>
+                              <input type="file" className="hidden" onChange={(e) => setAboutCardImageFile(e.target.files?.[0] || null)} accept="image/*" />
+                            </label>
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Description</label>
+                          <textarea 
+                            name="description" 
+                            value={aboutCardFormData.description} 
+                            onChange={handleAboutCardInputChange} 
+                            rows={4} 
+                            placeholder="Card description..."
+                            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
+                            required
+                          />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Button Text</label>
+                            <input 
+                              name="buttonContent" 
+                              value={aboutCardFormData.buttonContent} 
+                              onChange={handleAboutCardInputChange} 
+                              placeholder="Learn More"
+                              className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Link</label>
+                            <input 
+                              name="link" 
+                              value={aboutCardFormData.link} 
+                              onChange={handleAboutCardInputChange} 
+                              placeholder="/about"
+                              className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm"
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Order</label>
+                          <input 
+                            type="number"
+                            name="order" 
+                            value={aboutCardFormData.order} 
+                            onChange={handleAboutCardInputChange} 
+                            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm"
+                          />
+                        </div>
+                      </div>
+
+                      <button 
+                        type="submit" 
+                        disabled={submitting}
+                        className={`w-full flex items-center justify-center px-6 py-3 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 focus:ring-4 transition-all disabled:opacity-70 disabled:cursor-not-allowed transform active:scale-[0.98] ${editingAboutCardId ? 'bg-amber-600 hover:bg-amber-700 focus:ring-amber-200' : 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-200'}`}
+                      >
+                        {submitting ? <Loader2 className="w-5 h-5 animate-spin" /> : (editingAboutCardId ? 'Update Card' : 'Add Card')}
+                      </button>
+                    </form>
+                  </div>
+                </div>
+
+                {/* List Section */}
+                <div className="xl:col-span-2 order-1 xl:order-2">
+                  <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div className="p-5 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center backdrop-blur-sm">
+                      <h3 className="font-semibold text-gray-800 flex items-center gap-2">
+                        <ImageIcon className="w-4 h-4 text-blue-500" />
+                        Current Cards <span className="bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded-full">{aboutCards.length}</span>
+                      </h3>
+                    </div>
+                    
+                    {loading ? (
+                      <div className="p-12 flex flex-col items-center justify-center text-gray-400">
+                        <Loader2 className="w-8 h-8 animate-spin mb-3" />
+                        <p>Loading cards...</p>
+                      </div>
+                    ) : aboutCards.length === 0 ? (
+                      <div className="p-12 text-center text-gray-500 bg-gray-50/30">
+                        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                          <ImageIcon className="w-8 h-8 text-gray-400" />
+                        </div>
+                        <p className="font-medium text-gray-900">No cards yet</p>
+                        <p className="text-sm mt-1">Add your first card using the form.</p>
+                      </div>
+                    ) : (
+                      <div className="divide-y divide-gray-100">
+                        {aboutCards.map((item) => (
+                          <div key={item._id} className="p-4 sm:p-5 hover:bg-gray-50/80 transition-colors group">
+                            <div className="flex items-start gap-4 sm:gap-6">
+                              <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-2xl bg-gray-100 shrink-0 overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition-all">
+                                {item.image ? (
+                                  <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                                ) : (
+                                  <div className="w-full h-full flex items-center justify-center text-gray-400 bg-gray-50">
+                                    <ImageIcon className="w-8 h-8 opacity-50" />
+                                  </div>
+                                )}
+                              </div>
+                              
+                              <div className="flex-1 min-w-0 pt-1">
+                                <div className="flex items-start justify-between gap-4">
+                                  <div>
+                                    <h4 className="text-base sm:text-lg font-bold text-gray-900 leading-tight group-hover:text-blue-600 transition-colors">{item.title}</h4>
+                                    <p className="text-sm text-gray-500 mt-1 line-clamp-2">{item.description}</p>
+                                  </div>
+                                  
+                                  <div className="flex items-center gap-1 sm:gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                                    <button 
+                                      onClick={() => handleAboutCardEdit(item)}
+                                      className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+                                      title="Edit"
+                                    >
+                                      <Pencil className="w-4 h-4" />
+                                    </button>
+                                    <button 
+                                      onClick={() => handleAboutCardDelete(item._id)}
+                                      className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                                      title="Delete"
+                                    >
+                                      <Trash2 className="w-4 h-4" />
+                                    </button>
+                                  </div>
+                                </div>
+                                
+                                <div className="mt-3 flex items-center gap-4 text-xs text-gray-500">
+                                  <span className="bg-gray-100 px-2 py-1 rounded border border-gray-200">Order: {item.order}</span>
+                                  <span className="bg-gray-100 px-2 py-1 rounded border border-gray-200">Button: {item.buttonContent}</span>
+                                  <span className="bg-gray-100 px-2 py-1 rounded border border-gray-200">Link: {item.link}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'hero-content' && (
+            <div className="max-w-4xl mx-auto">
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                <div className="p-6 sm:p-8 border-b border-gray-100">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="p-2 bg-blue-50 rounded-lg">
+                      <Settings className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <h2 className="text-xl font-bold text-gray-900">Hero Section Content</h2>
+                  </div>
+                  <p className="text-gray-500 ml-12">Manage the main hero section text and video links.</p>
+                </div>
+
+                <div className="p-6 sm:p-8 bg-gray-50/50">
+                  <form onSubmit={handleHeroContentSubmit} className="space-y-6">
+                    <div className="grid grid-cols-1 gap-6">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Tagline</label>
+                        <input
+                          type="text"
+                          name="tagline"
+                          value={heroFormData.tagline}
+                          onChange={handleHeroContentChange}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                          placeholder="e.g. Build the Future with Clarity"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+                        <input
+                          type="text"
+                          name="title"
+                          value={heroFormData.title}
+                          onChange={handleHeroContentChange}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                          placeholder="e.g. Transformation"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                        <textarea
+                          name="description"
+                          value={heroFormData.description}
+                          onChange={handleHeroContentChange}
+                          rows={4}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white resize-none"
+                          placeholder="Hero description..."
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Learn More Button Text</label>
+                          <input
+                            type="text"
+                            name="learnMore"
+                            value={heroFormData.learnMore}
+                            onChange={handleHeroContentChange}
+                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Contact Us Button Text</label>
+                          <input
+                            type="text"
+                            name="contactUs"
+                            value={heroFormData.contactUs}
+                            onChange={handleHeroContentChange}
+                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="border-t border-gray-200 pt-6 mt-2">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Video Settings</h3>
+                        
+                        <div className="space-y-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Video Poster URL</label>
+                            <input
+                              type="text"
+                              name="videoPoster"
+                              value={heroFormData.videoPoster}
+                              onChange={handleHeroContentChange}
+                              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                            />
+                          </div>
+                          
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">WebM Video URL</label>
+                            <input
+                              type="text"
+                              name="videoWebm"
+                              value={heroFormData.videoWebm}
+                              onChange={handleHeroContentChange}
+                              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">MP4 Video URL</label>
+                            <input
+                              type="text"
+                              name="videoMp4"
+                              value={heroFormData.videoMp4}
+                              onChange={handleHeroContentChange}
+                              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-end pt-4">
+                      <button
+                        type="submit"
+                        disabled={submitting}
+                        className="px-8 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 focus:ring-4 focus:ring-blue-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center shadow-lg shadow-blue-600/20"
+                      >
+                        {submitting ? (
+                          <>
+                            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                            Saving...
+                          </>
+                        ) : (
+                          <>
+                            <Save className="w-5 h-5 mr-2" />
+                            Save Changes
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'contact-content' && (
+            <div className="max-w-4xl mx-auto">
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                <div className="p-6 sm:p-8 border-b border-gray-100">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="p-2 bg-blue-50 rounded-lg">
+                      <Phone className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <h2 className="text-xl font-bold text-gray-900">Contact Section Content</h2>
+                  </div>
+                  <p className="text-gray-500 ml-12">Manage the contact section text and details.</p>
+                </div>
+
+                <div className="p-6 sm:p-8 bg-gray-50/50">
+                  <form onSubmit={handleContactContentSubmit} className="space-y-6">
+                    <div className="grid grid-cols-1 gap-6">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Tagline</label>
+                          <input
+                            type="text"
+                            name="tagline"
+                            value={contactFormData.tagline}
+                            onChange={handleContactContentChange}
+                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+                          <input
+                            type="text"
+                            name="title"
+                            value={contactFormData.title}
+                            onChange={handleContactContentChange}
+                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                        <textarea
+                          name="description"
+                          value={contactFormData.description}
+                          onChange={handleContactContentChange}
+                          rows={3}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white resize-none"
+                        />
+                      </div>
+
+                      <div className="border-t border-gray-200 pt-6">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Office Locations</h3>
+                        <div className="grid grid-cols-1 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Section Label</label>
+                            <input
+                              type="text"
+                              name="officeLocations"
+                              value={contactFormData.officeLocations}
+                              onChange={handleContactContentChange}
+                              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Location Line 1</label>
+                            <input
+                              type="text"
+                              name="officeLocation1"
+                              value={contactFormData.officeLocation1}
+                              onChange={handleContactContentChange}
+                              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Location Line 2</label>
+                            <input
+                              type="text"
+                              name="officeLocation2"
+                              value={contactFormData.officeLocation2}
+                              onChange={handleContactContentChange}
+                              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="border-t border-gray-200 pt-6">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Contact Numbers</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Section Label</label>
+                            <input
+                              type="text"
+                              name="contactNo"
+                              value={contactFormData.contactNo}
+                              onChange={handleContactContentChange}
+                              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Phone 1</label>
+                            <input
+                              type="text"
+                              name="phone1"
+                              value={contactFormData.phone1}
+                              onChange={handleContactContentChange}
+                              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Phone 2</label>
+                            <input
+                              type="text"
+                              name="phone2"
+                              value={contactFormData.phone2}
+                              onChange={handleContactContentChange}
+                              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="border-t border-gray-200 pt-6">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Emails</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Section Label</label>
+                            <input
+                              type="text"
+                              name="emails"
+                              value={contactFormData.emails}
+                              onChange={handleContactContentChange}
+                              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Email 1</label>
+                            <input
+                              type="text"
+                              name="email1"
+                              value={contactFormData.email1}
+                              onChange={handleContactContentChange}
+                              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Email 2</label>
+                            <input
+                              type="text"
+                              name="email2"
+                              value={contactFormData.email2}
+                              onChange={handleContactContentChange}
+                              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="border-t border-gray-200 pt-6">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Other Settings</h3>
+                        <div className="grid grid-cols-1 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Enquiry Button Text</label>
+                            <input
+                              type="text"
+                              name="enquiryForm"
+                              value={contactFormData.enquiryForm}
+                              onChange={handleContactContentChange}
+                              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Image URL</label>
+                            <input
+                              type="text"
+                              name="image"
+                              value={contactFormData.image}
+                              onChange={handleContactContentChange}
+                              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Image Alt Text</label>
+                            <input
+                              type="text"
+                              name="imageAlt"
+                              value={contactFormData.imageAlt}
+                              onChange={handleContactContentChange}
+                              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-end pt-4">
+                      <button
+                        type="submit"
+                        disabled={submitting}
+                        className="px-8 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 focus:ring-4 focus:ring-blue-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center shadow-lg shadow-blue-600/20"
+                      >
+                        {submitting ? (
+                          <>
+                            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                            Saving...
+                          </>
+                        ) : (
+                          <>
+                            <Save className="w-5 h-5 mr-2" />
+                            Save Changes
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>
