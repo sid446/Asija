@@ -425,24 +425,33 @@ export default function Navbar() {
             
             <motion.div className="flex items-center gap-2.5 md:gap-3 cursor-pointer">
             <Link href="/">
-              <div className="bg-[#009edb] rounded-full p-1.5">
-                <motion.img
+              <motion.div 
+                className="bg-white rounded-full p-1.5"
+                animate={{
+                  opacity: scrolled ? 0 : 1,
+                  width: scrolled ? 0 : 'auto',
+                  scale: scrolled ? 0 : 1,
+                  padding: scrolled ? 0 : '0.375rem'
+                }}
+                transition={{ duration: 0.3 }}
+                style={{ overflow: 'hidden' }}
+              >
+                <img
                   src="/logo.png"
                   alt="Asija Logo"
-                  className={`transition-all duration-300 ${scrolled ? 'w-9 md:w-11' : 'w-9 md:w-9'}`}
+                  className="w-14 md:w-14"
                 />
-              </div>
+              </motion.div>
             </Link>
             
-            {/* TEXT: Hidden on scroll with smooth collapse */}
+            {/* TEXT: Always visible */}
             <Link href="/">
             <motion.div
               className="text-left leading-tight overflow-hidden whitespace-nowrap"
               initial={false}
               animate={{ 
-                opacity: scrolled ? 0 : 1,
-                width: scrolled ? 0 : 'auto',
-                marginLeft: scrolled ? 0 : undefined
+                opacity: 1,
+                width: 'auto',
               }}
               transition={{ duration: 0.3, ease: 'easeInOut' }}
             >
