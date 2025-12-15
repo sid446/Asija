@@ -1,12 +1,12 @@
 {
   "navbar": {
     "home": "Home",
-    "aboutUs": "About Us",
+    "aboutUs": "About",
     "services": "Services",
     "industries": "Industries",
-    "asijaGlobal": "Asija Global Services",
+    "asijaGlobal": "Asija Global",
     "career": "Career",
-    "contactUs": "Contact Us",
+    "contactUs": "Contact",
     "overview": {
       "home": "Welcome to Asija – Your trusted partner in audit, tax, and advisory services.",
       "aboutUs": "Learn about our legacy, values, and the team driving excellence.",
