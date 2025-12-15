@@ -483,18 +483,16 @@ export default function Navbar() {
                   />
                 </motion.div>
               ))}
-              {session && (
-                <motion.div
-                  className="relative"
-                  onMouseEnter={() => setHoveredItem(null)}
-                  onMouseLeave={() => setHoveredItem(null)}
-                >
-                  <NavItem 
-                    label="Policies"
-                    href="/policies"
-                  />
-                </motion.div>
-              )}
+              <motion.div
+                className="relative"
+                onMouseEnter={() => setHoveredItem(null)}
+                onMouseLeave={() => setHoveredItem(null)}
+              >
+                <NavItem 
+                  label="Policies"
+                  href="/policies"
+                />
+              </motion.div>
             </nav>
           </div>
 
@@ -794,24 +792,22 @@ export default function Navbar() {
                     </motion.div>
                   )}
 
-                  {session && (
-                    <motion.div
-                      initial={{ opacity: 0, x: 50 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: leftMenu.length * 0.05 }}
+                  <motion.div
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: leftMenu.length * 0.05 }}
+                  >
+                    <Link
+                      href="/policies"
+                      onClick={() => setMobileMenuOpen(false)}
+                      style={{
+                        color: theme === 'light' ? '#1f2937' : '#ffffff',
+                      }}
+                      className="text-left font-medium text-base py-3 px-4 hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#009edb] w-full block"
                     >
-                      <Link
-                        href="/policies"
-                        onClick={() => setMobileMenuOpen(false)}
-                        style={{
-                          color: theme === 'light' ? '#1f2937' : '#ffffff',
-                        }}
-                        className="text-left font-medium text-base py-3 px-4 hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#009edb] w-full block"
-                      >
-                        Policies
-                      </Link>
-                    </motion.div>
-                  )}
+                      Policies
+                    </Link>
+                  </motion.div>
 
                   <div className="h-px bg-linear-to-r from-white/20 to-transparent my-2" />
 

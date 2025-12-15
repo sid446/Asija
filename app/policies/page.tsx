@@ -42,20 +42,6 @@ export default function PoliciesPage() {
     fetchPolicies();
   }, []);
 
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/login");
-    }
-  }, [status, router]);
-
-  if (status === "loading") {
-    return <div className={`min-h-screen flex items-center justify-center ${isLight ? 'bg-white text-gray-900' : 'bg-slate-950 text-white'}`}>Loading...</div>;
-  }
-
-  if (!session) {
-    return null; // Will redirect
-  }
-
   return (
     <div className={`min-h-screen transition-colors duration-300 ${isLight ? 'bg-white text-gray-900' : 'bg-slate-950 text-white'}`}>
       <Navbar />
@@ -105,33 +91,35 @@ export default function PoliciesPage() {
             </section>
 
             {/* Employee Policies Section */}
-            <section>
-              <h2 className={`text-2xl font-semibold mb-6 flex items-center gap-2 ${isLight ? 'text-gray-800' : 'text-gray-100'}`}>
-                <span className="w-2 h-8 bg-[#009edb] rounded-full"></span>
-                Employee & Internal Policies
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {employeePolicies.map((policy, index) => (
-                  <motion.div 
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    className={`p-6 rounded-2xl border transition-all duration-300 ${
-                      isLight 
-                        ? 'bg-white border-gray-100' 
-                        : 'bg-slate-950 border-white/5'
-                    }`}
-                  >
-                    <h3 className="text-lg font-bold mb-2 text-[#009edb]">{policy.title}</h3>
-                    <p className={`text-sm leading-relaxed ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
-                      {policy.content}
-                    </p>
-                  </motion.div>
-                ))}
-              </div>
-            </section>
+            {session && (
+              <section>
+                <h2 className={`text-2xl font-semibold mb-6 flex items-center gap-2 ${isLight ? 'text-gray-800' : 'text-gray-100'}`}>
+                  <span className="w-2 h-8 bg-[#009edb] rounded-full"></span>
+                  Employee & Internal Policies
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {employeePolicies.map((policy, index) => (
+                    <motion.div 
+                      key={index}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1 }}
+                      className={`p-6 rounded-2xl border transition-all duration-300 ${
+                        isLight 
+                          ? 'bg-white border-gray-100' 
+                          : 'bg-slate-950 border-white/5'
+                      }`}
+                    >
+                      <h3 className="text-lg font-bold mb-2 text-[#009edb]">{policy.title}</h3>
+                      <p className={`text-sm leading-relaxed ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
+                        {policy.content}
+                      </p>
+                    </motion.div>
+                  ))}
+                </div>
+              </section>
+            )}
 
           </div>
 
