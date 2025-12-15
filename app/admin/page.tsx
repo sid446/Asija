@@ -19,7 +19,9 @@ import {
   ChevronDown,
   ChevronRight,
   Home,
-  Phone
+  Phone,
+  Globe,
+  RefreshCw
 } from 'lucide-react';
 
 type TeamItem = {
@@ -113,6 +115,39 @@ type ContactContentData = {
   image: string;
 };
 
+type GlobalServiceContentData = {
+  _id?: string;
+  heroTitle: string;
+  heroDescription: string;
+  heroVideoUrl: string;
+  introTitle: string;
+  introDescription1: string;
+  introDescription2: string;
+};
+
+type GlobalRegionItem = {
+  _id: string;
+  name: string;
+  slug: string;
+  image: string;
+  href: string;
+  order: number;
+  heroImage?: string;
+  heroTitle?: string;
+  heroDescription?: string;
+  contentHeading?: string;
+  contentDescription?: string;
+  features?: string[];
+};
+
+type GlobalOfferingItem = {
+  _id: string;
+  title: string;
+  description: string;
+  icon: string;
+  order: number;
+};
+
 type AboutCardItem = {
   _id: string;
   image: string;
@@ -129,13 +164,28 @@ type FAQItem = {
   answer: string;
 };
 
+type GalleryItem = {
+  _id: string;
+  title: string;
+  date: string;
+  description: string;
+  thumbnail?: string;
+  images: string[];
+};
+
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('team');
+  const [globalServicesSubTab, setGlobalServicesSubTab] = useState('content');
   const [items, setItems] = useState<TeamItem[]>([]);
   const [industries, setIndustries] = useState<IndustryItem[]>([]);
   const [services, setServices] = useState<ServiceItem[]>([]);
   const [aboutCards, setAboutCards] = useState<AboutCardItem[]>([]);
   const [faqs, setFaqs] = useState<FAQItem[]>([]);
+  const [gallery, setGallery] = useState<GalleryItem[]>([]);
+  const [globalServiceContent, setGlobalServiceContent] = useState<GlobalServiceContentData | null>(null);
+  const [globalRegions, setGlobalRegions] = useState<GlobalRegionItem[]>([]);
+  const [globalOfferings, setGlobalOfferings] = useState<GlobalOfferingItem[]>([]);
+  const [globalOfferingsError, setGlobalOfferingsError] = useState<string | null>(null);
   const [heroContent, setHeroContent] = useState<HeroContentData | null>(null);
   const [contactContent, setContactContent] = useState<ContactContentData | null>(null);
   const [loading, setLoading] = useState(false);
@@ -146,10 +196,32 @@ export default function AdminPage() {
   const [editingServiceId, setEditingServiceId] = useState<string | null>(null);
   const [editingAboutCardId, setEditingAboutCardId] = useState<string | null>(null);
   const [editingFaqId, setEditingFaqId] = useState<string | null>(null);
+  const [editingGalleryId, setEditingGalleryId] = useState<string | null>(null);
+  const [editingGlobalRegionId, setEditingGlobalRegionId] = useState<string | null>(null);
+  const [editingGlobalOfferingId, setEditingGlobalOfferingId] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [homeMenuOpen, setHomeMenuOpen] = useState(false);
 
   // Form State
+  const [globalRegionFormData, setGlobalRegionFormData] = useState({ 
+    name: '', 
+    slug: '',
+    href: '', 
+    order: 0,
+    heroTitle: '',
+    heroDescription: '',
+    contentHeading: '',
+    contentDescription: '',
+    features: '' // comma separated for form
+  });
+  const [globalRegionHeroImageFile, setGlobalRegionHeroImageFile] = useState<File | null>(null);
+  const [globalOfferingFormData, setGlobalOfferingFormData] = useState({ title: '', description: '', icon: 'ShieldCheck', order: 0 });
+  const [globalServiceContentFormData, setGlobalServiceContentFormData] = useState({
+    heroTitle: '', heroDescription: '', heroVideoUrl: '',
+    introTitle: '', introDescription1: '', introDescription2: ''
+  });
+  const [globalRegionImageFile, setGlobalRegionImageFile] = useState<File | null>(null);
+
   const [formData, setFormData] = useState({
     name: '',
     role: '',
@@ -193,6 +265,14 @@ export default function AdminPage() {
   const [faqFormData, setFaqFormData] = useState({
     question: '',
     answer: ''
+  });
+
+  const [galleryFormData, setGalleryFormData] = useState({
+    title: '',
+    date: '',
+    description: '',
+    thumbnail: '',
+    images: [] as string[]
   });
 
   const [heroFormData, setHeroFormData] = useState({
@@ -350,6 +430,21 @@ export default function AdminPage() {
     }
   };
 
+  const fetchGallery = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/admin/gallery');
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        setGallery(data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleFaqSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
@@ -397,6 +492,96 @@ export default function AdminPage() {
         fetchFaqs();
       } else {
         setMessage('Failed to delete FAQ.');
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage('An error occurred.');
+    }
+  };
+
+  const handleGallerySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setMessage(null);
+
+    try {
+      let thumbnailUrl = galleryFormData.thumbnail;
+      const uploadedImages: string[] = [...galleryFormData.images];
+
+      // Upload Thumbnail
+      if (galleryThumbnailFile) {
+        const form = new FormData();
+        form.append('file', galleryThumbnailFile);
+        const uploadRes = await fetch('/api/upload', { method: 'POST', body: form });
+        if (uploadRes.ok) {
+          const uploadData = await uploadRes.json();
+          thumbnailUrl = uploadData.secure_url;
+        }
+      }
+
+      // Upload Gallery Images
+      if (galleryImageFiles.length > 0) {
+        for (const file of galleryImageFiles) {
+          const form = new FormData();
+          form.append('file', file);
+
+          const uploadRes = await fetch('/api/upload', {
+            method: 'POST',
+            body: form,
+          });
+
+          if (uploadRes.ok) {
+            const uploadData = await uploadRes.json();
+            uploadedImages.push(uploadData.secure_url);
+          }
+        }
+      }
+
+      const url = editingGalleryId 
+        ? `/api/admin/gallery/${editingGalleryId}` 
+        : '/api/admin/gallery';
+      
+      const method = editingGalleryId ? 'PUT' : 'POST';
+
+      const body = { ...galleryFormData, thumbnail: thumbnailUrl, images: uploadedImages };
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      if (res.ok) {
+        setMessage(editingGalleryId ? 'Gallery event updated successfully!' : 'Gallery event added successfully!');
+        setGalleryFormData({ title: '', date: '', description: '', thumbnail: '', images: [] });
+        setGalleryImageFiles([]);
+        setGalleryThumbnailFile(null);
+        setEditingGalleryId(null);
+        fetchGallery();
+      } else {
+        setMessage('Failed to save gallery event.');
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage('An error occurred.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleDeleteGallery = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this event?')) return;
+
+    try {
+      const res = await fetch(`/api/admin/gallery/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (res.ok) {
+        setMessage('Gallery event deleted successfully!');
+        fetchGallery();
+      } else {
+        setMessage('Failed to delete gallery event.');
       }
     } catch (err) {
       console.error(err);
@@ -581,6 +766,8 @@ export default function AdminPage() {
   const [industryImageFile, setIndustryImageFile] = useState<File | null>(null);
   const [serviceImageFile, setServiceImageFile] = useState<File | null>(null);
   const [aboutCardImageFile, setAboutCardImageFile] = useState<File | null>(null);
+  const [galleryImageFiles, setGalleryImageFiles] = useState<File[]>([]);
+  const [galleryThumbnailFile, setGalleryThumbnailFile] = useState<File | null>(null);
 
   const fetchItems = async () => {
     setLoading(true);
@@ -634,6 +821,54 @@ export default function AdminPage() {
     }
   };
 
+  const fetchGlobalServiceContent = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/admin/global-service-content');
+      const data = await res.json();
+      if (data && !data.error) {
+        setGlobalServiceContent(data);
+        setGlobalServiceContentFormData({
+          heroTitle: data.heroTitle || '',
+          heroDescription: data.heroDescription || '',
+          heroVideoUrl: data.heroVideoUrl || '',
+          introTitle: data.introTitle || '',
+          introDescription1: data.introDescription1 || '',
+          introDescription2: data.introDescription2 || ''
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchGlobalRegions = async () => {
+    try {
+      const res = await fetch('/api/admin/global-regions');
+      const data = await res.json();
+      setGlobalRegions(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const fetchGlobalOfferings = async () => {
+    try {
+      setGlobalOfferingsError(null);
+      console.log('Fetching global offerings...');
+      const res = await fetch('/api/admin/global-offerings');
+      if (!res.ok) throw new Error('Failed to fetch');
+      const data = await res.json();
+      console.log('Fetched global offerings:', data);
+      setGlobalOfferings(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error('Error fetching global offerings:', err);
+      setGlobalOfferingsError('Failed to load offerings.');
+    }
+  };
+
   useEffect(() => {
     if (activeTab === 'team') fetchItems();
     if (activeTab === 'industries') fetchIndustries();
@@ -643,6 +878,12 @@ export default function AdminPage() {
     if (activeTab === 'hero-content') fetchHeroContent();
     if (activeTab === 'contact-content') fetchContactContent();
     if (activeTab === 'faq') fetchFaqs();
+    if (activeTab === 'gallery') fetchGallery();
+    if (activeTab === 'global-services') {
+      fetchGlobalServiceContent();
+      fetchGlobalRegions();
+      fetchGlobalOfferings();
+    }
   }, [activeTab]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -1099,6 +1340,193 @@ export default function AdminPage() {
     }
   };
 
+  const handleGlobalServiceContentChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setGlobalServiceContentFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleGlobalServiceContentSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setMessage(null);
+
+    try {
+      const res = await fetch('/api/admin/global-service-content', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(globalServiceContentFormData),
+      });
+
+      if (res.ok) {
+        setMessage('Global Service content updated successfully!');
+        fetchGlobalServiceContent();
+      } else {
+        setMessage('Failed to update content.');
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage('An error occurred.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleGlobalRegionChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setGlobalRegionFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleGlobalRegionSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setMessage(null);
+
+    try {
+      let image = '';
+      if (globalRegionImageFile) {
+        const form = new FormData();
+        form.append('file', globalRegionImageFile);
+        const uploadRes = await fetch('/api/upload', { method: 'POST', body: form });
+        if (!uploadRes.ok) throw new Error('Image upload failed');
+        const uploadData = await uploadRes.json();
+        image = uploadData.secure_url;
+      }
+
+      let heroImage = '';
+      if (globalRegionHeroImageFile) {
+        const form = new FormData();
+        form.append('file', globalRegionHeroImageFile);
+        const uploadRes = await fetch('/api/upload', { method: 'POST', body: form });
+        if (!uploadRes.ok) throw new Error('Hero Image upload failed');
+        const uploadData = await uploadRes.json();
+        heroImage = uploadData.secure_url;
+      }
+
+      const url = editingGlobalRegionId ? `/api/admin/global-regions/${editingGlobalRegionId}` : '/api/admin/global-regions';
+      const method = editingGlobalRegionId ? 'PUT' : 'POST';
+      
+      const featuresArray = globalRegionFormData.features.split(',').map(f => f.trim()).filter(f => f);
+
+      const body: any = { 
+        ...globalRegionFormData,
+        features: featuresArray
+      };
+      if (image) body.image = image;
+      if (heroImage) body.heroImage = heroImage;
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      if (res.ok) {
+        setMessage(editingGlobalRegionId ? 'Region updated successfully!' : 'Region added successfully!');
+        setGlobalRegionFormData({ 
+          name: '', slug: '', href: '', order: 0,
+          heroTitle: '', heroDescription: '',
+          contentHeading: '', contentDescription: '',
+          features: ''
+        });
+        setGlobalRegionImageFile(null);
+        setGlobalRegionHeroImageFile(null);
+        setEditingGlobalRegionId(null);
+        fetchGlobalRegions();
+      } else {
+        setMessage('Failed to save region.');
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage('An error occurred.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleGlobalRegionEdit = (item: GlobalRegionItem) => {
+    setEditingGlobalRegionId(item._id);
+    setGlobalRegionFormData({
+      name: item.name,
+      slug: item.slug || '',
+      href: item.href,
+      order: item.order,
+      heroTitle: item.heroTitle || '',
+      heroDescription: item.heroDescription || '',
+      contentHeading: item.contentHeading || '',
+      contentDescription: item.contentDescription || '',
+      features: item.features ? item.features.join(', ') : ''
+    });
+    setGlobalRegionImageFile(null);
+    setGlobalRegionHeroImageFile(null);
+  };
+
+  const handleGlobalRegionDelete = async (id: string) => {
+    if (!confirm('Are you sure?')) return;
+    try {
+      const res = await fetch(`/api/admin/global-regions/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        setMessage('Region deleted successfully!');
+        fetchGlobalRegions();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleGlobalOfferingChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setGlobalOfferingFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleGlobalOfferingSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setMessage(null);
+
+    try {
+      const url = editingGlobalOfferingId ? `/api/admin/global-offerings/${editingGlobalOfferingId}` : '/api/admin/global-offerings';
+      const method = editingGlobalOfferingId ? 'PUT' : 'POST';
+      
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(globalOfferingFormData),
+      });
+
+      if (res.ok) {
+        setMessage(editingGlobalOfferingId ? 'Offering updated successfully!' : 'Offering added successfully!');
+        setGlobalOfferingFormData({ title: '', description: '', icon: 'ShieldCheck', order: 0 });
+        setEditingGlobalOfferingId(null);
+        fetchGlobalOfferings();
+      } else {
+        setMessage('Failed to save offering.');
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage('An error occurred.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleGlobalOfferingEdit = (item: GlobalOfferingItem) => {
+    setEditingGlobalOfferingId(item._id);
+    setGlobalOfferingFormData({ title: item.title, description: item.description, icon: item.icon, order: item.order });
+  };
+
+  const handleGlobalOfferingDelete = async (id: string) => {
+    if (!confirm('Are you sure?')) return;
+    try {
+      const res = await fetch(`/api/admin/global-offerings/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        setMessage('Offering deleted successfully!');
+        fetchGlobalOfferings();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50/50 text-gray-900 font-sans">
       {/* Mobile Header */}
@@ -1160,6 +1588,20 @@ export default function AdminPage() {
             >
               <Briefcase className="w-5 h-5 mr-3" />
               Services
+            </button>
+            <button 
+              onClick={() => { setActiveTab('global-services'); setMobileMenuOpen(false); }}
+              className={`flex items-center w-full px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${activeTab === 'global-services' ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
+            >
+              <Globe className="w-5 h-5 mr-3" />
+              Global Services
+            </button>
+            <button 
+              onClick={() => { setActiveTab('gallery'); setMobileMenuOpen(false); }}
+              className={`flex items-center w-full px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${activeTab === 'gallery' ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
+            >
+              <ImageIcon className="w-5 h-5 mr-3" />
+              Gallery
             </button>
 
             <div>
@@ -2717,6 +3159,508 @@ export default function AdminPage() {
                   )}
                 </div>
               </div>
+            </div>
+          )}
+
+          {activeTab === 'gallery' && (
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900">Gallery Management</h1>
+                  <p className="text-gray-500 mt-1">Manage events and gallery images.</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Form Section */}
+                <div className="lg:col-span-1">
+                  <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sticky top-8">
+                    <h2 className="text-lg font-semibold text-gray-900 mb-6">
+                      {editingGalleryId ? 'Edit Event' : 'Add New Event'}
+                    </h2>
+                    <form onSubmit={handleGallerySubmit} className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Event Title</label>
+                        <input
+                          type="text"
+                          value={galleryFormData.title}
+                          onChange={(e) => setGalleryFormData({ ...galleryFormData, title: e.target.value })}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Event Date</label>
+                        <input
+                          type="date"
+                          value={galleryFormData.date}
+                          onChange={(e) => setGalleryFormData({ ...galleryFormData, date: e.target.value })}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                        <textarea
+                          value={galleryFormData.description}
+                          onChange={(e) => setGalleryFormData({ ...galleryFormData, description: e.target.value })}
+                          rows={3}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white resize-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Event Thumbnail</label>
+                        <div className="mt-1 flex items-center gap-4">
+                          {galleryFormData.thumbnail && (
+                            <img src={galleryFormData.thumbnail} alt="Thumbnail" className="w-20 h-20 object-cover rounded-lg" />
+                          )}
+                          <input 
+                            type="file" 
+                            accept="image/*"
+                            onChange={(e) => {
+                              if (e.target.files && e.target.files[0]) {
+                                setGalleryThumbnailFile(e.target.files[0]);
+                                // Create a preview URL
+                                const previewUrl = URL.createObjectURL(e.target.files[0]);
+                                setGalleryFormData({ ...galleryFormData, thumbnail: previewUrl });
+                              }
+                            }}
+                            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Upload Gallery Images</label>
+                        <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-xl hover:border-blue-500 transition-colors bg-gray-50">
+                          <div className="space-y-1 text-center">
+                            <ImageIcon className="mx-auto h-12 w-12 text-gray-400" />
+                            <div className="flex text-sm text-gray-600">
+                              <label className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
+                                <span>Upload files</span>
+                                <input 
+                                  type="file" 
+                                  className="sr-only" 
+                                  multiple
+                                  accept="image/*"
+                                  onChange={(e) => {
+                                    if (e.target.files) {
+                                      setGalleryImageFiles(Array.from(e.target.files));
+                                    }
+                                  }} 
+                                />
+                              </label>
+                              <p className="pl-1">or drag and drop</p>
+                            </div>
+                            <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                          </div>
+                        </div>
+                        {galleryImageFiles.length > 0 && (
+                          <p className="mt-2 text-sm text-gray-600">{galleryImageFiles.length} files selected</p>
+                        )}
+                      </div>
+
+                      {/* Existing Images Preview (for edit) */}
+                      {galleryFormData.images.length > 0 && (
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Current Images</label>
+                          <div className="grid grid-cols-3 gap-2">
+                            {galleryFormData.images.map((img, idx) => (
+                              <div key={idx} className="relative group">
+                                <img src={img} alt={`Gallery ${idx}`} className="w-full h-20 object-cover rounded-lg" />
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const newImages = galleryFormData.images.filter((_, i) => i !== idx);
+                                    setGalleryFormData({ ...galleryFormData, images: newImages });
+                                  }}
+                                  className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                                >
+                                  <X className="w-3 h-3" />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="flex gap-3 pt-2">
+                        <button
+                          type="submit"
+                          disabled={submitting}
+                          className="flex-1 px-4 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 focus:ring-4 focus:ring-blue-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-lg shadow-blue-600/20"
+                        >
+                          {submitting ? (
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                          ) : (
+                            <>
+                              <Save className="w-5 h-5 mr-2" />
+                              {editingGalleryId ? 'Update' : 'Add'}
+                            </>
+                          )}
+                        </button>
+                        {editingGalleryId && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEditingGalleryId(null);
+                              setGalleryFormData({ title: '', date: '', description: '', thumbnail: '', images: [] });
+                              setGalleryImageFiles([]);
+                            }}
+                            className="px-4 py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition-all"
+                          >
+                            Cancel
+                          </button>
+                        )}
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                {/* List Section */}
+                <div className="lg:col-span-2 space-y-4">
+                  {loading ? (
+                    <div className="flex justify-center py-12">
+                      <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+                    </div>
+                  ) : gallery.length === 0 ? (
+                    <div className="text-center py-12 bg-white rounded-2xl border border-dashed border-gray-300">
+                      <p className="text-gray-500">No events found. Add one to get started.</p>
+                    </div>
+                  ) : (
+                    gallery.map((item) => (
+                      <div
+                        key={item._id}
+                        className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all group"
+                      >
+                        <div className="flex justify-between items-start gap-4">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-2">
+                              {item.thumbnail && (
+                                <img src={item.thumbnail} alt="Thumbnail" className="w-10 h-10 object-cover rounded-lg" />
+                              )}
+                              <h3 className="font-semibold text-gray-900">{item.title}</h3>
+                              <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-md">
+                                {new Date(item.date).toLocaleDateString()}
+                              </span>
+                            </div>
+                            <p className="text-gray-600 text-sm mb-4">{item.description}</p>
+                            
+                            {/* Image Preview Grid */}
+                            <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+                              {item.images.slice(0, 6).map((img, idx) => (
+                                <img 
+                                  key={idx} 
+                                  src={img} 
+                                  alt={item.title} 
+                                  className="w-full h-16 object-cover rounded-lg bg-gray-100"
+                                />
+                              ))}
+                              {item.images.length > 6 && (
+                                <div className="w-full h-16 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500 text-xs font-medium">
+                                  +{item.images.length - 6}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button
+                              onClick={() => {
+                                setEditingGalleryId(item._id);
+                                setGalleryFormData({
+                                  title: item.title,
+                                  date: item.date.split('T')[0],
+                                  description: item.description,
+                                  thumbnail: item.thumbnail || '',
+                                  images: item.images
+                                });
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                              }}
+                              className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                            >
+                              <Pencil className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteGallery(item._id)}
+                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'global-services' && (
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900">Global Services Management</h1>
+                  <p className="text-gray-500 mt-1">Manage page content, regions, and offerings.</p>
+                </div>
+              </div>
+
+              {/* Sub-tabs */}
+              <div className="flex space-x-1 bg-gray-100 p-1 rounded-xl w-fit">
+                {['content', 'regions', 'offerings'].map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setGlobalServicesSubTab(tab)}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                      globalServicesSubTab === tab
+                        ? 'bg-white text-blue-600 shadow-sm'
+                        : 'text-gray-500 hover:text-gray-700'
+                    }`}
+                  >
+                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  </button>
+                ))}
+              </div>
+
+              {/* Page Content Section */}
+              {globalServicesSubTab === 'content' && (
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                  <h2 className="text-lg font-semibold mb-4">Page Content</h2>
+                  <form onSubmit={handleGlobalServiceContentSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Hero Title</label>
+                      <input name="heroTitle" value={globalServiceContentFormData.heroTitle} onChange={handleGlobalServiceContentChange} className="w-full px-4 py-2 border rounded-lg" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Hero Video URL</label>
+                      <input name="heroVideoUrl" value={globalServiceContentFormData.heroVideoUrl} onChange={handleGlobalServiceContentChange} className="w-full px-4 py-2 border rounded-lg" />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Hero Description</label>
+                      <textarea name="heroDescription" value={globalServiceContentFormData.heroDescription} onChange={handleGlobalServiceContentChange} rows={2} className="w-full px-4 py-2 border rounded-lg" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Intro Title</label>
+                      <input name="introTitle" value={globalServiceContentFormData.introTitle} onChange={handleGlobalServiceContentChange} className="w-full px-4 py-2 border rounded-lg" />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Intro Description 1</label>
+                      <textarea name="introDescription1" value={globalServiceContentFormData.introDescription1} onChange={handleGlobalServiceContentChange} rows={2} className="w-full px-4 py-2 border rounded-lg" />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Intro Description 2</label>
+                      <textarea name="introDescription2" value={globalServiceContentFormData.introDescription2} onChange={handleGlobalServiceContentChange} rows={2} className="w-full px-4 py-2 border rounded-lg" />
+                    </div>
+                  </div>
+                  <button type="submit" disabled={submitting} className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50">
+                    {submitting ? 'Saving...' : 'Save Content'}
+                  </button>
+                </form>
+              </div>
+              )}
+
+              {/* Regions Section */}
+              {globalServicesSubTab === 'regions' && (
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-1">
+                  <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sticky top-6">
+                    <h2 className="text-lg font-semibold mb-4">{editingGlobalRegionId ? 'Edit Region' : 'Add Region'}</h2>
+                    <form onSubmit={handleGlobalRegionSubmit} className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                        <input name="name" value={globalRegionFormData.name} onChange={handleGlobalRegionChange} className="w-full px-4 py-2 border rounded-lg" required />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Slug (e.g., australia)</label>
+                        <input name="slug" value={globalRegionFormData.slug} onChange={handleGlobalRegionChange} className="w-full px-4 py-2 border rounded-lg" required />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Link (href)</label>
+                        <input name="href" value={globalRegionFormData.href} onChange={handleGlobalRegionChange} className="w-full px-4 py-2 border rounded-lg" required />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Order</label>
+                        <input type="number" name="order" value={globalRegionFormData.order} onChange={handleGlobalRegionChange} className="w-full px-4 py-2 border rounded-lg" />
+                      </div>
+                      
+                      <div className="border-t pt-4 mt-4">
+                        <h3 className="text-sm font-semibold text-gray-900 mb-2">Page Content</h3>
+                        <div className="space-y-3">
+                          <div>
+                            <label className="block text-xs font-medium text-gray-700 mb-1">Hero Title</label>
+                            <input name="heroTitle" value={globalRegionFormData.heroTitle} onChange={handleGlobalRegionChange} className="w-full px-3 py-2 border rounded-lg text-sm" />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-medium text-gray-700 mb-1">Hero Description</label>
+                            <textarea name="heroDescription" value={globalRegionFormData.heroDescription} onChange={handleGlobalRegionChange} rows={2} className="w-full px-3 py-2 border rounded-lg text-sm" />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-medium text-gray-700 mb-1">Content Heading</label>
+                            <input name="contentHeading" value={globalRegionFormData.contentHeading} onChange={handleGlobalRegionChange} className="w-full px-3 py-2 border rounded-lg text-sm" />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-medium text-gray-700 mb-1">Content Description</label>
+                            <textarea name="contentDescription" value={globalRegionFormData.contentDescription} onChange={handleGlobalRegionChange} rows={3} className="w-full px-3 py-2 border rounded-lg text-sm" />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-medium text-gray-700 mb-1">Features (comma separated)</label>
+                            <textarea name="features" value={globalRegionFormData.features} onChange={handleGlobalRegionChange} rows={2} className="w-full px-3 py-2 border rounded-lg text-sm" placeholder="Feature 1, Feature 2, Feature 3" />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="border-t pt-4 mt-4">
+                        <h3 className="text-sm font-semibold text-gray-900 mb-2">Images</h3>
+                        <div className="space-y-3">
+                          <div>
+                            <label className="block text-xs font-medium text-gray-700 mb-1">Card Image</label>
+                            <input type="file" onChange={(e) => setGlobalRegionImageFile(e.target.files?.[0] || null)} className="w-full text-sm" accept="image/*" />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-medium text-gray-700 mb-1">Hero Image</label>
+                            <input type="file" onChange={(e) => setGlobalRegionHeroImageFile(e.target.files?.[0] || null)} className="w-full text-sm" accept="image/*" />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex gap-2 pt-4">
+                        <button type="submit" disabled={submitting} className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50">
+                          {editingGlobalRegionId ? 'Update' : 'Add'}
+                        </button>
+                        {editingGlobalRegionId && (
+                          <button type="button" onClick={() => { 
+                            setEditingGlobalRegionId(null); 
+                            setGlobalRegionFormData({ 
+                              name: '', slug: '', href: '', order: 0,
+                              heroTitle: '', heroDescription: '',
+                              contentHeading: '', contentDescription: '',
+                              features: ''
+                            }); 
+                          }} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                            Cancel
+                          </button>
+                        )}
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div className="lg:col-span-2">
+                  <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div className="p-4 border-b bg-gray-50 font-medium flex justify-between items-center">
+                      <div className="flex items-center gap-2">
+                        <span>Regions List</span>
+                        <button onClick={fetchGlobalRegions} className="p-1 hover:bg-gray-200 rounded transition-colors" title="Refresh List">
+                          <RefreshCw className="w-3 h-3 text-gray-500" />
+                        </button>
+                      </div>
+                      <span className="text-xs text-gray-500">Count: {globalRegions.length}</span>
+                    </div>
+                    <div className="divide-y">
+                      {globalRegions.length === 0 && (
+                        <div className="p-8 text-center text-gray-500">
+                          No regions found.
+                        </div>
+                      )}
+                      {globalRegions.map(item => (
+                        <div key={item._id} className="p-4 flex items-center justify-between hover:bg-gray-50">
+                          <div className="flex items-center gap-4">
+                            <img src={item.image} alt={item.name} className="w-12 h-12 rounded-lg object-cover" />
+                            <div>
+                              <h3 className="font-medium">{item.name}</h3>
+                              <div className="flex flex-col text-sm text-gray-500">
+                                <span>Slug: {item.slug}</span>
+                                <span>Link: {item.href}</span>
+                                <span>Order: {item.order}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex gap-2">
+                            <button onClick={() => handleGlobalRegionEdit(item)} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"><Pencil className="w-4 h-4" /></button>
+                            <button onClick={() => handleGlobalRegionDelete(item._id)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg"><Trash2 className="w-4 h-4" /></button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              )}
+
+              {/* Offerings Section */}
+              {globalServicesSubTab === 'offerings' && (
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-1">
+                  <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sticky top-6">
+                    <h2 className="text-lg font-semibold mb-4">{editingGlobalOfferingId ? 'Edit Offering' : 'Add Offering'}</h2>
+                    <form onSubmit={handleGlobalOfferingSubmit} className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                        <input name="title" value={globalOfferingFormData.title} onChange={handleGlobalOfferingChange} className="w-full px-4 py-2 border rounded-lg" required />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        <textarea name="description" value={globalOfferingFormData.description} onChange={handleGlobalOfferingChange} rows={3} className="w-full px-4 py-2 border rounded-lg" required />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Icon Name (Lucide)</label>
+                        <input name="icon" value={globalOfferingFormData.icon} onChange={handleGlobalOfferingChange} className="w-full px-4 py-2 border rounded-lg" />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Order</label>
+                        <input type="number" name="order" value={globalOfferingFormData.order} onChange={handleGlobalOfferingChange} className="w-full px-4 py-2 border rounded-lg" />
+                      </div>
+                      <div className="flex gap-2">
+                        <button type="submit" disabled={submitting} className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50">
+                          {editingGlobalOfferingId ? 'Update' : 'Add'}
+                        </button>
+                        {editingGlobalOfferingId && (
+                          <button type="button" onClick={() => { setEditingGlobalOfferingId(null); setGlobalOfferingFormData({ title: '', description: '', icon: 'ShieldCheck', order: 0 }); }} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                            Cancel
+                          </button>
+                        )}
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div className="lg:col-span-2">
+                  <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div className="p-4 border-b bg-gray-50 font-medium flex justify-between items-center">
+                      <div className="flex items-center gap-2">
+                        <span>Offerings List</span>
+                        <button onClick={fetchGlobalOfferings} className="p-1 hover:bg-gray-200 rounded transition-colors" title="Refresh List">
+                          <RefreshCw className="w-3 h-3 text-gray-500" />
+                        </button>
+                      </div>
+                      <span className="text-xs text-gray-500">Count: {globalOfferings.length}</span>
+                    </div>
+                    <div className="divide-y">
+                      {globalOfferingsError && (
+                        <div className="p-4 text-center text-red-500 bg-red-50">
+                          {globalOfferingsError}
+                        </div>
+                      )}
+                      {!globalOfferingsError && globalOfferings.length === 0 && (
+                        <div className="p-8 text-center text-gray-500">
+                          No offerings found.
+                        </div>
+                      )}
+                      {globalOfferings.map(item => (
+                        <div key={item._id} className="p-4 flex items-center justify-between hover:bg-gray-50">
+                          <div>
+                            <h3 className="font-medium">{item.title}</h3>
+                            <p className="text-sm text-gray-500">{item.description}</p>
+                          </div>
+                          <div className="flex gap-2">
+                            <button onClick={() => handleGlobalOfferingEdit(item)} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"><Pencil className="w-4 h-4" /></button>
+                            <button onClick={() => handleGlobalOfferingDelete(item._id)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg"><Trash2 className="w-4 h-4" /></button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              )}
             </div>
           )}
 

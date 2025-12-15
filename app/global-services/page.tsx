@@ -1,46 +1,75 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
 import CTA from '@/components/ui/CTA';
 import Link from 'next/link';
-import { Globe, TrendingUp, ShieldCheck, Laptop, BarChart3, Users } from 'lucide-react';
+import { Globe, TrendingUp, ShieldCheck, Laptop, BarChart3, Users, Briefcase, FileText, HelpCircle, Phone, Home, CreditCard, Calendar } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 
-const regions = [
-  { name: 'UAE', href: '/global-services/uae', image: 'https://images.unsplash.com/flagged/photo-1554992369-085dc418ee00?q=80&w=688&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { name: 'UK', href: '/global-services/uk', image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=1470&auto=format&fit=crop' },
-  { name: 'Australia', href: '/global-services/australia', image: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=2130&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { name: 'Canada', href: '/global-services/canada', image: 'https://images.unsplash.com/photo-1517935706615-2717063c2225?q=80&w=1470&auto=format&fit=crop' },
-  { name: 'USA', href: '/global-services/usa', image: 'https://images.unsplash.com/photo-1485738422979-f5c462d49f74?q=80&w=1499&auto=format&fit=crop' },
-];
+type GlobalServiceContentData = {
+  heroTitle: string;
+  heroDescription: string;
+  heroVideoUrl: string;
+  introTitle: string;
+  introDescription1: string;
+  introDescription2: string;
+};
 
-const services = [
-  {
-    title: 'Accounting & Bookkeeping',
-    description: 'Precision-driven financial record keeping ensuring compliance and clarity for your global operations.',
-    icon: <ShieldCheck className="w-8 h-8 text-[#009edb]" />,
-  },
-  {
-    title: 'Virtual CFO & CEO Services',
-    description: 'Strategic leadership and financial guidance to help you navigate complex markets and drive growth.',
-    icon: <Users className="w-8 h-8 text-[#009edb]" />,
-  },
-  {
-    title: 'MIS & Tech Solutions',
-    description: 'Data-driven insights and technology integration to optimize your management information systems.',
-    icon: <Laptop className="w-8 h-8 text-[#009edb]" />,
-  },
-  {
-    title: 'KPO Services',
-    description: 'Knowledge Process Outsourcing solutions that enhance operational efficiency and reduce costs.',
-    icon: <BarChart3 className="w-8 h-8 text-[#009edb]" />,
-  },
-];
+type GlobalRegionItem = {
+  _id: string;
+  name: string;
+  image: string;
+  href: string;
+  order: number;
+};
+
+type GlobalOfferingItem = {
+  _id: string;
+  title: string;
+  description: string;
+  icon: string;
+  order: number;
+};
 
 export default function GlobalServices() {
+  const [content, setContent] = useState<GlobalServiceContentData | null>(null);
+  const [regions, setRegions] = useState<GlobalRegionItem[]>([]);
+  const [offerings, setOfferings] = useState<GlobalOfferingItem[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [contentRes, regionsRes, offeringsRes] = await Promise.all([
+          fetch('/api/admin/global-service-content'),
+          fetch('/api/admin/global-regions'),
+          fetch('/api/admin/global-offerings')
+        ]);
+
+        const contentData = await contentRes.json();
+        const regionsData = await regionsRes.json();
+        const offeringsData = await offeringsRes.json();
+
+        if (contentData && !contentData.error) setContent(contentData);
+        if (Array.isArray(regionsData)) setRegions(regionsData);
+        if (Array.isArray(offeringsData)) setOfferings(offeringsData);
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const getIcon = (iconName: string) => {
+    const Icon = (LucideIcons as any)[iconName] || ShieldCheck;
+    return <Icon className="w-8 h-8 text-[#009edb]" />;
+  };
+
+  if (!content) return <div className="min-h-screen bg-slate-950 flex items-center justify-center text-white">Loading...</div>;
+
   return (
     <div className="w-full min-h-screen bg-slate-950 text-white">
       <Navbar />
@@ -56,7 +85,7 @@ export default function GlobalServices() {
           playsInline
           preload="auto"
         >
-          <source src="https://res.cloudinary.com/db2qa9dzs/video/upload/v1764353942/1851190-uhd_3840_2160_25fps_a9d0fu.mp4" type="video/mp4" />
+          <source src={content.heroVideoUrl} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
         
@@ -67,7 +96,7 @@ export default function GlobalServices() {
             transition={{ duration: 0.8 }}
             className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6" style={{color:"white"}}
           >
-            Asija Global Services<span className="text-[#009edb]">.</span>
+            {content.heroTitle}<span className="text-[#009edb]">.</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 30 }}
@@ -75,7 +104,7 @@ export default function GlobalServices() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-lg md:text-2xl  max-w-3xl mx-auto leading-relaxed" style={{color:"white"}}
           >
-            Empowering organizations worldwide with premier KPO, Financial, and Technology solutions.
+            {content.heroDescription}
           </motion.p>
         </div>
       </section>
@@ -85,27 +114,27 @@ export default function GlobalServices() {
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="text-3xl md:text-5xl font-bold mb-6">
-              Global Expertise, <br />
-              <span className="text-[#009edb]">Local Precision.</span>
+              {content.introTitle.split(',')[0]}, <br />
+              <span className="text-[#009edb]">{content.introTitle.split(',')[1] || ''}</span>
             </h2>
             <p className="text-gray-400 text-lg leading-relaxed mb-8">
-              Asija Global Services is a dedicated KPO vertical providing world-class Accounting, Bookkeeping, CFO, and CEO services. We integrate advanced MIS and Tech solutions to streamline operations for organizations across the globe.
+              {content.introDescription1}
             </p>
             <p className="text-gray-400 text-lg leading-relaxed">
-              Whether you are expanding into new markets or optimizing existing operations, our team delivers the strategic insight and operational excellence you need to succeed.
+              {content.introDescription2}
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {services.map((service, index) => (
+            {offerings.map((service, index) => (
               <motion.div 
-                key={index}
+                key={service._id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
                 className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[#009edb]/50 transition-colors"
               >
-                <div className="mb-4">{service.icon}</div>
+                <div className="mb-4">{getIcon(service.icon)}</div>
                 <h3 className="text-xl font-semibold mb-2" >{service.title}</h3>
                 <p className="text-sm" >{service.description}</p>
               </motion.div>
@@ -126,7 +155,7 @@ export default function GlobalServices() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {regions.map((region, index) => (
-              <Link href={region.href} key={index}>
+              <Link href={region.href} key={region._id}>
                 <motion.div 
                   whileHover={{ y: -10 }}
                   className="group relative h-80 rounded-2xl overflow-hidden cursor-pointer bg-slate-900"
