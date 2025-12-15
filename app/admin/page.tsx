@@ -123,12 +123,19 @@ type AboutCardItem = {
   order: number;
 };
 
+type FAQItem = {
+  _id: string;
+  question: string;
+  answer: string;
+};
+
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('team');
   const [items, setItems] = useState<TeamItem[]>([]);
   const [industries, setIndustries] = useState<IndustryItem[]>([]);
   const [services, setServices] = useState<ServiceItem[]>([]);
   const [aboutCards, setAboutCards] = useState<AboutCardItem[]>([]);
+  const [faqs, setFaqs] = useState<FAQItem[]>([]);
   const [heroContent, setHeroContent] = useState<HeroContentData | null>(null);
   const [contactContent, setContactContent] = useState<ContactContentData | null>(null);
   const [loading, setLoading] = useState(false);
@@ -138,6 +145,7 @@ export default function AdminPage() {
   const [editingIndustryId, setEditingIndustryId] = useState<string | null>(null);
   const [editingServiceId, setEditingServiceId] = useState<string | null>(null);
   const [editingAboutCardId, setEditingAboutCardId] = useState<string | null>(null);
+  const [editingFaqId, setEditingFaqId] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [homeMenuOpen, setHomeMenuOpen] = useState(false);
 
@@ -180,6 +188,11 @@ export default function AdminPage() {
     buttonContent: '',
     link: '/about',
     order: 0
+  });
+
+  const [faqFormData, setFaqFormData] = useState({
+    question: '',
+    answer: ''
   });
 
   const [heroFormData, setHeroFormData] = useState({
@@ -319,6 +332,75 @@ export default function AdminPage() {
       setMessage('Error updating content');
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const fetchFaqs = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/admin/faq');
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        setFaqs(data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleFaqSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setMessage(null);
+
+    try {
+      const url = editingFaqId 
+        ? `/api/admin/faq/${editingFaqId}` 
+        : '/api/admin/faq';
+      
+      const method = editingFaqId ? 'PUT' : 'POST';
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(faqFormData),
+      });
+
+      if (res.ok) {
+        setMessage(editingFaqId ? 'FAQ updated successfully!' : 'FAQ added successfully!');
+        setFaqFormData({ question: '', answer: '' });
+        setEditingFaqId(null);
+        fetchFaqs();
+      } else {
+        setMessage('Failed to save FAQ.');
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage('An error occurred.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleDeleteFaq = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this FAQ?')) return;
+
+    try {
+      const res = await fetch(`/api/admin/faq/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (res.ok) {
+        setMessage('FAQ deleted successfully!');
+        fetchFaqs();
+      } else {
+        setMessage('Failed to delete FAQ.');
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage('An error occurred.');
     }
   };
 
@@ -560,6 +642,7 @@ export default function AdminPage() {
     if (activeTab === 'about-cards') fetchAboutCards();
     if (activeTab === 'hero-content') fetchHeroContent();
     if (activeTab === 'contact-content') fetchContactContent();
+    if (activeTab === 'faq') fetchFaqs();
   }, [activeTab]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -1120,6 +1203,13 @@ export default function AdminPage() {
                   >
                     <Phone className="w-4 h-4 mr-3" />
                     Contact Content
+                  </button>
+                  <button 
+                    onClick={() => { setActiveTab('faq'); setMobileMenuOpen(false); }}
+                    className={`flex items-center w-full px-4 py-2 text-sm font-medium rounded-xl transition-all duration-200 ${activeTab === 'faq' ? 'bg-blue-50 text-blue-700' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
+                  >
+                    <Settings className="w-4 h-4 mr-3" />
+                    FAQ
                   </button>
                 </div>
               )}
@@ -2504,6 +2594,127 @@ export default function AdminPage() {
                       </button>
                     </div>
                   </form>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'faq' && (
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900">FAQ Management</h1>
+                  <p className="text-gray-500 mt-1">Manage frequently asked questions.</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Form Section */}
+                <div className="lg:col-span-1">
+                  <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sticky top-8">
+                    <h2 className="text-lg font-semibold text-gray-900 mb-6">
+                      {editingFaqId ? 'Edit FAQ' : 'Add New FAQ'}
+                    </h2>
+                    <form onSubmit={handleFaqSubmit} className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Question</label>
+                        <input
+                          type="text"
+                          value={faqFormData.question}
+                          onChange={(e) => setFaqFormData({ ...faqFormData, question: e.target.value })}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Answer</label>
+                        <textarea
+                          value={faqFormData.answer}
+                          onChange={(e) => setFaqFormData({ ...faqFormData, answer: e.target.value })}
+                          rows={4}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white resize-none"
+                          required
+                        />
+                      </div>
+
+                      <div className="flex gap-3 pt-2">
+                        <button
+                          type="submit"
+                          disabled={submitting}
+                          className="flex-1 px-4 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 focus:ring-4 focus:ring-blue-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-lg shadow-blue-600/20"
+                        >
+                          {submitting ? (
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                          ) : (
+                            <>
+                              <Save className="w-5 h-5 mr-2" />
+                              {editingFaqId ? 'Update' : 'Add'}
+                            </>
+                          )}
+                        </button>
+                        {editingFaqId && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEditingFaqId(null);
+                              setFaqFormData({ question: '', answer: '' });
+                            }}
+                            className="px-4 py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition-all"
+                          >
+                            Cancel
+                          </button>
+                        )}
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                {/* List Section */}
+                <div className="lg:col-span-2 space-y-4">
+                  {loading ? (
+                    <div className="flex justify-center py-12">
+                      <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+                    </div>
+                  ) : faqs.length === 0 ? (
+                    <div className="text-center py-12 bg-white rounded-2xl border border-dashed border-gray-300">
+                      <p className="text-gray-500">No FAQs found. Add one to get started.</p>
+                    </div>
+                  ) : (
+                    faqs.map((faq) => (
+                      <div
+                        key={faq._id}
+                        className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all group"
+                      >
+                        <div className="flex justify-between items-start gap-4">
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-gray-900 mb-2">{faq.question}</h3>
+                            <p className="text-gray-600 text-sm">{faq.answer}</p>
+                          </div>
+                          <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button
+                              onClick={() => {
+                                setEditingFaqId(faq._id);
+                                setFaqFormData({
+                                  question: faq.question,
+                                  answer: faq.answer
+                                });
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                              }}
+                              className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                            >
+                              <Pencil className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteFaq(faq._id)}
+                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             </div>

@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Clock, CreditCard, Truck, ChevronDown } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Clock, CreditCard, Truck, ChevronDown, HelpCircle } from 'lucide-react';
 import { InteractiveHoverButton } from './ui/InteractiveHoverButton';
 
 type FAQItem = {
-  id: string;
-  icon: React.ComponentType<{ className?: string }>;
+  _id: string;
   question: string;
   answer: string;
 };
@@ -35,37 +34,35 @@ const AccordionContent = ({ children, isOpen }: { children: React.ReactNode; isO
 export default function FAQAccordion() {
   const [openItem, setOpenItem] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [faqs, setFaqs] = useState<FAQItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
   React.useEffect(() => {
     setIsVisible(true);
+    fetchFaqs();
   }, []);
 
-  const faqItems: FAQItem[] = [
-    {
-      id: 'item-1',
-      icon: Clock,
-      question: 'What are your business hours?',
-      answer:
-        'Our customer service team is available Monday–Friday from 9:00 AM to 8:00 PM IST. Weekends: 10:00 AM to 6:00 PM IST. Holiday hours will be updated on our site.',
-    },
-    {
-      id: 'item-2',
-      icon: CreditCard,
-      question: 'How do subscription payments work?',
-      answer:
-        'Payments are auto-charged monthly or annually to your saved card. Manage billing, update payment method, or view history in your account dashboard.',
-    },
-    {
-      id: 'item-3',
-      icon: Truck,
-      question: 'Can I expedite my shipping?',
-      answer:
-        'Yes. Choose Express (1–2 days) or Same-Day (select cities) at checkout. Available for orders placed before 2:00 PM IST. International options vary.',
-    },
-  ];
+  const fetchFaqs = async () => {
+    try {
+      const res = await fetch('/api/admin/faq');
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        setFaqs(data);
+      }
+    } catch (error) {
+      console.error('Failed to fetch FAQs:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const toggleItem = (id: string) => {
     setOpenItem(openItem === id ? null : id);
+  };
+
+  const getIcon = (index: number) => {
+    const icons = [Clock, CreditCard, Truck];
+    return icons[index % icons.length];
   };
 
   return (
@@ -95,53 +92,57 @@ export default function FAQAccordion() {
 
           {/* Accordion Section */}
           <div className="w-full">
-            <Accordion type="single" collapsible className="w-full space-y-3 sm:space-y-4">
-              {faqItems.map((item, index) => {
-                const Icon = item.icon;
-                const isOpen = openItem === item.id;
-                
-                return (
-                  <div
-                    key={item.id}
-                    className={`transition-all duration-500 delay-${index * 100} ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-                  >
-                    <AccordionItem
-                      value={item.id}
-                      className="rounded-lg sm:rounded-xl shadow-lg border border-white/10 overflow-hidden hover:border-white/20 transition-all"
-                      style={{ backgroundColor: '#000000' }}
+            {loading ? (
+              <div className="text-white text-center">Loading FAQs...</div>
+            ) : (
+              <Accordion type="single" collapsible className="w-full space-y-3 sm:space-y-4">
+                {faqs.map((item, index) => {
+                  const Icon = getIcon(index);
+                  const isOpen = openItem === item._id;
+                  
+                  return (
+                    <div
+                      key={item._id}
+                      className={`transition-all duration-500 delay-${index * 100} ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
                     >
-                      <AccordionTrigger 
-                        className="px-4 sm:px-6 py-4 sm:py-5 group touch-manipulation"
-                        onClick={() => toggleItem(item.id)}
+                      <AccordionItem
+                        value={item._id}
+                        className="rounded-lg sm:rounded-xl shadow-lg border border-white/10 overflow-hidden hover:border-white/20 transition-all"
+                        style={{ backgroundColor: '#000000' }}
                       >
-                        <div className="flex items-center justify-between w-full gap-3">
-                          <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
-                            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#009edb]/20 rounded-full flex items-center justify-center group-hover:bg-[#009edb]/30 transition-colors shrink-0">
-                              <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#009edb]" />
+                        <AccordionTrigger 
+                          className="px-4 sm:px-6 py-4 sm:py-5 group touch-manipulation"
+                          onClick={() => toggleItem(item._id)}
+                        >
+                          <div className="flex items-center justify-between w-full gap-3">
+                            <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
+                              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#009edb]/20 rounded-full flex items-center justify-center group-hover:bg-[#009edb]/30 transition-colors shrink-0">
+                                <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#009edb]" />
+                              </div>
+                              <span className="text-sm sm:text-base font-medium group-hover:text-[#009edb] transition-colors text-left" style={{ color: 'white' }}>
+                                {item.question}
+                              </span>
                             </div>
-                            <span className="text-sm sm:text-base font-medium group-hover:text-[#009edb] transition-colors text-left" style={{ color: 'white' }}>
-                              {item.question}
-                            </span>
+                            <ChevronDown 
+                              className={`w-5 h-5 transition-transform duration-300 shrink-0 ${isOpen ? 'rotate-180' : ''}`}
+                              style={{ color: 'rgba(255, 255, 255, 0.6)' }}
+                            />
                           </div>
-                          <ChevronDown 
-                            className={`w-5 h-5 transition-transform duration-300 shrink-0 ${isOpen ? 'rotate-180' : ''}`}
-                            style={{ color: 'rgba(255, 255, 255, 0.6)' }}
-                          />
-                        </div>
-                      </AccordionTrigger>
-                      
-                      <AccordionContent isOpen={isOpen}>
-                        <div className="px-4 sm:px-6 md:px-14 pb-4 sm:pb-5 md:pb-6">
-                          <p className="text-sm sm:text-base leading-relaxed" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-                            {item.answer}
-                          </p>
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </div>
-                );
-              })}
-            </Accordion>
+                        </AccordionTrigger>
+                        
+                        <AccordionContent isOpen={isOpen}>
+                          <div className="px-4 sm:px-6 md:px-14 pb-4 sm:pb-5 md:pb-6">
+                            <p className="text-sm sm:text-base leading-relaxed" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
+                              {item.answer}
+                            </p>
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </div>
+                  );
+                })}
+              </Accordion>
+            )}
           </div>
 
 
