@@ -6,6 +6,7 @@ import ScrollProvider from "./providers/ScrollProvider";
 import { TranslationProvider } from "@/components/TranslationProvider";
 import ThemeProvider from '@/components/ThemeProvider';
 import { AuthProvider } from "@/components/AuthProvider";
+import DisclaimerModal from "@/components/DisclaimerModal";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -30,6 +31,7 @@ export default function RootLayout({
           <ThemeProvider>
             <TranslationProvider>
               <ScrollProvider>
+                <DisclaimerModal />
                 {children}
               </ScrollProvider>
             </TranslationProvider>

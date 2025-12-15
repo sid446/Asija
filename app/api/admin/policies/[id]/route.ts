@@ -2,10 +2,10 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Policy from '@/models/Policy';
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
   await dbConnect();
   try {
-    const { id } = params;
+    const { id } = await params;
     const body = await req.json();
     const policy = await Policy.findByIdAndUpdate(id, body, { new: true });
     if (!policy) return NextResponse.json({ error: 'Policy not found' }, { status: 404 });
@@ -15,10 +15,10 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   }
 }
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
   await dbConnect();
   try {
-    const { id } = params;
+    const { id } = await params;
     const policy = await Policy.findByIdAndDelete(id);
     if (!policy) return NextResponse.json({ error: 'Policy not found' }, { status: 404 });
     return NextResponse.json({ message: 'Policy deleted successfully' });
