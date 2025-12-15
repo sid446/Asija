@@ -27,7 +27,7 @@ const leftMenu: MenuItem[] = [
     overview: 'navbar.overview.home'
   },
   { 
-    label: 'About Us',
+    label: 'About',
     translationKey: 'navbar.aboutUs',
     href: '/about',
     subs: [
@@ -130,7 +130,7 @@ const leftMenu: MenuItem[] = [
     overview: 'navbar.overview.industries'
   },
   { 
-    label: 'Asija Global Services',
+    label: 'Asija Global',
     translationKey: 'navbar.asijaGlobal',
     href: '/global-services',
     subs: [
@@ -155,7 +155,7 @@ const leftMenu: MenuItem[] = [
 
 const rightMenu: MenuItem[] = [
   { 
-    label: 'Contact Us',
+    label: 'Contact',
     translationKey: 'navbar.contactUs',
     href: '/contact',
     subs: [
