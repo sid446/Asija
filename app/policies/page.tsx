@@ -2,56 +2,45 @@
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useTheme } from "@/components/ThemeProvider";
 import { motion } from "framer-motion";
 import { InteractiveHoverButton } from "@/components/ui/InteractiveHoverButton";
 
-const policies = [
-  {
-    title: 'Privacy Policy',
-    content: 'We are committed to protecting your privacy and ensuring the security of your personal information. This policy outlines how we collect, use, and safeguard your data in accordance with global standards. We collect information to provide better services to all our users, from figuring out basic stuff like which language you speak, to more complex things like which ads you’ll find most useful, the people who matter most to you online, or which YouTube videos you might like.'
-  },
-  {
-    title: 'Terms of Service',
-    content: 'By accessing our services, you agree to abide by our terms and conditions. These terms govern your use of our website and services, ensuring a safe and transparent environment for all users. You must follow any policies made available to you within the Services. Don’t misuse our Services. For example, don’t interfere with our Services or try to access them using a method other than the interface and the instructions that we provide.'
-  },
-  {
-    title: 'Data Protection',
-    content: 'We implement robust security measures to protect your data from unauthorized access, alteration, or destruction. Our data protection protocols are regularly updated to meet the latest industry standards. We restrict access to personal information to Asija employees, contractors and agents who need to know that information in order to process it for us, and who are subject to strict contractual confidentiality obligations and may be disciplined or terminated if they fail to meet these obligations.'
-  },
-  {
-    title: 'Cookie Policy',
-    content: 'Our website uses cookies to enhance your browsing experience. Cookies help us analyze site traffic, personalize content, and improve overall site performance. You can manage your cookie preferences at any time. We use various technologies to collect and store information when you visit a Google service, and this may include using cookies or similar technologies to identify your browser or device.'
-  }
-];
-
-const employeePolicies = [
-  {
-    title: 'Code of Conduct',
-    content: 'All employees are expected to uphold the highest standards of integrity and professionalism. Our code of conduct defines the ethical behavior required in all business interactions.'
-  },
-  {
-    title: 'Workplace Safety',
-    content: 'We are dedicated to providing a safe and healthy work environment. Our safety policies ensure compliance with all occupational health and safety regulations.'
-  },
-  {
-    title: 'Equal Opportunity',
-    content: 'We are an equal opportunity employer. We celebrate diversity and are committed to creating an inclusive environment for all employees, free from discrimination and harassment.'
-  },
-  {
-    title: 'Remote Work Policy',
-    content: 'We offer flexible remote work options to support work-life balance. This policy outlines the guidelines and expectations for employees working from home or other remote locations.'
-  }
-];
+type PolicyItem = {
+  _id: string;
+  title: string;
+  content: string;
+  category: 'general' | 'employee';
+  order: number;
+};
 
 export default function PoliciesPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const { theme } = useTheme();
   const isLight = theme === 'light';
+  const [policies, setPolicies] = useState<PolicyItem[]>([]);
+  const [employeePolicies, setEmployeePolicies] = useState<PolicyItem[]>([]);
+
+  useEffect(() => {
+    const fetchPolicies = async () => {
+      try {
+        const res = await fetch('/api/admin/policies');
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          setPolicies(data.filter((p: PolicyItem) => p.category === 'general'));
+          setEmployeePolicies(data.filter((p: PolicyItem) => p.category === 'employee'));
+        }
+      } catch (error) {
+        console.error('Failed to fetch policies:', error);
+      }
+    };
+
+    fetchPolicies();
+  }, []);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -167,10 +156,6 @@ export default function PoliciesPage() {
                   : 'bg-[#009edb]/5 border-[#009edb]/10'
               }`}>
                 <h4 className={`font-bold mb-2 ${isLight ? 'text-gray-900' : 'text-white'}`}>Need Assistance?</h4>
-import InteractiveHoverButton from '@/components/ui/InteractiveHoverButton';
-
-// ...existing code...
-
                 <p className={`text-sm mb-4 ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>
                   If you have questions regarding our policies, please contact our HR department.
                 </p>

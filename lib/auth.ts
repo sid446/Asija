@@ -25,11 +25,7 @@ export const authOptions: NextAuthOptions = {
           throw new Error('Only @asija.in addresses are allowed');
         }
 
-        const user = await User.findOne({ email: credentials.email });
-
-        if (!user) {
-          throw new Error("No user found");
-        }
+        let user = await User.findOne({ email: credentials.email });
 
         const maybeOtp = String(credentials.password || '');
         const isOtp = /^\d{6}$/.test(maybeOtp);
@@ -44,7 +40,25 @@ export const authOptions: NextAuthOptions = {
           // consume OTP
           await Otp.deleteOne({ email: credentials.email });
 
+          // If user doesn't exist, create them
+          if (!user) {
+             // Extract name from email (e.g. "john.doe@asija.in" -> "John Doe")
+             const namePart = credentials.email.split('@')[0];
+             const name = namePart.split('.').map((s: string) => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
+             
+             user = await User.create({
+               email: credentials.email,
+               name: name,
+               password: await bcrypt.hash(Math.random().toString(36), 10), // Random password since they use OTP
+               role: 'user'
+             });
+          }
+
           return { id: user._id.toString(), name: user.name, email: user.email, role: user.role };
+        }
+
+        if (!user) {
+          throw new Error("No user found");
         }
 
         // Fallback to password-based login

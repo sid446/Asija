@@ -11,6 +11,43 @@ import { Maximize2, Minimize2, Loader2 } from 'lucide-react';
 const container = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.1 } } };
 const item = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } };
 
+// Helper to render structured content
+const renderSectionContent = (items: any[]) => {
+  if (!items || !Array.isArray(items)) return null;
+
+  return (
+    <ul className="space-y-4">
+      {items.map((item, idx) => (
+        <li key={idx} className="flex flex-col gap-1">
+          <div className="flex items-start gap-2">
+            <span className="text-[#009edb] mt-1.5 text-xs">●</span>
+            <div className="flex-1">
+              <span className="font-semibold block text-sm">{item.title}</span>
+              {item.description && (
+                <p className="text-sm opacity-80 mt-1 whitespace-pre-line leading-relaxed">
+                  {item.description}
+                </p>
+              )}
+            </div>
+          </div>
+          
+          {/* Sub-items */}
+          {item.subItems && item.subItems.length > 0 && (
+            <ul className="pl-6 mt-2 space-y-2 border-l border-[#009edb]/20 ml-1.5">
+              {item.subItems.map((sub: string, subIdx: number) => (
+                <li key={subIdx} className="flex items-start gap-2 text-sm opacity-80">
+                  <span className="text-[#009edb] mt-1.5 text-[10px]">○</span>
+                  <span className="whitespace-pre-line">{sub}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+};
+
 export default function TeamAnimated() {
   const { theme } = useTheme();
   const [members, setMembers] = useState<any[]>([]);
@@ -297,56 +334,28 @@ export default function TeamAnimated() {
                   }`}>
                     {selectedMember.name}
                   </h2>
-                  {selectedMember.qualifications && (
-                    <p className={`text-lg mb-3 text-center sm:text-left ${
-                      theme === 'light' ? 'text-gray-700' : 'text-gray-400'
-                    }`}>{selectedMember.qualifications}</p>
-                  )}
                   <p className="text-[#009edb] text-xl font-medium text-center sm:text-left">{selectedMember.role}</p>
+                  
+                  {selectedMember.linkedin && (
+                    <div className="mt-4 flex justify-center sm:justify-start">
+                      <a
+                        href={selectedMember.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <InteractiveHoverButton
+                          text="Connect on LinkedIn"
+                          className="bg-[#0077B5] hover:bg-[#006399] border-[#0077B5] text-white px-6 py-2 text-sm"
+                        />
+                      </a>
+                    </div>
+                  )}
                 </div>
 
                 <div className="h-px bg-linear-to-r from-transparent via-[#009edb] to-transparent mb-8" />
 
                 {/* Structured Information */}
                 <div className="space-y-5 mb-10">
-                  {selectedMember.specialization && (
-                    <div className="flex items-start gap-4">
-                      <span className={`font-semibold min-w-[180px] text-sm ${
-                        theme === 'light' ? 'text-gray-700' : 'text-gray-400'
-                      }`}>Specialization</span>
-                      <span className={theme === 'light' ? 'text-gray-600' : 'text-gray-500'}>:</span>
-                      <span className={`flex-1 text-sm leading-relaxed ${
-                        theme === 'light' ? 'text-gray-900' : 'text-white'
-                      }`}>{selectedMember.specialization}</span>
-                    </div>
-                  )}
-
-                  {selectedMember.experience && (
-                    <div className="flex items-start gap-4">
-                      <span className={`font-semibold min-w-[180px] text-sm ${
-                        theme === 'light' ? 'text-gray-700' : 'text-gray-400'
-                      }`}>Years of Experience {selectedMember.membership && `/ Membership`}</span>
-                      <span className={theme === 'light' ? 'text-gray-600' : 'text-gray-500'}>:</span>
-                      <span className={`flex-1 text-sm ${
-                        theme === 'light' ? 'text-gray-900' : 'text-white'
-                      }`}>
-                        {selectedMember.experience} {selectedMember.membership && `/ ${selectedMember.membership}`}
-                      </span>
-                    </div>
-                  )}
-
-                  {selectedMember.associationYears && (
-                    <div className="flex items-start gap-4">
-                      <span className={`font-semibold min-w-[180px] text-sm ${
-                        theme === 'light' ? 'text-gray-700' : 'text-gray-400'
-                      }`}>Association with the firm</span>
-                      <span className={theme === 'light' ? 'text-gray-600' : 'text-gray-500'}>:</span>
-                      <span className={`flex-1 text-sm ${
-                        theme === 'light' ? 'text-gray-900' : 'text-white'
-                      }`}>{selectedMember.associationYears}</span>
-                    </div>
-                  )}
-
                   {selectedMember.mobile && (
                     <div className="flex items-start gap-4">
                       <span className={`font-semibold min-w-[180px] text-sm ${
@@ -374,31 +383,56 @@ export default function TeamAnimated() {
 
                 <div className="h-px bg-linear-to-r from-transparent via-[#009edb] to-transparent mb-10" />
 
-                {/* Description */}
-                <div className="mb-12">
-                  <p className={`leading-relaxed whitespace-pre-line text-justify text-sm ${
-                    theme === 'light' ? 'text-gray-800' : 'text-gray-300'
-                  }`}>
-                    {selectedMember.description}
-                  </p>
-                </div>
+                {/* Detailed Sections */}
+                <div className="space-y-8 mb-12">
+                  {/* Background / Bio */}
+                  {selectedMember.description && (
+                    <div>
+                      <h3 className={`text-lg font-bold mb-3 uppercase tracking-wider ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Background</h3>
+                      <p className={`leading-relaxed whitespace-pre-line text-justify text-sm ${
+                        theme === 'light' ? 'text-gray-800' : 'text-gray-300'
+                      }`}>
+                        {selectedMember.description}
+                      </p>
+                    </div>
+                  )}
 
-                {/* LinkedIn Connect */}
-                {selectedMember.linkedin && (
-                  <div className="pt-8 border-t border-[#009edb]/20 flex justify-center sm:justify-start">
-                    <a
-                      href={selectedMember.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full sm:w-auto"
-                    >
-                      <InteractiveHoverButton
-                        text="Connect on LinkedIn"
-                        className="w-full sm:w-auto bg-[#0077B5] hover:bg-[#006399] border-[#0077B5] text-white"
-                      />
-                    </a>
-                  </div>
-                )}
+                  {/* Professional Experience */}
+                  {selectedMember.experience && (
+                    <div>
+                      <h3 className={`text-lg font-bold mb-3 uppercase tracking-wider ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Professional Experience</h3>
+                      <div className={`text-justify text-sm ${
+                        theme === 'light' ? 'text-gray-800' : 'text-gray-300'
+                      }`}>
+                        {renderSectionContent(selectedMember.experience)}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Skills & Expertise */}
+                  {selectedMember.specialization && (
+                    <div>
+                      <h3 className={`text-lg font-bold mb-3 uppercase tracking-wider ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Skills & Expertise</h3>
+                      <div className={`text-justify text-sm ${
+                        theme === 'light' ? 'text-gray-800' : 'text-gray-300'
+                      }`}>
+                        {renderSectionContent(selectedMember.specialization)}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Education & Certifications */}
+                  {selectedMember.qualifications && (
+                    <div>
+                      <h3 className={`text-lg font-bold mb-3 uppercase tracking-wider ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Education & Certifications</h3>
+                      <div className={`text-justify text-sm ${
+                        theme === 'light' ? 'text-gray-800' : 'text-gray-300'
+                      }`}>
+                        {renderSectionContent(selectedMember.qualifications)}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </motion.div>
           </>

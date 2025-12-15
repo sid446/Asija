@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import CTA from '@/components/ui/CTA';
 import Link from 'next/link';
-import { Globe, TrendingUp, ShieldCheck, Laptop, BarChart3, Users, Briefcase, FileText, HelpCircle, Phone, Home, CreditCard, Calendar } from 'lucide-react';
+import {  TrendingUp, ShieldCheck} from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 
 type GlobalServiceContentData = {

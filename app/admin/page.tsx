@@ -21,8 +21,17 @@ import {
   Home,
   Phone,
   Globe,
-  RefreshCw
+  RefreshCw,
+  FileText,
+  PlusCircle,
+  MinusCircle
 } from 'lucide-react';
+
+type SectionItem = {
+  title: string;
+  description?: string;
+  subItems?: string[];
+};
 
 type TeamItem = {
   _id: string;
@@ -30,14 +39,148 @@ type TeamItem = {
   role: string;
   avatar?: string;
   linkedin?: string;
-  qualifications?: string;
-  specialization?: string;
-  experience?: string;
+  qualifications?: SectionItem[];
+  specialization?: SectionItem[];
+  experience?: SectionItem[];
   membership?: string;
   associationYears?: string;
   mobile?: string;
   email?: string;
   description?: string;
+};
+
+// Helper Component for Section Editing
+const SectionEditor = ({ 
+  items = [], 
+  onChange, 
+  label,
+  allowSubItems = true
+}: { 
+  items: SectionItem[], 
+  onChange: (items: SectionItem[]) => void, 
+  label: string,
+  allowSubItems?: boolean
+}) => {
+  const addItem = () => {
+    onChange([...items, { title: '', description: '', subItems: [] }]);
+  };
+
+  const updateItem = (index: number, field: keyof SectionItem, value: any) => {
+    const newItems = [...items];
+    newItems[index] = { ...newItems[index], [field]: value };
+    onChange(newItems);
+  };
+
+  const removeItem = (index: number) => {
+    onChange(items.filter((_, i) => i !== index));
+  };
+
+  const addSubItem = (itemIndex: number) => {
+    const newItems = [...items];
+    const currentSubItems = newItems[itemIndex].subItems || [];
+    newItems[itemIndex].subItems = [...currentSubItems, ''];
+    onChange(newItems);
+  };
+
+  const updateSubItem = (itemIndex: number, subIndex: number, value: string) => {
+    const newItems = [...items];
+    const subItems = [...(newItems[itemIndex].subItems || [])];
+    subItems[subIndex] = value;
+    newItems[itemIndex].subItems = subItems;
+    onChange(newItems);
+  };
+
+  const removeSubItem = (itemIndex: number, subIndex: number) => {
+    const newItems = [...items];
+    const subItems = [...(newItems[itemIndex].subItems || [])];
+    newItems[itemIndex].subItems = subItems.filter((_, i) => i !== subIndex);
+    onChange(newItems);
+  };
+
+  return (
+    <div className="space-y-4 border border-gray-200 rounded-xl p-4 bg-gray-50/50">
+      <div className="flex justify-between items-center">
+        <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">{label}</label>
+        <button 
+          type="button" 
+          onClick={addItem}
+          className="text-xs flex items-center gap-1 text-blue-600 hover:text-blue-700 font-medium"
+        >
+          <PlusCircle className="w-3 h-3" /> Add Item
+        </button>
+      </div>
+      
+      {items.length === 0 && (
+        <p className="text-xs text-gray-400 italic text-center py-2">No items added yet.</p>
+      )}
+
+      <div className="space-y-4">
+        {items.map((item, idx) => (
+          <div key={idx} className="bg-white p-3 rounded-lg border border-gray-200 shadow-sm relative group">
+            <button 
+              type="button" 
+              onClick={() => removeItem(idx)}
+              className="absolute top-2 right-2 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+
+            <div className="space-y-3">
+              <div>
+                <input 
+                  placeholder="Title (e.g. Taxation & Compliance)"
+                  value={item.title}
+                  onChange={(e) => updateItem(idx, 'title', e.target.value)}
+                  className="w-full px-3 py-1.5 text-sm font-medium border-b border-gray-200 focus:border-blue-500 outline-none bg-transparent placeholder:font-normal"
+                />
+              </div>
+              
+              <div>
+                <textarea 
+                  placeholder="Description (optional)"
+                  value={item.description || ''}
+                  onChange={(e) => updateItem(idx, 'description', e.target.value)}
+                  rows={2}
+                  className="w-full px-3 py-1.5 text-sm border border-gray-100 rounded-md focus:border-blue-500 outline-none bg-gray-50/30 resize-none"
+                />
+              </div>
+
+              {/* Sub Items */}
+              {allowSubItems && (
+                <div className="pl-4 border-l-2 border-gray-100 space-y-2">
+                  {item.subItems?.map((sub, subIdx) => (
+                    <div key={subIdx} className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" />
+                      <input 
+                        value={sub}
+                        onChange={(e) => updateSubItem(idx, subIdx, e.target.value)}
+                        className="flex-1 px-2 py-1 text-sm border border-transparent hover:border-gray-200 focus:border-blue-500 rounded outline-none bg-transparent"
+                        placeholder="Sub-item..."
+                      />
+                      <button 
+                        type="button"
+                        onClick={() => removeSubItem(idx, subIdx)}
+                        className="text-gray-400 hover:text-red-500"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ))}
+                  <button 
+                    type="button"
+                    onClick={() => addSubItem(idx)}
+                    className="text-xs text-blue-500 hover:text-blue-600 flex items-center gap-1 mt-1"
+                  >
+                    <Plus className="w-3 h-3" /> Add Sub-item
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 type IndustryItem = {
@@ -173,6 +316,25 @@ type GalleryItem = {
   images: string[];
 };
 
+type PolicyItem = {
+  _id: string;
+  title: string;
+  content: string;
+  category: 'general' | 'employee';
+  order: number;
+};
+
+type JobPostItem = {
+  _id: string;
+  title: string;
+  department: string;
+  location: string;
+  type: 'Full-time' | 'Part-time' | 'Contract' | 'Internship';
+  description: string;
+  requirements: string[];
+  isActive: boolean;
+};
+
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('team');
   const [globalServicesSubTab, setGlobalServicesSubTab] = useState('content');
@@ -182,6 +344,9 @@ export default function AdminPage() {
   const [aboutCards, setAboutCards] = useState<AboutCardItem[]>([]);
   const [faqs, setFaqs] = useState<FAQItem[]>([]);
   const [gallery, setGallery] = useState<GalleryItem[]>([]);
+  const [policies, setPolicies] = useState<PolicyItem[]>([]);
+  const [jobs, setJobs] = useState<JobPostItem[]>([]);
+  const [policyFilter, setPolicyFilter] = useState('all');
   const [globalServiceContent, setGlobalServiceContent] = useState<GlobalServiceContentData | null>(null);
   const [globalRegions, setGlobalRegions] = useState<GlobalRegionItem[]>([]);
   const [globalOfferings, setGlobalOfferings] = useState<GlobalOfferingItem[]>([]);
@@ -197,6 +362,8 @@ export default function AdminPage() {
   const [editingAboutCardId, setEditingAboutCardId] = useState<string | null>(null);
   const [editingFaqId, setEditingFaqId] = useState<string | null>(null);
   const [editingGalleryId, setEditingGalleryId] = useState<string | null>(null);
+  const [editingPolicyId, setEditingPolicyId] = useState<string | null>(null);
+  const [editingJobId, setEditingJobId] = useState<string | null>(null);
   const [editingGlobalRegionId, setEditingGlobalRegionId] = useState<string | null>(null);
   const [editingGlobalOfferingId, setEditingGlobalOfferingId] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -216,6 +383,15 @@ export default function AdminPage() {
   });
   const [globalRegionHeroImageFile, setGlobalRegionHeroImageFile] = useState<File | null>(null);
   const [globalOfferingFormData, setGlobalOfferingFormData] = useState({ title: '', description: '', icon: 'ShieldCheck', order: 0 });
+  const [policyFormData, setPolicyFormData] = useState({ title: '', content: '', category: 'general', order: 0 });
+  const [jobFormData, setJobFormData] = useState({
+    title: '',
+    department: '',
+    location: '',
+    type: 'Full-time',
+    description: '',
+    requirements: '' // comma separated
+  });
   const [globalServiceContentFormData, setGlobalServiceContentFormData] = useState({
     heroTitle: '', heroDescription: '', heroVideoUrl: '',
     introTitle: '', introDescription1: '', introDescription2: ''
@@ -226,9 +402,9 @@ export default function AdminPage() {
     name: '',
     role: '',
     linkedin: '',
-    qualifications: '',
-    specialization: '',
-    experience: '',
+    qualifications: [] as SectionItem[],
+    specialization: [] as SectionItem[],
+    experience: [] as SectionItem[],
     membership: '',
     associationYears: '',
     mobile: '',
@@ -443,6 +619,106 @@ export default function AdminPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchJobs = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/career/jobs');
+      const data = await res.json();
+      if (data.success && Array.isArray(data.data)) {
+        setJobs(data.data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleJobSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setMessage(null);
+
+    try {
+      const requirementsArray = jobFormData.requirements.split(',').map(r => r.trim()).filter(r => r);
+      
+      const payload = {
+        ...jobFormData,
+        requirements: requirementsArray
+      };
+
+      const url = editingJobId 
+        ? `/api/career/jobs/${editingJobId}` 
+        : '/api/career/jobs';
+      
+      const method = editingJobId ? 'PUT' : 'POST';
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setMessage(editingJobId ? 'Job updated successfully!' : 'Job added successfully!');
+        setJobFormData({
+          title: '',
+          department: '',
+          location: '',
+          type: 'Full-time',
+          description: '',
+          requirements: ''
+        });
+        setEditingJobId(null);
+        fetchJobs();
+      } else {
+        setMessage(data.error || 'Failed to save job.');
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage('An error occurred.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleDeleteJob = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this job post?')) return;
+    
+    try {
+      const res = await fetch(`/api/career/jobs/${id}`, {
+        method: 'DELETE',
+      });
+      
+      const data = await res.json();
+
+      if (data.success) {
+        setMessage('Job deleted successfully');
+        fetchJobs();
+      } else {
+        setMessage(data.error || 'Failed to delete job');
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage('Error deleting job');
+    }
+  };
+
+  const handleEditJob = (job: JobPostItem) => {
+    setEditingJobId(job._id);
+    setJobFormData({
+      title: job.title,
+      department: job.department,
+      location: job.location,
+      type: job.type,
+      description: job.description,
+      requirements: job.requirements.join(', ')
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleFaqSubmit = async (e: React.FormEvent) => {
@@ -869,6 +1145,16 @@ export default function AdminPage() {
     }
   };
 
+  const fetchPolicies = async () => {
+    try {
+      const res = await fetch('/api/admin/policies');
+      const data = await res.json();
+      setPolicies(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     if (activeTab === 'team') fetchItems();
     if (activeTab === 'industries') fetchIndustries();
@@ -879,6 +1165,8 @@ export default function AdminPage() {
     if (activeTab === 'contact-content') fetchContactContent();
     if (activeTab === 'faq') fetchFaqs();
     if (activeTab === 'gallery') fetchGallery();
+    if (activeTab === 'policies') fetchPolicies();
+    if (activeTab === 'jobs') fetchJobs();
     if (activeTab === 'global-services') {
       fetchGlobalServiceContent();
       fetchGlobalRegions();
@@ -912,9 +1200,9 @@ export default function AdminPage() {
       name: item.name || '',
       role: item.role || '',
       linkedin: item.linkedin || '',
-      qualifications: item.qualifications || '',
-      specialization: item.specialization || '',
-      experience: item.experience || '',
+      qualifications: Array.isArray(item.qualifications) ? item.qualifications : [],
+      specialization: Array.isArray(item.specialization) ? item.specialization : [],
+      experience: Array.isArray(item.experience) ? item.experience : [],
       membership: item.membership || '',
       associationYears: item.associationYears || '',
       mobile: item.mobile || '',
@@ -983,8 +1271,8 @@ export default function AdminPage() {
   const handleCancelEdit = () => {
     setEditingId(null);
     setFormData({
-      name: '', role: '', linkedin: '', qualifications: '', 
-      specialization: '', experience: '', membership: '', 
+      name: '', role: '', linkedin: '', qualifications: [], 
+      specialization: [], experience: [], membership: '', 
       associationYears: '', mobile: '', email: '', description: ''
     });
     setImageFile(null);
@@ -1527,6 +1815,66 @@ export default function AdminPage() {
     }
   };
 
+  const handlePolicyChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setPolicyFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handlePolicySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setMessage(null);
+
+    try {
+      const url = editingPolicyId ? `/api/admin/policies/${editingPolicyId}` : '/api/admin/policies';
+      const method = editingPolicyId ? 'PUT' : 'POST';
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(policyFormData),
+      });
+
+      if (res.ok) {
+        setMessage(editingPolicyId ? 'Policy updated successfully!' : 'Policy added successfully!');
+        setPolicyFormData({ title: '', content: '', category: 'general', order: 0 });
+        setEditingPolicyId(null);
+        fetchPolicies();
+      } else {
+        setMessage('Failed to save policy.');
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage('An error occurred.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handlePolicyEdit = (item: PolicyItem) => {
+    setEditingPolicyId(item._id);
+    setPolicyFormData({
+      title: item.title,
+      content: item.content,
+      category: item.category,
+      order: item.order
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handlePolicyDelete = async (id: string) => {
+    if (!confirm('Are you sure?')) return;
+    try {
+      const res = await fetch(`/api/admin/policies/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        setMessage('Policy deleted successfully!');
+        fetchPolicies();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50/50 text-gray-900 font-sans">
       {/* Mobile Header */}
@@ -1603,6 +1951,13 @@ export default function AdminPage() {
               <ImageIcon className="w-5 h-5 mr-3" />
               Gallery
             </button>
+            <button 
+              onClick={() => { setActiveTab('jobs'); setMobileMenuOpen(false); }}
+              className={`flex items-center w-full px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${activeTab === 'jobs' ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
+            >
+              <Briefcase className="w-5 h-5 mr-3" />
+              Career / Jobs
+            </button>
 
             <div>
               <button 
@@ -1656,6 +2011,13 @@ export default function AdminPage() {
                 </div>
               )}
             </div>
+            <button 
+              onClick={() => { setActiveTab('policies'); setMobileMenuOpen(false); }}
+              className={`flex items-center w-full px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${activeTab === 'policies' ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
+            >
+              <FileText className="w-5 h-5 mr-3" />
+              Policies
+            </button>
             <button 
               className="flex items-center w-full px-4 py-3 text-sm font-medium text-gray-600 rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-all duration-200"
             >
@@ -1768,33 +2130,44 @@ export default function AdminPage() {
                         </div>
 
                         <div>
-                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Qualifications</label>
-                          <input name="qualifications" value={formData.qualifications} onChange={handleInputChange} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm" />
+                          <SectionEditor 
+                            label="Education & Certifications"
+                            items={formData.qualifications}
+                            onChange={(items) => setFormData(prev => ({ ...prev, qualifications: items }))}
+                            allowSubItems={false}
+                          />
                         </div>
 
                         <div>
-                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Specialization</label>
-                          <input name="specialization" value={formData.specialization} onChange={handleInputChange} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm" />
+                          <SectionEditor 
+                            label="Skills & Expertise"
+                            items={formData.specialization}
+                            onChange={(items) => setFormData(prev => ({ ...prev, specialization: items }))}
+                            allowSubItems={false}
+                          />
+                        </div>
+
+                        <div>
+                          <SectionEditor 
+                            label="Professional Experience"
+                            items={formData.experience}
+                            onChange={(items) => setFormData(prev => ({ ...prev, experience: items }))}
+                          />
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Experience</label>
-                            <input name="experience" value={formData.experience} onChange={handleInputChange} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm" />
-                          </div>
-                          <div>
                             <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Assoc. Years</label>
                             <input name="associationYears" value={formData.associationYears} onChange={handleInputChange} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm" />
                           </div>
+                          <div>
+                            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Membership No.</label>
+                            <input name="membership" value={formData.membership} onChange={handleInputChange} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm" />
+                          </div>
                         </div>
 
                         <div>
-                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Membership No.</label>
-                          <input name="membership" value={formData.membership} onChange={handleInputChange} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm" />
-                        </div>
-
-                        <div>
-                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Description / Bio</label>
+                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Background / Bio</label>
                           <textarea 
                             name="description" 
                             value={formData.description} 
@@ -3661,6 +4034,310 @@ export default function AdminPage() {
                 </div>
               </div>
               )}
+            </div>
+          )}
+
+          {activeTab === 'jobs' && (
+            <div className="space-y-8">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900">Career / Jobs Management</h1>
+                  <p className="text-gray-500 mt-1">Manage current job openings.</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Form Section */}
+                <div className="lg:col-span-1">
+                  <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sticky top-6">
+                    <h2 className="text-lg font-semibold mb-4 flex items-center justify-between">
+                      {editingJobId ? 'Edit Job Post' : 'Add New Job Post'}
+                      {editingJobId && (
+                        <button 
+                          onClick={() => {
+                            setEditingJobId(null);
+                            setJobFormData({
+                              title: '',
+                              department: '',
+                              location: '',
+                              type: 'Full-time',
+                              description: '',
+                              requirements: ''
+                            });
+                          }}
+                          className="text-xs text-red-500 hover:bg-red-50 px-2 py-1 rounded"
+                        >
+                          Cancel
+                        </button>
+                      )}
+                    </h2>
+                    
+                    {message && (
+                      <div className={`p-3 rounded-lg text-sm mb-4 ${message.includes('success') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+                        {message}
+                      </div>
+                    )}
+
+                    <form onSubmit={handleJobSubmit} className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Job Title</label>
+                        <input 
+                          value={jobFormData.title}
+                          onChange={(e) => setJobFormData({...jobFormData, title: e.target.value})}
+                          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500/20 outline-none"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
+                        <input 
+                          value={jobFormData.department}
+                          onChange={(e) => setJobFormData({...jobFormData, department: e.target.value})}
+                          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500/20 outline-none"
+                          required
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                          <input 
+                            value={jobFormData.location}
+                            onChange={(e) => setJobFormData({...jobFormData, location: e.target.value})}
+                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500/20 outline-none"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
+                          <select 
+                            value={jobFormData.type}
+                            onChange={(e) => setJobFormData({...jobFormData, type: e.target.value as any})}
+                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500/20 outline-none"
+                          >
+                            <option value="Full-time">Full-time</option>
+                            <option value="Part-time">Part-time</option>
+                            <option value="Contract">Contract</option>
+                            <option value="Internship">Internship</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        <textarea 
+                          value={jobFormData.description}
+                          onChange={(e) => setJobFormData({...jobFormData, description: e.target.value})}
+                          rows={4}
+                          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500/20 outline-none resize-none"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Requirements (comma separated)</label>
+                        <textarea 
+                          value={jobFormData.requirements}
+                          onChange={(e) => setJobFormData({...jobFormData, requirements: e.target.value})}
+                          rows={4}
+                          placeholder="e.g. CA Qualified, 2 years experience, Good communication"
+                          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500/20 outline-none resize-none"
+                          required
+                        />
+                      </div>
+
+                      <button 
+                        type="submit" 
+                        disabled={submitting}
+                        className="w-full py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 font-medium"
+                      >
+                        {submitting ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : (editingJobId ? 'Update Job' : 'Post Job')}
+                      </button>
+                    </form>
+                  </div>
+                </div>
+
+                {/* List Section */}
+                <div className="lg:col-span-2">
+                  <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div className="p-4 border-b bg-gray-50 font-medium flex justify-between items-center">
+                      <div className="flex items-center gap-2">
+                        <Briefcase className="w-4 h-4 text-blue-500" />
+                        <span>Current Openings</span>
+                      </div>
+                      <span className="text-xs text-gray-500 bg-white px-2 py-1 rounded border">Total: {jobs.length}</span>
+                    </div>
+
+                    <div className="divide-y divide-gray-100">
+                      {loading ? (
+                        <div className="p-8 text-center text-gray-500">Loading...</div>
+                      ) : jobs.length === 0 ? (
+                        <div className="p-8 text-center text-gray-500">No job openings found.</div>
+                      ) : (
+                        jobs.map((job) => (
+                          <div key={job._id} className="p-5 hover:bg-gray-50 transition-colors group">
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <h3 className="font-bold text-gray-900 group-hover:text-blue-600 transition-colors">{job.title}</h3>
+                                <div className="flex flex-wrap gap-2 mt-2 text-xs text-gray-500">
+                                  <span className="bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full border border-blue-100">{job.department}</span>
+                                  <span className="bg-gray-100 px-2 py-0.5 rounded-full border border-gray-200">{job.location}</span>
+                                  <span className="bg-gray-100 px-2 py-0.5 rounded-full border border-gray-200">{job.type}</span>
+                                </div>
+                                <p className="text-sm text-gray-600 mt-3 line-clamp-2">{job.description}</p>
+                              </div>
+                              
+                              <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button 
+                                  onClick={() => handleEditJob(job)}
+                                  className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+                                  title="Edit"
+                                >
+                                  <Pencil className="w-4 h-4" />
+                                </button>
+                                <button 
+                                  onClick={() => handleDeleteJob(job._id)}
+                                  className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                                  title="Delete"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'policies' && (
+            <div className="space-y-8">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900">Policies Management</h1>
+                  <p className="text-gray-500 mt-1">Manage company policies and terms.</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-1">
+                  <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sticky top-6">
+                    <h2 className="text-lg font-semibold mb-4">{editingPolicyId ? 'Edit Policy' : 'Add Policy'}</h2>
+                    <form onSubmit={handlePolicySubmit} className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                        <input name="title" value={policyFormData.title} onChange={handlePolicyChange} className="w-full px-4 py-2 border rounded-lg" required />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                        <select name="category" value={policyFormData.category} onChange={handlePolicyChange} className="w-full px-4 py-2 border rounded-lg">
+                          <option value="general">General</option>
+                          <option value="employee">Employee</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Content</label>
+                        <textarea name="content" value={policyFormData.content} onChange={handlePolicyChange} rows={6} className="w-full px-4 py-2 border rounded-lg" required />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Order</label>
+                        <input type="number" name="order" value={policyFormData.order} onChange={handlePolicyChange} className="w-full px-4 py-2 border rounded-lg" />
+                      </div>
+                      <div className="flex gap-2">
+                        <button type="submit" disabled={submitting} className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50">
+                          {editingPolicyId ? 'Update' : 'Add'}
+                        </button>
+                        {editingPolicyId && (
+                          <button type="button" onClick={() => { setEditingPolicyId(null); setPolicyFormData({ title: '', content: '', category: 'general', order: 0 }); }} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                            Cancel
+                          </button>
+                        )}
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div className="lg:col-span-2">
+                  <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div className="p-4 border-b bg-gray-50 font-medium flex flex-col sm:flex-row justify-between items-center gap-4">
+                      <div className="flex items-center gap-2">
+                        <span>Policies List</span>
+                        <button onClick={fetchPolicies} className="p-1 hover:bg-gray-200 rounded transition-colors" title="Refresh List">
+                          <RefreshCw className="w-3 h-3 text-gray-500" />
+                        </button>
+                      </div>
+                      
+                      <div className="flex bg-gray-200 p-1 rounded-lg">
+                        {['all', 'general', 'employee'].map((filter) => (
+                          <button
+                            key={filter}
+                            onClick={() => setPolicyFilter(filter)}
+                            className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${
+                              policyFilter === filter 
+                                ? 'bg-white text-gray-900 shadow-sm' 
+                                : 'text-gray-500 hover:text-gray-700'
+                            }`}
+                          >
+                            {filter.charAt(0).toUpperCase() + filter.slice(1)}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="divide-y">
+                      {policies.length === 0 && (
+                        <div className="p-8 text-center text-gray-500">
+                          No policies found.
+                        </div>
+                      )}
+                      {policies
+                        .filter(p => policyFilter === 'all' || p.category === policyFilter)
+                        .map(item => (
+                        <div key={item._id} className="p-4 flex items-center justify-between hover:bg-gray-50 group transition-colors">
+                          <div className="flex-1 pr-4">
+                            <div className="flex items-center gap-2 mb-1">
+                              <h3 className="font-medium text-gray-900">{item.title}</h3>
+                              <span className={`text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-full ${
+                                item.category === 'general' 
+                                  ? 'bg-blue-100 text-blue-700 border border-blue-200' 
+                                  : 'bg-purple-100 text-purple-700 border border-purple-200'
+                              }`}>
+                                {item.category}
+                              </span>
+                              <span className="text-xs text-gray-400 bg-gray-100 px-1.5 rounded border border-gray-200">#{item.order}</span>
+                            </div>
+                            <p className="text-sm text-gray-500 line-clamp-2">{item.content}</p>
+                          </div>
+                          <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button 
+                              onClick={() => handlePolicyEdit(item)} 
+                              className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                              title="Edit Policy"
+                            >
+                              <Pencil className="w-4 h-4" />
+                            </button>
+                            <button 
+                              onClick={() => handlePolicyDelete(item._id)} 
+                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                              title="Delete Policy"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                      {policies.filter(p => policyFilter === 'all' || p.category === policyFilter).length === 0 && policies.length > 0 && (
+                        <div className="p-8 text-center text-gray-500">
+                          No policies found in this category.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 

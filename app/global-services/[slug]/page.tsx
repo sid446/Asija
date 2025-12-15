@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import CTA from '@/components/ui/CTA';
 import { CheckCircle2, Loader2 } from 'lucide-react';
-import { useParams, notFound } from 'next/navigation';
+import { useParams } from 'next/navigation';
 
 type GlobalRegionData = {
   _id: string;

@@ -101,28 +101,50 @@ export default function LoginPage() {
               <input
                 onChange={(e) => setEmail(e.target.value)}
                 type="email"
-                placeholder="name@company.com"
+                placeholder="name@asija.in"
+                value={email}
                 className="w-full p-4 rounded-lg bg-surface border border-theme text-theme focus:outline-none focus:border-[#009edb] focus:ring-1 focus:ring-[#009edb] transition-all"
+                disabled={!!otpStatus}
               />
-              <div className="flex items-center gap-3 mt-2">
-                <button type="button" onClick={sendOtp} className="px-3 py-2 rounded-md bg-[#009edb] text-white text-sm">Send OTP</button>
-                <div className="text-sm text-muted">Only <strong>@asija.in</strong> emails are allowed.</div>
+            </div>
+
+            {otpStatus && (
+              <div className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
+                <label className="text-sm font-medium text-muted">One-Time Password (OTP)</label>
+                <input
+                  onChange={(e) => setPassword(e.target.value)}
+                  type="text"
+                  placeholder="Enter 6-digit code"
+                  value={password}
+                  className="w-full p-4 rounded-lg bg-surface border border-theme text-theme focus:outline-none focus:border-[#009edb] focus:ring-1 focus:ring-[#009edb] transition-all tracking-widest text-center text-lg font-mono"
+                  maxLength={6}
+                />
               </div>
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-muted">Password</label>
-              <input
-                onChange={(e) => setPassword(e.target.value)}
-                type="password"
-                placeholder="••••••••"
-                className="w-full p-4 rounded-lg bg-surface border border-theme text-theme focus:outline-none focus:border-[#009edb] focus:ring-1 focus:ring-[#009edb] transition-all"
-              />
-            </div>
+            )}
             
-            <InteractiveHoverButton 
-              text="Sign In" 
-              className="w-full mt-2 bg-[#009edb] text-white border-[#009edb]" 
-            />
+            {!otpStatus ? (
+              <InteractiveHoverButton 
+                type="button"
+                onClick={sendOtp}
+                text="Send Verification Code"
+                className="w-full mt-2 bg-[#009edb] text-white border-[#009edb]" 
+              />
+            ) : (
+              <div className="flex flex-col gap-3">
+                <InteractiveHoverButton 
+                  type="submit"
+                  text="Verify & Login"
+                  className="w-full mt-2 bg-[#009edb] text-white border-[#009edb]" 
+                />
+                <button 
+                  type="button"
+                  onClick={() => { setOtpStatus(null); setPassword(''); }}
+                  className="text-sm text-muted hover:text-[#009edb] transition-colors text-center mt-2"
+                >
+                  Change Email / Resend
+                </button>
+              </div>
+            )}
             
             {error && (
               <div className="bg-red-500/10 border border-red-500/20 text-red-500 text-sm py-3 px-4 rounded-lg text-center">
@@ -134,10 +156,6 @@ export default function LoginPage() {
                 {otpStatus}
               </div>
             )}
-            
-            <p className="text-center text-gray-400 mt-4">
-              Don't have an account? <Link className="text-[#009edb] hover:underline font-medium" href={"/register"}>Register</Link>
-            </p>
           </form>
         </div>
       </div>
