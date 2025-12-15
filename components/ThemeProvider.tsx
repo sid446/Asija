@@ -27,8 +27,6 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
       const saved = localStorage.getItem('theme');
       if (saved === 'light' || saved === 'dark') {
         setThemeState(saved as Theme);
-      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        setThemeState('dark');
       } else {
         setThemeState('light');
       }
