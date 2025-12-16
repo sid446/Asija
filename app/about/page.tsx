@@ -8,7 +8,7 @@ import Footer from '@/components/Footer';
 import Loader from '@/components/ui/Loader';
 import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
 
- const data = [
+ const defaultData = [
   {
     title: "1986 – The Beginning of a Legacy",
     content: (
@@ -249,22 +249,81 @@ import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
     ),
   },
 ];
-function page() {
+export default function AboutPage() {
+  const [timelineData, setTimelineData] = useState<any[]>(defaultData);
+  const [aboutContent, setAboutContent] = useState<any>(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [showButton, setShowButton] = useState(false);
   const contentRef = useRef<HTMLParagraphElement>(null);
 
-  const fullText = `Asija & Associates LLP, Chartered Accountants was established on 1st April 1986 by our founder member CA. Uttam Chandra Asija with the aim of providing a wide range of Accounting and Financial services to clients in Government, Corporate & Private Sector. Over the years the firm has been built around a team of professionals, possessing vast experience in the areas of auditing, accounting, taxation, company law matters, along with a host of other financial services which are rendered to the clients to turning complex problems into growth opportunities and supporting the progress of society at large.<br/><br/>
+  const defaultFullText = `Asija & Associates LLP, Chartered Accountants was established on 1st April 1986 by our founder member CA. Uttam Chandra Asija with the aim of providing a wide range of Accounting and Financial services to clients in Government, Corporate & Private Sector. Over the years the firm has been built around a team of professionals, possessing vast experience in the areas of auditing, accounting, taxation, company law matters, along with a host of other financial services which are rendered to the clients to turning complex problems into growth opportunities and supporting the progress of society at large.<br/><br/>
 
 Our Firm has not only grown tremendously in knowledge and expertise but has also created history by becoming the first Chartered Accountancy firm in Lucknow to convert into a Limited Liability Partnership (LLP) – a landmark achievement that reflects our progressive vision and commitment to excellence.<br/><br/>
 
 Today, with decades of trust earned and hundreds of success stories written, we continue to stand by our core belief: delivering exceptional quality to every stakeholder and going above and beyond client expectations through collaboration, innovation, and unwavering integrity.`;
+
+  const fullText = aboutContent 
+    ? [aboutContent.description1, aboutContent.description2, aboutContent.description3, aboutContent.description4]
+        .filter(Boolean)
+        .join('<br/><br/>')
+    : defaultFullText;
 
   useEffect(() => {
     if (contentRef.current) {
       const isTruncated = contentRef.current.scrollHeight > contentRef.current.clientHeight;
       setShowButton(isTruncated);
     }
+  }, [fullText]);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const res = await fetch('/api/admin/about-content', { cache: 'no-store' });
+        const data = await res.json();
+        if (data && !data.error) {
+          setAboutContent(data);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchContent();
+
+    const fetchTimeline = async () => {
+      try {
+        const res = await fetch('/api/admin/about-timeline');
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          const formattedData = data.map((item: any) => ({
+            title: item.year,
+            content: (
+              <div className="space-y-6">
+                <p className="mb-8 text-xl font-medium text-gray-300">
+                  {item.heading}
+                </p>
+                <p className="text-sm text-gray-400 leading-relaxed">
+                  {item.description}
+                </p>
+                <div className="grid grid-cols-2 gap-4">
+                  {item.images && item.images.map((img: string, idx: number) => (
+                    <img
+                      key={idx}
+                      src={img}
+                      alt={`Timeline image ${idx + 1}`}
+                      className="h-40 w-full rounded-lg object-cover shadow-lg border border-gray-800"
+                    />
+                  ))}
+                </div>
+              </div>
+            ),
+          }));
+          setTimelineData(formattedData);
+        }
+      } catch (error) {
+        console.error('Failed to fetch timeline', error);
+      }
+    };
+    fetchTimeline();
   }, []);
 
   return (
@@ -301,10 +360,10 @@ Today, with decades of trust earned and hundreds of success stories written, we 
       <div className='w-full h-auto flex flex-col lg:flex-row gap-6 sm:gap-8 p-6 sm:p-8 md:p-12 lg:p-20'>
         <div className='w-full lg:w-[40%] flex flex-col gap-4 sm:gap-10'>
           <h1 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold border-l-4 sm:border-l-10 px-3 sm:px-6 border-[#009edb] text-white drop-shadow-lg'>
-            Our Story
+            {aboutContent?.title || 'Our Story'}
           </h1>
           <blockquote className='text-base sm:text-lg md:text-xl font-semibold text-gray-300'>
-            " Coming together is a beginning, keeping together is progress Working together is success "
+            {aboutContent?.quote ? `"${aboutContent.quote}"` : '" Coming together is a beginning, keeping together is progress Working together is success "'}
           </blockquote>
         </div>
 
@@ -340,43 +399,49 @@ Today, with decades of trust earned and hundreds of success stories written, we 
           )}
         </div>
       </div>
-      <Timeline data={data} />
+      <Timeline data={timelineData} />
 
       {/* Our People Section */}
-      <div className="w-full max-w-7xl mx-auto px-6 py-20">
+      <div className="w-full max-w-7xl mx-auto px-6 py-20 z-10 bg-white">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Our People – <span className="text-[#009edb]">The Heart of Our Firm</span>
+              {aboutContent?.peopleTitle ? (
+                aboutContent.peopleTitle.includes('–') ? (
+                  <>
+                    {aboutContent.peopleTitle.split('–')[0]} – <span className="text-[#009edb]">{aboutContent.peopleTitle.split('–')[1]}</span>
+                  </>
+                ) : (
+                  aboutContent.peopleTitle
+                )
+              ) : (
+                <>Our People – <span className="text-[#009edb]">The Heart of Our Firm</span></>
+              )}
             </h2>
             <p className="text-lg text-gray-600 leading-relaxed mb-8">
-              Today, our firm proudly comprises more than 100 professionals, including qualified chartered accountants, semi-qualified managers, and skilled executives. This diverse and talented team represents a balanced mix of experience, technical capability, and youthful energy.
+              {aboutContent?.peopleDescription1 || 'Today, our firm proudly comprises more than 100 professionals, including qualified chartered accountants, semi-qualified managers, and skilled executives. This diverse and talented team represents a balanced mix of experience, technical capability, and youthful energy.'}
             </p>
             <p className="text-lg text-gray-600 leading-relaxed">
-              This inclusive workforce drives innovation, collaboration, and excellence across all our assignments.
+              {aboutContent?.peopleDescription2 || 'This inclusive workforce drives innovation, collaboration, and excellence across all our assignments.'}
             </p>
           </div>
           <div className="bg-gray-50 p-8 rounded-2xl border border-gray-100">
             <h3 className="text-2xl font-bold text-gray-900 mb-8">Team Composition</h3>
             <div className="space-y-8">
-              <div>
-                <div className="flex justify-between mb-2">
-                  <span className="font-medium text-gray-700">Female Professionals</span>
-                  <span className="font-bold text-[#009edb]">42%</span>
+              {(aboutContent?.peopleStats?.length > 0 ? aboutContent.peopleStats : [
+                { label: 'Female Professionals', percentage: 42 },
+                { label: 'Male Professionals', percentage: 58 }
+              ]).map((stat: any, idx: number) => (
+                <div key={idx}>
+                  <div className="flex justify-between mb-2">
+                    <span className="font-medium text-gray-700">{stat.label}</span>
+                    <span className="font-bold text-[#009edb]">{stat.percentage}%</span>
+                  </div>
+                  <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="h-full bg-[#009edb]" style={{ width: `${stat.percentage}%` }}></div>
+                  </div>
                 </div>
-                <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
-                  <div className="h-full bg-[#009edb]" style={{ width: '42%' }}></div>
-                </div>
-              </div>
-              <div>
-                <div className="flex justify-between mb-2">
-                  <span className="font-medium text-gray-700">Male Professionals</span>
-                  <span className="font-bold text-[#009edb]">58%</span>
-                </div>
-                <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
-                  <div className="h-full bg-[#009edb]" style={{ width: '58%' }}></div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
@@ -386,14 +451,14 @@ Today, with decades of trust earned and hundreds of success stories written, we 
       <div className="w-full bg-[#009edb]/5 py-20">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
-            Looking Ahead  
+            {aboutContent?.futureTitle || 'Looking Ahead'}
           </h2>
-          <span className="text-3xl md:text-4xl font-bold text-[#009edb]">Our Vision for the Future</span>
+          <span className="text-3xl md:text-4xl font-bold text-[#009edb]">{aboutContent?.futureSubtitle || 'Our Vision for the Future'}</span>
           <p className="text-lg text-gray-600 leading-relaxed mt-8 mb-8">
-            As Asija & Associates LLP continues to expand its footprint across India and beyond, we remain deeply committed to our founding values of integrity, excellence, and professional independence. With a growing global presence, a strengthened leadership team, and a dynamic workforce, we are poised to embrace new opportunities in audit, advisory, compliance, systems, and development-sector consulting.
+            {aboutContent?.futureDescription1 || 'As Asija & Associates LLP continues to expand its footprint across India and beyond, we remain deeply committed to our founding values of integrity, excellence, and professional independence. With a growing global presence, a strengthened leadership team, and a dynamic workforce, we are poised to embrace new opportunities in audit, advisory, compliance, systems, and development-sector consulting.'}
           </p>
           <p className="text-lg text-gray-600 leading-relaxed font-medium">
-            Our journey ahead is guided by innovation, technology-driven solutions, and a steadfast focus on delivering measurable value to clients. We look forward with pride, purpose, and confidence as we continue to build a firm that stands for trust, quality, and global capability.
+            {aboutContent?.futureDescription2 || 'Our journey ahead is guided by innovation, technology-driven solutions, and a steadfast focus on delivering measurable value to clients. We look forward with pride, purpose, and confidence as we continue to build a firm that stands for trust, quality, and global capability.'}
           </p>
         </div>
       </div>
@@ -405,4 +470,3 @@ Today, with decades of trust earned and hundreds of success stories written, we 
   );
 }
 
-export default page;

@@ -225,6 +225,14 @@ type AboutContentData = {
   description2: string;
   description3: string;
   description4: string;
+  peopleTitle?: string;
+  peopleDescription1?: string;
+  peopleDescription2?: string;
+  peopleStats?: { label: string; percentage: number }[];
+  futureTitle?: string;
+  futureSubtitle?: string;
+  futureDescription1?: string;
+  futureDescription2?: string;
 };
 
 type HeroContentData = {
@@ -333,6 +341,560 @@ type JobPostItem = {
   description: string;
   requirements: string[];
   isActive: boolean;
+};
+
+const AboutTab = ({ showTimeline = true }: { showTimeline?: boolean }) => {
+  // Timeline State
+  const [timelineItems, setTimelineItems] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    year: '',
+    heading: '',
+    description: '',
+    images: [] as string[],
+    order: 0
+  });
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+
+  // Content State
+  const [aboutContent, setAboutContent] = useState<AboutContentData>({
+    title: '',
+    quote: '',
+    description1: '',
+    description2: '',
+    description3: '',
+    description4: '',
+    peopleTitle: 'Our People – The Heart of Our Firm',
+    peopleDescription1: 'Today, our firm proudly comprises more than 100 professionals, including qualified chartered accountants, semi-qualified managers, and skilled executives. This diverse and talented team represents a balanced mix of experience, technical capability, and youthful energy.',
+    peopleDescription2: 'This inclusive workforce drives innovation, collaboration, and excellence across all our assignments.',
+    peopleStats: [
+      { label: 'Female Professionals', percentage: 42 },
+      { label: 'Male Professionals', percentage: 58 }
+    ],
+    futureTitle: 'Looking Ahead',
+    futureSubtitle: 'Our Vision for the Future',
+    futureDescription1: 'As Asija & Associates LLP continues to expand its footprint across India and beyond, we remain deeply committed to our founding values of integrity, excellence, and professional independence. With a growing global presence, a strengthened leadership team, and a dynamic workforce, we are poised to embrace new opportunities in audit, advisory, compliance, systems, and development-sector consulting.',
+    futureDescription2: 'Our journey ahead is guided by innovation, technology-driven solutions, and a steadfast focus on delivering measurable value to clients. We look forward with pride, purpose, and confidence as we continue to build a firm that stands for trust, quality, and global capability.'
+  });
+  const [contentMessage, setContentMessage] = useState<string | null>(null);
+  const [contentSubmitting, setContentSubmitting] = useState(false);
+
+  const fetchTimeline = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/admin/about-timeline');
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        setTimelineItems(data);
+      }
+    } catch (error) {
+      console.error('Failed to fetch timeline', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchAboutContent = async () => {
+    try {
+      const res = await fetch('/api/admin/about-content', { cache: 'no-store' });
+      const data = await res.json();
+      if (data && !data.error) {
+        setAboutContent(prev => ({
+          ...prev,
+          ...data,
+          // Ensure nested objects/arrays are also merged if necessary, or default if missing in data
+          peopleStats: data.peopleStats && data.peopleStats.length > 0 ? data.peopleStats : prev.peopleStats
+        }));
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchTimeline();
+    fetchAboutContent();
+  }, []);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setImageFiles(Array.from(e.target.files));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const uploadedImages = [...formData.images];
+      
+      if (imageFiles.length > 0) {
+        for (const file of imageFiles) {
+          const form = new FormData();
+          form.append('file', file);
+          const res = await fetch('/api/upload', { method: 'POST', body: form });
+          if (res.ok) {
+            const data = await res.json();
+            uploadedImages.push(data.secure_url);
+          }
+        }
+      }
+
+      const payload = { ...formData, images: uploadedImages };
+      const url = editingId ? `/api/admin/about-timeline/${editingId}` : '/api/admin/about-timeline';
+      const method = editingId ? 'PUT' : 'POST';
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (res.ok) {
+        setFormData({ year: '', heading: '', description: '', images: [], order: 0 });
+        setImageFiles([]);
+        setEditingId(null);
+        fetchTimeline();
+      }
+    } catch (error) {
+      console.error('Error saving timeline item', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSectionSubmit = async (e: React.FormEvent, sectionName: string) => {
+    e.preventDefault();
+    setContentSubmitting(true);
+    try {
+      const res = await fetch('/api/admin/about-content', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(aboutContent),
+      });
+      
+      if (res.ok) {
+        setContentMessage(`${sectionName} updated successfully`);
+        setTimeout(() => setContentMessage(null), 3000);
+      } else {
+        setContentMessage(`Failed to update ${sectionName}`);
+      }
+    } catch (err) {
+      console.error(err);
+      setContentMessage(`Error updating ${sectionName}`);
+    } finally {
+      setContentSubmitting(false);
+    }
+  };
+
+  const handleContentChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setAboutContent(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleEdit = (item: any) => {
+    setEditingId(item._id);
+    setFormData({
+      year: item.year,
+      heading: item.heading,
+      description: item.description,
+      images: item.images || [],
+      order: item.order || 0
+    });
+    // Scroll to timeline form
+    document.getElementById('timeline-form')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Delete this timeline item?')) return;
+    try {
+      await fetch(`/api/admin/about-timeline/${id}`, { method: 'DELETE' });
+      fetchTimeline();
+    } catch (error) {
+      console.error('Error deleting item', error);
+    }
+  };
+
+  const removeImage = (index: number) => {
+    const newImages = [...formData.images];
+    newImages.splice(index, 1);
+    setFormData({ ...formData, images: newImages });
+  };
+
+  const handleStatChange = (index: number, field: 'label' | 'percentage', value: string | number) => {
+    const newStats = [...(aboutContent.peopleStats || [])];
+    if (!newStats[index]) newStats[index] = { label: '', percentage: 0 };
+    // @ts-ignore
+    newStats[index] = { ...newStats[index], [field]: value };
+    setAboutContent(prev => ({ ...prev, peopleStats: newStats }));
+  };
+
+  return (
+    <div className="space-y-12">
+      {/* Content Section */}
+      <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <h2 className="text-xl font-bold mb-6">About Page Content</h2>
+        {contentMessage && (
+          <div className={`p-4 rounded-xl text-sm mb-6 flex items-center gap-3 ${contentMessage.includes('success') ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-red-50 text-red-700 border border-red-100'}`}>
+            <div className={`w-2 h-2 rounded-full ${contentMessage.includes('success') ? 'bg-green-500' : 'bg-red-500'}`} />
+            {contentMessage}
+          </div>
+        )}
+        <div className="space-y-8">
+          {/* About Content Form */}
+          <form onSubmit={(e) => handleSectionSubmit(e, 'About Content')} className="space-y-6">
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Title</label>
+              <input 
+                name="title"
+                value={aboutContent.title} 
+                onChange={handleContentChange} 
+                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Quote</label>
+              <textarea 
+                name="quote"
+                value={aboutContent.quote} 
+                onChange={handleContentChange} 
+                rows={2}
+                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
+                required
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Description 1</label>
+                <textarea 
+                  name="description1"
+                  value={aboutContent.description1} 
+                  onChange={handleContentChange} 
+                  rows={4}
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Description 2</label>
+                <textarea 
+                  name="description2"
+                  value={aboutContent.description2} 
+                  onChange={handleContentChange} 
+                  rows={4}
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Description 3</label>
+                <textarea 
+                  name="description3"
+                  value={aboutContent.description3} 
+                  onChange={handleContentChange} 
+                  rows={4}
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Description 4</label>
+                <textarea 
+                  name="description4"
+                  value={aboutContent.description4} 
+                  onChange={handleContentChange} 
+                  rows={4}
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
+                />
+              </div>
+            </div>
+            <div className="flex justify-end">
+              <button 
+                type="submit" 
+                disabled={contentSubmitting}
+                className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/20 hover:bg-blue-700 hover:shadow-blue-500/30 focus:ring-4 focus:ring-blue-200 transition-all disabled:opacity-70 disabled:cursor-not-allowed transform active:scale-[0.98]"
+              >
+                {contentSubmitting ? 'Saving...' : 'Update About Content'}
+              </button>
+            </div>
+          </form>
+
+          {/* Our People Section */}
+          <form onSubmit={(e) => handleSectionSubmit(e, 'Our People Section')} className="space-y-6 border-t border-gray-100 pt-6">
+            <h3 className="text-lg font-semibold mb-4 text-gray-800">Our People Section</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="col-span-2">
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Section Title</label>
+                <input 
+                  name="peopleTitle"
+                  value={aboutContent.peopleTitle || ''} 
+                  onChange={handleContentChange} 
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Description 1</label>
+                <textarea 
+                  name="peopleDescription1"
+                  value={aboutContent.peopleDescription1 || ''} 
+                  onChange={handleContentChange} 
+                  rows={3}
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Description 2</label>
+                <textarea 
+                  name="peopleDescription2"
+                  value={aboutContent.peopleDescription2 || ''} 
+                  onChange={handleContentChange} 
+                  rows={3}
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
+                />
+              </div>
+              
+              <div className="col-span-2">
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Team Composition Stats</label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {[0, 1].map((idx) => (
+                    <div key={idx} className="p-4 bg-gray-50 rounded-xl border border-gray-200">
+                      <div className="mb-3">
+                        <label className="block text-xs text-gray-500 mb-1">Label</label>
+                        <input 
+                          value={aboutContent.peopleStats?.[idx]?.label || ''}
+                          onChange={(e) => handleStatChange(idx, 'label', e.target.value)}
+                          className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm"
+                          placeholder="e.g. Female Professionals"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-500 mb-1">Percentage (%)</label>
+                        <input 
+                          type="number"
+                          value={aboutContent.peopleStats?.[idx]?.percentage || 0}
+                          onChange={(e) => handleStatChange(idx, 'percentage', parseInt(e.target.value))}
+                          className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-end">
+              <button 
+                type="submit" 
+                disabled={contentSubmitting}
+                className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/20 hover:bg-blue-700 hover:shadow-blue-500/30 focus:ring-4 focus:ring-blue-200 transition-all disabled:opacity-70 disabled:cursor-not-allowed transform active:scale-[0.98]"
+              >
+                {contentSubmitting ? 'Saving...' : 'Update People Section'}
+              </button>
+            </div>
+          </form>
+
+          {/* Looking Ahead Section */}
+          <form onSubmit={(e) => handleSectionSubmit(e, 'Looking Ahead Section')} className="space-y-6 border-t border-gray-100 pt-6">
+            <h3 className="text-lg font-semibold mb-4 text-gray-800">Looking Ahead Section</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Main Title</label>
+                <input 
+                  name="futureTitle"
+                  value={aboutContent.futureTitle || ''} 
+                  onChange={handleContentChange} 
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Subtitle</label>
+                <input 
+                  name="futureSubtitle"
+                  value={aboutContent.futureSubtitle || ''} 
+                  onChange={handleContentChange} 
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Description 1</label>
+                <textarea 
+                  name="futureDescription1"
+                  value={aboutContent.futureDescription1 || ''} 
+                  onChange={handleContentChange} 
+                  rows={4}
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Description 2</label>
+                <textarea 
+                  name="futureDescription2"
+                  value={aboutContent.futureDescription2 || ''} 
+                  onChange={handleContentChange} 
+                  rows={4}
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
+                />
+              </div>
+            </div>
+            <div className="flex justify-end">
+              <button 
+                type="submit" 
+                disabled={contentSubmitting}
+                className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/20 hover:bg-blue-700 hover:shadow-blue-500/30 focus:ring-4 focus:ring-blue-200 transition-all disabled:opacity-70 disabled:cursor-not-allowed transform active:scale-[0.98]"
+              >
+                {contentSubmitting ? 'Saving...' : 'Update Future Section'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      {showTimeline && (
+        <>
+      <hr className="border-gray-200" />
+
+      {/* Timeline Section */}
+      <div id="timeline-form" className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <h2 className="text-xl font-bold mb-4">{editingId ? 'Edit Timeline Item' : 'Add Timeline Item'}</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Year / Title</label>
+              <input
+                type="text"
+                value={formData.year}
+                onChange={e => setFormData({ ...formData, year: e.target.value })}
+                className="w-full p-2 border rounded-lg"
+                placeholder="e.g. 1986 – The Beginning"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Order</label>
+              <input
+                type="number"
+                value={formData.order}
+                onChange={e => setFormData({ ...formData, order: parseInt(e.target.value) })}
+                className="w-full p-2 border rounded-lg"
+              />
+            </div>
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Heading</label>
+            <input
+              type="text"
+              value={formData.heading}
+              onChange={e => setFormData({ ...formData, heading: e.target.value })}
+              className="w-full p-2 border rounded-lg"
+              placeholder="e.g. Foundation by CA Uttam Chand Asija"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <textarea
+              value={formData.description}
+              onChange={e => setFormData({ ...formData, description: e.target.value })}
+              className="w-full p-2 border rounded-lg"
+              rows={4}
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Images</label>
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={handleImageChange}
+              className="w-full p-2 border rounded-lg"
+            />
+            {formData.images.length > 0 && (
+              <div className="flex gap-2 mt-2 flex-wrap">
+                {formData.images.map((img, idx) => (
+                  <div key={idx} className="relative w-20 h-20">
+                    <img src={img} alt="" className="w-full h-full object-cover rounded" />
+                    <button
+                      type="button"
+                      onClick={() => removeImage(idx)}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="flex gap-2">
+            <button
+              type="submit"
+              disabled={loading}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+            >
+              {loading ? 'Saving...' : (editingId ? 'Update Item' : 'Add Item')}
+            </button>
+            {editingId && (
+              <button
+                type="button"
+                onClick={() => {
+                  setEditingId(null);
+                  setFormData({ year: '', heading: '', description: '', images: [], order: 0 });
+                  setImageFiles([]);
+                }}
+                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+              >
+                Cancel
+              </button>
+            )}
+          </div>
+        </form>
+      </div>
+
+      <div className="space-y-4">
+        {timelineItems.map((item) => (
+          <div key={item._id} className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 flex justify-between items-start">
+            <div>
+              <h3 className="font-bold text-lg">{item.year}</h3>
+              <p className="text-blue-600 font-medium">{item.heading}</p>
+              <p className="text-gray-600 mt-1 text-sm">{item.description}</p>
+              {item.images && item.images.length > 0 && (
+                <div className="flex gap-2 mt-2">
+                  {item.images.map((img: string, idx: number) => (
+                    <img key={idx} src={img} alt="" className="w-16 h-16 object-cover rounded" />
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => handleEdit(item)}
+                className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
+              >
+                <Pencil className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => handleDelete(item._id)}
+                className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+        </>
+      )}
+    </div>
+  );
 };
 
 export default function AdminPage() {
@@ -482,34 +1044,7 @@ export default function AdminPage() {
 
   const [serviceHierarchy, setServiceHierarchy] = useState<HierarchyItem[]>([]);
 
-  const [aboutContent, setAboutContent] = useState<AboutContentData>({
-    title: '',
-    quote: '',
-    description1: '',
-    description2: '',
-    description3: '',
-    description4: ''
-  });
 
-  const fetchAboutContent = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch('/api/admin/about-content');
-      const data = await res.json();
-      if (data && !data.error) {
-        setAboutContent(data);
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleAboutContentChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setAboutContent(prev => ({ ...prev, [name]: value }));
-  };
 
   const fetchHeroContent = async () => {
     setLoading(true);
@@ -567,29 +1102,7 @@ export default function AdminPage() {
     }
   };
 
-  const handleAboutContentSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-    try {
-      const res = await fetch('/api/admin/about-content', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(aboutContent),
-      });
-      
-      if (res.ok) {
-        setMessage('About content updated successfully');
-        setTimeout(() => setMessage(null), 3000);
-      } else {
-        setMessage('Failed to update content');
-      }
-    } catch (err) {
-      console.error(err);
-      setMessage('Error updating content');
-    } finally {
-      setSubmitting(false);
-    }
-  };
+
 
   const fetchFaqs = async () => {
     setLoading(true);
@@ -1159,7 +1672,7 @@ export default function AdminPage() {
     if (activeTab === 'team') fetchItems();
     if (activeTab === 'industries') fetchIndustries();
     if (activeTab === 'services') fetchServices();
-    if (activeTab === 'about-content') fetchAboutContent();
+
     if (activeTab === 'about-cards') fetchAboutCards();
     if (activeTab === 'hero-content') fetchHeroContent();
     if (activeTab === 'contact-content') fetchContactContent();
@@ -1915,6 +2428,13 @@ export default function AdminPage() {
             >
               <LayoutDashboard className="w-5 h-5 mr-3" />
               Dashboard
+            </button>
+            <button 
+              onClick={() => { setActiveTab('about'); setMobileMenuOpen(false); }}
+              className={`flex items-center w-full px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${activeTab === 'about' ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
+            >
+              <FileText className="w-5 h-5 mr-3" />
+              About Page
             </button>
             <button 
               onClick={() => { setActiveTab('team'); setMobileMenuOpen(false); }}
@@ -2750,107 +3270,9 @@ export default function AdminPage() {
             </div>
           )}
 
-          {activeTab === 'about-content' && (
-            <div className="space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900 tracking-tight">About Content</h2>
-                  <p className="text-gray-500 mt-1 text-sm">Manage the main content of the About page.</p>
-                </div>
-              </div>
 
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-                {message && (
-                  <div className={`p-4 rounded-xl text-sm mb-6 flex items-center gap-3 ${message.includes('success') ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-red-50 text-red-700 border border-red-100'}`}>
-                    <div className={`w-2 h-2 rounded-full ${message.includes('success') ? 'bg-green-500' : 'bg-red-500'}`} />
-                    {message}
-                  </div>
-                )}
 
-                <form onSubmit={handleAboutContentSubmit} className="space-y-6">
-                  <div>
-                    <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Title</label>
-                    <input 
-                      name="title"
-                      value={aboutContent.title} 
-                      onChange={handleAboutContentChange} 
-                      className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Quote</label>
-                    <textarea 
-                      name="quote"
-                      value={aboutContent.quote} 
-                      onChange={handleAboutContentChange} 
-                      rows={2}
-                      className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
-                      required
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Description 1</label>
-                      <textarea 
-                        name="description1"
-                        value={aboutContent.description1} 
-                        onChange={handleAboutContentChange} 
-                        rows={4}
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Description 2</label>
-                      <textarea 
-                        name="description2"
-                        value={aboutContent.description2} 
-                        onChange={handleAboutContentChange} 
-                        rows={4}
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Description 3</label>
-                      <textarea 
-                        name="description3"
-                        value={aboutContent.description3} 
-                        onChange={handleAboutContentChange} 
-                        rows={4}
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Description 4</label>
-                      <textarea 
-                        name="description4"
-                        value={aboutContent.description4} 
-                        onChange={handleAboutContentChange} 
-                        rows={4}
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex justify-end">
-                    <button 
-                      type="submit" 
-                      disabled={submitting}
-                      className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/20 hover:bg-blue-700 hover:shadow-blue-500/30 focus:ring-4 focus:ring-blue-200 transition-all disabled:opacity-70 disabled:cursor-not-allowed transform active:scale-[0.98] flex items-center gap-2"
-                    >
-                      {submitting ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Save Changes'}
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          )}
+          {(activeTab === 'about' || activeTab === 'about-content') && <AboutTab showTimeline={activeTab === 'about'} />}
 
           {activeTab === 'about-cards' && (
             <div className="space-y-6">
