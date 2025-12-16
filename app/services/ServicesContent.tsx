@@ -342,7 +342,7 @@ export default function ServicesContent() {
                     <InteractiveHoverButton 
                       text="Schedule a Consultation" 
                       className="w-full bg-[#009edb] text-white border-[#009edb]"
-                      onClick={() => window.location.href = '#contact'}
+                      onClick={() => window.location.href = '/contact'}
                     />
                   </div>
                 </div>

@@ -13,12 +13,12 @@ function CTA() {
             <InteractiveHoverButton 
               text="Get Started Now" 
               className="bg-[#009edb] text-white border-[#009edb]"
-              onClick={() => window.location.href = '#contact'}
+              onClick={() => window.location.href = '/contact'}
             />
             <InteractiveHoverButton 
               text="Call Us Today" 
               className="bg-transparent  border-[#009edb] hover:bg-[#009edb] " 
-              onClick={() => window.location.href = 'tel:05224004652'}
+              onClick={() => window.location.href = '/contact'}
             />
           </div>
         </div>

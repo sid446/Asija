@@ -90,7 +90,7 @@ function Hero() {
             <InteractiveHoverButton 
               text={content.contactUs} 
               className="bg-[#1e1e1e]! text-[#009edb] border-[#009edb]"
-              onClick={() => window.location.href = '/#contact'}
+              onClick={() => router.push('/contact')}
             />
           </div>
         </div>

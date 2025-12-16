@@ -242,12 +242,12 @@ export default function TeamAnimated() {
         />
       </Link>
 
-      <a href="tel:+911234567890">
+      <Link href="/contact">
         <InteractiveHoverButton
           text="Call Us Today"
           className="px-8 py-3 bg-transparent border-2 border-[#009edb] text-[#009edb] hover:bg-[#009edb] hover:text-white"
         />
-      </a>
+      </Link>
     </div>
 
     {/* Trust Badges / Logos (Optional) */}
