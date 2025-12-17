@@ -26,6 +26,7 @@ import {
   PlusCircle,
   MinusCircle
 } from 'lucide-react';
+import { getOptimizedImageUrl } from '@/lib/utils';
 
 type SectionItem = {
   title: string;
@@ -319,6 +320,8 @@ type GalleryItem = {
   _id: string;
   title: string;
   date: string;
+  category: string;
+  year: string;
   description: string;
   thumbnail?: string;
   images: string[];
@@ -1008,6 +1011,8 @@ export default function AdminPage() {
   const [galleryFormData, setGalleryFormData] = useState({
     title: '',
     date: '',
+    category: 'Event',
+    year: new Date().getFullYear().toString(),
     description: '',
     thumbnail: '',
     images: [] as string[]
@@ -1342,7 +1347,15 @@ export default function AdminPage() {
 
       if (res.ok) {
         setMessage(editingGalleryId ? 'Gallery event updated successfully!' : 'Gallery event added successfully!');
-        setGalleryFormData({ title: '', date: '', description: '', thumbnail: '', images: [] });
+        setGalleryFormData({ 
+          title: '', 
+          date: '', 
+          category: 'Event',
+          year: new Date().getFullYear().toString(),
+          description: '', 
+          thumbnail: '', 
+          images: [] 
+        });
         setGalleryImageFiles([]);
         setGalleryThumbnailFile(null);
         setEditingGalleryId(null);
@@ -3995,6 +4008,33 @@ export default function AdminPage() {
                         />
                       </div>
                       <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                        <select
+                          value={galleryFormData.category}
+                          onChange={(e) => setGalleryFormData({ ...galleryFormData, category: e.target.value })}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                          required
+                        >
+                          <option value="Milestone and Achievement">Milestone and Achievement</option>
+                          <option value="Foundation">Foundation</option>
+                          <option value="Seminar">Seminar</option>
+                          <option value="Annual Day">Annual Day</option>
+                          <option value="Event">Event</option>
+                          <option value="Festival">Festival</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Year</label>
+                        <input
+                          type="text"
+                          value={galleryFormData.year}
+                          onChange={(e) => setGalleryFormData({ ...galleryFormData, year: e.target.value })}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                          required
+                          placeholder="e.g. 2023"
+                        />
+                      </div>
+                      <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
                         <textarea
                           value={galleryFormData.description}
@@ -4061,7 +4101,7 @@ export default function AdminPage() {
                           <div className="grid grid-cols-3 gap-2">
                             {galleryFormData.images.map((img, idx) => (
                               <div key={idx} className="relative group">
-                                <img src={img} alt={`Gallery ${idx}`} className="w-full h-20 object-cover rounded-lg" />
+                                <img src={getOptimizedImageUrl(img, 200)} alt={`Gallery ${idx}`} className="w-full h-20 object-cover rounded-lg" />
                                 <button
                                   type="button"
                                   onClick={() => {
@@ -4098,7 +4138,7 @@ export default function AdminPage() {
                             type="button"
                             onClick={() => {
                               setEditingGalleryId(null);
-                              setGalleryFormData({ title: '', date: '', description: '', thumbnail: '', images: [] });
+                              setGalleryFormData({ title: '', date: '', category: 'Event', year: new Date().getFullYear().toString(), description: '', thumbnail: '', images: [] });
                               setGalleryImageFiles([]);
                             }}
                             className="px-4 py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition-all"
@@ -4131,11 +4171,17 @@ export default function AdminPage() {
                           <div className="flex-1">
                             <div className="flex items-center gap-3 mb-2">
                               {item.thumbnail && (
-                                <img src={item.thumbnail} alt="Thumbnail" className="w-10 h-10 object-cover rounded-lg" />
+                                <img src={getOptimizedImageUrl(item.thumbnail, 100)} alt="Thumbnail" className="w-10 h-10 object-cover rounded-lg" />
                               )}
                               <h3 className="font-semibold text-gray-900">{item.title}</h3>
                               <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-md">
                                 {new Date(item.date).toLocaleDateString()}
+                              </span>
+                              <span className="px-2 py-1 bg-blue-50 text-blue-600 text-xs rounded-md">
+                                {item.category || 'Uncategorized'}
+                              </span>
+                              <span className="px-2 py-1 bg-purple-50 text-purple-600 text-xs rounded-md">
+                                {item.year || 'No Year'}
                               </span>
                             </div>
                             <p className="text-gray-600 text-sm mb-4">{item.description}</p>
@@ -4145,7 +4191,7 @@ export default function AdminPage() {
                               {item.images.slice(0, 6).map((img, idx) => (
                                 <img 
                                   key={idx} 
-                                  src={img} 
+                                  src={getOptimizedImageUrl(img, 200)} 
                                   alt={item.title} 
                                   className="w-full h-16 object-cover rounded-lg bg-gray-100"
                                 />
@@ -4164,6 +4210,8 @@ export default function AdminPage() {
                                 setGalleryFormData({
                                   title: item.title,
                                   date: item.date.split('T')[0],
+                                  category: item.category || 'Event',
+                                  year: item.year || new Date(item.date).getFullYear().toString(),
                                   description: item.description,
                                   thumbnail: item.thumbnail || '',
                                   images: item.images

@@ -19,12 +19,6 @@ const offices = [
     address: "B-1203 Mantri Greens Apartment, Next to Mantri Square Mall, Malleshwaram, Bengaluru 560003",
     phone: "+91-8860082758",
     email: "admin@asija.in"
-  },
-  {
-    title: "BRANCH OFFICE - JAIPUR",
-    address: "Mehai Building Flat No.-G-1, A-43 Mangalam City Village Hatoj Kalwar Road, Jaipur - 302012",
-    phone: "+91-9473560308",
-    email: "admin@asija.in"
   }
 ];
 

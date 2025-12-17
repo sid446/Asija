@@ -4,6 +4,7 @@ import { useTheme } from './ThemeProvider';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation, LanguageSwitcher } from './TranslationProvider';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useSession, signOut } from "next-auth/react";
 import { LogIn } from 'lucide-react';
 import { InteractiveHoverButton } from './ui/InteractiveHoverButton';
@@ -286,6 +287,7 @@ const NavItem = ({ label, isIcon, icon, isActive, hasDropdown, href }: NavItemPr
 /* --------------------------------------------------------------- */
 export default function Navbar() {
   const { t } = useTranslation();
+  const router = useRouter();
   const { theme } = useTheme();
   const { data: session } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -323,11 +325,12 @@ export default function Navbar() {
           } else if ('title' in sub) {
             // This is a service item with title and items array
             return (
-              <div key={(sub as any).title} className="space-y-3">
+              <div key={(sub as any).title} className="group">
                 <Link 
                   href={(sub as any).href || '/services'}
-                  className={`text-[#009edb] font-semibold text-base mb-1 ${theme === 'light' ? 'hover:text-black' : 'hover:text-white'} transition-colors block`}
+                  className={`${theme === 'light' ? 'text-gray-900' : 'text-white'} group-hover:text-[#009edb] font-semibold text-base mb-1 transition-all flex items-center gap-2 py-1 hover:translate-x-1`}
                 >
+                  <span className="w-1.5 h-1.5 bg-[#009edb] rounded-full opacity-0 group-hover:opacity-100 transition-all" />
                   {(sub as any).title}
                 </Link>
               </div>
@@ -382,7 +385,7 @@ export default function Navbar() {
                 <div key={(sub as any).title} className="space-y-2">
                   <Link 
                     href={(sub as any).href || '/services'}
-                    className="text-[#009edb] font-semibold text-sm block hover:underline"
+                    className={`${theme === 'light' ? 'text-gray-900' : 'text-white'} font-semibold text-sm block hover:text-[#009edb] transition-colors`}
                   >
                     {(sub as any).title}
                   </Link>
@@ -665,6 +668,10 @@ export default function Navbar() {
                     <InteractiveHoverButton
                       text={t('common.learnMore')}
                       className="w-auto"
+                      onClick={() => {
+                        const href = findMenuItem(hoveredItem)?.href;
+                        if (href) router.push(href);
+                      }}
                     />
                   </div>
                 </div>

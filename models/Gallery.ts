@@ -9,6 +9,14 @@ const GallerySchema = new mongoose.Schema({
     type: Date,
     required: [true, 'Please provide a date for the event'],
   },
+  category: {
+    type: String,
+    required: [true, 'Please select a category'],
+  },
+  year: {
+    type: String,
+    required: [true, 'Please provide a year'],
+  },
   description: {
     type: String,
   },
