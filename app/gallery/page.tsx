@@ -136,9 +136,9 @@ export default function GalleryPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: idx * 0.1 }}
                         onClick={() => setSelectedCategory(category)}
-                        className="group cursor-pointer bg-gray-50 dark:bg-gray-900 rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800 hover:shadow-lg transition-all"
+                        className="group cursor-pointer bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-gray-100 dark:border-slate-700 hover:shadow-lg transition-all"
                       >
-                        <div className="aspect-video bg-gray-200 dark:bg-gray-800 relative overflow-hidden">
+                        <div className="aspect-video bg-gray-100 dark:bg-slate-700 relative overflow-hidden">
                           {thumbnail ? (
                             <img 
                               src={getOptimizedImageUrl(thumbnail, 600)} 
@@ -178,9 +178,9 @@ export default function GalleryPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: idx * 0.1 }}
                         onClick={() => setSelectedYear(year)}
-                        className="group cursor-pointer bg-gray-50 dark:bg-gray-900 rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800 hover:shadow-lg transition-all"
+                        className="group cursor-pointer bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-gray-100 dark:border-slate-700 hover:shadow-lg transition-all"
                       >
-                        <div className="aspect-video bg-gray-200 dark:bg-gray-800 relative overflow-hidden">
+                        <div className="aspect-video bg-gray-100 dark:bg-slate-800 relative overflow-hidden">
                           {thumbnail ? (
                             <img 
                               src={getOptimizedImageUrl(thumbnail, 600)} 
@@ -215,7 +215,7 @@ export default function GalleryPage() {
                         className="group cursor-pointer flex flex-col h-full"
                         onClick={() => setSelectedEvent(event)}
                       >
-                        <div className="relative aspect-square overflow-hidden bg-gray-100 dark:bg-gray-800 mb-4 shadow-sm group-hover:shadow-md transition-shadow rounded-xl">
+                        <div className="relative aspect-square overflow-hidden bg-gray-100 dark:bg-slate-800 mb-4 shadow-sm group-hover:shadow-md transition-shadow rounded-xl">
                           {(event.thumbnail || event.images.length > 0) ? (
                             <img
                               src={getOptimizedImageUrl(event.thumbnail || event.images[0], 600)}

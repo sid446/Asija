@@ -49,10 +49,10 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
       if (meta) meta.content = '#ffffff';
     } else {
       root.setAttribute('data-theme', 'dark');
-      body.style.backgroundColor = '#000000';
+      body.style.backgroundColor = '#020617';
       body.style.color = '#ffffff';
       const meta = document.querySelector('meta[name=theme-color]') as HTMLMetaElement | null;
-      if (meta) meta.content = '#000000';
+      if (meta) meta.content = '#020617';
     }
 
     try {
