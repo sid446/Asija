@@ -6,25 +6,48 @@ import Link from 'next/link';
 
 const Footer = () => {
   const { t } = useTranslation();
+  const [services, setServices] = React.useState<{ label: string; href: string }[]>([]);
+  const [regions, setRegions] = React.useState<{ label: string; href: string }[]>([]);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch Services
+        const servicesRes = await fetch('/api/services');
+        if (servicesRes.ok) {
+          const servicesData = await servicesRes.json();
+          setServices(servicesData.map((s: any) => ({
+            label: s.title,
+            href: `/services?service=${encodeURIComponent(s.title)}`
+          })).slice(0, 6)); // Limit to 6
+        }
+
+        // Fetch Regions
+        const regionsRes = await fetch('/api/regions');
+        if (regionsRes.ok) {
+          const regionsData = await regionsRes.json();
+          setRegions(regionsData.map((r: any) => ({
+            label: r.name,
+            href: `/global-services/${r.slug}`
+          })));
+        }
+      } catch (error) {
+        console.error('Error fetching footer data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const footerLinks = {
     company: [
-      { label: t('navbar.aboutUs'), href: '/4about' },
-      { label: t('navbar.services'), href: '/services' },
-      { label: t('navbar.industries'), href: '/industries' },
-      { label: t('navbar.career'), href: '/career' },
-      { label: 'Our Team / Strength', href: '/team' }
-    ],
-    services: [
-      { label: t('services.auditAssurance'), href: '/services' },
-      { label: t('services.directTax'), href: '/services' },
-      { label: t('services.corporateLaw'), href: '/services' },
-      { label: t('services.consultancy'), href: '/services' }
+      { label: t('navbar.aboutUs'), href: '/about' },
+      { label: 'Our Team / Strength', href: '/team' },
+      { label: 'Alumni', href: '/alumni' },
+      { label: 'Gallery', href: '/gallery' }
     ],
     contact: [
-      { label: t('footer.officeLocations'), href: '/contact' },
-      { label: t('footer.contactNo'), href: '/contact' },
-      { label: t('footer.emails'), href: '/contact' },
+      { label: t('footer.officeLocations'), href: '/locations' },
       { label: t('footer.enquiryForm'), href: '/contact' }
     ]
   };
@@ -32,7 +55,7 @@ const Footer = () => {
   return (
   <footer className="bg-surface w-full ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-20 py-12 sm:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-8 sm:mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 sm:gap-12 mb-8 sm:mb-12">
           {/* Brand Column */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -126,7 +149,29 @@ const Footer = () => {
           >
             <h3 className="text-theme font-semibold text-lg mb-4">{t('footer.services') || 'Services'}</h3>
             <ul className="space-y-3">
-              {footerLinks.services.map((link, index) => (
+              {services.map((link, index) => (
+                <li key={index}>
+                  <a
+                    href={link.href}
+                    className="text-muted hover:text-accent transition-all duration-300 text-sm sm:text-base inline-block hover:translate-x-1"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+
+          {/* Global Links */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <h3 className="text-theme font-semibold text-lg mb-4">Global</h3>
+            <ul className="space-y-3">
+              {regions.map((link, index) => (
                 <li key={index}>
                   <a
                     href={link.href}
@@ -144,10 +189,10 @@ const Footer = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ duration: 0.6, delay: 0.35 }}
           >
             <h3 className="text-theme font-semibold text-lg mb-4">{t('footer.contact') || 'Contact'}</h3>
-            <ul className="space-y-3">
+            <ul className="space-y-3 mb-8">
               {footerLinks.contact.map((link, index) => (
                 <li key={index}>
                   <a
@@ -158,6 +203,26 @@ const Footer = () => {
                   </a>
                 </li>
               ))}
+            </ul>
+
+            <h3 className="text-theme font-semibold text-lg mb-4">{t('navbar.career') || 'Career'}</h3>
+            <ul className="space-y-3">
+              <li>
+                <Link
+                  href="/career"
+                  className="text-muted hover:text-accent transition-all duration-300 text-sm sm:text-base inline-block hover:translate-x-1"
+                >
+                  Apply Form
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/career"
+                  className="text-muted hover:text-accent transition-all duration-300 text-sm sm:text-base inline-block hover:translate-x-1"
+                >
+                  Current Openings
+                </Link>
+              </li>
             </ul>
           </motion.div>
         </div>

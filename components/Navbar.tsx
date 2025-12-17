@@ -340,7 +340,7 @@ export default function Navbar() {
           if (typeof sub === 'string') {
             return (
               <div key={index} className="group">
-                <button className={`text-left ${theme === 'light' ? 'text-gray-700' : 'text-white/90'} group-hover:text-[#009edb] text-base font-medium transition-all flex items-center gap-2 py-1 hover:translate-x-1`}>
+                <button className={`text-left ${theme === 'light' ? 'text-gray-700' : 'text-white/90'} group-hover:text-[#009edb] text-base font-bold transition-all flex items-center gap-2 py-1 hover:translate-x-1`}>
                   <span className="w-1.5 h-1.5 bg-[#009edb] rounded-full opacity-0 group-hover:opacity-100 transition-all" />
                   {sub}
                 </button>
@@ -352,7 +352,7 @@ export default function Navbar() {
               <div key={(sub as any).title} className="group">
                 <Link 
                   href={(sub as any).href || '/services'}
-                  className={`${theme === 'light' ? 'text-gray-900' : 'text-white'} group-hover:text-[#009edb] font-semibold text-base mb-1 transition-all flex items-center gap-2 py-1 hover:translate-x-1`}
+                  className={`${theme === 'light' ? 'text-gray-900' : 'text-white'} group-hover:text-[#009edb] font-bold text-base mb-1 transition-all flex items-center gap-2 py-1 hover:translate-x-1`}
                 >
                   <span className="w-1.5 h-1.5 bg-[#009edb] rounded-full opacity-0 group-hover:opacity-100 transition-all" />
                   {(sub as any).title}
@@ -365,7 +365,7 @@ export default function Navbar() {
               <div key={index} className="group">
                 <Link 
                   href={sub.href}
-                  className={`text-left ${theme === 'light' ? 'text-gray-700' : 'text-white/90'} group-hover:text-[#009edb] text-base font-medium transition-all flex items-center gap-2 py-1 hover:translate-x-1`}
+                  className={`text-left ${theme === 'light' ? 'text-gray-700' : 'text-white/90'} group-hover:text-[#009edb] text-base font-bold transition-all flex items-center gap-2 py-1 hover:translate-x-1`}
                 >
                   <span className="w-1.5 h-1.5 bg-[#009edb] rounded-full opacity-0 group-hover:opacity-100 transition-all" />
                   {sub.label}
@@ -398,7 +398,7 @@ export default function Navbar() {
                   style={{
                     color: theme === 'light' ? '#6b7280' : '#ffffff',
                   }}
-                  className="text-left text-sm transition-all block py-1 hover:translate-x-1"
+                  className="text-left text-sm font-bold transition-all block py-1 hover:translate-x-1"
                 >
                   {sub}
                 </button>
@@ -409,7 +409,7 @@ export default function Navbar() {
                 <div key={(sub as any).title} className="space-y-2">
                   <Link 
                     href={(sub as any).href || '/services'}
-                    className={`${theme === 'light' ? 'text-gray-900' : 'text-white'} font-semibold text-sm block hover:text-[#009edb] transition-colors`}
+                    className={`${theme === 'light' ? 'text-gray-900' : 'text-white'} font-bold text-sm block hover:text-[#009edb] transition-colors`}
                   >
                     {(sub as any).title}
                   </Link>
@@ -424,7 +424,7 @@ export default function Navbar() {
                   style={{
                     color: theme === 'light' ? '#6b7280' : '#ffffff',
                   }}
-                  className="text-left text-sm transition-all block py-1 hover:translate-x-1"
+                  className="text-left text-sm font-bold transition-all block py-1 hover:translate-x-1"
                 >
                   {sub.label}
                 </Link>
@@ -897,7 +897,7 @@ export default function Navbar() {
                       {rightMenu[0].translationKey ? t(rightMenu[0].translationKey) : 'Contact Us'}
                       {rightMenu[0].subs && rightMenu[0].subs.length > 0 && (
                         <motion.div
-                          animate={{ rotate: mobileOpenItem === 'Contact Us' ? 180 : 0 }}
+                          animate={{ rotate: mobileOpenItem === rightMenu[0].label ? 180 : 0 }}
                           transition={{ duration: 0.2 }}
                         >
                           <ChevronDownIcon />
@@ -905,7 +905,7 @@ export default function Navbar() {
                       )}
                     </button>
                     <AnimatePresence>
-                      {mobileOpenItem === 'Contact Us' && renderMobileSubItems(rightMenu[0].subs)}
+                      {mobileOpenItem === rightMenu[0].label && renderMobileSubItems(rightMenu[0].subs)}
                     </AnimatePresence>
                   </motion.div>
 
