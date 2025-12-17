@@ -401,54 +401,10 @@ Today, with decades of trust earned and hundreds of success stories written, we 
       </div>
       <Timeline data={timelineData} />
 
-      {/* Our People Section */}
-      <div className="w-full max-w-7xl mx-auto px-6 py-20 z-10 bg-white">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              {aboutContent?.peopleTitle ? (
-                aboutContent.peopleTitle.includes('–') ? (
-                  <>
-                    {aboutContent.peopleTitle.split('–')[0]} – <span className="text-[#009edb]">{aboutContent.peopleTitle.split('–')[1]}</span>
-                  </>
-                ) : (
-                  aboutContent.peopleTitle
-                )
-              ) : (
-                <>Our People – <span className="text-[#009edb]">The Heart of Our Firm</span></>
-              )}
-            </h2>
-            <p className="text-lg text-gray-600 leading-relaxed mb-8">
-              {aboutContent?.peopleDescription1 || 'Today, our firm proudly comprises more than 100 professionals, including qualified chartered accountants, semi-qualified managers, and skilled executives. This diverse and talented team represents a balanced mix of experience, technical capability, and youthful energy.'}
-            </p>
-            <p className="text-lg text-gray-600 leading-relaxed">
-              {aboutContent?.peopleDescription2 || 'This inclusive workforce drives innovation, collaboration, and excellence across all our assignments.'}
-            </p>
-          </div>
-          <div className="bg-gray-50 p-8 rounded-2xl border border-gray-100">
-            <h3 className="text-2xl font-bold text-gray-900 mb-8">Team Composition</h3>
-            <div className="space-y-8">
-              {(aboutContent?.peopleStats?.length > 0 ? aboutContent.peopleStats : [
-                { label: 'Female Professionals', percentage: 42 },
-                { label: 'Male Professionals', percentage: 58 }
-              ]).map((stat: any, idx: number) => (
-                <div key={idx}>
-                  <div className="flex justify-between mb-2">
-                    <span className="font-medium text-gray-700">{stat.label}</span>
-                    <span className="font-bold text-[#009edb]">{stat.percentage}%</span>
-                  </div>
-                  <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
-                    <div className="h-full bg-[#009edb]" style={{ width: `${stat.percentage}%` }}></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
+
 
       {/* Looking Ahead Section */}
-      <div className="w-full bg-[#009edb]/5 py-20">
+      <div className="w-full bg-[#b5d6e3] z-20 py-20">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
             {aboutContent?.futureTitle || 'Looking Ahead'}

@@ -639,78 +639,7 @@ const AboutTab = ({ showTimeline = true }: { showTimeline?: boolean }) => {
             </div>
           </form>
 
-          {/* Our People Section */}
-          <form onSubmit={(e) => handleSectionSubmit(e, 'Our People Section')} className="space-y-6 border-t border-gray-100 pt-6">
-            <h3 className="text-lg font-semibold mb-4 text-gray-800">Our People Section</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="col-span-2">
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Section Title</label>
-                <input 
-                  name="peopleTitle"
-                  value={aboutContent.peopleTitle || ''} 
-                  onChange={handleContentChange} 
-                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Description 1</label>
-                <textarea 
-                  name="peopleDescription1"
-                  value={aboutContent.peopleDescription1 || ''} 
-                  onChange={handleContentChange} 
-                  rows={3}
-                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Description 2</label>
-                <textarea 
-                  name="peopleDescription2"
-                  value={aboutContent.peopleDescription2 || ''} 
-                  onChange={handleContentChange} 
-                  rows={3}
-                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
-                />
-              </div>
-              
-              <div className="col-span-2">
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Team Composition Stats</label>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {[0, 1].map((idx) => (
-                    <div key={idx} className="p-4 bg-gray-50 rounded-xl border border-gray-200">
-                      <div className="mb-3">
-                        <label className="block text-xs text-gray-500 mb-1">Label</label>
-                        <input 
-                          value={aboutContent.peopleStats?.[idx]?.label || ''}
-                          onChange={(e) => handleStatChange(idx, 'label', e.target.value)}
-                          className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm"
-                          placeholder="e.g. Female Professionals"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs text-gray-500 mb-1">Percentage (%)</label>
-                        <input 
-                          type="number"
-                          value={aboutContent.peopleStats?.[idx]?.percentage || 0}
-                          onChange={(e) => handleStatChange(idx, 'percentage', parseInt(e.target.value))}
-                          className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm"
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <div className="flex justify-end">
-              <button 
-                type="submit" 
-                disabled={contentSubmitting}
-                className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/20 hover:bg-blue-700 hover:shadow-blue-500/30 focus:ring-4 focus:ring-blue-200 transition-all disabled:opacity-70 disabled:cursor-not-allowed transform active:scale-[0.98]"
-              >
-                {contentSubmitting ? 'Saving...' : 'Update People Section'}
-              </button>
-            </div>
-          </form>
+
 
           {/* Looking Ahead Section */}
           <form onSubmit={(e) => handleSectionSubmit(e, 'Looking Ahead Section')} className="space-y-6 border-t border-gray-100 pt-6">
