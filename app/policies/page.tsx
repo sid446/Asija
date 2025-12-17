@@ -150,6 +150,7 @@ export default function PoliciesPage() {
                 <InteractiveHoverButton
                   text="Contact HR"
                   className="w-full justify-center"
+                  onClick={() => window.open('https://mail.google.com/mail/?view=cm&fs=1&to=hr@asija.in', '_blank')}
                 />
               </div>
             </div>
