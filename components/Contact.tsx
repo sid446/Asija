@@ -24,25 +24,56 @@ type ContactContent = {
   image: string;
 };
 
+type Location = {
+  _id: string;
+  label: string;
+  title: string;
+  address: string;
+  phones: string[];
+  email: string;
+  lat: number;
+  lng: number;
+  googleMapsUrl: string;
+};
+
 const Contact = () => {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const isLight = theme === 'light';
   const [content, setContent] = useState<ContactContent | null>(null);
+  const [locations, setLocations] = useState<Location[]>([]);
 
   useEffect(() => {
-    const fetchContent = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch('/api/admin/contact-content');
-        const data = await res.json();
-        if (data && !data.error) {
-          setContent(data);
+        const [contentRes, locationsRes] = await Promise.all([
+          fetch('/api/admin/contact-content'),
+          fetch('/api/admin/locations')
+        ]);
+        
+        const contentData = await contentRes.json();
+        const locationsData = await locationsRes.json();
+
+        if (contentData && !contentData.error) {
+          setContent(contentData);
+        }
+        if (Array.isArray(locationsData)) {
+          // Sort locations so "HEAD OFFICE" comes first
+          const sortedLocations = locationsData.sort((a, b) => {
+            const titleA = a.title.toUpperCase();
+            const titleB = b.title.toUpperCase();
+            
+            if (titleA.includes('HEAD OFFICE')) return -1;
+            if (titleB.includes('HEAD OFFICE')) return 1;
+            return 0;
+          });
+          setLocations(sortedLocations);
         }
       } catch (err) {
-        console.error('Failed to fetch contact content:', err);
+        console.error('Failed to fetch contact data:', err);
       }
     };
-    fetchContent();
+    fetchData();
   }, []);
 
   if (!content) return null;
@@ -71,7 +102,7 @@ const Contact = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
               {/* Location */}
-              <div className="flex  items-start gap-4 group">
+              <div className="flex items-start gap-4 group">
                 <div className={`p-3 rounded-full shrink-0 transition-colors ${isLight ? 'bg-blue-50 text-[#009edb] group-hover:bg-[#009edb] group-hover:text-white' : 'bg-white/5 text-[#009edb] group-hover:bg-[#009edb] group-hover:text-white'}`}>
                   <MapPin size={24} />
                 </div>
@@ -79,10 +110,21 @@ const Contact = () => {
                   <h3 className={`font-semibold text-lg mb-1 ${isLight ? 'text-gray-900' : 'text-white'}`}>
                     {content.officeLocations}
                   </h3>
-                  <p className={`${isLight ? 'text-gray-600' : 'text-white/70'}`}>
-                    {content.officeLocation1} <br />
-                    {content.officeLocation2}
-                  </p>
+                  <div className={`space-y-4 ${isLight ? 'text-gray-600' : 'text-white/70'}`}>
+                    {locations.length > 0 ? (
+                      locations.map((loc) => (
+                        <div key={loc._id} className="text-sm">
+                          <p className="font-medium text-[#009edb] mb-0.5">{loc.title}</p>
+                          <p>{loc.address}</p>
+                        </div>
+                      ))
+                    ) : (
+                      <p>
+                        {content.officeLocation1} <br />
+                        {content.officeLocation2}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
 
