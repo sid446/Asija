@@ -1,36 +1,46 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import IndiaMap from '@/components/ui/IndiaMap';
-import { MapPin, Phone, Mail, ExternalLink } from 'lucide-react';
+import { MapPin, Phone, Mail, ExternalLink, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const locations = [
-  {
-    label: "Head Office - Lucknow",
-    title: "HEAD OFFICE",
-    address: "1st floor, 34/5 Gokhale Marg, Lucknow, U.P. (India) – 226001",
-    phones: ["0522-4004652", "0522-2205072"],
-    email: "admin@asija.in",
-    lat: 26.8542,
-    lng: 80.9442,
-    googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=Asija+Associates+Lucknow+Gokhale+Marg"
-  },
-  {
-    label: "Branch Office - Bengaluru",
-    title: "BRANCH OFFICE - BENGALURU",
-    address: "B-1203 Mantri Greens Apartment, Next to Mantri Square Mall, Malleshwaram, Bengaluru 560003",
-    phone: "+91-8860082758",
-    email: "admin@asija.in",
-    lat: 12.9915,
-    lng: 77.5702,
-    googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=Mantri+Greens+Apartment+Bengaluru"
-  }
-];
+type Location = {
+  _id: string;
+  label: string;
+  title: string;
+  address: string;
+  phones: string[];
+  email: string;
+  lat: number;
+  lng: number;
+  googleMapsUrl: string;
+};
 
 export default function LocationsPage() {
+  const [locations, setLocations] = useState<Location[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const res = await fetch('/api/admin/locations');
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          setLocations(data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch locations', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLocations();
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-slate-950">
       <Navbar />
@@ -44,71 +54,73 @@ export default function LocationsPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Map Section */}
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-6 border border-gray-100 dark:border-gray-800"
-            >
-              <IndiaMap locations={locations} />
-              <p className="text-center text-sm text-gray-500 mt-4">
-                Interactive Map: Click on a location to view on Google Maps
-              </p>
-            </motion.div>
+          {loading ? (
+            <div className="flex justify-center py-20">
+              <Loader2 className="w-10 h-10 text-blue-600 animate-spin" />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              {/* Map Section */}
+              <motion.div 
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5 }}
+                className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-6 border border-gray-100 dark:border-gray-800"
+              >
+                <IndiaMap locations={locations} />
+                <p className="text-center text-sm text-gray-500 mt-4">
+                  Interactive Map: Click on a location to view on Google Maps
+                </p>
+              </motion.div>
 
-            {/* Address Cards */}
-            <div className="space-y-6">
-              {locations.map((loc, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-800 hover:shadow-xl transition-shadow group cursor-pointer"
-                  onClick={() => window.open(loc.googleMapsUrl, '_blank')}
-                >
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="text-xl font-bold text-[#009edb] mb-2 group-hover:underline decoration-2 underline-offset-4">
-                        {loc.title}
-                      </h3>
-                      <div className="space-y-3 text-gray-600 dark:text-gray-300">
-                        <div className="flex items-start gap-3">
-                          <MapPin className="w-5 h-5 text-[#009edb] shrink-0 mt-0.5" />
-                          <p className="text-sm leading-relaxed">{loc.address}</p>
-                        </div>
-                        
-                        {(loc.phones || loc.phone) && (
-                          <div className="flex items-center gap-3">
-                            <Phone className="w-5 h-5 text-[#009edb] shrink-0" />
-                            <div className="text-sm">
-                              {loc.phones ? (
-                                loc.phones.map((p, i) => (
-                                  <span key={i} className="block">{p}</span>
-                                ))
-                              ) : (
-                                <span>{loc.phone}</span>
-                              )}
-                            </div>
+              {/* Address Cards */}
+              <div className="space-y-6">
+                {locations.map((loc, idx) => (
+                  <motion.div
+                    key={loc._id}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: idx * 0.1 }}
+                    className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-800 hover:shadow-xl transition-shadow group cursor-pointer"
+                    onClick={() => window.open(loc.googleMapsUrl, '_blank')}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h3 className="text-xl font-bold text-[#009edb] mb-2 group-hover:underline decoration-2 underline-offset-4">
+                          {loc.title}
+                        </h3>
+                        <div className="space-y-3 text-gray-600 dark:text-gray-300">
+                          <div className="flex items-start gap-3">
+                            <MapPin className="w-5 h-5 text-[#009edb] shrink-0 mt-0.5" />
+                            <p className="text-sm leading-relaxed">{loc.address}</p>
                           </div>
-                        )}
+                          
+                          {loc.phones && loc.phones.length > 0 && (
+                            <div className="flex items-center gap-3">
+                              <Phone className="w-5 h-5 text-[#009edb] shrink-0" />
+                              <div className="text-sm">
+                                {loc.phones.map((p, i) => (
+                                  <span key={i} className="block">{p}</span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
 
-                        <div className="flex items-center gap-3">
-                          <Mail className="w-5 h-5 text-[#009edb] shrink-0" />
-                          <a href={`mailto:${loc.email}`} className="text-sm hover:text-[#009edb] transition-colors">
-                            {loc.email}
-                          </a>
+                          <div className="flex items-center gap-3">
+                            <Mail className="w-5 h-5 text-[#009edb] shrink-0" />
+                            <a href={`mailto:${loc.email}`} className="text-sm hover:text-[#009edb] transition-colors">
+                              {loc.email}
+                            </a>
+                          </div>
                         </div>
                       </div>
+                      <ExternalLink className="w-5 h-5 text-gray-400 group-hover:text-[#009edb] transition-colors" />
                     </div>
-                    <ExternalLink className="w-5 h-5 text-gray-400 group-hover:text-[#009edb] transition-colors" />
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </main>
 

@@ -346,6 +346,18 @@ type JobPostItem = {
   isActive: boolean;
 };
 
+type LocationItem = {
+  _id: string;
+  label: string;
+  title: string;
+  address: string;
+  phones: string[];
+  email: string;
+  lat: number;
+  lng: number;
+  googleMapsUrl: string;
+};
+
 const AboutTab = ({ showTimeline = true }: { showTimeline?: boolean }) => {
   // Timeline State
   const [timelineItems, setTimelineItems] = useState<any[]>([]);
@@ -911,6 +923,7 @@ export default function AdminPage() {
   const [gallery, setGallery] = useState<GalleryItem[]>([]);
   const [policies, setPolicies] = useState<PolicyItem[]>([]);
   const [jobs, setJobs] = useState<JobPostItem[]>([]);
+  const [locations, setLocations] = useState<LocationItem[]>([]);
   const [policyFilter, setPolicyFilter] = useState('all');
   const [globalServiceContent, setGlobalServiceContent] = useState<GlobalServiceContentData | null>(null);
   const [globalRegions, setGlobalRegions] = useState<GlobalRegionItem[]>([]);
@@ -929,6 +942,7 @@ export default function AdminPage() {
   const [editingGalleryId, setEditingGalleryId] = useState<string | null>(null);
   const [editingPolicyId, setEditingPolicyId] = useState<string | null>(null);
   const [editingJobId, setEditingJobId] = useState<string | null>(null);
+  const [editingLocationId, setEditingLocationId] = useState<string | null>(null);
   const [editingGlobalRegionId, setEditingGlobalRegionId] = useState<string | null>(null);
   const [editingGlobalOfferingId, setEditingGlobalOfferingId] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -947,6 +961,17 @@ export default function AdminPage() {
     features: '' // comma separated for form
   });
   const [globalRegionHeroImageFile, setGlobalRegionHeroImageFile] = useState<File | null>(null);
+  const [locationFormData, setLocationFormData] = useState({
+    label: '',
+    title: '',
+    address: '',
+    phones: '',
+    email: '',
+    lat: 0,
+    lng: 0,
+    googleMapsUrl: ''
+  });
+  const [isExtractingCoords, setIsExtractingCoords] = useState(false);
   const [globalOfferingFormData, setGlobalOfferingFormData] = useState({ title: '', description: '', icon: 'ShieldCheck', order: 0 });
   const [policyFormData, setPolicyFormData] = useState({ title: '', content: '', category: 'general', order: 0 });
   const [jobFormData, setJobFormData] = useState({
@@ -1656,6 +1681,82 @@ export default function AdminPage() {
     }
   };
 
+  const fetchLocations = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/admin/locations');
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        setLocations(data);
+      }
+    } catch (error) {
+      console.error('Failed to fetch locations', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLocationSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      const url = editingLocationId 
+        ? `/api/admin/locations/${editingLocationId}`
+        : '/api/admin/locations';
+      
+      const method = editingLocationId ? 'PUT' : 'POST';
+      
+      const payload = {
+        ...locationFormData,
+        phones: locationFormData.phones.split(',').map(p => p.trim()).filter(Boolean)
+      };
+      
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        setMessage(editingLocationId ? 'Location updated successfully' : 'Location added successfully');
+        setEditingLocationId(null);
+        setLocationFormData({
+          label: '',
+          title: '',
+          address: '',
+          phones: '',
+          email: '',
+          lat: 0,
+          lng: 0,
+          googleMapsUrl: ''
+        });
+        fetchLocations();
+      }
+    } catch (error) {
+      console.error('Failed to save location', error);
+    } finally {
+      setSubmitting(false);
+      setTimeout(() => setMessage(null), 3000);
+    }
+  };
+
+  const handleDeleteLocation = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this location?')) return;
+    try {
+      const res = await fetch(`/api/admin/locations/${id}`, {
+        method: 'DELETE',
+      });
+      if (res.ok) {
+        setMessage('Location deleted successfully');
+        fetchLocations();
+      }
+    } catch (error) {
+      console.error('Failed to delete location', error);
+    } finally {
+      setTimeout(() => setMessage(null), 3000);
+    }
+  };
+
   const fetchGlobalOfferings = async () => {
     try {
       setGlobalOfferingsError(null);
@@ -1691,6 +1792,7 @@ export default function AdminPage() {
     if (activeTab === 'contact-content') fetchContactContent();
     if (activeTab === 'faq') fetchFaqs();
     if (activeTab === 'gallery') fetchGallery();
+    if (activeTab === 'locations') fetchLocations();
     if (activeTab === 'policies') fetchPolicies();
     if (activeTab === 'jobs') fetchJobs();
     if (activeTab === 'global-services') {
@@ -2490,6 +2592,13 @@ export default function AdminPage() {
             >
               <Briefcase className="w-5 h-5 mr-3" />
               Career / Jobs
+            </button>
+            <button 
+              onClick={() => { setActiveTab('locations'); setMobileMenuOpen(false); }}
+              className={`flex items-center w-full px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${activeTab === 'locations' ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
+            >
+              <Globe className="w-5 h-5 mr-3" />
+              Locations
             </button>
 
             <div>
@@ -4680,6 +4789,265 @@ export default function AdminPage() {
                       )}
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'locations' && (
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900">Locations Management</h1>
+                  <p className="text-gray-500 mt-1">Manage office locations on the map.</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Form Section */}
+                <div className="lg:col-span-1">
+                  <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sticky top-8">
+                    <h2 className="text-lg font-semibold text-gray-900 mb-6">
+                      {editingLocationId ? 'Edit Location' : 'Add New Location'}
+                    </h2>
+                    <form onSubmit={handleLocationSubmit} className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Label (City Name)</label>
+                        <input
+                          type="text"
+                          value={locationFormData.label}
+                          onChange={(e) => setLocationFormData({ ...locationFormData, label: e.target.value })}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                          required
+                          placeholder="e.g. New Delhi"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+                        <input
+                          type="text"
+                          value={locationFormData.title}
+                          onChange={(e) => setLocationFormData({ ...locationFormData, title: e.target.value })}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                          required
+                          placeholder="e.g. Head Office"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Address</label>
+                        <textarea
+                          value={locationFormData.address}
+                          onChange={(e) => setLocationFormData({ ...locationFormData, address: e.target.value })}
+                          rows={3}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white resize-none"
+                          required
+                          placeholder="Full address"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Phones (comma separated)</label>
+                        <input
+                          type="text"
+                          value={locationFormData.phones}
+                          onChange={(e) => setLocationFormData({ ...locationFormData, phones: e.target.value })}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                          placeholder="e.g. +91 1234567890, +91 0987654321"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                        <input
+                          type="email"
+                          value={locationFormData.email}
+                          onChange={(e) => setLocationFormData({ ...locationFormData, email: e.target.value })}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                          required
+                          placeholder="e.g. info@example.com"
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Latitude</label>
+                          <input
+                            type="number"
+                            step="any"
+                            value={locationFormData.lat}
+                            onChange={(e) => setLocationFormData({ ...locationFormData, lat: parseFloat(e.target.value) })}
+                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Longitude</label>
+                          <input
+                            type="number"
+                            step="any"
+                            value={locationFormData.lng}
+                            onChange={(e) => setLocationFormData({ ...locationFormData, lng: parseFloat(e.target.value) })}
+                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <div className="flex justify-between items-center mb-2">
+                          <label className="block text-sm font-medium text-gray-700">Google Maps URL</label>
+                          <button
+                            type="button"
+                            onClick={async () => {
+                              const url = locationFormData.googleMapsUrl;
+                              if (!url) return;
+
+                              setIsExtractingCoords(true);
+                              try {
+                                const response = await fetch('/api/admin/extract-coords', {
+                                  method: 'POST',
+                                  headers: { 'Content-Type': 'application/json' },
+                                  body: JSON.stringify({ url }),
+                                });
+
+                                const data = await response.json();
+
+                                if (!response.ok) {
+                                  throw new Error(data.error || 'Failed to extract coordinates');
+                                }
+
+                                setLocationFormData(prev => ({ 
+                                  ...prev, 
+                                  lat: data.lat, 
+                                  lng: data.lng 
+                                }));
+                              } catch (error) {
+                                console.error('Error extracting coords:', error);
+                                alert(error instanceof Error ? error.message : 'Failed to extract coordinates');
+                              } finally {
+                                setIsExtractingCoords(false);
+                              }
+                            }}
+                            className="text-xs text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1"
+                            disabled={isExtractingCoords}
+                          >
+                            {isExtractingCoords ? (
+                              <Loader2 className="w-3 h-3 animate-spin" />
+                            ) : (
+                              <RefreshCw className="w-3 h-3" />
+                            )}
+                            {isExtractingCoords ? 'Extracting...' : 'Extract Coords'}
+                          </button>
+                        </div>
+                        <input
+                          type="url"
+                          value={locationFormData.googleMapsUrl}
+                          onChange={(e) => setLocationFormData({ ...locationFormData, googleMapsUrl: e.target.value })}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                          required
+                          placeholder="https://maps.google.com/..."
+                        />
+                      </div>
+
+                      <div className="flex gap-3 pt-2">
+                        <button
+                          type="submit"
+                          disabled={submitting}
+                          className="flex-1 px-4 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 focus:ring-4 focus:ring-blue-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-lg shadow-blue-600/20"
+                        >
+                          {submitting ? (
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                          ) : (
+                            <>
+                              <Save className="w-5 h-5 mr-2" />
+                              {editingLocationId ? 'Update' : 'Add'}
+                            </>
+                          )}
+                        </button>
+                        {editingLocationId && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEditingLocationId(null);
+                              setLocationFormData({
+                                label: '',
+                                title: '',
+                                address: '',
+                                phones: '',
+                                email: '',
+                                lat: 0,
+                                lng: 0,
+                                googleMapsUrl: ''
+                              });
+                            }}
+                            className="px-4 py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition-all"
+                          >
+                            Cancel
+                          </button>
+                        )}
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                {/* List Section */}
+                <div className="lg:col-span-2 space-y-4">
+                  {loading ? (
+                    <div className="flex justify-center py-12">
+                      <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+                    </div>
+                  ) : locations.length === 0 ? (
+                    <div className="text-center py-12 bg-white rounded-2xl border border-dashed border-gray-300">
+                      <p className="text-gray-500">No locations found. Add one to get started.</p>
+                    </div>
+                  ) : (
+                    locations.map((location) => (
+                      <div
+                        key={location._id}
+                        className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all group"
+                      >
+                        <div className="flex justify-between items-start gap-4">
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-gray-900 mb-1">{location.label}</h3>
+                            <p className="text-gray-600 text-sm mb-2">{location.address}</p>
+                            <div className="flex gap-4 text-xs text-gray-500 font-mono">
+                              <span>Lat: {location.lat}</span>
+                              <span>Lng: {location.lng}</span>
+                            </div>
+                            <a 
+                              href={location.googleMapsUrl} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="text-blue-600 text-xs hover:underline mt-2 inline-block"
+                            >
+                              View on Maps
+                            </a>
+                          </div>
+                          <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button
+                              onClick={() => {
+                                setEditingLocationId(location._id);
+                                setLocationFormData({
+                                  label: location.label,
+                                  title: location.title,
+                                  address: location.address,
+                                  phones: location.phones.join(', '),
+                                  email: location.email,
+                                  lat: location.lat,
+                                  lng: location.lng,
+                                  googleMapsUrl: location.googleMapsUrl
+                                });
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                              }}
+                              className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                            >
+                              <Pencil className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteLocation(location._id)}
+                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             </div>

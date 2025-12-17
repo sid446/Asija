@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
+import { useMemo } from "react";
 import DottedMap from "dotted-map";
 import { useTheme } from "@/components/ThemeProvider";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion } from "framer-motion";
 import { LocationMap } from "./LocationMap";
 
 interface Location {
@@ -20,23 +20,6 @@ interface IndiaMapProps {
 
 export default function IndiaMap({ locations }: IndiaMapProps) {
   const { theme } = useTheme();
-  const svgRef = useRef<SVGSVGElement>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  
-  // Smooth spring animation for the blob movement
-  const springX = useSpring(mouseX, { stiffness: 150, damping: 15 });
-  const springY = useSpring(mouseY, { stiffness: 150, damping: 15 });
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!svgRef.current) return;
-    const point = svgRef.current.createSVGPoint();
-    point.x = e.clientX;
-    point.y = e.clientY;
-    const svgPoint = point.matrixTransform(svgRef.current.getScreenCTM()?.inverse());
-    mouseX.set(svgPoint.x);
-    mouseY.set(svgPoint.y);
-  };
 
   const { mapPoints, projectedLocations, viewBox, bounds } = useMemo(() => {
     const config = {
