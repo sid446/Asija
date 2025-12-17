@@ -346,7 +346,7 @@ export default function Industries() {
                         </p>
                       </div>
                       
-                      <Link href="/industry">
+                      <Link href={`/industry?section=${encodeURIComponent(item.title)}`}>
                         <InteractiveHoverButton
                           text={t('common.learnMore')}
                           className="self-start sm:self-end shrink-0"

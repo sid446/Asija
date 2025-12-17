@@ -8,6 +8,7 @@ import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
 
 const cardsData = [
   {
+    id: 'vision-mission',
     image: '/mission1.jpg',
     title: 'Vision & Mission',
     titleKey: 'about.visionMission',
@@ -17,6 +18,7 @@ const cardsData = [
     buttonContentKey: 'about.buttonVision',
   },
   {
+    id: 'history',
     image: '/histoy.jpg',
     title: 'Our Rich History',
     titleKey: 'about.history',
@@ -26,6 +28,7 @@ const cardsData = [
     buttonContentKey: 'about.buttonHistory',
   },
   {
+    id: 'infrastructure',
     image: '/img1.jpg',
     title: 'Area & Infrastructure',
     titleKey: 'about.areaInfra',
@@ -35,6 +38,7 @@ const cardsData = [
     buttonContentKey: 'about.buttonArea',
   },
   {
+    id: 'networking',
     image: '/img2.jpg',
     title: 'Networking',
     titleKey: 'about.networking',
@@ -44,6 +48,7 @@ const cardsData = [
     buttonContentKey: 'about.buttonNetworking',
   },
   {
+    id: 'security',
     image: '/about1.jpg',
     title: 'Data Security & Safety',
     titleKey: 'about.dataSecurity',
@@ -53,6 +58,7 @@ const cardsData = [
     buttonContentKey: 'about.buttonSecurity',
   },
   {
+    id: 'culture',
     image: '/about2.jpg',
     title: 'Culture',
     titleKey: 'about.culture',
@@ -67,6 +73,24 @@ const Values = () => {
   const { t } = useTranslation(); // ADD THIS
   const [selectedCard, setSelectedCard] = useState<typeof cardsData[0] | null>(null);
   
+  // Handle URL hash on mount to open specific card
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash.replace('#', '');
+      if (hash) {
+        const card = cardsData.find(c => c.id === hash);
+        if (card) {
+          setSelectedCard(card);
+          // Scroll to values section
+          const element = document.getElementById('values');
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      }
+    }
+  }, []);
+
   return (
     <section id="values" className="relative bg-slate-950 w-full overflow-hidden mt-10 sm:mt-20 lg:mt-30">
       

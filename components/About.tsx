@@ -142,18 +142,29 @@ const About = () => {
 							</h2>
 
 							<div className="grid grid-cols-2 sm:grid-cols-2  lg:grid-cols-3 gap-4 mt-0  sm:mt-15 sm:gap-6 mb-10">
-								{cards.map((card, index) => (
-									<AboutCard
-										key={index}
-										image={card.image}
-										title={card.title}
-										description={card.description}
-										buttonContent={card.buttonContent}
-										isMobile={false}
-										index={index}
-										link={card.link}
-									/>
-								))}
+								{cards.map((card, index) => {
+                                    // Map card titles to IDs for linking
+                                    let link = '/about#values';
+                                    if (card.title.toLowerCase().includes('vision')) link = '/about#vision-mission';
+                                    else if (card.title.toLowerCase().includes('history')) link = '/about#history';
+                                    else if (card.title.toLowerCase().includes('infrastructure')) link = '/about#infrastructure';
+                                    else if (card.title.toLowerCase().includes('networking')) link = '/about#networking';
+                                    else if (card.title.toLowerCase().includes('security')) link = '/about#security';
+                                    else if (card.title.toLowerCase().includes('culture')) link = '/about#culture';
+
+                                    return (
+                                        <AboutCard
+                                            key={index}
+                                            image={card.image}
+                                            title={card.title}
+                                            description={card.description}
+                                            buttonContent={card.buttonContent}
+                                            isMobile={false}
+                                            index={index}
+                                            link={link}
+                                        />
+                                    );
+                                })}
 							</div>
 						</div>
 					</div>

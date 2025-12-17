@@ -135,13 +135,13 @@ export default function IndustriesContent() {
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (section) {
+    if (section && industries.length > 0) {
       const index = industries.findIndex(ind => ind.title === section);
       if (index !== -1) {
         setCurrentPage(index);
       }
     }
-  }, [section]);
+  }, [section, industries]);
 
   useEffect(() => {
     if (scrollIndicatorRef.current && currentPage >= 0 && currentPage < industries.length) {
