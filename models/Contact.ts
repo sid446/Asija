@@ -36,8 +36,11 @@ const ContactSchema = new mongoose.Schema({
   },
   topic: {
     type: String,
-    required: [true, 'Please select a topic'],
-    enum: ['Chartered Accounting Services', 'Other'],
+    required: [true, 'Please select a service'],
+  },
+  industry: {
+    type: String,
+    required: [true, 'Please select an industry'],
   },
   message: {
     type: String,

@@ -180,7 +180,7 @@ export default function GalleryPage() {
                         onClick={() => setSelectedYear(year)}
                         className="group cursor-pointer bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-gray-100 dark:border-slate-700 hover:shadow-lg transition-all"
                       >
-                        <div className="aspect-video bg-gray-100 dark:bg-slate-800 relative overflow-hidden">
+                        <div className="aspect-video bg-gray-100 dark:bg-slate-700 relative overflow-hidden">
                           {thumbnail ? (
                             <img 
                               src={getOptimizedImageUrl(thumbnail, 600)} 

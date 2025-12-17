@@ -21,7 +21,8 @@ export async function POST(request: Request) {
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #009edb;">New Contact Request</h2>
-          <p><strong>Topic:</strong> ${body.topic}</p>
+          <p><strong>Service:</strong> ${body.topic}</p>
+          <p><strong>Industry:</strong> ${body.industry}</p>
           <hr />
           <h3>Contact Details</h3>
           <p><strong>Name:</strong> ${body.name}</p>

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import IndiaMap from '@/components/ui/IndiaMap';
+import AsiaMap from '@/components/ui/AsiaMap';
 import { MapPin, Phone, Mail, ExternalLink, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -29,7 +29,16 @@ export default function LocationsPage() {
         const res = await fetch('/api/admin/locations');
         const data = await res.json();
         if (Array.isArray(data)) {
-          setLocations(data);
+          // Sort locations so "HEAD OFFICE" comes first
+          const sortedLocations = data.sort((a: Location, b: Location) => {
+            const titleA = a.title.toUpperCase();
+            const titleB = b.title.toUpperCase();
+            
+            if (titleA.includes('HEAD OFFICE')) return -1;
+            if (titleB.includes('HEAD OFFICE')) return 1;
+            return 0;
+          });
+          setLocations(sortedLocations);
         }
       } catch (error) {
         console.error('Failed to fetch locations', error);
@@ -67,7 +76,7 @@ export default function LocationsPage() {
                 transition={{ duration: 0.5 }}
                 className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-6 border border-gray-100 dark:border-gray-800"
               >
-                <IndiaMap locations={locations} />
+                <AsiaMap locations={locations} />
                 <p className="text-center text-sm text-gray-500 mt-4">
                   Interactive Map: Click on a location to view on Google Maps
                 </p>

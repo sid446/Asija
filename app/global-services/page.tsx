@@ -68,15 +68,15 @@ export default function GlobalServices() {
     return <Icon className="w-8 h-8 text-[#009edb]" />;
   };
 
-  if (!content) return <div className="min-h-screen bg-slate-950 flex items-center justify-center text-white">Loading...</div>;
+  if (!content) return <div className="min-h-screen bg-white dark:bg-slate-950 flex items-center justify-center text-gray-900 dark:text-white">Loading...</div>;
 
   return (
-    <div className="w-full min-h-screen bg-slate-950 text-white">
+    <div className="w-full min-h-screen bg-white dark:bg-slate-950 text-gray-900 dark:text-white">
       <Navbar />
       
       {/* Hero Section */}
       <section className="relative w-full h-[80vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-linear-to-b from-slate-950/80 via-slate-950/60 to-slate-950 z-10" />
+        <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/40 to-white dark:to-slate-950 z-10" />
         <video
           className="absolute inset-0 w-full h-full object-cover"
           autoPlay
@@ -94,7 +94,7 @@ export default function GlobalServices() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6" style={{color:"white"}}
+            className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white"
           >
             {content.heroTitle}<span className="text-[#009edb]">.</span>
           </motion.h1>
@@ -102,7 +102,7 @@ export default function GlobalServices() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-lg md:text-2xl  max-w-3xl mx-auto leading-relaxed" style={{color:"white"}}
+            className="text-lg md:text-2xl  max-w-3xl mx-auto leading-relaxed text-white/90"
           >
             {content.heroDescription}
           </motion.p>
@@ -110,17 +110,17 @@ export default function GlobalServices() {
       </section>
 
       {/* Introduction */}
-      <section className="py-20 px-6 md:px-12 lg:px-20 bg-slate-950">
+      <section className="py-20 px-6 md:px-12 lg:px-20 bg-white dark:bg-slate-950">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="text-3xl md:text-5xl font-bold mb-6">
+            <h2 className="text-3xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">
               {content.introTitle.split(',')[0]}, <br />
               <span className="text-[#009edb]">{content.introTitle.split(',')[1] || ''}</span>
             </h2>
-            <p className="text-gray-400 text-lg leading-relaxed mb-8">
+            <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed mb-8">
               {content.introDescription1}
             </p>
-            <p className="text-gray-400 text-lg leading-relaxed">
+            <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">
               {content.introDescription2}
             </p>
           </div>
@@ -132,11 +132,11 @@ export default function GlobalServices() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[#009edb]/50 transition-colors"
+                className="p-6 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:border-[#009edb]/50 transition-colors"
               >
                 <div className="mb-4">{getIcon(service.icon)}</div>
-                <h3 className="text-xl font-semibold mb-2" >{service.title}</h3>
-                <p className="text-sm" >{service.description}</p>
+                <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{service.title}</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">{service.description}</p>
               </motion.div>
             ))}
           </div>
@@ -144,11 +144,11 @@ export default function GlobalServices() {
       </section>
 
       {/* Global Presence */}
-      <section className="py-20 px-6 md:px-12 lg:px-20 bg-[#020617]">
+      <section className="py-20 px-6 md:px-12 lg:px-20 bg-gray-50 dark:bg-[#020617]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{color:"white"}}>Our Global Presence</h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white">Our Global Footprint</h2>
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               Serving clients across key international markets with tailored solutions that respect local regulations and global standards.
             </p>
           </div>
@@ -158,7 +158,7 @@ export default function GlobalServices() {
               <Link href={region.href} key={region._id}>
                 <motion.div 
                   whileHover={{ y: -10 }}
-                  className="group relative h-80 rounded-2xl overflow-hidden cursor-pointer bg-slate-900"
+                  className="group relative h-80 rounded-2xl overflow-hidden cursor-pointer bg-white dark:bg-slate-900 shadow-lg"
                 >
                   <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                        style={{ backgroundImage: `url(${region.image})` }} />
@@ -167,12 +167,12 @@ export default function GlobalServices() {
                   
                   <div className="absolute bottom-0 left-0 right-0 p-8">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-3xl font-bold " style={{color:"white"}}>{region.name}</h3>
+                      <h3 className="text-3xl font-bold text-white">{region.name}</h3>
                       <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center group-hover:bg-[#009edb] transition-colors">
                         <TrendingUp className="w-5 h-5 text-white" />
                       </div>
                     </div>
-                    <p className=" mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"  style={{color:"white"}}>
+                    <p className=" mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0 text-white">
                       Explore our services in {region.name}
                     </p>
                   </div>

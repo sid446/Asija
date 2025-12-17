@@ -55,7 +55,7 @@ const Footer = () => {
   return (
   <footer className="bg-surface w-full ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-20 py-12 sm:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 sm:gap-12 mb-8 sm:mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-8 sm:mb-12">
           {/* Brand Column */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -159,28 +159,14 @@ const Footer = () => {
                   </a>
                 </li>
               ))}
-            </ul>
-          </motion.div>
-
-          {/* Global Links */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <h3 className="text-theme font-semibold text-lg mb-4">Global</h3>
-            <ul className="space-y-3">
-              {regions.map((link, index) => (
-                <li key={index}>
-                  <a
-                    href={link.href}
-                    className="text-muted hover:text-accent transition-all duration-300 text-sm sm:text-base inline-block hover:translate-x-1"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <Link
+                  href="/global-services"
+                  className="text-muted hover:text-accent transition-all duration-300 text-sm sm:text-base inline-block hover:translate-x-1"
+                >
+                  Global Services
+                </Link>
+              </li>
             </ul>
           </motion.div>
 

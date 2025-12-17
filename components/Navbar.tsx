@@ -13,7 +13,7 @@ type MenuItem = {
   label: string;
   translationKey?: string;
   href?: string;
-  subs?: (string | { title: string; items: string[]; insights: boolean } | { label: string; href: string })[];
+  subs?: (string | { title: string; items: (string | { label: string; href: string })[]; insights?: boolean; href?: string } | { label: string; href: string })[];
   overview?: string;
   isIcon?: boolean;
   icon?: React.ReactNode;
@@ -301,14 +301,32 @@ export default function Navbar() {
         const res = await fetch('/api/regions');
         if (res.ok) {
           const regions = await res.json();
-          const regionSubs = regions.map((r: any) => ({
-            label: r.name,
-            href: `/global-services/${r.slug}`
-          }));
+          
+          const saarcCountries = ['Afghanistan', 'Bangladesh', 'Bhutan', 'India', 'Maldives', 'Nepal', 'Pakistan', 'Sri Lanka'];
+          const saarcSubs: any[] = [];
+          const otherSubs: any[] = [];
+
+          regions.forEach((r: any) => {
+             if (saarcCountries.includes(r.name)) {
+                saarcSubs.push({ label: r.name, href: `/global-services/${r.slug}` });
+             } else {
+                otherSubs.push({ label: r.name, href: `/global-services/${r.slug}` });
+             }
+          });
+
+          const finalSubs = [...otherSubs];
+          if (saarcSubs.length > 0) {
+             finalSubs.push({
+                title: 'SAARC',
+                items: saarcSubs,
+                href: '/global-services',
+                insights: false
+             });
+          }
 
           setMenuItems(prev => prev.map(item => {
             if (item.label === 'Asija Global') {
-              return { ...item, subs: regionSubs };
+              return { ...item, subs: finalSubs };
             }
             return item;
           }));
@@ -349,7 +367,7 @@ export default function Navbar() {
           } else if ('title' in sub) {
             // This is a service item with title and items array
             return (
-              <div key={(sub as any).title} className="group">
+              <div key={(sub as any).title} className="group relative">
                 <Link 
                   href={(sub as any).href || '/services'}
                   className={`${theme === 'light' ? 'text-gray-900' : 'text-white'} group-hover:text-[#009edb] font-bold text-base mb-1 transition-all flex items-center gap-2 py-1 hover:translate-x-1`}
@@ -357,6 +375,20 @@ export default function Navbar() {
                   <span className="w-1.5 h-1.5 bg-[#009edb] rounded-full opacity-0 group-hover:opacity-100 transition-all" />
                   {(sub as any).title}
                 </Link>
+                {/* Render sub-items if they are objects (like SAARC countries) */}
+                {(sub as any).items && (sub as any).items.length > 0 && typeof (sub as any).items[0] !== 'string' && (
+                  <div className="hidden group-hover:block absolute left-0 top-full bg-white dark:bg-slate-950 p-3 rounded-lg shadow-xl border border-gray-100 dark:border-gray-800 z-20 min-w-[180px]">
+                    {(sub as any).items.map((item: any, i: number) => (
+                      <Link 
+                        key={i}
+                        href={item.href}
+                        className="block text-sm text-gray-600 hover:text-[#009edb] dark:text-gray-300 dark:hover:text-[#009edb] transition-colors py-1.5 px-2 hover:bg-gray-50 dark:hover:bg-white/5 rounded-md"
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
             );
           } else if ('href' in sub && 'label' in sub) {
@@ -413,6 +445,20 @@ export default function Navbar() {
                   >
                     {(sub as any).title}
                   </Link>
+                  {/* Render sub-items if they are objects */}
+                  {(sub as any).items && (sub as any).items.length > 0 && typeof (sub as any).items[0] !== 'string' && (
+                    <div className="pl-3 space-y-2 border-l border-gray-200 dark:border-gray-700 ml-1">
+                      {(sub as any).items.map((item: any, i: number) => (
+                        <Link 
+                          key={i}
+                          href={item.href}
+                          className="block text-xs text-gray-500 hover:text-[#009edb] dark:text-gray-400 dark:hover:text-[#009edb] transition-colors"
+                        >
+                          {item.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
                 </div>
               );
             } else if ('href' in sub && 'label' in sub) {
