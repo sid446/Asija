@@ -17,6 +17,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Asija & Associates LLP - Chartered Accountants",
   description: "Professional audit, tax, and advisory services across multiple industries",
+  icons: {
+    icon: '/logo.png',
+  },
 };
 
 export default function RootLayout({
