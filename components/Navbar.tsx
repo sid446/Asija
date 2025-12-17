@@ -160,9 +160,7 @@ const rightMenu: MenuItem[] = [
     translationKey: 'navbar.contactUs',
     href: '/contact',
     subs: [
-      { label: 'Office Locations', href: '/contact' },
-      { label: 'Contact No.', href: '/contact' },
-      { label: 'Emails', href: '/contact' },
+      { label: 'Office Locations', href: '/locations' },
       { label: 'Enquiry Form / Consult Us', href: '/contact' }
     ], 
     overview: 'navbar.overview.contactUs'

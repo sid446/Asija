@@ -1,26 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
+import { Send, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useTranslation } from '@/components/TranslationProvider';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
-const offices = [
-  {
-    title: "HEAD OFFICE",
-    address: "1st floor, 34/5 Gokhale Marg, Lucknow, U.P. (India) – 226001",
-    phones: ["0522-4004652", "0522-2205072"],
-    email: "admin@asija.in"
-  },
-  {
-    title: "BRANCH OFFICE - BENGALURU",
-    address: "B-1203 Mantri Greens Apartment, Next to Mantri Square Mall, Malleshwaram, Bengaluru 560003",
-    phone: "+91-8860082758",
-    email: "admin@asija.in"
-  }
-];
+
 
 export default function ContactPage() {
   const { t } = useTranslation();
@@ -95,12 +82,12 @@ export default function ContactPage() {
           <p className="text-muted text-lg">{t('contact.description')}</p>
         </motion.div>
 
-        <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+        <div className="w-full max-w-3xl mx-auto">
           
-          {/* LEFT: Contact Form */}
+          {/* Contact Form */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="bg-surface p-6 md:p-8 rounded-2xl border border-theme/10 shadow-lg"
           >
@@ -263,58 +250,6 @@ export default function ContactPage() {
               </form>
             )}
           </motion.div>
-
-          {/* RIGHT: Office Locations */}
-          <div className="space-y-8">
-            {offices.map((office, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 + (index * 0.1) }}
-                className="bg-surface p-6 rounded-xl border border-theme/10 hover:border-accent/30 transition-colors group"
-              >
-                <h3 className="text-xl font-bold text-theme mb-4 border-b border-theme/10 pb-2 group-hover:text-accent transition-colors">
-                  {office.title}
-                </h3>
-                
-                <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <div className="mt-1 w-8 h-8 rounded-full bg-theme/5 flex items-center justify-center shrink-0">
-                      <MapPin className="w-4 h-4 text-accent" />
-                    </div>
-                    <p className="text-muted text-sm leading-relaxed">
-                      {office.address}
-                    </p>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <div className="mt-1 w-8 h-8 rounded-full bg-theme/5 flex items-center justify-center shrink-0">
-                      <Phone className="w-4 h-4 text-accent" />
-                    </div>
-                    <div className="text-muted text-sm">
-                      {office.phones ? (
-                        office.phones.map((phone, i) => (
-                          <div key={i}>{phone}</div>
-                        ))
-                      ) : (
-                        <div>{office.phone}</div>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <div className="mt-1 w-8 h-8 rounded-full bg-theme/5 flex items-center justify-center shrink-0">
-                      <Mail className="w-4 h-4 text-accent" />
-                    </div>
-                    <a href={`mailto:${office.email}`} className="text-muted text-sm hover:text-accent transition-colors">
-                      {office.email}
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
 
         </div>
       </div>
