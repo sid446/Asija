@@ -293,6 +293,32 @@ export default function Navbar() {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [mobileOpenItem, setMobileOpenItem] = useState<string | null>(null);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [menuItems, setMenuItems] = useState(leftMenu);
+
+  useEffect(() => {
+    const fetchRegions = async () => {
+      try {
+        const res = await fetch('/api/regions');
+        if (res.ok) {
+          const regions = await res.json();
+          const regionSubs = regions.map((r: any) => ({
+            label: r.name,
+            href: `/global-services/${r.slug}`
+          }));
+
+          setMenuItems(prev => prev.map(item => {
+            if (item.label === 'Asija Global') {
+              return { ...item, subs: regionSubs };
+            }
+            return item;
+          }));
+        }
+      } catch (error) {
+        console.error('Failed to fetch regions', error);
+      }
+    };
+    fetchRegions();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -302,7 +328,7 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const allMenu = [...leftMenu, ...rightMenu];
+  const allMenu = [...menuItems, ...rightMenu];
   const findMenuItem = (label: string) => allMenu.find(item => item.label === label);
 
   const renderSubItems = (subs: MenuItem['subs']) => {
@@ -469,7 +495,7 @@ export default function Navbar() {
 
             {/* Desktop Navigation - Left */}
             <nav className="hidden min-[1100px]:flex gap-1 relative">
-              {leftMenu.map((item) => (
+              {menuItems.map((item) => (
                 <motion.div
                   key={item.label}
                   className="relative"
@@ -721,7 +747,7 @@ export default function Navbar() {
 
                 {/* Menu Items */}
                 <nav className="flex flex-col gap-3 flex-1">
-                  {leftMenu.map((item, idx) => (
+                  {menuItems.map((item, idx) => (
                     <motion.div
                       key={item.label}
                       initial={{ opacity: 0, x: 50 }}
@@ -782,7 +808,7 @@ export default function Navbar() {
                     <motion.div
                       initial={{ opacity: 0, x: 50 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: leftMenu.length * 0.05 }}
+                      transition={{ delay: menuItems.length * 0.05 }}
                     >
                       <Link
                         href="/admin"
@@ -800,7 +826,7 @@ export default function Navbar() {
                   <motion.div
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: leftMenu.length * 0.05 }}
+                    transition={{ delay: menuItems.length * 0.05 }}
                   >
                     <Link
                       href="/policies"
@@ -820,7 +846,7 @@ export default function Navbar() {
                   <motion.div
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: (leftMenu.length + 1) * 0.05 }}
+                    transition={{ delay: (menuItems.length + 1) * 0.05 }}
                   >
                      {session ? (
                         <button
@@ -852,7 +878,7 @@ export default function Navbar() {
                   <motion.div
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: leftMenu.length * 0.05 }}
+                    transition={{ delay: menuItems.length * 0.05 }}
                   >
                     <button
                       onClick={() => {
@@ -887,7 +913,7 @@ export default function Navbar() {
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: (leftMenu.length + 1) * 0.05 }}
+                    transition={{ delay: (menuItems.length + 1) * 0.05 }}
                     className="flex gap-6 mt-auto pt-8"
                   >
                     <a 
