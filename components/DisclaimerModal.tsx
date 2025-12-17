@@ -52,7 +52,7 @@ export default function DisclaimerModal() {
               <span className="font-medium text-gray-900">As per the regulations prescribed by the Institute of Chartered Accountants of India</span>, Chartered Accountant firms are strictly prohibited from advertising or soliciting professional work in the public domain.
             </p>
             <p>
-              Accordingly, this website has been created solely to provide general information about the firm and its professional activities, and not for the purpose of solicitation or promotion. <span className="font-medium text-gray-900">Asija and Associates</span> does not intend to seek or solicit clients through any content published on this website.
+              Accordingly, this website has been created solely to provide general information about the firm and its professional activities, and not for the purpose of solicitation or promotion. <span className="font-medium text-gray-900">Asija and Associates LLP</span> does not intend to seek or solicit clients through any content published on this website.
             </p>
             <p>
               Furthermore, the firm shall not be held responsible for any actions taken or decisions made by individuals based on the information presented herein.

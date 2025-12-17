@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Values from '@/components/Values'; // Import Values component
-import WhyChooseUs from '@/components/ui/WhyChooseUs';
+import RelatedIndustries from '@/components/ui/RelatedIndustries';
 import CTA from '@/components/ui/CTA';
 import Loader from '@/components/ui/Loader';
 import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
@@ -491,9 +491,9 @@ export default function IndustriesContent() {
                 touchStart.current = null;
             }}
           >
-             <div className="flex flex-col">
+             <div className="flex flex-col pt-40">
                 
-                <WhyChooseUs    />
+                <RelatedIndustries    />
                 <CTA/>
                 <Footer />
              </div>

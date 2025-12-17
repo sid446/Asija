@@ -9,7 +9,7 @@ import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import { useTheme } from '@/components/ThemeProvider';
 import CTA from '@/components/ui/CTA';
-import WhyChooseUs from '@/components/ui/WhyChooseUs';
+import ServiceProcess from '@/components/ui/ServiceProcess';
 import Loader from '@/components/ui/Loader';
 import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
 
@@ -259,8 +259,8 @@ export default function ServicesContent() {
         </div>
       </section>
 
-      {/* Why Choose Us */}
-      <WhyChooseUs/>
+      {/* Service Process */}
+      <ServiceProcess/>
 
       {/* CTA */}
       <CTA />

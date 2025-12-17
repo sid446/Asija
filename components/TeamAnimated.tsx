@@ -242,12 +242,7 @@ export default function TeamAnimated() {
         />
       </Link>
 
-      <Link href="/contact">
-        <InteractiveHoverButton
-          text="Call Us Today"
-          className="px-8 py-3 bg-transparent border-2 border-[#009edb] text-[#009edb] hover:bg-[#009edb] hover:text-white"
-        />
-      </Link>
+
     </div>
 
     {/* Trust Badges / Logos (Optional) */}
