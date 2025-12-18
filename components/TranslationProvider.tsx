@@ -70,11 +70,11 @@ export const TranslationProvider: React.FC<{ children: ReactNode }> = ({ childre
 };
 
 const languages = [
-  { code: 'en' as Language, name: 'English', flag: '🇬🇧', nativeName: 'English' },
-  { code: 'ur' as Language, name: 'Urdu', flag: '🇵🇰', nativeName: 'اردو' },
-  { code: 'ar' as Language, name: 'Arabic', flag: '🇸🇦', nativeName: 'العربية' },
-  { code: 'hi' as Language, name: 'Hindi', flag: '🇮🇳', nativeName: 'हिंदी' },
-  { code: 'dz' as Language, name: 'Dzongkha', flag: '🇧🇹', nativeName: 'རྫོང་ཁ་' },
+  { code: 'en' as Language, name: 'English', nativeName: 'English' },
+  { code: 'ur' as Language, name: 'Urdu', nativeName: 'اردو' },
+  { code: 'ar' as Language, name: 'Arabic', nativeName: 'العربية' },
+  { code: 'hi' as Language, name: 'Hindi', nativeName: 'हिंदी' },
+  { code: 'dz' as Language, name: 'Dzongkha', nativeName: 'རྫོང་ཁ་' },
 ];
 
 export const LanguageSwitcher: React.FC<{ align?: 'left' | 'right' }> = ({ align = 'right' }) => {
@@ -136,9 +136,8 @@ export const LanguageSwitcher: React.FC<{ align?: 'left' | 'right' }> = ({ align
                     }
                   `}
                 >
-                  <span className="text-lg">{lang.flag}</span>
                   <div className="flex-1">
-                    <div className="font-medium text-xs">{lang.nativeName}</div>
+                    <div className="font-medium text-sm">{lang.nativeName}</div>
                     <div className="text-xs opacity-70">{lang.name}</div>
                   </div>
                   {language === lang.code && (
