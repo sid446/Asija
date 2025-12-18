@@ -11,6 +11,7 @@ export interface IService extends Document {
   benefits: string[];
   subItems: any;
   deepSubItems: any;
+  order: number;
 }
 
 const ServiceSchema: Schema = new Schema({
@@ -24,6 +25,7 @@ const ServiceSchema: Schema = new Schema({
   benefits: [{ type: String }],
   subItems: { type: Schema.Types.Mixed, default: {} },
   deepSubItems: { type: Schema.Types.Mixed, default: {} },
+  order: { type: Number, default: 0 },
 }, { timestamps: true });
 
 const Service: Model<IService> = mongoose.models.Service || mongoose.model<IService>('Service', ServiceSchema);

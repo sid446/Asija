@@ -1,9 +1,16 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Service from '@/models/Service';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session || session.user?.email !== process.env.ADMIN_EMAIL) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     await dbConnect();
     const { id } = await params;
     const data = await request.json();
@@ -23,6 +30,11 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
 export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session || session.user?.email !== process.env.ADMIN_EMAIL) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     await dbConnect();
     const { id } = await params;
     

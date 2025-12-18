@@ -191,6 +191,7 @@ type IndustryItem = {
   description: string;
   details: string;
   image: string;
+  order: number;
 };
 
 type ServiceItem = {
@@ -205,6 +206,7 @@ type ServiceItem = {
   benefits: string[];
   subItems?: any;
   deepSubItems?: any;
+  order: number;
 };
 
 type HierarchySubItem = {
@@ -955,7 +957,8 @@ export default function AdminPage() {
   const [industryFormData, setIndustryFormData] = useState({
     title: '',
     description: '',
-    details: ''
+    details: '',
+    order: 0
   });
 
   const [serviceFormData, setServiceFormData] = useState({
@@ -967,7 +970,8 @@ export default function AdminPage() {
     detailedDescription: '',
     benefits: '', // comma separated
     subItems: '', // JSON string
-    deepSubItems: '' // JSON string
+    deepSubItems: '', // JSON string
+    order: 0
   });
 
   const [aboutCardFormData, setAboutCardFormData] = useState({
@@ -1671,9 +1675,9 @@ export default function AdminPage() {
   const fetchServices = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/services');
+      const res = await fetch('/api/admin/services');
       const data = await res.json();
-      setServices(Array.isArray(data) ? data : []);
+      setServices(Array.isArray(data.items) ? data.items : []);
     } catch (err) {
       console.error(err);
     } finally {
@@ -1906,7 +1910,8 @@ export default function AdminPage() {
     setIndustryFormData({
       title: item.title,
       description: item.description,
-      details: item.details
+      details: item.details,
+      order: item.order || 0
     });
     setIndustryImageFile(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1950,7 +1955,8 @@ export default function AdminPage() {
       detailedDescription: item.detailedDescription || '',
       benefits: item.benefits ? item.benefits.join(', ') : '',
       subItems: '',
-      deepSubItems: ''
+      deepSubItems: '',
+      order: item.order || 0
     });
     setServiceImageFile(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1969,7 +1975,7 @@ export default function AdminPage() {
   const handleCancelIndustryEdit = () => {
     setEditingIndustryId(null);
     setIndustryFormData({
-      title: '', description: '', details: ''
+      title: '', description: '', details: '', order: 0
     });
     setIndustryImageFile(null);
   };
@@ -1979,7 +1985,7 @@ export default function AdminPage() {
     setServiceFormData({
       title: '', translationKey: '', items: '', insights: false,
       description: '', detailedDescription: '', benefits: '',
-      subItems: '', deepSubItems: ''
+      subItems: '', deepSubItems: '', order: 0
     });
     setServiceHierarchy([]);
     setServiceImageFile(null);
@@ -2236,7 +2242,8 @@ export default function AdminPage() {
         detailedDescription: serviceFormData.detailedDescription,
         benefits: serviceFormData.benefits.split(',').map(b => b.trim()).filter(b => b),
         subItems: subItems,
-        deepSubItems: deepSubItems
+        deepSubItems: deepSubItems,
+        order: serviceFormData.order
       };
 
       if (imgSrc) body.imgSrc = imgSrc;
@@ -3100,6 +3107,19 @@ export default function AdminPage() {
                             required
                           />
                         </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Display Order</label>
+                          <input 
+                            type="number"
+                            name="order"
+                            value={industryFormData.order} 
+                            onChange={handleIndustryInputChange} 
+                            placeholder="0" 
+                            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm"
+                            min="0"
+                          />
+                        </div>
                       </div>
 
                       <button 
@@ -3379,6 +3399,19 @@ export default function AdminPage() {
                             placeholder="Benefit 1, Benefit 2, Benefit 3"
                             className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
                             required
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Display Order</label>
+                          <input 
+                            type="number"
+                            name="order"
+                            value={serviceFormData.order} 
+                            onChange={handleServiceInputChange} 
+                            placeholder="0" 
+                            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm"
+                            min="0"
                           />
                         </div>
                       </div>
