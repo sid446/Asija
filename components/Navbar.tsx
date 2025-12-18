@@ -33,11 +33,11 @@ const leftMenu: MenuItem[] = [
     href: '/about',
     subs: [
       { label: 'Who We Are', href: '/about' },
-      { label: 'Our Team / Strength', href: '/team' },
-      { label: 'Our Purpose and Values', href: '/about#values' },
-      { label: 'Alumni', href: '/alumni' },
       { label: 'Life at Asija - (year wise)', href: '/about#values' },
+      { label: 'Our Purpose and Values', href: '/about#values' },
+      { label: 'Our Team / Strength', href: '/team' },
       { label: 'Gallery', href: '/gallery' },
+      { label: 'Alumni', href: '/alumni' },
     ], 
     overview: 'navbar.overview.aboutUs'
   },
@@ -335,7 +335,33 @@ export default function Navbar() {
         console.error('Failed to fetch regions', error);
       }
     };
+
+    const fetchServices = async () => {
+      try {
+        const res = await fetch('/api/services');
+        if (res.ok) {
+          const services = await res.json();
+          const serviceSubs = services.map((service: any) => ({
+            title: service.title,
+            items: service.items,
+            insights: service.insights,
+            href: `/services?service=${encodeURIComponent(service.title)}`
+          }));
+
+          setMenuItems(prev => prev.map(item => {
+            if (item.label === 'Services') {
+              return { ...item, subs: serviceSubs };
+            }
+            return item;
+          }));
+        }
+      } catch (error) {
+        console.error('Failed to fetch services', error);
+      }
+    };
+
     fetchRegions();
+    fetchServices();
   }, []);
 
   useEffect(() => {

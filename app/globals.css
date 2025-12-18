@@ -170,3 +170,14 @@ body {
 /* Re-assert special-purpose helpers so they win after the broad remaps above */
 [data-theme="light"] .faq-question { color: #ffffff !important; }
 [data-theme="light"] .ensure-dark-in-light { color: var(--theme-text) !important; }
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
