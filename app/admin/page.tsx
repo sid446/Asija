@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { 
   LayoutDashboard, 
@@ -326,6 +326,13 @@ type GalleryItem = {
   description: string;
   thumbnail?: string;
   images: string[];
+};
+
+type EventCoverItem = {
+  _id: string;
+  type: string;
+  image: string;
+  order: number;
 };
 
 type PolicyItem = {
@@ -847,12 +854,14 @@ const AboutTab = ({ showTimeline = true }: { showTimeline?: boolean }) => {
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('team');
   const [globalServicesSubTab, setGlobalServicesSubTab] = useState('content');
+  const [gallerySubTab, setGallerySubTab] = useState('events');
   const [items, setItems] = useState<TeamItem[]>([]);
   const [industries, setIndustries] = useState<IndustryItem[]>([]);
   const [services, setServices] = useState<ServiceItem[]>([]);
   const [aboutCards, setAboutCards] = useState<AboutCardItem[]>([]);
   const [faqs, setFaqs] = useState<FAQItem[]>([]);
   const [gallery, setGallery] = useState<GalleryItem[]>([]);
+  const [eventCovers, setEventCovers] = useState<EventCoverItem[]>([]);
   const [policies, setPolicies] = useState<PolicyItem[]>([]);
   const [jobs, setJobs] = useState<JobPostItem[]>([]);
   const [locations, setLocations] = useState<LocationItem[]>([]);
@@ -872,6 +881,7 @@ export default function AdminPage() {
   const [editingAboutCardId, setEditingAboutCardId] = useState<string | null>(null);
   const [editingFaqId, setEditingFaqId] = useState<string | null>(null);
   const [editingGalleryId, setEditingGalleryId] = useState<string | null>(null);
+  const [editingEventCoverId, setEditingEventCoverId] = useState<string | null>(null);
   const [editingPolicyId, setEditingPolicyId] = useState<string | null>(null);
   const [editingJobId, setEditingJobId] = useState<string | null>(null);
   const [editingLocationId, setEditingLocationId] = useState<string | null>(null);
@@ -981,6 +991,12 @@ export default function AdminPage() {
     description: '',
     thumbnail: '',
     images: [] as string[]
+  });
+
+  const [eventCoverFormData, setEventCoverFormData] = useState({
+    type: '',
+    image: '',
+    order: 0
   });
 
   const [heroFormData, setHeroFormData] = useState({
@@ -1096,6 +1112,21 @@ export default function AdminPage() {
       const data = await res.json();
       if (Array.isArray(data)) {
         setGallery(data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchEventCovers = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/admin/event-covers');
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        setEventCovers(data);
       }
     } catch (err) {
       console.error(err);
@@ -1356,6 +1387,80 @@ export default function AdminPage() {
     }
   };
 
+  const handleEventCoverSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setMessage(null);
+
+    try {
+      let imageUrl = eventCoverFormData.image;
+
+      // Upload Image
+      if (eventCoverImageFile) {
+        const form = new FormData();
+        form.append('file', eventCoverImageFile);
+        const uploadRes = await fetch('/api/upload', { method: 'POST', body: form });
+        if (uploadRes.ok) {
+          const uploadData = await uploadRes.json();
+          imageUrl = uploadData.secure_url;
+        }
+      }
+
+      const url = editingEventCoverId 
+        ? `/api/admin/event-covers/${editingEventCoverId}` 
+        : '/api/admin/event-covers';
+      
+      const method = editingEventCoverId ? 'PUT' : 'POST';
+
+      const body = { ...eventCoverFormData, image: imageUrl };
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      if (res.ok) {
+        setMessage(editingEventCoverId ? 'Event cover updated successfully!' : 'Event cover added/updated successfully!');
+        setEventCoverFormData({ 
+          type: '',
+          image: '',
+          order: 0
+        });
+        setEventCoverImageFile(null);
+        setEditingEventCoverId(null);
+        fetchEventCovers();
+      } else {
+        setMessage('Failed to save event cover.');
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage('An error occurred.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleDeleteEventCover = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this event cover?')) return;
+
+    try {
+      const res = await fetch(`/api/admin/event-covers/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (res.ok) {
+        setMessage('Event cover deleted successfully!');
+        fetchEventCovers();
+      } else {
+        setMessage('Failed to delete event cover.');
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage('An error occurred.');
+    }
+  };
+
   const fetchContactContent = async () => {
     setLoading(true);
     try {
@@ -1535,6 +1640,7 @@ export default function AdminPage() {
   const [aboutCardImageFile, setAboutCardImageFile] = useState<File | null>(null);
   const [galleryImageFiles, setGalleryImageFiles] = useState<File[]>([]);
   const [galleryThumbnailFile, setGalleryThumbnailFile] = useState<File | null>(null);
+  const [eventCoverImageFile, setEventCoverImageFile] = useState<File | null>(null);
 
   const fetchItems = async () => {
     setLoading(true);
@@ -1731,7 +1837,10 @@ export default function AdminPage() {
     if (activeTab === 'hero-content') fetchHeroContent();
     if (activeTab === 'contact-content') fetchContactContent();
     if (activeTab === 'faq') fetchFaqs();
-    if (activeTab === 'gallery') fetchGallery();
+    if (activeTab === 'gallery') {
+      fetchGallery();
+      fetchEventCovers();
+    }
     if (activeTab === 'locations') fetchLocations();
     if (activeTab === 'policies') fetchPolicies();
     if (activeTab === 'jobs') fetchJobs();
@@ -1741,6 +1850,16 @@ export default function AdminPage() {
       fetchGlobalOfferings();
     }
   }, [activeTab]);
+
+  // Gallery categories for event covers
+  const galleryCategories = [
+    'Milestone and Achievement',
+    'Foundation',
+    'Seminar',
+    'Annual Day',
+    'Event',
+    'Festival'
+  ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -4060,9 +4179,28 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Form Section */}
-                <div className="lg:col-span-1">
+              {/* Sub-tabs */}
+              <div className="flex space-x-1 bg-gray-100 p-1 rounded-xl w-fit">
+                {['events', 'covers'].map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setGallerySubTab(tab)}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                      gallerySubTab === tab
+                        ? 'bg-white text-blue-600 shadow-sm'
+                        : 'text-gray-500 hover:text-gray-700'
+                    }`}
+                  >
+                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  </button>
+                ))}
+              </div>
+
+              {/* Events Section */}
+              {gallerySubTab === 'events' && (
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  {/* Form Section */}
+                  <div className="lg:col-span-1">
                   <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sticky top-8">
                     <h2 className="text-lg font-semibold text-gray-900 mb-6">
                       {editingGalleryId ? 'Edit Event' : 'Add New Event'}
@@ -4316,6 +4454,159 @@ export default function AdminPage() {
                   )}
                 </div>
               </div>
+              )}
+
+              {/* Covers Section */}
+              {gallerySubTab === 'covers' && (
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  {/* Form Section */}
+                  <div className="lg:col-span-1">
+                    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sticky top-8">
+                      <h2 className="text-lg font-semibold text-gray-900 mb-6">
+                        {editingEventCoverId ? 'Edit Cover' : 'Add/Update Cover'}
+                      </h2>
+                      <form onSubmit={handleEventCoverSubmit} className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Event Type/Category</label>
+                          <select
+                            value={eventCoverFormData.type}
+                            onChange={(e) => setEventCoverFormData({ ...eventCoverFormData, type: e.target.value })}
+                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                            required
+                          >
+                            <option value="">Select a category</option>
+                            {galleryCategories.map((category) => (
+                              <option key={category} value={category}>
+                                {category}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Order</label>
+                          <input
+                            type="number"
+                            value={eventCoverFormData.order}
+                            onChange={(e) => setEventCoverFormData({ ...eventCoverFormData, order: Number(e.target.value) })}
+                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                            min={0}
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Cover Image</label>
+                          <div className="mt-1 flex items-center gap-4">
+                            {eventCoverFormData.image && (
+                              <img src={eventCoverFormData.image} alt="Cover" className="w-20 h-20 object-cover rounded-lg" />
+                            )}
+                            <input 
+                              type="file" 
+                              accept="image/*"
+                              onChange={(e) => {
+                                if (e.target.files && e.target.files[0]) {
+                                  setEventCoverImageFile(e.target.files[0]);
+                                  // Create a preview URL
+                                  const previewUrl = URL.createObjectURL(e.target.files[0]);
+                                  setEventCoverFormData({ ...eventCoverFormData, image: previewUrl });
+                                }
+                              }}
+                              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="flex gap-3 pt-2">
+                          <button
+                            type="submit"
+                            disabled={submitting}
+                            className="flex-1 px-4 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 focus:ring-4 focus:ring-blue-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-lg shadow-blue-600/20"
+                          >
+                            {submitting ? (
+                              <Loader2 className="w-5 h-5 animate-spin" />
+                            ) : (
+                              <>
+                                <Save className="w-5 h-5 mr-2" />
+                                {editingEventCoverId ? 'Update' : 'Add/Update'}
+                              </>
+                            )}
+                          </button>
+                          {editingEventCoverId && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setEditingEventCoverId(null);
+                                setEventCoverFormData({ type: '', image: '', order: 0 });
+                                setEventCoverImageFile(null);
+                              }}
+                              className="px-4 py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition-all"
+                            >
+                              Cancel
+                            </button>
+                          )}
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+
+                  {/* List Section */}
+                  <div className="lg:col-span-2 space-y-4">
+                    {loading ? (
+                      <div className="flex justify-center py-12">
+                        <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+                      </div>
+                    ) : eventCovers.length === 0 ? (
+                      <div className="text-center py-12 bg-white rounded-2xl border border-dashed border-gray-300">
+                        <p className="text-gray-500">No event covers found. Add one to get started.</p>
+                      </div>
+                    ) : (
+                      eventCovers.map((item) => (
+                        <div
+                          key={item._id}
+                          className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all group"
+                        >
+                          <div className="flex justify-between items-start gap-4">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-3 mb-2">
+                                {item.image && (
+                                  <img src={getOptimizedImageUrl(item.image, 100)} alt="Cover" className="w-10 h-10 object-cover rounded-lg" />
+                                )}
+                                <div>
+                                  <h3 className="font-semibold text-gray-900">{item.type}</h3>
+                                  <p className="text-sm text-gray-600">Order: {item.order}</p>
+                                </div>
+                                <span className="px-2 py-1 bg-blue-50 text-blue-600 text-xs rounded-md">
+                                  Cover Image
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <button
+                                onClick={() => {
+                                  setEditingEventCoverId(item._id);
+                                  setEventCoverFormData({
+                                    type: item.type,
+                                    image: item.image,
+                                    order: item.order
+                                  });
+                                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                                }}
+                                className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                              >
+                                <Pencil className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => handleDeleteEventCover(item._id)}
+                                className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

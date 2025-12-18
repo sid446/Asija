@@ -21,34 +21,57 @@ type GalleryItem = {
 
 export default function GalleryPage() {
   const [events, setEvents] = useState<GalleryItem[]>([]);
+  const [eventCovers, setEventCovers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedEvent, setSelectedEvent] = useState<GalleryItem | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchGallery = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch('/api/admin/gallery');
-        const data = await res.json();
-        if (Array.isArray(data)) {
-          setEvents(data);
+        const [galleryRes, coversRes] = await Promise.all([
+          fetch('/api/admin/gallery'),
+          fetch('/api/admin/event-covers')
+        ]);
+        const galleryData = await galleryRes.json();
+        const coversData = await coversRes.json();
+        if (Array.isArray(galleryData)) {
+          setEvents(galleryData);
+        }
+        if (Array.isArray(coversData)) {
+          setEventCovers(coversData);
         }
       } catch (error) {
-        console.error('Failed to fetch gallery:', error);
+        console.error('Failed to fetch data:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchGallery();
+    fetchData();
   }, []);
+
+  const getCategoryCover = (category: string) => {
+    const cover = eventCovers.find(c => c.type === category);
+    return cover ? cover.image : null;
+  };
 
   // Extract unique categories
   const categories = useMemo(() => {
     const cats = new Set(events.map(e => e.category || 'Uncategorized'));
-    return Array.from(cats).sort();
-  }, [events]);
+    const catArray = Array.from(cats);
+    
+    // Sort by order from eventCovers, then alphabetically
+    return catArray.sort((a, b) => {
+      const aCover = eventCovers.find(c => c.type === a);
+      const bCover = eventCovers.find(c => c.type === b);
+      const aOrder = aCover ? aCover.order : 999;
+      const bOrder = bCover ? bCover.order : 999;
+      if (aOrder !== bOrder) return aOrder - bOrder;
+      return a.localeCompare(b);
+    });
+  }, [events, eventCovers]);
 
   // Extract unique years for selected category
   const years = useMemo(() => {
@@ -125,7 +148,8 @@ export default function GalleryPage() {
                   {categories.map((category, idx) => {
                     // Get latest image for thumbnail
                     const categoryEvents = events.filter(e => (e.category || 'Uncategorized') === category);
-                    const thumbnail = categoryEvents[0]?.thumbnail || categoryEvents[0]?.images[0];
+                    const categoryCover = getCategoryCover(category);
+                    const thumbnail = categoryCover || categoryEvents[0]?.thumbnail || categoryEvents[0]?.images[0];
                     
                     return (
                       <motion.div
