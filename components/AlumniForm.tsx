@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Loader2, CheckCircle, XCircle, ExternalLink, CircleCheck, Mail, ArrowRight } from 'lucide-react';
 import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
@@ -56,6 +56,7 @@ export default function AlumniForm() {
 		'email'
 	);
 	const [loading, setLoading] = useState(false);
+	const otpRequestRef = useRef(false);
 	const [message, setMessage] = useState<
 		{ type: 'success' | 'error'; text: string } | null
 	>(null);
@@ -78,7 +79,10 @@ export default function AlumniForm() {
 
 	const sendOtp = async (e: React.FormEvent) => {
 		e.preventDefault();
+		if (loading || otpRequestRef.current) return; // Prevent double execution
+		
 		setLoading(true);
+		otpRequestRef.current = true;
 		setMessage(null);
 		try {
 			const res = await fetch('/api/alumni/send-otp', {
@@ -100,6 +104,7 @@ export default function AlumniForm() {
 			setMessage({ type: 'error', text: 'Something went wrong.' });
 		} finally {
 			setLoading(false);
+			otpRequestRef.current = false;
 		}
 	};
 

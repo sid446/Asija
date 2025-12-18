@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -12,6 +12,8 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [otpStatus, setOtpStatus] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const otpRequestRef = useRef(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -36,10 +38,17 @@ export default function LoginPage() {
   };
 
   const sendOtp = async () => {
+    if (loading || otpRequestRef.current) return; // Prevent multiple clicks and StrictMode double execution
+    
     setOtpStatus(null);
     setError('');
+    setLoading(true);
+    otpRequestRef.current = true;
+    
     if (!email) {
       setError('Please enter your @asija.in email first');
+      setLoading(false);
+      otpRequestRef.current = false;
       return;
     }
 
@@ -53,13 +62,19 @@ export default function LoginPage() {
       const data = await resp.json();
       if (!resp.ok) {
         setError(data?.message || 'Failed to send OTP');
+        setLoading(false);
+        otpRequestRef.current = false;
         return;
       }
 
       setOtpStatus('OTP sent to your email (valid for 5 minutes). Enter it in the password field to login.');
+      setLoading(false);
+      otpRequestRef.current = false;
     } catch (err) {
       console.error(err);
       setError('Failed to send OTP');
+      setLoading(false);
+      otpRequestRef.current = false;
     }
   };
 
@@ -126,7 +141,8 @@ export default function LoginPage() {
               <InteractiveHoverButton 
                 type="button"
                 onClick={sendOtp}
-                text="Send Verification Code"
+                disabled={loading}
+                text={loading ? "Sending..." : "Send Verification Code"}
                 className="w-full mt-2 bg-[#009edb] text-white border-[#009edb]" 
               />
             ) : (

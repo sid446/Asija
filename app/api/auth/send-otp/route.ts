@@ -8,8 +8,6 @@ export async function POST(req: Request) {
     await dbConnect();
     const { email } = await req.json();
 
-    console.log('OTP request received for email:', email);
-
     if (!email) {
       return NextResponse.json({ message: 'Email is required' }, { status: 400 });
     }
@@ -29,9 +27,6 @@ export async function POST(req: Request) {
     );
 
     // Send Email
-    console.log('Sending OTP email to:', email);
-    console.log('From email:', process.env.EMAIL_USER);
-    
     try {
       await transporter.sendMail({
         ...mailOptions,
@@ -62,8 +57,6 @@ export async function POST(req: Request) {
           </div>
         `,
       });
-
-      console.log('OTP email sent successfully');
     } catch (emailError) {
       console.error('Failed to send OTP email:', emailError);
       // Still return success for now, but log the error
