@@ -2,11 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import AboutCard from './AboutCard';
 import Beams from './Beams';
-import { useTranslation } from './TranslationProvider';
 import { useTheme } from './ThemeProvider';
 
 const About = () => {
-	const { t } = useTranslation();
 	const { theme } = useTheme();
 	const isLight = theme === 'light';
     const [content, setContent] = useState({
@@ -83,7 +81,7 @@ const About = () => {
 							}`}
 							style={{ color: 'white' }}
 						>
-							{content.title || t('about.title')}
+							{content.title || 'Our Legacy of Trust'}
 							<span className="text-[#009edb] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold">
 								.
 							</span>
@@ -97,7 +95,7 @@ const About = () => {
               transition-colors 
             `} style={{color:'white'}}
 						>
-							{content.quote || t('about.quote')}
+							{content.quote || 'Coming together is a beginning, keeping together is progress, working together is success.'}
 						</blockquote>
 
 						<div
@@ -106,13 +104,13 @@ const About = () => {
 							}`}
 							style={{ color: 'white' }}
 						>
-							<p>{content.description1 || t('about.description1')}</p>
-							<p>{content.description2 || t('about.description2')}</p>
+							<p>{content.description1 || 'Asija & Associates LLP, Chartered Accountants was established on 1st April 1986 by our founder member CA. Uttam Chandra Asija with the aim of providing a wide range of Accounting and Financial services to clients in the Government, Corporate, and Private Sectors.'}</p>
+							<p>{content.description2 || 'Over the years, the firm has been built around a team of professionals possessing vast experience in auditing, accounting, taxation, company law matters, and a host of other financial services. We assist clients in solving complex problems and support the growth of society at large.'}</p>
 
 							<div className="hidden sm:block space-y-3 text-left">
-								<p>{content.description3 || t('about.description3')}</p>
+								<p>{content.description3 || 'Our firm has not only augmented in knowledge and skills but has also established a landmark achievement by becoming the first Chartered Accountancy firm in Lucknow to convert into a Limited Liability Partnership.'}</p>
 								<p className="mt-3 text-sm sm:text-base">
-									{content.description4 || t('about.description4')}
+									{content.description4 || 'We, at Asija, aim to deliver quality to our stakeholders and strive to be the best at everything we do. We believe in working together to fulfill the needs of our clients beyond their expectations.'}
 								</p>
 							</div>
 						</div>
@@ -135,7 +133,7 @@ const About = () => {
 									isLight ? 'text-gray-900' : 'text-white'
 								}`}
 							>
-								{t('about.exploreStrengths')}
+								Explore Our Strengths
 								<span className="text-[#009edb] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold">
 									.
 								</span>

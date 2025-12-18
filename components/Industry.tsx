@@ -2,7 +2,6 @@
 import React, { createContext, useContext, useState, useEffect, useRef, ReactNode, FC } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useTranslation } from './TranslationProvider';
 import { useTheme } from './ThemeProvider';
 import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
 import { WaveLoader } from './ui/WaveLoader';
@@ -250,7 +249,6 @@ interface Industry {
 }
 
 export default function Industries() {
-  const { t } = useTranslation(); // ADD THIS
   const { theme } = useTheme();
   const [industries, setIndustries] = useState<Industry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -301,7 +299,7 @@ export default function Industries() {
           className="text-center mb-6"
         >
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-theme leading-tight">
-            {t('industries.title')} {/* UPDATED */}
+            Industries We Serve
             <span className="accent text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold"> .</span>
           </h1>
         </motion.div>
@@ -313,7 +311,7 @@ export default function Industries() {
           transition={{ delay: 0.3, duration: 0.8 }}
           className="text-muted text-base sm:text-lg leading-relaxed  text-center max-w-3xl mx-auto mb-16"
         >
-          {t('industries.description')} {/* UPDATED */}
+          Tailored financial solutions across diverse sectors.
         </motion.p>
 
         <ProgressSlider vertical={false} activeSlider={activeSlider} duration={6000}>
@@ -348,7 +346,7 @@ export default function Industries() {
                       
                       <Link href={`/industry?section=${encodeURIComponent(item.title)}`}>
                         <InteractiveHoverButton
-                          text={t('common.learnMore')}
+                          text="Learn More"
                           className="self-start sm:self-end shrink-0"
                         />
                       </Link>

@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
-import { useTranslation } from './TranslationProvider';
 import { useRouter } from 'next/navigation';
 
 type HeroContent = {
@@ -17,7 +16,6 @@ type HeroContent = {
 };
 
 function Hero() {
-  const { t } = useTranslation(); 
   const router = useRouter();
   const [content, setContent] = useState<HeroContent | null>(null);
 

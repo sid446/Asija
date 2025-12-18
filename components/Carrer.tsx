@@ -3,11 +3,9 @@ import React, { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
 
-import { useTranslation } from './TranslationProvider'
 import { useTheme } from './ThemeProvider'
 
 function Career() {
-  const { t } = useTranslation()
   const { theme } = useTheme()
   const [isVisible, setIsVisible] = useState(false)
   const [imageLoaded, setImageLoaded] = useState(false)
@@ -70,36 +68,36 @@ function Career() {
             
             {/* Title with improved mobile sizing */}
             <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-3 sm:mb-4 transition-all duration-1000 delay-400 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'}`} style={{ color: '#ffffff' }}>
-              {t('career.title')}
+              Join Our Team
               <span style={{ color: '#009edb' }}>.</span>
             </h1>
             
             {/* Subtitle with better mobile readability */}
             <h2 className='text-xl sm:text-2xl md:text-3xl font-semibold mt-4 sm:mt-6 md:mt-8 mb-3 sm:mb-4 md:mb-6 transition-all duration-1000 delay-500' style={{ color: '#ffffff' }}>
-              {t('career.subtitle')}
+              Build Your Future With Us
             </h2>
             
             {/* Description with improved mobile line height */}
             <p className='text-sm sm:text-base md:text-lg leading-relaxed mb-2 sm:mb-3 max-w-3xl transition-all duration-1000 delay-600' style={{ color: '#d1d5db' }}>
-              {t('career.description1')}
+              Join a dynamic team where innovation meets opportunity. We offer competitive salaries, comprehensive benefits, and a supportive environment that fosters professional growth.
             </p>
             
             <p className='text-xs sm:text-sm md:text-base leading-relaxed mb-5 sm:mb-6 md:mb-8 max-w-3xl transition-all duration-1000 delay-700' style={{ color: '#d1d5db' }}>
-              {t('career.description2')}
+              Explore exciting career paths in consulting, technology, and business development. We're looking for passionate professionals ready to make an impact.
             </p>
             
             {/* Mobile-optimized button layout */}
             <div className='flex flex-col sm:flex-row gap-3 sm:gap-4 transition-all duration-1000 delay-800'>
               <Link href="/#contact" className='w-full sm:w-auto'>
                 <InteractiveHoverButton 
-                  text={t('career.applyNow')}
+                  text="Apply Now"
                   className="w-full sm:w-auto"
                 />
               </Link>
               
               <Link href="/career" className='w-full sm:w-auto'>
                 <InteractiveHoverButton 
-                  text={t('career.viewPositions')}
+                  text="View Positions"
                   className="w-full sm:w-auto bg-white text-black hover:text-black border-white/30 hover:bg-white/90"
                 />
               </Link>

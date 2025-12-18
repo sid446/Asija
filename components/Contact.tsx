@@ -1,6 +1,5 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from './TranslationProvider';
 import { useTheme } from './ThemeProvider';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -37,7 +36,6 @@ type Location = {
 };
 
 const Contact = () => {
-  const { t } = useTranslation();
   const { theme } = useTheme();
   const isLight = theme === 'light';
   const [content, setContent] = useState<ContactContent | null>(null);
