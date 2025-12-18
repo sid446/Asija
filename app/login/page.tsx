@@ -113,14 +113,21 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             <div className="space-y-2">
               <label className="text-sm font-medium text-muted">Email</label>
-              <input
-                onChange={(e) => setEmail(e.target.value)}
-                type="email"
-                placeholder="name@asija.in"
-                value={email}
-                className="w-full p-4 rounded-lg bg-surface border border-theme text-theme focus:outline-none focus:border-[#009edb] focus:ring-1 focus:ring-[#009edb] transition-all"
-                disabled={!!otpStatus}
-              />
+              <div className="relative">
+                <input
+                  onChange={(e) => setEmail(e.target.value)}
+                  type="email"
+                  placeholder="name@asija.in"
+                  value={email}
+                  disabled={!!otpStatus || loading}
+                  className="w-full p-4 rounded-lg bg-surface border border-theme text-theme focus:outline-none focus:border-[#009edb] focus:ring-1 focus:ring-[#009edb] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                />
+                {loading && (
+                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-[#009edb] border-t-transparent"></div>
+                  </div>
+                )}
+              </div>
             </div>
 
             {otpStatus && (
@@ -152,13 +159,23 @@ export default function LoginPage() {
                   text="Verify & Login"
                   className="w-full mt-2 bg-[#009edb] text-white border-[#009edb]" 
                 />
-                <button 
-                  type="button"
-                  onClick={() => { setOtpStatus(null); setPassword(''); }}
-                  className="text-sm text-muted hover:text-[#009edb] transition-colors text-center mt-2"
-                >
-                  Change Email / Resend
-                </button>
+                <div className="flex gap-2">
+                  <button 
+                    type="button"
+                    onClick={() => { setOtpStatus(null); setPassword(''); setError(''); }}
+                    className="flex-1 text-sm py-2 px-4 rounded-lg border border-theme text-theme hover:bg-theme hover:text-surface transition-colors"
+                  >
+                    Change Email
+                  </button>
+                  <button
+                    type="button"
+                    onClick={sendOtp}
+                    disabled={loading}
+                    className="flex-1 text-sm py-2 px-4 rounded-lg bg-[#009edb] text-white hover:bg-[#007acc] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {loading ? 'Sending...' : 'Resend OTP'}
+                  </button>
+                </div>
               </div>
             )}
             
