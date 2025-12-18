@@ -72,7 +72,55 @@ export default function PoliciesPage() {
         <div className="flex flex-col lg:flex-row gap-12">
           {/* Left Side - Policies (70%) */}
           <div className="w-full lg:w-[70%] space-y-12">
-            
+
+            {/* Legal Documents Section */}
+            <section>
+              <h2 className={`text-2xl font-semibold mb-6 flex items-center gap-2 ${isLight ? 'text-gray-800' : 'text-gray-100'}`}>
+                <span className="w-2 h-8 bg-[#009edb] rounded-full"></span>
+                Legal Documents
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className={`p-6 rounded-2xl border transition-all duration-300 hover:shadow-lg cursor-pointer group ${
+                    isLight
+                      ? 'bg-white border-gray-100 hover:border-[#009edb]/30'
+                      : 'bg-slate-950 border-white/5 hover:border-[#009edb]/30'
+                  }`}
+                  onClick={() => window.open('/policies/privacy-policy', '_blank')}
+                >
+                  <h3 className="text-xl font-bold mb-3 text-[#009edb] group-hover:translate-x-1 transition-transform">
+                    Privacy Policy
+                  </h3>
+                  <p className={`leading-relaxed ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
+                    Learn how we collect, use, and protect your personal information.
+                  </p>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 }}
+                  className={`p-6 rounded-2xl border transition-all duration-300 hover:shadow-lg cursor-pointer group ${
+                    isLight
+                      ? 'bg-white border-gray-100 hover:border-[#009edb]/30'
+                      : 'bg-slate-950 border-white/5 hover:border-[#009edb]/30'
+                  }`}
+                  onClick={() => window.open('/policies/terms-of-service', '_blank')}
+                >
+                  <h3 className="text-xl font-bold mb-3 text-[#009edb] group-hover:translate-x-1 transition-transform">
+                    Terms of Service
+                  </h3>
+                  <p className={`leading-relaxed ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
+                    Read our terms and conditions for using our services.
+                  </p>
+                </motion.div>
+              </div>
+            </section>
+
             {/* General Policies Section */}
             <section>
               <h2 className={`text-2xl font-semibold mb-6 flex items-center gap-2 ${isLight ? 'text-gray-800' : 'text-gray-100'}`}>

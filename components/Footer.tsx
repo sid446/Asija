@@ -222,15 +222,15 @@ const Footer = () => {
           className="pt-8 border-t border-theme flex flex-col sm:flex-row justify-between items-center gap-4"
         >
           <p className="text-muted text-sm text-center sm:text-left">
-            {t('footer.copyright') || '© 2024 Asija & Associates LLP. All rights reserved.'}
+            {t('footer.copyright') || '© 2026 Asija & Associates LLP. All rights reserved.'}
           </p>
           <div className="flex gap-6 text-sm text-muted">
-            <a href="#" className="hover:text-accent transition-colors">
+            <Link href="/policies/privacy-policy" className="hover:text-accent transition-colors">
               {t('footer.privacy') || 'Privacy Policy'}
-            </a>
-            <a href="#" className="hover:text-accent transition-colors">
+            </Link>
+            <Link href="/policies/terms-of-service" className="hover:text-accent transition-colors">
               {t('footer.terms') || 'Terms of Service'}
-            </a>
+            </Link>
           </div>
         </motion.div>
       </div>
