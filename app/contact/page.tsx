@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { Send, Loader2, CheckCircle, AlertCircle, MapPin, Phone, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useTranslation } from '@/components/TranslationProvider';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
@@ -38,7 +37,6 @@ type Location = {
 };
 
 export default function ContactPage() {
-  const { t } = useTranslation();
   const [content, setContent] = useState<ContactContent | null>(null);
   const [locations, setLocations] = useState<Location[]>([]);
   const [formData, setFormData] = useState({
@@ -142,9 +140,9 @@ export default function ContactPage() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16 max-w-3xl"
         >
-          <h2 className="text-accent font-medium text-lg tracking-wider mb-2">{t('contact.tagline')}</h2>
-          <h1 className="text-4xl md:text-5xl font-bold text-theme mb-6">{t('contact.title')} <span className="text-accent">.</span></h1>
-          <p className="text-muted text-lg">{t('contact.description')}</p>
+          <h2 className="text-accent font-medium text-lg tracking-wider mb-2">Get In Touch</h2>
+          <h1 className="text-4xl md:text-5xl font-bold text-theme mb-6">Contact Us <span className="text-accent">.</span></h1>
+          <p className="text-muted text-lg">Ready to discuss your business needs? Reach out to our experts for personalized solutions.</p>
         </motion.div>
 
         <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
