@@ -231,7 +231,7 @@ const NavItem = ({ label, isIcon, icon, isActive, hasDropdown, href }: NavItemPr
 
   if (href) {
     return (
-      <Link href={href} className="relative px-4 py-6 text-white/90 hover:text-white text-sm font-medium transition-colors flex items-center gap-1.5 group">
+      <Link href={href} className="relative px-1.5 2xl:px-4 py-6 text-white/90 hover:text-white text-sm font-medium transition-colors flex items-center gap-1 group whitespace-nowrap">
         {label}
         {hasDropdown && (
           <motion.div
@@ -256,7 +256,7 @@ const NavItem = ({ label, isIcon, icon, isActive, hasDropdown, href }: NavItemPr
   }
 
   return (
-    <button className="relative px-4 py-6 text-white/90 hover:text-white text-sm font-medium transition-colors flex items-center gap-1.5 group">
+    <button className="relative px-1.5 2xl:px-4 py-6 text-white/90 hover:text-white text-sm font-medium transition-colors flex items-center gap-1 group whitespace-nowrap">
       {label}
       {hasDropdown && (
         <motion.div
@@ -495,9 +495,9 @@ export default function Navbar() {
       >
         <div className="h-full flex justify-between items-center px-4 md:px-8 w-full mx-auto">
           {/* LEFT SIDE */}
-          <div className="flex gap-8 lg:gap-10 items-center">
+          <div className="flex gap-2 lg:gap-6 items-center">
             
-            <motion.div className="flex items-center gap-2.5 md:gap-3 cursor-pointer">
+            <motion.div className="flex items-center gap-1.5 md:gap-3 cursor-pointer">
             <Link href="/">
               <motion.div 
                 className="bg-white rounded-full p-1.5"
@@ -540,7 +540,7 @@ export default function Navbar() {
           </motion.div>
 
             {/* Desktop Navigation - Left */}
-            <nav className="hidden min-[1100px]:flex gap-1 relative">
+            <nav className="hidden min-[1100px]:flex gap-0.5 relative">
               {menuItems.map((item) => (
                 <motion.div
                   key={item.label}
@@ -570,7 +570,7 @@ export default function Navbar() {
           </div>
 
           {/* RIGHT SIDE – Desktop */}
-          <nav className="hidden min-[1100px]:flex gap-4 items-center">
+          <nav className="hidden min-[1100px]:flex gap-1 2xl:gap-4 items-center">
             {rightMenu.map((item) => (
               <motion.div
                 key={item.label}
@@ -590,7 +590,7 @@ export default function Navbar() {
             ))}
 
             {/* Social Icons Desktop */}
-            <div className="flex items-center gap-4 mr-2">
+            <div className="flex items-center gap-1.5 2xl:gap-4 mr-1 2xl:mr-2">
                <a href="https://www.linkedin.com/company/asija-&-associates-llp/" target="_blank" rel="noopener noreferrer" className="w-5 h-5 text-white/70 hover:text-[#009edb] transition-colors"><LinkedInIcon /></a>
                <a href="https://www.instagram.com/teamasija/" target="_blank" rel="noopener noreferrer" className="w-5 h-5 text-white/70 hover:text-[#009edb] transition-colors"><InstagramIcon /></a>
                <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" className="w-5 h-5 text-white/70 hover:text-[#009edb] transition-colors"><WhatsAppIcon /></a>
@@ -598,12 +598,12 @@ export default function Navbar() {
 
             {/* Admin Dashboard (visible only to service@asija.in) */}
             {session?.user?.email === 'service@asija.in' && (
-              <Link href="/admin" className="ml-4 px-3 py-2 rounded-md bg-[#0b76a3] hover:bg-[#0077a3] text-white text-sm font-medium">
+              <Link href="/admin" className="ml-1 2xl:ml-4 px-2 2xl:px-3 py-2 rounded-md bg-[#0b76a3] hover:bg-[#0077a3] text-white text-sm font-medium">
                 Dashboard
               </Link>
             )}
 
-            <div className='w-0.5 h-6 bg-zinc-500 mr-4' ></div>
+            <div className='w-0.5 h-6 bg-zinc-500 mr-1 2xl:mr-4' ></div>
 
             {/* Theme Toggle (moved from ThemeProvider) */}
             {!session && <ThemeToggle />}
@@ -613,7 +613,7 @@ export default function Navbar() {
 
             {/* Login/User Menu */}
             {session ? (
-              <div className="relative ml-4">
+              <div className="relative ml-1 2xl:ml-4">
                 <button 
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
                   className="w-9 h-9 rounded-full bg-[#009edb] text-black font-bold text-lg flex items-center justify-center hover:bg-[#0077a3] transition-colors shadow-lg shadow-[#009edb]/20"
@@ -667,7 +667,7 @@ export default function Navbar() {
                 </AnimatePresence>
               </div>
             ) : (
-               <Link href="/login" className="text-white hover:text-[#009edb] text-sm font-medium ml-4 flex items-center justify-center gap-1">
+               <Link href="/login" className="text-white hover:text-[#009edb] text-sm font-medium ml-1 2xl:ml-4 flex items-center justify-center gap-1">
                  Login <LogIn size={15}/>
                </Link>
             )}
