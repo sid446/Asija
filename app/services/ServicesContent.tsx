@@ -109,7 +109,7 @@ const ExpandableMainItem: React.FC<{
 
       <AnimatePresence>
         {isExpanded && (hasSubItems || hasDeepSubItems) && (
-          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3 }} className={`px-6 py-4 space-y-2 ${isLight ? 'bg-[#F0FDF9]' : 'bg-gray-900/90'}`}>
+          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3 }} className={`px-6 py-4 space-y-2 ${isLight ? 'bg-gray-50' : 'bg-gray-950'}`}>
             {hasSubItems && !hasDeepSubItems && (
               <div className="space-y-2">
                 {hasSubItems.map((sub, j) => (
@@ -330,7 +330,7 @@ export default function ServicesContent() {
                     </div>
                     <div className="space-y-3">
                       {selectedService.benefits.map((benefit, i) => (
-                        <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }} className={`flex items-start gap-3 p-3 rounded-lg border-l-2 border-[#009edb] ${theme === 'light' ? 'bg-[#F0FDF9]' : 'bg-gray-900/50'}`}>
+                        <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }} className={`flex items-start gap-3 p-3 rounded-lg border-l-2 border-[#009edb] ${theme === 'light' ? 'bg-gray-50' : 'bg-gray-900'}`}>
                           <span className={`text-sm ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>{benefit}</span>
                         </motion.div>
                       ))}
