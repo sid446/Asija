@@ -76,7 +76,7 @@ const HeroSection = ({ isActive }: { isActive: boolean }) => (
 
 export default function IndustriesContent() {
   const searchParams = useSearchParams();
-  const section = searchParams.get('section');
+  const section = searchParams?.get('section') || null;
   const [currentPage, setCurrentPage] = useState(-1); // Start at -1 for Hero
   const [expandedSection, setExpandedSection] = useState<'left' | 'right' | null>(null);
   const [isMobile, setIsMobile] = useState(false);

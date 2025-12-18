@@ -179,7 +179,7 @@ export default function ServicesContent() {
   }, []);
 
   useEffect(() => {
-    const serviceName = searchParams.get('service');
+    const serviceName = searchParams?.get('service');
     if (serviceName && serviceGroups.length > 0) {
       const service = serviceGroups.find(s => s.title === serviceName);
       if (service) setSelectedService(service);
