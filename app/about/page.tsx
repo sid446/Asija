@@ -10,14 +10,14 @@ import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
 
  const defaultData = [
   {
-    title: "1986 – The Beginning of a Legacy",
+    title: "1986 – Establishment of the Firm",
     content: (
       <div className="space-y-6">
         <p className="mb-8 text-xl font-medium text-gray-300">
           Foundation by <span className="text-[#009edb] font-bold">CA Uttam Chand Asija</span>
         </p>
         <p className="text-sm text-gray-400 leading-relaxed">
-          The foundation of our firm was laid on 01 April 1986 by our visionary Founding Partner, CA Uttam Chand Asija. With a strong belief in ethical practice and professional discipline, he began the journey as a sole practitioner. His unwavering dedication, deep technical knowledge, and client-centric approach shaped the culture and values that continue to guide our firm even today.
+          The firm was founded on 01 April 1986 by CA Uttam Chand Asija. During the initial years, the practice focused on building a strong foundation rooted in accuracy, responsibility, and adherence to professional standards. These formative experiences shaped the work culture that continues to guide the firm.
         </p>
         <div className="grid grid-cols-2 gap-4">
           <img
@@ -35,12 +35,12 @@ import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
     ),
   },
   {
-    title: "2004 – Transition into a Partnership Structure",
+    title: "2004 – Organizational Restructuring into a Partnership",
     content: (
       <div className="space-y-6">
         <p className="mb-8 text-xl font-medium text-gray-300">Expanding Leadership</p>
         <p className="text-sm text-gray-400 leading-relaxed">
-          After nearly two decades of consistent growth and expanding clientele, the firm transitioned into a partnership structure in 2004 with four partners. This shift strengthened leadership capabilities, diversified expertise, and prepared the firm for future expansion.
+          In 2004, the practice evolved into a partnership. This transition allowed the inclusion of more professionals in leadership roles, encouraging collaborative working, shared responsibilities, and diversified expertise across various service areas.
         </p>
         <div className="grid grid-cols-2 gap-4">
           <img
@@ -58,22 +58,22 @@ import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
     ),
   },
   {
-    title: "2014 – Recognition by C&AG",
+    title: "2010 – Introduction of the Vertical-Based Operating Model",
     content: (
       <div className="space-y-6">
-        <p className="mb-8 text-xl font-medium text-gray-300">Major Auditor Panel</p>
+        <p className="mb-8 text-xl font-medium text-gray-300">Specialization & Quality</p>
         <p className="text-sm text-gray-400 leading-relaxed">
-          A prestigious milestone was achieved in 2014, when Asija & Associates LLP was placed on the Major Auditor Panel created by the Office of the Comptroller & Auditor General (C&AG) of India. This recognition reaffirmed our professional credentials and enabled us to undertake large-scale statutory audits of government bodies and public sector enterprises.
+          In 2010, the firm introduced a Vertical System to enhance specialization and service quality. Under this model, each vertical is led by a specialized Chartered Accountant, responsible for domain expertise, execution oversight, and quality control. This structure improved efficiency, accountability, and depth of professional delivery across all assignments.
         </p>
         <div className="grid grid-cols-2 gap-4">
-          <img
-            src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&h=600&fit=crop"
-            alt="Government Audit"
+           <img
+            src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&h=600&fit=crop"
+            alt="Strategic Planning"
             className="h-44 w-full rounded-lg object-cover shadow-lg border border-gray-800"
           />
           <img
-            src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&h=600&fit=crop"
-            alt="Financial Documents"
+            src="https://images.unsplash.com/photo-1553877615-30c730db910a?w=600&h=600&fit=crop"
+            alt="Team Collaboration"
             className="h-44 w-full rounded-lg object-cover shadow-lg border border-gray-800"
           />
         </div>
@@ -86,7 +86,7 @@ import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
       <div className="space-y-6">
         <p className="mb-8 text-xl font-medium text-gray-300">Modern Governance</p>
         <p className="text-sm text-gray-400 leading-relaxed">
-          In 2016, the firm adopted a modern governance structure by converting into a Limited Liability Partnership (LLP). This strengthened risk management, improved operational flexibility, and enabled the firm to manage larger, more complex assignments.
+          In 2016, the firm adopted the Limited Liability Partnership structure. This provided a more organized governance model, strengthened internal processes, and supported systematic handling of assignments as the scale of operations gradually increased.
         </p>
         <div className="grid grid-cols-2 gap-4">
           <img
@@ -104,12 +104,12 @@ import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
     ),
   },
   {
-    title: "2017 – First Expansion Outside Uttar Pradesh",
+    title: "2017 – Expansion into Southern India",
     content: (
       <div className="space-y-6">
         <p className="mb-8 text-xl font-medium text-gray-300">Bengaluru Branch</p>
         <p className="text-sm text-gray-400 leading-relaxed">
-          A historic milestone was achieved in 2017 when we opened our first branch outside Uttar Pradesh in Bengaluru. This expansion marked our entry into South India—one of the country’s most dynamic business ecosystems. Establishing the Bengaluru branch demonstrated our readiness to serve a wider client base and paved the way for national-level operations.
+          In 2017, the firm opened a branch in Bengaluru. This step allowed the firm to extend its presence to southern India and to cater to professional requirements arising in that region in a more accessible and coordinated manner.
         </p>
         <div className="grid grid-cols-2 gap-4">
           <img
@@ -127,12 +127,12 @@ import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
     ),
   },
   {
-    title: "2018 – Expansion to the National Capital Region",
+    title: "2018 – Presence in the National Capital Region",
     content: (
       <div className="space-y-6">
         <p className="mb-8 text-xl font-medium text-gray-300">New Delhi Branch</p>
         <p className="text-sm text-gray-400 leading-relaxed">
-          In 2018, the firm strengthened its presence in North India by opening a new branch in New Delhi. This expansion enhanced our accessibility to major corporate hubs, government institutions, and regulatory bodies, enabling us to cater to a broader range of industries with greater efficiency.
+          In 2018, a branch was established in New Delhi. Operating from the capital region enabled the firm to work more closely with organizations situated in an important administrative and business Centre.
         </p>
         <div className="grid grid-cols-2 gap-4">
           <img
@@ -150,30 +150,25 @@ import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
     ),
   },
   {
-    title: "2021 – Multi-State Growth Across India",
+    title: "2021 – Expansion into Western and North-Eastern India",
     content: (
       <div className="space-y-6">
-        <p className="mb-8 text-xl font-medium text-gray-300">Pan-India Presence</p>
+        <p className="mb-8 text-xl font-medium text-gray-300">Mumbai & Guwahati</p>
         <p className="text-sm text-gray-400 leading-relaxed">
-          The year 2021 was a landmark period of accelerated expansion. Our firm entered three additional states, establishing branches in:
-        </p>
-        <ul className="list-disc list-inside text-sm text-gray-400 leading-relaxed ml-4">
-            <li><span className="text-gray-300 font-semibold">Mumbai (Maharashtra)</span> – Expanding into India’s financial capital.</li>
-            <li><span className="text-gray-300 font-semibold">Dehradun (Uttarakhand)</span> – Strengthened our footprint in northern India.</li>
-            <li><span className="text-gray-300 font-semibold">Guwahati (Assam)</span> – Marked our significant entry into the North-East region.</li>
-        </ul>
-        <p className="text-sm text-gray-400 leading-relaxed">
-            This multi-state presence elevated the firm into a truly pan-India professional services network.
+          In 2021, the firm expanded its footprint further by establishing branches in:<br/>
+          • Mumbai – strengthening its presence in Western India<br/>
+          • Guwahati – enhancing operational reach in the North-Eastern region<br/>
+          These expansions supported multi-regional operations and improved coordination across assignments.
         </p>
         <div className="grid grid-cols-2 gap-4">
           <img
-            src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=600&h=600&fit=crop"
-            alt="India Map Concept"
+            src="https://images.unsplash.com/photo-1566552881560-0be862a7c445?w=600&h=600&fit=crop"
+            alt="Mumbai Skyline"
             className="h-44 w-full rounded-lg object-cover shadow-lg border border-gray-800"
           />
           <img
-            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=600&fit=crop"
-            alt="Network"
+            src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=600&h=600&fit=crop"
+            alt="Guwahati Landscape"
             className="h-44 w-full rounded-lg object-cover shadow-lg border border-gray-800"
           />
         </div>
@@ -184,65 +179,90 @@ import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
     title: "2022 – A Stronger Leadership: 10 Partners",
     content: (
       <div className="space-y-6">
-        <p className="mb-8 text-xl font-medium text-gray-300">Expanded Leadership</p>
+        <p className="mb-8 text-xl font-medium text-gray-300">Leadership Growth</p>
         <p className="text-sm text-gray-400 leading-relaxed">
-          In 2022, the firm expanded its leadership team to 10 partners, each specializing in diverse service areas such as audit, taxation, advisory, compliance, finance, and system reviews. This strengthened governance framework empowered the firm to undertake large-scale, complex assignments with enhanced quality, oversight, and strategic depth.
+          In 2022, the number of partners increased to ten. With a larger leadership group, the firm strengthened its ability to coordinate responsibilities, supervise diverse engagements, and maintain structured oversight across its branches.
         </p>
         <div className="grid grid-cols-2 gap-4">
           <img
             src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=600&h=600&fit=crop"
-            alt="Boardroom"
-            className="h-44 w-full rounded-lg object-cover shadow-lg border border-gray-800"
-          />
-          <img
-            src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&h=600&fit=crop"
             alt="Leadership Team"
             className="h-44 w-full rounded-lg object-cover shadow-lg border border-gray-800"
           />
-        </div>
-      </div>
-    ),
-  },
-  {
-    title: "2024 – Global Recognition & Expansion",
-    content: (
-      <div className="space-y-6">
-        <p className="mb-8 text-xl font-medium text-gray-300">UN Empanelment & North-East Growth</p>
-        <p className="text-sm text-gray-400 leading-relaxed">
-          In 2024, we expanded further in the North-East region with an additional branch, reinforcing our commitment to serving emerging markets.
-        </p>
-        <p className="text-sm text-gray-400 leading-relaxed">
-          A landmark international achievement was unlocked in 2024, when Asija & Associates LLP was formally empanelled by the United Nations for assignments across South Asia. This global accreditation positioned the firm on an international platform and opened avenues for development-sector engagements worldwide.
-        </p>
-        <div className="grid grid-cols-2 gap-4">
           <img
-            src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&h=600&fit=crop"
-            alt="Global Business"
+            src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&h=600&fit=crop"
+            alt="Partners Meeting"
             className="h-44 w-full rounded-lg object-cover shadow-lg border border-gray-800"
           />
-          
         </div>
       </div>
     ),
   },
   {
-    title: "2025 – First International Assignment Executed",
+    title: "2024 – Strengthening Presence in the North-East",
     content: (
       <div className="space-y-6">
-        <p className="mb-8 text-xl font-medium text-gray-300">Global Professional Services</p>
+        <p className="mb-8 text-xl font-medium text-gray-300">Mizoram Branch</p>
         <p className="text-sm text-gray-400 leading-relaxed">
-          In 2025, we proudly completed our first international assignment in collaboration with UN agencies, marking our entry into the global professional services space. This milestone reflects the firm’s capability, credibility, and readiness to deliver at global standards.
+          In 2024, the firm expanded further within the North-East region by establishing an additional branch in Mizoram. This step helped improve accessibility and operational convenience for assignments in that area.
         </p>
         <div className="grid grid-cols-2 gap-4">
           <img
-            src="https://images.unsplash.com/photo-1704655295066-681e61ecca6b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            alt="Modern office 2025"
-            className="h-52 w-full rounded-lg object-cover shadow-lg border border-gray-800"
+            src="https://images.unsplash.com/photo-1589216532372-1c2a367900d9?w=600&h=600&fit=crop"
+            alt="Mizoram Landscape"
+            className="h-44 w-full rounded-lg object-cover shadow-lg border border-gray-800"
           />
           <img
-            src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=600&h=600&fit=crop"
-            alt="AI & Technology"
-            className="h-52 w-full rounded-lg object-cover shadow-lg border border-gray-800"
+            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=600&fit=crop"
+            alt="Office Expansion"
+            className="h-44 w-full rounded-lg object-cover shadow-lg border border-gray-800"
+          />
+        </div>
+      </div>
+    ),
+  },
+  {
+    title: "Our People – The Heart of Our Firm",
+    content: (
+      <div className="space-y-6">
+        <p className="mb-8 text-xl font-medium text-gray-300">Diversity & Expertise</p>
+        <p className="text-sm text-gray-400 leading-relaxed">
+          Today, the firm comprises a team of more than 100 professionals, including Qualified Chartered Accountants, Cost and Management Accountants, Company Secretaries, semi-qualified staff, trainees, and executives. The team brings together a well-balanced combination of experience, technical knowledge, and professional competence across different service areas.<br/><br/>
+          As an organisation, the firm follows an equal-opportunity approach and encourages diversity and inclusivity within its workforce. The collective efforts of the team support the firm’s ability to handle assignments in a structured and coordinated manner.
+        </p>
+        <div className="grid grid-cols-2 gap-4">
+          <img
+            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=600&fit=crop"
+            alt="Diverse Team"
+            className="h-44 w-full rounded-lg object-cover shadow-lg border border-gray-800"
+          />
+          <img
+            src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=600&h=600&fit=crop"
+            alt="Teamwork"
+            className="h-44 w-full rounded-lg object-cover shadow-lg border border-gray-800"
+          />
+        </div>
+      </div>
+    ),
+  },
+  {
+    title: "Looking Ahead – Our Vision for the Future",
+    content: (
+      <div className="space-y-6">
+        <p className="mb-8 text-xl font-medium text-gray-300">Future Vision</p>
+        <p className="text-sm text-gray-400 leading-relaxed">
+          As Asija & Associates LLP continues to develop, the firm remains focused on strengthening its internal processes, adopting relevant technological tools, and maintaining consistency in professional execution. The guiding principles continue to be integrity, diligence, and adherence to applicable standards while handling all professional engagements.
+        </p>
+        <div className="grid grid-cols-2 gap-4">
+          <img
+            src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=600&fit=crop"
+            alt="Future Technology"
+            className="h-44 w-full rounded-lg object-cover shadow-lg border border-gray-800"
+          />
+          <img
+            src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&h=600&fit=crop"
+            alt="Strategic Vision"
+            className="h-44 w-full rounded-lg object-cover shadow-lg border border-gray-800"
           />
         </div>
       </div>
@@ -256,11 +276,7 @@ export default function AboutPage() {
   const [showButton, setShowButton] = useState(false);
   const contentRef = useRef<HTMLParagraphElement>(null);
 
-  const defaultFullText = `Asija & Associates LLP, Chartered Accountants was established on 1st April 1986 by our founder member CA. Uttam Chandra Asija with the aim of providing a wide range of Accounting and Financial services to clients in Government, Corporate & Private Sector. Over the years the firm has been built around a team of professionals, possessing vast experience in the areas of auditing, accounting, taxation, company law matters, along with a host of other financial services which are rendered to the clients to turning complex problems into growth opportunities and supporting the progress of society at large.<br/><br/>
-
-Our Firm has not only grown tremendously in knowledge and expertise but has also created history by becoming the first Chartered Accountancy firm in Lucknow to convert into a Limited Liability Partnership (LLP) – a landmark achievement that reflects our progressive vision and commitment to excellence.<br/><br/>
-
-Today, with decades of trust earned and hundreds of success stories written, we continue to stand by our core belief: delivering exceptional quality to every stakeholder and going above and beyond client expectations through collaboration, innovation, and unwavering integrity.`;
+  const defaultFullText = `The journey of Asija & Associates LLP spans several decades of steady development. From its start as an individual practice to a multi-location professional firm, the growth has been steady structured, and grounded on the principles of discipline, ethics, and consistent professional learning and upgradation`;
 
   const fullText = aboutContent 
     ? [aboutContent.description1, aboutContent.description2, aboutContent.description3, aboutContent.description4]

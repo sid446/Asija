@@ -27,10 +27,10 @@ const AboutTimeline =
 
 const timelineData = [
   {
-    year: "1986 – The Beginning of a Legacy",
+    year: "1986 – Establishment of the Firm",
     heading: "Foundation by CA Uttam Chand Asija",
     description:
-      "The foundation of our firm was laid on 01 April 1986 by our visionary Founding Partner, CA Uttam Chand Asija. With a strong belief in ethical practice and professional discipline, he began the journey as a sole practitioner. His unwavering dedication, deep technical knowledge, and client-centric approach shaped the culture and values that continue to guide our firm even today.",
+      "The firm was founded on 01 April 1986 by CA Uttam Chand Asija. During the initial years, the practice focused on building a strong foundation rooted in accuracy, responsibility, and adherence to professional standards. These formative experiences shaped the work culture that continues to guide the firm.",
     images: [
       "https://images.unsplash.com/photo-1624357676666-4cca3b657627?q=80&w=688&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "https://images.unsplash.com/photo-1680261019762-59d8fa84e0a3?q=80&w=1077&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -38,10 +38,10 @@ const timelineData = [
     order: 1,
   },
   {
-    year: "2004 – Transition into a Partnership Structure",
+    year: "2004 – Organizational Restructuring into a Partnership",
     heading: "Expanding Leadership",
     description:
-      "After nearly two decades of consistent growth and expanding clientele, the firm transitioned into a partnership structure in 2004 with four partners. This shift strengthened leadership capabilities, diversified expertise, and prepared the firm for future expansion.",
+      "In 2004, the practice evolved into a partnership. This transition allowed the inclusion of more professionals in leadership roles, encouraging collaborative working, shared responsibilities, and diversified expertise across various service areas.",
     images: [
       "https://plus.unsplash.com/premium_photo-1664392124762-db2317f99f84?q=80&w=748&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=600&fit=crop",
@@ -49,13 +49,13 @@ const timelineData = [
     order: 2,
   },
   {
-    year: "2014 – Recognition by C&AG",
-    heading: "Major Auditor Panel",
+    year: "2010 – Introduction of the Vertical-Based Operating Model",
+    heading: "Specialization & Quality",
     description:
-      "A prestigious milestone was achieved in 2014, when Asija & Associates LLP was placed on the Major Auditor Panel created by the Office of the Comptroller & Auditor General (C&AG) of India. This recognition reaffirmed our professional credentials and enabled us to undertake large-scale statutory audits of government bodies and public sector enterprises.",
+      "In 2010, the firm introduced a Vertical System to enhance specialization and service quality. Under this model, each vertical is led by a specialized Chartered Accountant, responsible for domain expertise, execution oversight, and quality control. This structure improved efficiency, accountability, and depth of professional delivery across all assignments.",
     images: [
-      "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1553877615-30c730db910a?w=600&h=600&fit=crop",
     ],
     order: 3,
   },
@@ -63,7 +63,7 @@ const timelineData = [
     year: "2016 – Evolution into a Limited Liability Partnership (LLP)",
     heading: "Modern Governance",
     description:
-      "In 2016, the firm adopted a modern governance structure by converting into a Limited Liability Partnership (LLP). This strengthened risk management, improved operational flexibility, and enabled the firm to manage larger, more complex assignments.",
+      "In 2016, the firm adopted the Limited Liability Partnership structure. This provided a more organized governance model, strengthened internal processes, and supported systematic handling of assignments as the scale of operations gradually increased.",
     images: [
       "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600&h=600&fit=crop",
       "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=600&h=600&fit=crop",
@@ -71,10 +71,10 @@ const timelineData = [
     order: 4,
   },
   {
-    year: "2017 – First Expansion Outside Uttar Pradesh",
+    year: "2017 – Expansion into Southern India",
     heading: "Bengaluru Branch",
     description:
-      "A historic milestone was achieved in 2017 when we opened our first branch outside Uttar Pradesh in Bengaluru. This expansion marked our entry into South India—one of the country’s most dynamic business ecosystems. Establishing the Bengaluru branch demonstrated our readiness to serve a wider client base and paved the way for national-level operations.",
+      "In 2017, the firm opened a branch in Bengaluru. This step allowed the firm to extend its presence to southern India and to cater to professional requirements arising in that region in a more accessible and coordinated manner.",
     images: [
       "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=600&fit=crop",
       "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&h=600&fit=crop",
@@ -82,10 +82,10 @@ const timelineData = [
     order: 5,
   },
   {
-    year: "2018 – Expansion to the National Capital Region",
+    year: "2018 – Presence in the National Capital Region",
     heading: "New Delhi Branch",
     description:
-      "In 2018, the firm strengthened its presence in North India by opening a new branch in New Delhi. This expansion enhanced our accessibility to major corporate hubs, government institutions, and regulatory bodies, enabling us to cater to a broader range of industries with greater efficiency.",
+      "In 2018, a branch was established in New Delhi. Operating from the capital region enabled the firm to work more closely with organizations situated in an important administrative and business Centre.",
     images: [
       "https://images.unsplash.com/photo-1587474260584-136574528ed5?w=600&h=600&fit=crop",
       "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=600&h=600&fit=crop",
@@ -93,47 +93,59 @@ const timelineData = [
     order: 6,
   },
   {
-    year: "2021 – Multi-State Growth Across India",
-    heading: "Pan-India Presence",
+    year: "2021 – Expansion into Western and North-Eastern India",
+    heading: "Mumbai & Guwahati",
     description:
-      "The year 2021 was a landmark period of accelerated expansion. Our firm entered three additional states, establishing branches in Mumbai (Maharashtra), Dehradun (Uttarakhand), and Guwahati (Assam). This multi-state presence elevated the firm into a truly pan-India professional services network.",
+      "In 2021, the firm expanded its footprint further by establishing branches in:\n• Mumbai – strengthening its presence in Western India\n• Guwahati – enhancing operational reach in the North-Eastern region\nThese expansions supported multi-regional operations and improved coordination across assignments.",
     images: [
-      "https://images.unsplash.com/photo-1524661135-423995f22d0b?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1566552881560-0be862a7c445?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=600&h=600&fit=crop",
     ],
     order: 7,
   },
   {
     year: "2022 – A Stronger Leadership: 10 Partners",
-    heading: "Expanded Leadership",
+    heading: "Leadership Growth",
     description:
-      "In 2022, the firm expanded its leadership team to 10 partners, each specializing in diverse service areas such as audit, taxation, advisory, compliance, finance, and system reviews. This strengthened governance framework empowered the firm to undertake large-scale, complex assignments with enhanced quality, oversight, and strategic depth.",
+      "In 2022, the number of partners increased to ten. With a larger leadership group, the firm strengthened its ability to coordinate responsibilities, supervise diverse engagements, and maintain structured oversight across its branches.",
     images: [
       "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&h=600&fit=crop",
     ],
     order: 8,
   },
   {
-    year: "2024 – Global Recognition & Expansion",
-    heading: "UN Empanelment & North-East Growth",
+    year: "2024 – Strengthening Presence in the North-East",
+    heading: "Mizoram Branch",
     description:
-      "In 2024, we expanded further in the North-East region with an additional branch, reinforcing our commitment to serving emerging markets. A landmark international achievement was unlocked in 2024, when Asija & Associates LLP was formally empanelled by the United Nations for assignments across South Asia. This global accreditation positioned the firm on an international platform and opened avenues for development-sector engagements worldwide.",
+      "In 2024, the firm expanded further within the North-East region by establishing an additional branch in Mizoram. This step helped improve accessibility and operational convenience for assignments in that area.",
     images: [
-      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1589216532372-1c2a367900d9?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=600&fit=crop",
     ],
     order: 9,
   },
   {
-    year: "2025 – First International Assignment Executed",
-    heading: "Global Professional Services",
+    year: "Our People – The Heart of Our Firm",
+    heading: "Diversity & Expertise",
     description:
-      "In 2025, we proudly completed our first international assignment in collaboration with UN agencies, marking our entry into the global professional services space. This milestone reflects the firm’s capability, credibility, and readiness to deliver at global standards.",
+      "Today, the firm comprises a team of more than 100 professionals, including Qualified Chartered Accountants, Cost and Management Accountants, Company Secretaries, semi-qualified staff, trainees, and executives. The team brings together a well-balanced combination of experience, technical knowledge, and professional competence across different service areas.\n\nAs an organisation, the firm follows an equal-opportunity approach and encourages diversity and inclusivity within its workforce. The collective efforts of the team support the firm’s ability to handle assignments in a structured and coordinated manner.",
     images: [
-      "https://images.unsplash.com/photo-1704655295066-681e61ecca6b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=600&h=600&fit=crop",
     ],
     order: 10,
+  },
+  {
+    year: "Looking Ahead – Our Vision for the Future",
+    heading: "Future Vision",
+    description:
+      "As Asija & Associates LLP continues to develop, the firm remains focused on strengthening its internal processes, adopting relevant technological tools, and maintaining consistency in professional execution. The guiding principles continue to be integrity, diligence, and adherence to applicable standards while handling all professional engagements.",
+    images: [
+      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&h=600&fit=crop",
+    ],
+    order: 11,
   },
 ];
 

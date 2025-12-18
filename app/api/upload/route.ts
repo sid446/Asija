@@ -22,12 +22,15 @@ export async function POST(request: Request) {
     const result = await new Promise((resolve, reject) => {
       cloudinary.uploader.upload_stream(
         {
-          folder: 'asija-team', // Optional: organize uploads in a folder
+          folder: 'asija-team',
+          resource_type: 'auto',
         },
         (error, result) => {
           if (error) {
+            console.error('Cloudinary upload error:', error);
             reject(error);
           } else {
+            console.log('Cloudinary upload success:', result);
             resolve(result);
           }
         }

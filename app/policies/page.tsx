@@ -8,12 +8,16 @@ import Footer from "@/components/Footer";
 import { useTheme } from "@/components/ThemeProvider";
 import { motion } from "framer-motion";
 import { InteractiveHoverButton } from "@/components/ui/InteractiveHoverButton";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/Accordian";
+import { Maximize2, X } from "lucide-react";
 
 type PolicyItem = {
   _id: string;
   title: string;
   content: string;
   category: 'general' | 'employee';
+  subCategory?: 'HR' | 'IT' | 'ADMIN' | 'VERTICLE COLLECTIVES';
+  pdfUrl?: string;
   order: number;
 };
 
@@ -24,6 +28,7 @@ export default function PoliciesPage() {
   const isLight = theme === 'light';
   const [policies, setPolicies] = useState<PolicyItem[]>([]);
   const [employeePolicies, setEmployeePolicies] = useState<PolicyItem[]>([]);
+  const [selectedPdf, setSelectedPdf] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchPolicies = async () => {
@@ -41,6 +46,13 @@ export default function PoliciesPage() {
 
     fetchPolicies();
   }, []);
+
+  const groupedEmployeePolicies = {
+    HR: employeePolicies.filter(p => p.subCategory === 'HR'),
+    IT: employeePolicies.filter(p => p.subCategory === 'IT'),
+    ADMIN: employeePolicies.filter(p => p.subCategory === 'ADMIN'),
+    'VERTICLE COLLECTIVES': employeePolicies.filter(p => p.subCategory === 'VERTICLE COLLECTIVES'),
+  };
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${isLight ? 'bg-white text-gray-900' : 'bg-slate-950 text-white'}`}>
@@ -97,27 +109,49 @@ export default function PoliciesPage() {
                   <span className="w-2 h-8 bg-[#009edb] rounded-full"></span>
                   Employee & Internal Policies
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {employeePolicies.map((policy, index) => (
-                    <motion.div 
-                      key={index}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.1 }}
-                      className={`p-6 rounded-2xl border transition-all duration-300 ${
-                        isLight 
-                          ? 'bg-white border-gray-100' 
-                          : 'bg-slate-950 border-white/5'
-                      }`}
-                    >
-                      <h3 className="text-lg font-bold mb-2 text-[#009edb]">{policy.title}</h3>
-                      <p className={`text-sm leading-relaxed ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
-                        {policy.content}
-                      </p>
-                    </motion.div>
+                
+                <Accordion type="single" collapsible className="w-full space-y-4">
+                  {Object.entries(groupedEmployeePolicies).map(([category, items]) => (
+                    items.length > 0 && (
+                      <AccordionItem key={category} value={category} className="border rounded-lg px-4">
+                        <AccordionTrigger className={`text-lg font-medium ${isLight ? 'text-gray-800' : 'text-gray-200'}`}>
+                          {category} Policies
+                        </AccordionTrigger>
+                        <AccordionContent>
+                          <div className="space-y-4 pt-4">
+                            {items.map((policy) => (
+                              <div key={policy._id} className="p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                                <h4 className="font-semibold text-[#009edb] mb-2">{policy.title}</h4>
+                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{policy.content}</p>
+                                {policy.pdfUrl && (
+                                  <div className="mt-4">
+                                    <div className="w-full h-[500px] border rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 mb-2">
+                                      <iframe
+                                        src={policy.pdfUrl.includes('drive.google.com') ? policy.pdfUrl.replace('/view', '/preview') : policy.pdfUrl}
+                                        className="w-full h-full"
+                                        frameBorder="0"
+                                        title={policy.title}
+                                        allow="autoplay"
+                                        sandbox="allow-scripts allow-same-origin allow-forms"
+                                      />
+                                    </div>
+                                    <button
+                                      onClick={() => setSelectedPdf(policy.pdfUrl!)}
+                                      className="mt-2 flex items-center gap-2 text-sm text-[#009edb] hover:underline"
+                                    >
+                                      <Maximize2 className="w-4 h-4" />
+                                      View Full Screen
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    )
                   ))}
-                </div>
+                </Accordion>
               </section>
             )}
 
@@ -159,6 +193,31 @@ export default function PoliciesPage() {
       </main>
 
       <Footer />
+
+      {/* Full Screen PDF Modal */}
+      {selectedPdf && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <div className="relative w-full h-full max-w-6xl max-h-[90vh] bg-white rounded-xl overflow-hidden flex flex-col">
+            <div className="flex justify-end p-2 bg-gray-100 border-b">
+              <button 
+                onClick={() => setSelectedPdf(null)}
+                className="p-2 hover:bg-gray-200 rounded-full transition-colors"
+              >
+                <X className="w-6 h-6 text-gray-600" />
+              </button>
+            </div>
+            <div className="flex-1 bg-gray-50">
+              <iframe
+                src={selectedPdf.includes('drive.google.com') ? selectedPdf.replace('/view', '/preview') : selectedPdf}
+                className="w-full h-full"
+                frameBorder="0"
+                allow="autoplay"
+                sandbox="allow-scripts allow-same-origin allow-forms"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

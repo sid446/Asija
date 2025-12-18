@@ -332,6 +332,8 @@ type PolicyItem = {
   title: string;
   content: string;
   category: 'general' | 'employee';
+  subCategory?: 'HR' | 'IT' | 'ADMIN' | 'VERTICLE COLLECTIVES';
+  pdfUrl?: string;
   order: number;
 };
 
@@ -902,7 +904,14 @@ export default function AdminPage() {
   });
   const [isExtractingCoords, setIsExtractingCoords] = useState(false);
   const [globalOfferingFormData, setGlobalOfferingFormData] = useState({ title: '', description: '', icon: 'ShieldCheck', order: 0 });
-  const [policyFormData, setPolicyFormData] = useState({ title: '', content: '', category: 'general', order: 0 });
+  const [policyFormData, setPolicyFormData] = useState<{
+    title: string;
+    content: string;
+    category: string;
+    subCategory?: string;
+    pdfUrl?: string;
+    order: number;
+  }>({ title: '', content: '', category: 'general', subCategory: '', pdfUrl: '', order: 0 });
   const [jobFormData, setJobFormData] = useState({
     title: '',
     department: '',
@@ -2372,6 +2381,24 @@ export default function AdminPage() {
     }
   };
 
+  const handlePolicyFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const form = new FormData();
+    form.append('file', file);
+
+    try {
+      const res = await fetch('/api/upload', { method: 'POST', body: form });
+      const data = await res.json();
+      if (data.secure_url) {
+        setPolicyFormData(prev => ({ ...prev, pdfUrl: data.secure_url }));
+      }
+    } catch (err) {
+      console.error('Upload failed', err);
+    }
+  };
+
   const handlePolicyChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setPolicyFormData(prev => ({ ...prev, [name]: value }));
@@ -2394,7 +2421,7 @@ export default function AdminPage() {
 
       if (res.ok) {
         setMessage(editingPolicyId ? 'Policy updated successfully!' : 'Policy added successfully!');
-        setPolicyFormData({ title: '', content: '', category: 'general', order: 0 });
+        setPolicyFormData({ title: '', content: '', category: 'general', subCategory: '', pdfUrl: '', order: 0 });
         setEditingPolicyId(null);
         fetchPolicies();
       } else {
@@ -2414,6 +2441,8 @@ export default function AdminPage() {
       title: item.title,
       content: item.content,
       category: item.category,
+      subCategory: item.subCategory || '',
+      pdfUrl: item.pdfUrl || '',
       order: item.order
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -5007,9 +5036,33 @@ export default function AdminPage() {
                           <option value="employee">Employee</option>
                         </select>
                       </div>
+                      {policyFormData.category === 'employee' && (
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Sub Category</label>
+                          <select name="subCategory" value={policyFormData.subCategory} onChange={handlePolicyChange} className="w-full px-4 py-2 border rounded-lg">
+                            <option value="">Select Sub Category</option>
+                            <option value="HR">HR</option>
+                            <option value="IT">IT</option>
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="VERTICLE COLLECTIVES">VERTICLE COLLECTIVES</option>
+                          </select>
+                        </div>
+                      )}
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Content</label>
-                        <textarea name="content" value={policyFormData.content} onChange={handlePolicyChange} rows={6} className="w-full px-4 py-2 border rounded-lg" required />
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Google Doc / PDF Link</label>
+                        <input 
+                          type="text" 
+                          name="pdfUrl" 
+                          value={policyFormData.pdfUrl || ''} 
+                          onChange={handlePolicyChange} 
+                          placeholder="Paste Google Doc or PDF link here"
+                          className="w-full px-4 py-2 border rounded-lg" 
+                        />
+                        <p className="text-xs text-gray-500 mt-1">Paste a shareable link (e.g., Google Drive link).</p>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Content / Description</label>
+                        <textarea name="content" value={policyFormData.content} onChange={handlePolicyChange} rows={6} className="w-full px-4 py-2 border rounded-lg" />
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Order</label>
@@ -5020,7 +5073,7 @@ export default function AdminPage() {
                           {editingPolicyId ? 'Update' : 'Add'}
                         </button>
                         {editingPolicyId && (
-                          <button type="button" onClick={() => { setEditingPolicyId(null); setPolicyFormData({ title: '', content: '', category: 'general', order: 0 }); }} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                          <button type="button" onClick={() => { setEditingPolicyId(null); setPolicyFormData({ title: '', content: '', category: 'general', subCategory: '', pdfUrl: '', order: 0 }); }} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
                             Cancel
                           </button>
                         )}
@@ -5075,6 +5128,11 @@ export default function AdminPage() {
                                 {item.category}
                               </span>
                               <span className="text-xs text-gray-400 bg-gray-100 px-1.5 rounded border border-gray-200">#{item.order}</span>
+                              {item.pdfUrl && (
+                                <span className="text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-full bg-green-100 text-green-700 border border-green-200">
+                                  PDF
+                                </span>
+                              )}
                             </div>
                             <p className="text-sm text-gray-500 line-clamp-2">{item.content}</p>
                           </div>
