@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import AboutCard from './AboutCard';
 import Beams from './Beams';
-import { useTranslation } from './TranslationProvider';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { InteractiveHoverButton } from './ui/InteractiveHoverButton';
@@ -18,7 +17,6 @@ interface AboutCardData {
 }
 
 const Values = () => {
-  const { t } = useTranslation();
   const [selectedCard, setSelectedCard] = useState<AboutCardData | null>(null);
   const [cardsData, setCardsData] = useState<AboutCardData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -75,7 +73,7 @@ const Values = () => {
 
               <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight  mb-8 sm:mb-12" 
               >
-                {t('about.exploreStrengths')} {/* UPDATED */}
+                Explore Our Strengths
                 <span className="text-[#009edb] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold"> .</span>
               </h2>
 

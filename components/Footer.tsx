@@ -1,11 +1,9 @@
 'use client';
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useTranslation } from './TranslationProvider';
 import Link from 'next/link';
 
 const Footer = () => {
-  const { t } = useTranslation();
   const [services, setServices] = React.useState<{ label: string; href: string }[]>([]);
   const [regions, setRegions] = React.useState<{ label: string; href: string }[]>([]);
 
@@ -41,14 +39,14 @@ const Footer = () => {
 
   const footerLinks = {
     company: [
-      { label: t('navbar.aboutUs'), href: '/about' },
+      { label: 'About Us', href: '/about' },
       { label: 'Our Team / Strength', href: '/team' },
       { label: 'Alumni', href: '/alumni' },
       { label: 'Gallery', href: '/gallery' }
     ],
     contact: [
-      { label: t('footer.officeLocations'), href: '/locations' },
-      { label: t('footer.enquiryForm'), href: '/contact' }
+      { label: 'Office Locations', href: '/locations' },
+      { label: 'Enquiry Form', href: '/contact' }
     ]
   };
 
@@ -71,10 +69,10 @@ const Footer = () => {
                         >
                           ASIJA & ASSOCIATES LLP
                           <br />
-                          <span className='text-sm sm:text-xs text-muted'>{t('common.charteredAccountants')}</span>
+                          <span className='text-sm sm:text-xs text-muted'>Chartered Accountants</span>
                         </motion.h1>
             <p className="text-muted text-sm leading-relaxed mb-6">
-              {t('footer.description') || 'Professional audit, tax, and advisory services across multiple industries.'}
+              Professional audit, tax, and advisory services across multiple industries.
             </p>
             
             {/* Social Links */}
@@ -116,7 +114,7 @@ const Footer = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <h3 className="text-theme font-semibold text-lg mb-4">{t('footer.company') || 'Company'}</h3>
+            <h3 className="text-theme font-semibold text-lg mb-4">Company</h3>
             <ul className="space-y-3">
               {footerLinks.company.map((link, index) => (
                 <li key={index}>
@@ -147,7 +145,7 @@ const Footer = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <h3 className="text-theme font-semibold text-lg mb-4">{t('footer.services') || 'Services'}</h3>
+            <h3 className="text-theme font-semibold text-lg mb-4">Services</h3>
             <ul className="space-y-3">
               {services.map((link, index) => (
                 <li key={index}>
@@ -177,7 +175,7 @@ const Footer = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.35 }}
           >
-            <h3 className="text-theme font-semibold text-lg mb-4">{t('footer.contact') || 'Contact'}</h3>
+            <h3 className="text-theme font-semibold text-lg mb-4">Contact</h3>
             <ul className="space-y-3 mb-8">
               {footerLinks.contact.map((link, index) => (
                 <li key={index}>
@@ -191,7 +189,7 @@ const Footer = () => {
               ))}
             </ul>
 
-            <h3 className="text-theme font-semibold text-lg mb-4">{t('navbar.career') || 'Career'}</h3>
+            <h3 className="text-theme font-semibold text-lg mb-4">Career</h3>
             <ul className="space-y-3">
               <li>
                 <Link
@@ -222,14 +220,14 @@ const Footer = () => {
           className="pt-8 border-t border-theme flex flex-col sm:flex-row justify-between items-center gap-4"
         >
           <p className="text-muted text-sm text-center sm:text-left">
-            {t('footer.copyright') || '© 2026 Asija & Associates LLP. All rights reserved.'}
+            © 2024 Asija & Associates LLP. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-muted">
             <Link href="/policies/privacy-policy" className="hover:text-accent transition-colors">
-              {t('footer.privacy') || 'Privacy Policy'}
+              Privacy Policy
             </Link>
             <Link href="/policies/terms-of-service" className="hover:text-accent transition-colors">
-              {t('footer.terms') || 'Terms of Service'}
+              Terms of Service
             </Link>
           </div>
         </motion.div>

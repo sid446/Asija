@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from './ThemeProvider';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useTranslation, LanguageSwitcher } from './TranslationProvider';
+import { LanguageSwitcher } from './TranslationProvider';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSession, signOut } from "next-auth/react";
@@ -11,7 +11,6 @@ import { InteractiveHoverButton } from './ui/InteractiveHoverButton';
 
 type MenuItem = {
   label: string;
-  translationKey?: string;
   href?: string;
   subs?: (string | { title: string; items: (string | { label: string; href: string })[]; insights?: boolean; href?: string } | { label: string; href: string })[];
   overview?: string;
@@ -22,14 +21,12 @@ type MenuItem = {
 const leftMenu: MenuItem[] = [
   { 
     label: 'Home', 
-    translationKey: 'navbar.home',
     href: '/',
     subs: [], 
-    overview: 'navbar.overview.home'
+    overview: 'Welcome to Asija – Your trusted partner in audit, tax, and advisory services.'
   },
   { 
-    label: 'About',
-    translationKey: 'navbar.aboutUs',
+    label: 'About Us',
     href: '/about',
     subs: [
       { label: 'Who We Are', href: '/about' },
@@ -39,11 +36,10 @@ const leftMenu: MenuItem[] = [
       { label: 'Gallery', href: '/gallery' },
       { label: 'Alumni', href: '/alumni' },
     ], 
-    overview: 'navbar.overview.aboutUs'
+    overview: 'Learn about our legacy, values, and the team driving excellence.'
   },
   { 
     label: 'Services',
-    translationKey: 'navbar.services',
     href: '/services',
     subs: [
       { 
@@ -110,11 +106,10 @@ const leftMenu: MenuItem[] = [
         href: '/services?service=Risk Advisory Services'
       },
     ], 
-    overview: 'navbar.overview.services'
+    overview: 'Comprehensive audit, tax, and advisory solutions tailored to your business.'
   },
   { 
     label: 'Industries',
-    translationKey: 'navbar.industries',
     href: '/industry',
     subs: [
       { label: 'Banking and Financial Institutions', href: '/industry?section=Banking and Financial Institutions' },
@@ -128,11 +123,10 @@ const leftMenu: MenuItem[] = [
       { label: 'Textiles', href: '/industry?section=Textiles' },
       { label: 'Trading', href: '/industry?section=Trading' },
     ], 
-    overview: 'navbar.overview.industries'
+    overview: 'Industry-specific expertise to navigate complex regulatory and financial landscapes.'
   },
   { 
     label: 'Asija Global',
-    translationKey: 'navbar.asijaGlobal',
     href: '/global-services',
     subs: [
       { label: 'UAE', href: '/global-services/uae' },
@@ -141,29 +135,28 @@ const leftMenu: MenuItem[] = [
       { label: 'Canada', href: '/global-services/canada' },
       { label: 'USA', href: '/global-services/usa' },
     ], 
-    overview: 'navbar.overview.asijaGlobal'
+    overview: 'Global reach with local expertise – serving clients worldwide.'
   },
   { 
     label: 'Career',
-    translationKey: 'navbar.career',
+    href: '/career',
     subs: [
       { label: 'Apply Form', href: '/career' },
       { label: 'Current Openings', href: '/career' }
     ], 
-    overview: 'navbar.overview.career'
+    overview: 'Join a team of passionate professionals. Explore opportunities with us.'
   },
 ];
 
 const rightMenu: MenuItem[] = [
   { 
-    label: 'Contact',
-    translationKey: 'navbar.contactUs',
+    label: 'Contact Us',
     href: '/contact',
     subs: [
       { label: 'Office Locations', href: '/locations' },
       { label: 'Enquiry Form / Consult Us', href: '/contact' }
     ], 
-    overview: 'navbar.overview.contactUs'
+    overview: 'Get in touch with our experts. We are here to help.'
   },
 ];
 
@@ -284,7 +277,6 @@ const NavItem = ({ label, isIcon, icon, isActive, hasDropdown, href }: NavItemPr
 /*  MAIN NAVBAR                                                    */
 /* --------------------------------------------------------------- */
 export default function Navbar() {
-  const { t } = useTranslation();
   const router = useRouter();
   const { theme } = useTheme();
   const { data: session } = useSession();
@@ -559,7 +551,7 @@ export default function Navbar() {
                 ASIJA & ASSOCIATES LLP
               </div>
               <div className="text-[10px] md:text-[10px] mt-0.5 text-theme-green tracking-wide">
-                {t('common.charteredAccountants')}
+                Chartered Accountants
               </div>
             </motion.div>
             </Link>
@@ -575,7 +567,7 @@ export default function Navbar() {
                   onMouseLeave={() => setHoveredItem(null)}
                 >
                   <NavItem 
-                    label={item.translationKey ? t(item.translationKey) : item.label}
+                    label={item.label}
                     isActive={hoveredItem === item.label}
                     hasDropdown={item.subs && item.subs.length > 0}
                     href={item.href}
@@ -605,7 +597,7 @@ export default function Navbar() {
                 onMouseLeave={() => setHoveredItem(null)}
               >
                 <NavItem 
-                  label={item.translationKey ? t(item.translationKey) : item.label}
+                  label={item.label}
                   isIcon={item.isIcon}
                   icon={item.icon}
                   isActive={hoveredItem === item.label}
@@ -740,10 +732,7 @@ export default function Navbar() {
                 {/* Submenu Columns */}
                 <div>
                   <h3 className="text-[#009edb] font-semibold text-xl mb-6 tracking-wide flex items-center gap-2">
-                    {(() => {
-                      const menuItem = findMenuItem(hoveredItem);
-                      return menuItem?.translationKey ? t(menuItem.translationKey) : hoveredItem;
-                    })()}
+                    {hoveredItem}
                   </h3>
                   {renderSubItems(findMenuItem(hoveredItem)?.subs)}
                 </div>
@@ -758,11 +747,11 @@ export default function Navbar() {
 
 
                   <p className={`text-sm leading-relaxed ${theme === 'light' ? 'text-gray-600' : 'text-white/70'}`}>
-                    {findMenuItem(hoveredItem)?.overview ? t(findMenuItem(hoveredItem)?.overview || '') : t('common.exploreInsights')}
+                    {findMenuItem(hoveredItem)?.overview || 'Explore Insights'}
                   </p>
                   <div className="mt-5">
                     <InteractiveHoverButton
-                      text={t('common.learnMore')}
+                      text="Learn More"
                       className="w-auto"
                       onClick={() => {
                         const href = findMenuItem(hoveredItem)?.href;
@@ -838,7 +827,7 @@ export default function Navbar() {
                             onClick={() => setMobileMenuOpen(false)}
                             className="text-left font-medium text-base py-3 px-4 flex-1"
                           >
-                            {item.translationKey ? t(item.translationKey) : item.label}
+                            {item.label}
                           </Link>
                         ) : (
                           <button
@@ -849,7 +838,7 @@ export default function Navbar() {
                             }}
                             className="text-left font-medium text-base py-3 px-4 flex-1"
                           >
-                            {item.translationKey ? t(item.translationKey) : item.label}
+                            {item.label}
                           </button>
                         )}
 
@@ -966,7 +955,7 @@ export default function Navbar() {
                       }}
                       className="text-left font-medium text-base py-3 px-4 hover:bg-white/8 rounded-lg transition-all border-l-2 border-transparent hover:border-[#009edb] w-full flex items-center justify-between"
                     >
-                      {rightMenu[0].translationKey ? t(rightMenu[0].translationKey) : 'Contact Us'}
+                      {rightMenu[0].label}
                       {rightMenu[0].subs && rightMenu[0].subs.length > 0 && (
                         <motion.div
                           animate={{ rotate: mobileOpenItem === rightMenu[0].label ? 180 : 0 }}
