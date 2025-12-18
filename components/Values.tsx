@@ -65,7 +65,7 @@ const Values = () => {
   }, [cardsData]);
 
   return (
-    <section id="values" className="relative bg-slate-950 w-full overflow-hidden mt-10 sm:mt-20 lg:mt-30">
+    <section id="values" className="relative bg-slate-950  w-full overflow-hidden mt-10 sm:mt-20 lg:mt-30 ">
       
 
       <div className="relative z-30 -mt-12 sm:-mt-16 lg:-mt-20">

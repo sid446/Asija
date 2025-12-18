@@ -420,7 +420,7 @@ export default function AboutPage() {
 
 
       {/* Looking Ahead Section */}
-      <div className="w-full bg-[#b5d6e3] z-20 py-20">
+      <div className="w-full  bg-[#b5d6e3] z-20 py-20">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
             {aboutContent?.futureTitle || 'Looking Ahead'}
