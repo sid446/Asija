@@ -28,6 +28,8 @@ export default function RegionPage() {
 
   useEffect(() => {
     const fetchRegion = async () => {
+      if (!params?.slug) return;
+
       try {
         const res = await fetch(`/api/regions/${params.slug}`);
         if (!res.ok) {
@@ -43,10 +45,10 @@ export default function RegionPage() {
       }
     };
 
-    if (params.slug) {
+    if (params?.slug) {
       fetchRegion();
     }
-  }, [params.slug]);
+  }, [params?.slug]);
 
   if (loading) {
     return (

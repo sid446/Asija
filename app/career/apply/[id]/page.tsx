@@ -89,6 +89,12 @@ export default function JobApplicationPage() {
 
   useEffect(() => {
     const fetchJob = async () => {
+      if (!params?.id) {
+        setMessage({ type: 'error', text: 'Invalid job ID' });
+        setLoading(false);
+        return;
+      }
+
       try {
         const res = await fetch('/api/career/jobs');
         const data = await res.json();
@@ -109,10 +115,10 @@ export default function JobApplicationPage() {
       }
     };
 
-    if (params.id) {
+    if (params?.id) {
       fetchJob();
     }
-  }, [params.id]);
+  }, [params?.id]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
