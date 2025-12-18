@@ -94,7 +94,8 @@ export default function GlobalServices() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white"
+            className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6"
+            style={{color: 'white'}}
           >
             {content.heroTitle}<span className="text-[#009edb]">.</span>
           </motion.h1>
@@ -102,7 +103,8 @@ export default function GlobalServices() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-lg md:text-2xl  max-w-3xl mx-auto leading-relaxed text-white/90"
+            className="text-lg md:text-2xl  max-w-3xl mx-auto leading-relaxed"
+            style={{color: 'rgba(255, 255, 255, 0.9)'}}
           >
             {content.heroDescription}
           </motion.p>
@@ -167,12 +169,12 @@ export default function GlobalServices() {
                   
                   <div className="absolute bottom-0 left-0 right-0 p-8">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-3xl font-bold text-white">{region.name}</h3>
+                      <h3 className="text-3xl font-bold" style={{color: 'white'}}>{region.name}</h3>
                       <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center group-hover:bg-[#009edb] transition-colors">
                         <TrendingUp className="w-5 h-5 text-white" />
                       </div>
                     </div>
-                    <p className=" mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0 text-white">
+                      <p className=" mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0" style={{color: 'white'}}>
                       Explore our services in {region.name}
                     </p>
                   </div>

@@ -48,6 +48,7 @@ type TeamItem = {
   mobile?: string;
   email?: string;
   description?: string;
+  order?: number; // <-- Add this line
 };
 
 // Helper Component for Section Editing
@@ -937,7 +938,8 @@ export default function AdminPage() {
     associationYears: '',
     mobile: '',
     email: '',
-    description: ''
+    description: '',
+    order: 0
   });
 
   const [industryFormData, setIndustryFormData] = useState({
@@ -1773,7 +1775,8 @@ export default function AdminPage() {
       associationYears: item.associationYears || '',
       mobile: item.mobile || '',
       email: item.email || '',
-      description: item.description || ''
+      description: item.description || '',
+      order: typeof item.order === 'number' ? item.order : 0
     });
     setImageFile(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1839,7 +1842,7 @@ export default function AdminPage() {
     setFormData({
       name: '', role: '', linkedin: '', qualifications: [], 
       specialization: [], experience: [], membership: '', 
-      associationYears: '', mobile: '', email: '', description: ''
+      associationYears: '', mobile: '', email: '', description: '', order: 0
     });
     setImageFile(null);
   };
@@ -2764,6 +2767,17 @@ export default function AdminPage() {
                             <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Membership No.</label>
                             <input name="membership" value={formData.membership} onChange={handleInputChange} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm" />
                           </div>
+                          <div className="col-span-2">
+                            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Order</label>
+                            <input
+                              type="number"
+                              name="order"
+                              value={formData.order}
+                              onChange={e => setFormData(prev => ({ ...prev, order: Number(e.target.value) }))}
+                              className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm"
+                              min={0}
+                            />
+                          </div>
                         </div>
 
                         <div>
@@ -2814,7 +2828,7 @@ export default function AdminPage() {
                       </div>
                     ) : (
                       <div className="divide-y divide-gray-100">
-                        {items.map((item) => (
+                        {[...items].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)).map((item) => (
                           <div key={item._id} className="p-4 sm:p-5 hover:bg-gray-50/80 transition-colors group">
                             <div className="flex items-start gap-4 sm:gap-6">
                               <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gray-100 shrink-0 overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition-all">

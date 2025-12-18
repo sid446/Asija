@@ -75,10 +75,8 @@ export default function GalleryPage() {
       <main className="pt-24 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-left flex flex-col mb-16">
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Our Gallery <span className='text-[#0077A3] text-5xl'>.</span></h1>
-            <p className="text-lg text-gray-400 dark:text-gray-400  ">
-              Glimpses of our events, celebrations, and moments of togetherness at Asija & Associates LLP.
-            </p>
+            <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-4 border-l-5 border-[#0077A3] pl-4 ">Our Gallery <span className='text-[#0077A3] text-5xl'>.</span></h1>
+            
           </div>
 
           {loading ? (
@@ -98,7 +96,7 @@ export default function GalleryPage() {
                     setSelectedCategory(null);
                     setSelectedYear(null);
                   }}
-                  className={`hover:text-blue-600 ${!selectedCategory ? 'font-bold text-blue-600' : ''}`}
+                  className={`hover:text-blue-600 ${!selectedCategory ? 'font-bold text-blue-400' : ''}`}
                 >
                   All Categories
                 </button>
@@ -107,7 +105,7 @@ export default function GalleryPage() {
                     <ChevronRight className="w-4 h-4" />
                     <button
                       onClick={() => setSelectedYear(null)}
-                      className={`hover:text-blue-600 ${!selectedYear ? 'font-bold text-blue-600' : ''}`}
+                      className={`hover:text-[#0077A3] ${!selectedYear ? 'font-bold text-[#0077A3]' : ''}`}
                     >
                       {selectedCategory}
                     </button>
@@ -123,7 +121,7 @@ export default function GalleryPage() {
 
               {!selectedCategory ? (
                 // Categories View
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1">
                   {categories.map((category, idx) => {
                     // Get latest image for thumbnail
                     const categoryEvents = events.filter(e => (e.category || 'Uncategorized') === category);
@@ -136,7 +134,7 @@ export default function GalleryPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: idx * 0.1 }}
                         onClick={() => setSelectedCategory(category)}
-                        className="group cursor-pointer bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-gray-100 dark:border-slate-700 hover:shadow-lg transition-all"
+                        className="group cursor-pointer bg-white dark:bg-slate-800  overflow-hidden hover:shadow-lg transition-all"
                       >
                         <div className="aspect-video bg-gray-100 dark:bg-slate-700 relative overflow-hidden">
                           {thumbnail ? (
@@ -162,7 +160,7 @@ export default function GalleryPage() {
                 </div>
               ) : !selectedYear ? (
                 // Years View (Folders)
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1">
                   {years.map((year, idx) => {
                     // Get latest image for thumbnail from this year
                     const yearEvents = events.filter(e => 
@@ -178,7 +176,7 @@ export default function GalleryPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: idx * 0.1 }}
                         onClick={() => setSelectedYear(year)}
-                        className="group cursor-pointer bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-gray-100 dark:border-slate-700 hover:shadow-lg transition-all"
+                        className="group cursor-pointer bg-white dark:bg-slate-800  overflow-hidden  transition-all"
                       >
                         <div className="aspect-video bg-gray-100 dark:bg-slate-700 relative overflow-hidden">
                           {thumbnail ? (
@@ -215,7 +213,7 @@ export default function GalleryPage() {
                         className="group cursor-pointer flex flex-col h-full"
                         onClick={() => setSelectedEvent(event)}
                       >
-                        <div className="relative aspect-square overflow-hidden bg-gray-100 dark:bg-slate-800 mb-4 shadow-sm group-hover:shadow-md transition-shadow rounded-xl">
+                        <div className="relative aspect-square overflow-hidden bg-gray-100 dark:bg-slate-800 mb-4 shadow-sm group-hover:shadow-md transition-shadow ">
                           {(event.thumbnail || event.images.length > 0) ? (
                             <img
                               src={getOptimizedImageUrl(event.thumbnail || event.images[0], 600)}
