@@ -351,6 +351,15 @@ type PolicyItem = {
   order: number;
 };
 
+type DepartmentItem = {
+  _id: string;
+  slug: string;
+  name: string;
+  description: string;
+  icon: string;
+  order: number;
+};
+
 type JobPostItem = {
   _id: string;
   title: string;
@@ -869,6 +878,7 @@ export default function AdminPage() {
   const [gallery, setGallery] = useState<GalleryItem[]>([]);
   const [eventCovers, setEventCovers] = useState<EventCoverItem[]>([]);
   const [policies, setPolicies] = useState<PolicyItem[]>([]);
+  const [departments, setDepartments] = useState<DepartmentItem[]>([]);
   const [jobs, setJobs] = useState<JobPostItem[]>([]);
   const [locations, setLocations] = useState<LocationItem[]>([]);
   const [policyFilter, setPolicyFilter] = useState('all');
@@ -895,6 +905,9 @@ export default function AdminPage() {
   const [editingLocationId, setEditingLocationId] = useState<string | null>(null);
   const [editingGlobalRegionId, setEditingGlobalRegionId] = useState<string | null>(null);
   const [editingGlobalOfferingId, setEditingGlobalOfferingId] = useState<string | null>(null);
+  const [editingDepartmentId, setEditingDepartmentId] = useState<string | null>(null);
+  const [isEditingDepartmentName, setIsEditingDepartmentName] = useState(false);
+  const [editingDepartmentName, setEditingDepartmentName] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [homeMenuOpen, setHomeMenuOpen] = useState(false);
 
@@ -934,6 +947,13 @@ export default function AdminPage() {
     policyType?: string;
     order: number;
   }>({ customSubCategory: '', title: '', content: '', category: 'general', subCategory: '', pdfUrl: '', excelUrl: '', policyType: 'text', order: 0 });
+  const [departmentFormData, setDepartmentFormData] = useState({
+    slug: '',
+    name: '',
+    description: '',
+    icon: '',
+    order: 0
+  });
   const [jobFormData, setJobFormData] = useState({
     title: '',
     department: '',
@@ -1841,6 +1861,16 @@ export default function AdminPage() {
     }
   };
 
+  const fetchDepartments = async () => {
+    try {
+      const res = await fetch('/api/admin/departments');
+      const data = await res.json();
+      setDepartments(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     if (activeTab === 'team') fetchItems();
     if (activeTab === 'industries') fetchIndustries();
@@ -1855,7 +1885,10 @@ export default function AdminPage() {
       fetchEventCovers();
     }
     if (activeTab === 'locations') fetchLocations();
-    if (activeTab === 'policies') fetchPolicies();
+    if (activeTab === 'policies') {
+      fetchPolicies();
+      fetchDepartments();
+    }
     if (activeTab === 'jobs') fetchJobs();
     if (activeTab === 'global-services') {
       fetchGlobalServiceContent();
@@ -2569,16 +2602,15 @@ export default function AdminPage() {
   const handlePolicyEdit = (item: PolicyItem) => {
     setEditingPolicyId(item._id);
 
-    // Check if the subCategory is one of the predefined ones
-    const predefinedDepartments = ['HR', 'IT', 'ADMIN', 'VERTICLE COLLECTIVES'];
-    const isPredefined = predefinedDepartments.includes(item.subCategory || '');
+    // Check if the subCategory exists in departments
+    const deptExists = departments.some(dept => dept.slug === item.subCategory);
 
     setPolicyFormData({
       title: item.title,
       content: item.content,
       category: item.category,
-      subCategory: isPredefined ? item.subCategory : 'OTHER',
-      customSubCategory: isPredefined ? '' : (item.subCategory || ''),
+      subCategory: deptExists ? item.subCategory : 'OTHER',
+      customSubCategory: deptExists ? '' : (item.subCategory || ''),
       pdfUrl: item.pdfUrl || '',
       excelUrl: item.excelUrl || '',
       policyType: item.policyType || 'text',
@@ -5497,19 +5529,92 @@ export default function AdminPage() {
                         {policyFormData.category === 'employee' && (
                           <div className="space-y-3">
                             <label className="block text-sm font-medium text-gray-700 mb-2">Department</label>
-                            <select
-                              name="subCategory"
-                              value={policyFormData.subCategory}
-                              onChange={handlePolicyChange}
-                              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                            >
-                              <option value="">Select Department</option>
-                              <option value="HR">👨‍💼 HR (Human Resources)</option>
-                              <option value="IT">💻 IT (Information Technology)</option>
-                              <option value="ADMIN">🏢 ADMIN (Administration)</option>
-                              <option value="VERTICLE COLLECTIVES">🤝 VERTICAL COLLECTIVES</option>
-                              <option value="OTHER">➕ Other (Custom Department)</option>
-                            </select>
+                            <div className="flex gap-2">
+                              <select
+                                name="subCategory"
+                                value={policyFormData.subCategory}
+                                onChange={handlePolicyChange}
+                                className="flex-1 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                              >
+                                <option value="">Select Department</option>
+                                {departments.map(dept => (
+                                  <option key={dept.slug} value={dept.slug}>
+                                    {dept.icon} {dept.name}
+                                  </option>
+                                ))}
+                                <option value="OTHER">➕ Other (Custom Department)</option>
+                              </select>
+                              {policyFormData.subCategory && policyFormData.subCategory !== 'OTHER' && (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const dept = departments.find(d => d.slug === policyFormData.subCategory);
+                                    if (dept) {
+                                      setEditingDepartmentName(dept.name);
+                                      setIsEditingDepartmentName(true);
+                                    }
+                                  }}
+                                  className="px-3 py-3 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-xl transition-colors"
+                                  title="Edit department name"
+                                >
+                                  <Pencil className="w-4 h-4" />
+                                </button>
+                              )}
+                            </div>
+
+                            {isEditingDepartmentName && (
+                              <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-xl">
+                                <label className="block text-sm font-medium text-blue-700 mb-2">Edit Department Name</label>
+                                <div className="flex gap-2">
+                                  <input
+                                    type="text"
+                                    value={editingDepartmentName}
+                                    onChange={(e) => setEditingDepartmentName(e.target.value)}
+                                    className="flex-1 px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Enter new department name"
+                                  />
+                                  <button
+                                    type="button"
+                                    onClick={async () => {
+                                      const dept = departments.find(d => d.slug === policyFormData.subCategory);
+                                      if (dept && editingDepartmentName.trim()) {
+                                        try {
+                                          const res = await fetch(`/api/admin/departments/${dept._id}`, {
+                                            method: 'PUT',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify({ name: editingDepartmentName.trim() }),
+                                          });
+                                          if (res.ok) {
+                                            setMessage('Department name updated successfully!');
+                                            setIsEditingDepartmentName(false);
+                                            setEditingDepartmentName('');
+                                            fetchDepartments();
+                                          } else {
+                                            setMessage('Failed to update department name.');
+                                          }
+                                        } catch (err) {
+                                          console.error(err);
+                                          setMessage('An error occurred.');
+                                        }
+                                      }
+                                    }}
+                                    className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                                  >
+                                    Save
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setIsEditingDepartmentName(false);
+                                      setEditingDepartmentName('');
+                                    }}
+                                    className="px-3 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
+                                  >
+                                    Cancel
+                                  </button>
+                                </div>
+                              </div>
+                            )}
 
                             {policyFormData.subCategory === 'OTHER' && (
                               <div className="mt-3">
@@ -5728,16 +5833,12 @@ export default function AdminPage() {
                             {[
                               { key: 'all', label: 'All', icon: '📋', fullName: 'All' },
                               { key: 'general', label: 'General', icon: '📄', fullName: 'General' },
-                              ...Array.from(new Set(policies.map(p => p.subCategory).filter(Boolean)))
-                                .map(dept => ({
-                                  key: `dept-${dept}`,
-                                  label: dept && dept.length > 10 ? dept.substring(0, 10) + '...' : dept,
-                                  icon: dept === 'HR' ? '👨‍💼' :
-                                        dept === 'IT' ? '💻' :
-                                        dept === 'ADMIN' ? '🏢' :
-                                        dept === 'VERTICLE COLLECTIVES' ? '🤝' : '🏷️',
-                                  fullName: dept
-                                }))
+                              ...departments.map(dept => ({
+                                key: `dept-${dept.slug}`,
+                                label: dept.name.length > 10 ? dept.name.substring(0, 10) + '...' : dept.name,
+                                icon: dept.icon || '🏷️',
+                                fullName: dept.name
+                              }))
                             ].map((filter) => (
                               <button
                                 key={filter.key}
@@ -5811,18 +5912,11 @@ export default function AdminPage() {
                                   </span>
 
                                   {item.subCategory && (
-                                    <span className={`text-xs font-semibold px-3 py-1 rounded-full border ${
-                                      item.subCategory === 'HR' ? 'bg-pink-100 text-pink-700 border-pink-200' :
-                                      item.subCategory === 'IT' ? 'bg-cyan-100 text-cyan-700 border-cyan-200' :
-                                      item.subCategory === 'ADMIN' ? 'bg-orange-100 text-orange-700 border-orange-200' :
-                                      item.subCategory === 'VERTICLE COLLECTIVES' ? 'bg-indigo-100 text-indigo-700 border-indigo-200' :
-                                      'bg-gray-100 text-gray-700 border-gray-200'
-                                    }`}>
-                                      {item.subCategory === 'HR' ? '👨‍💼 HR' :
-                                       item.subCategory === 'IT' ? '💻 IT' :
-                                       item.subCategory === 'ADMIN' ? '🏢 Admin' :
-                                       item.subCategory === 'VERTICLE COLLECTIVES' ? '🤝 Vertical' :
-                                       `🏷️ ${item.subCategory}`}
+                                    <span className="text-xs font-semibold px-3 py-1 rounded-full border bg-gray-100 text-gray-700 border-gray-200">
+                                      {(() => {
+                                        const dept = departments.find(d => d.slug === item.subCategory);
+                                        return dept ? `${dept.icon} ${dept.name}` : `🏷️ ${item.subCategory}`;
+                                      })()}
                                     </span>
                                   )}
 

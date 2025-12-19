@@ -44,7 +44,7 @@ export default function AdminPoliciesPage() {
         const res = await fetch('/api/admin/policies');
         const data = await res.json();
         if (Array.isArray(data)) {
-          const adminPolicies = data.filter((p: PolicyItem) => p.category === 'employee' && p.subCategory === 'ADMIN');
+          const adminPolicies = data.filter((p: PolicyItem) => p.category === 'employee' && p.subCategory === 'admin');
           setPolicies(adminPolicies);
         }
       } catch (error) {
