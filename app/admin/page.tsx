@@ -17,6 +17,7 @@ import {
   Menu,
   Briefcase,
   ChevronDown,
+  ChevronUp,
   ChevronRight,
   Home,
   Phone,
@@ -871,6 +872,8 @@ export default function AdminPage() {
   const [jobs, setJobs] = useState<JobPostItem[]>([]);
   const [locations, setLocations] = useState<LocationItem[]>([]);
   const [policyFilter, setPolicyFilter] = useState('all');
+  const [showBulkOrderModal, setShowBulkOrderModal] = useState(false);
+  const [bulkOrderData, setBulkOrderData] = useState<{[key: string]: number}>({});
   const [globalServiceContent, setGlobalServiceContent] = useState<GlobalServiceContentData | null>(null);
   const [globalRegions, setGlobalRegions] = useState<GlobalRegionItem[]>([]);
   const [globalOfferings, setGlobalOfferings] = useState<GlobalOfferingItem[]>([]);
@@ -2594,6 +2597,85 @@ export default function AdminPage() {
       }
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const handlePolicyMoveUp = async (policyId: string) => {
+    try {
+      const res = await fetch(`/api/admin/policies/${policyId}/move-up`, { method: 'PUT' });
+      if (res.ok) {
+        setMessage('Policy moved up successfully!');
+        fetchPolicies();
+      } else {
+        setMessage('Failed to move policy up.');
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage('An error occurred while moving the policy.');
+    }
+  };
+
+  const handlePolicyMoveDown = async (policyId: string) => {
+    try {
+      const res = await fetch(`/api/admin/policies/${policyId}/move-down`, { method: 'PUT' });
+      if (res.ok) {
+        setMessage('Policy moved down successfully!');
+        fetchPolicies();
+      } else {
+        setMessage('Failed to move policy down.');
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage('An error occurred while moving the policy.');
+    }
+  };
+
+  const handleResetOrder = async () => {
+    if (!confirm('This will reset all policy orders sequentially (0, 1, 2, ...). Continue?')) return;
+
+    try {
+      const res = await fetch('/api/admin/policies/reset-order', { method: 'PUT' });
+      if (res.ok) {
+        setMessage('Policy orders reset successfully!');
+        fetchPolicies();
+      } else {
+        setMessage('Failed to reset policy orders.');
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage('An error occurred while resetting orders.');
+    }
+  };
+
+  const handleBulkOrderUpdate = async () => {
+    try {
+      const updates = Object.entries(bulkOrderData).map(([policyId, order]) => ({
+        id: policyId,
+        order
+      }));
+
+      if (updates.length === 0) {
+        setMessage('No changes to update.');
+        return;
+      }
+
+      const res = await fetch('/api/admin/policies/bulk-update-order', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ updates })
+      });
+
+      if (res.ok) {
+        setMessage('Policy orders updated successfully!');
+        setShowBulkOrderModal(false);
+        setBulkOrderData({});
+        fetchPolicies();
+      } else {
+        setMessage('Failed to update policy orders.');
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage('An error occurred while updating orders.');
     }
   };
 
@@ -5454,6 +5536,24 @@ export default function AdminPage() {
                         )}
                       </div>
 
+                      {/* Order Settings */}
+                      <div className="space-y-4">
+                        <h3 className="text-sm font-medium text-gray-700 border-b pb-2">📋 Display Order</h3>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Order Number</label>
+                          <input
+                            type="number"
+                            name="order"
+                            value={policyFormData.order}
+                            onChange={handlePolicyChange}
+                            min="0"
+                            placeholder="0"
+                            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                          />
+                          <p className="text-xs text-gray-500 mt-1">Lower numbers appear first. Use up/down arrows or set manually.</p>
+                        </div>
+                      </div>
+
                       {/* Policy Type & Content */}
                       <div className="space-y-4">
                         <h3 className="text-sm font-medium text-gray-700 border-b pb-2">Policy Content</h3>
@@ -5586,13 +5686,39 @@ export default function AdminPage() {
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-                          <button
-                            onClick={fetchPolicies}
-                            className="p-2 hover:bg-gray-200 rounded-lg transition-colors self-start sm:self-center flex-shrink-0"
-                            title="Refresh List"
-                          >
-                            <RefreshCw className="w-4 h-4 text-gray-500" />
-                          </button>
+                          <div className="flex gap-2 self-start sm:self-center flex-shrink-0">
+                            <button
+                              onClick={fetchPolicies}
+                              className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+                              title="Refresh List"
+                            >
+                              <RefreshCw className="w-4 h-4 text-gray-500" />
+                            </button>
+
+                            <button
+                              onClick={handleResetOrder}
+                              className="px-3 py-2 text-sm bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors"
+                              title="Reset all policy orders sequentially"
+                            >
+                              🔄 Reset Order
+                            </button>
+
+                            <button
+                              onClick={() => {
+                                // Initialize bulk order data with current values
+                                const initialData: {[key: string]: number} = {};
+                                policies.forEach(policy => {
+                                  initialData[policy._id] = policy.order;
+                                });
+                                setBulkOrderData(initialData);
+                                setShowBulkOrderModal(true);
+                              }}
+                              className="px-3 py-2 text-sm bg-orange-100 text-orange-700 rounded-lg hover:bg-orange-200 transition-colors"
+                              title="Bulk edit policy orders"
+                            >
+                              📝 Bulk Edit
+                            </button>
+                          </div>
 
                           <div className="relative flex-1 min-w-0">
                             <div className="flex bg-gray-200 p-1 rounded-xl overflow-x-auto policy-filter-scroll" style={{ scrollbarWidth: 'thin', scrollbarColor: '#9CA3AF #E5E7EB', maxWidth: 'min(400px, calc(100vw - 120px))' }}>
@@ -5665,7 +5791,9 @@ export default function AdminPage() {
                           }
                           return false;
                         })
-                        .map(item => (
+                        .map(item => {
+                        const isLastPolicy = item.order === Math.max(...policies.map(p => p.order));
+                        return (
                         <div key={item._id} className="p-6 hover:bg-gray-50 group transition-all duration-200">
                           <div className="flex items-start justify-between gap-4">
                             <div className="flex-1 min-w-0">
@@ -5712,8 +5840,9 @@ export default function AdminPage() {
                                     </span>
                                   )}
 
-                                  <span className="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded border border-gray-200">
-                                    #{item.order}
+                                  <span className="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded border border-gray-200 flex items-center gap-1" title="Display order - lower numbers appear first">
+                                    <span className="text-gray-500">#</span>
+                                    <span className="font-medium">{item.order}</span>
                                   </span>
                                 </div>
                               </div>
@@ -5742,25 +5871,57 @@ export default function AdminPage() {
                             </div>
 
                             {/* Action Buttons */}
-                            <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                              <button
-                                onClick={() => handlePolicyEdit(item)}
-                                className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                                title="Edit Policy"
-                              >
-                                <Pencil className="w-4 h-4" />
-                              </button>
-                              <button
-                                onClick={() => handlePolicyDelete(item._id)}
-                                className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                                title="Delete Policy"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </button>
+                            <div className="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                              {/* Order Controls */}
+                              <div className="flex gap-1">
+                                <button
+                                  onClick={() => handlePolicyMoveUp(item._id)}
+                                  className={`p-1.5 rounded transition-colors ${
+                                    item.order === 0
+                                      ? 'text-gray-300 cursor-not-allowed'
+                                      : 'text-gray-500 hover:text-blue-600 hover:bg-blue-50'
+                                  }`}
+                                  title={item.order === 0 ? 'Already at top' : 'Move Up'}
+                                  disabled={item.order === 0}
+                                >
+                                  <ChevronUp className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={() => handlePolicyMoveDown(item._id)}
+                                  className={`p-1.5 rounded transition-colors ${
+                                    isLastPolicy
+                                      ? 'text-gray-300 cursor-not-allowed'
+                                      : 'text-gray-500 hover:text-blue-600 hover:bg-blue-50'
+                                  }`}
+                                  title={isLastPolicy ? 'Already at bottom' : 'Move Down'}
+                                  disabled={isLastPolicy}
+                                >
+                                  <ChevronDown className="w-4 h-4" />
+                                </button>
+                              </div>
+
+                              {/* Edit & Delete */}
+                              <div className="flex gap-1">
+                                <button
+                                  onClick={() => handlePolicyEdit(item)}
+                                  className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                  title="Edit Policy"
+                                >
+                                  <Pencil className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={() => handlePolicyDelete(item._id)}
+                                  className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                  title="Delete Policy"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      ))}
+                        );
+                      })}
 
                       {policies.filter(p => {
                         if (policyFilter === 'all') return true;
@@ -5812,6 +5973,75 @@ export default function AdminPage() {
           )}
         </div>
       </main>
+
+      {/* Bulk Order Modal */}
+      {showBulkOrderModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+            <div className="p-6 border-b bg-gray-50">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-semibold text-gray-900">Bulk Edit Policy Order</h2>
+                <button
+                  onClick={() => setShowBulkOrderModal(false)}
+                  className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <p className="text-sm text-gray-600 mt-1">Set custom order numbers for all policies. Lower numbers appear first.</p>
+            </div>
+
+            <div className="p-6 max-h-96 overflow-y-auto">
+              <div className="space-y-3">
+                {policies
+                  .sort((a, b) => a.order - b.order)
+                  .map((policy) => (
+                    <div key={policy._id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-medium text-gray-900 truncate">{policy.title}</h3>
+                        <p className="text-sm text-gray-500">
+                          {policy.category === 'general' ? '📋 General' : '👥 Employee'} •
+                          {policy.subCategory ? ` ${policy.subCategory}` : ''}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <label className="text-sm font-medium text-gray-700">Order:</label>
+                        <input
+                          type="number"
+                          min="0"
+                          value={bulkOrderData[policy._id] ?? policy.order}
+                          onChange={(e) => {
+                            const value = parseInt(e.target.value) || 0;
+                            setBulkOrderData(prev => ({
+                              ...prev,
+                              [policy._id]: value
+                            }));
+                          }}
+                          className="w-20 px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+
+            <div className="p-6 border-t bg-gray-50 flex justify-end gap-3">
+              <button
+                onClick={() => setShowBulkOrderModal(false)}
+                className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleBulkOrderUpdate}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Update Orders
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

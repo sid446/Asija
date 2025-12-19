@@ -16,6 +16,13 @@ export async function POST(req: Request) {
   await dbConnect();
   try {
     const body = await req.json();
+
+    // If no order is provided, assign the next available order
+    if (body.order === undefined || body.order === null) {
+      const lastPolicy = await Policy.findOne().sort({ order: -1 });
+      body.order = lastPolicy ? lastPolicy.order + 1 : 0;
+    }
+
     const policy = await Policy.create(body);
     return NextResponse.json(policy, { status: 201 });
   } catch (error) {
