@@ -29,7 +29,6 @@ export default function VerticalCollectivesPoliciesPage() {
   const { theme } = useTheme();
   const isLight = theme === 'light';
   const [policies, setPolicies] = useState<PolicyItem[]>([]);
-  const [selectedPdf, setSelectedPdf] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -175,7 +174,15 @@ export default function VerticalCollectivesPoliciesPage() {
                         </a>
                       )}
                       <button
-                        onClick={() => setSelectedPdf(policy.pdfUrl!)}
+                        onClick={() => {
+                          let viewerUrl = policy.pdfUrl!;
+                          if (policy.pdfUrl!.includes('drive.google.com')) {
+                            viewerUrl = policy.pdfUrl!.replace('/view', '/preview');
+                          } else if (policy.pdfUrl!.includes('onedrive.live.com') || policy.pdfUrl!.includes('1drv.ms')) {
+                            viewerUrl = policy.pdfUrl!;
+                          }
+                          window.open(viewerUrl, '_blank', 'fullscreen=yes,scrollbars=yes,resizable=yes');
+                        }}
                         className="flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-sm"
                       >
                         <Maximize2 className="w-4 h-4" />
@@ -184,16 +191,30 @@ export default function VerticalCollectivesPoliciesPage() {
                     </div>
                   </div>
                   <p className={`mb-4 ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>{policy.content}</p>
-                  <div className="w-full h-[400px] border rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
-                    <iframe
-                      src={policy.pdfUrl!.includes('drive.google.com') ? policy.pdfUrl!.replace('/view', '/preview') : policy.pdfUrl}
-                      className="w-full h-full"
-                      frameBorder="0"
-                      title={policy.title}
-                      allow="autoplay"
-                      sandbox="allow-scripts allow-same-origin allow-forms"
-                    />
-                  </div>
+                  {!(policy.pdfUrl!.includes('onedrive.live.com') || policy.pdfUrl!.includes('1drv.ms')) && (
+                    <div className="w-full h-[400px] border rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 mb-4">
+                      <iframe
+                        src={
+                          policy.pdfUrl!.includes('drive.google.com')
+                            ? policy.pdfUrl!.replace('/view', '/preview')
+                            : policy.pdfUrl
+                        }
+                        className="w-full h-full"
+                        frameBorder="0"
+                        title={policy.title}
+                        allow="autoplay"
+                        sandbox="allow-scripts allow-same-origin allow-forms"
+                      />
+                    </div>
+                  )}
+                  {policy.pdfUrl!.includes('onedrive.live.com') || policy.pdfUrl!.includes('1drv.ms') ? (
+                    <div className="w-full text-center py-8 border rounded-lg bg-gray-50 dark:bg-gray-800 mb-4">
+                      <FileText className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+                      <p className="text-gray-600 dark:text-gray-400">
+                        OneDrive document - Click "Full Screen" to view
+                      </p>
+                    </div>
+                  ) : null}
                 </motion.div>
               ))}
             </div>
@@ -206,32 +227,6 @@ export default function VerticalCollectivesPoliciesPage() {
           </div>
         )}
       </main>
-
-      {/* PDF Full Screen Modal */}
-      {selectedPdf && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-950 rounded-2xl w-full max-w-6xl h-[90vh] flex flex-col">
-            <div className="flex justify-between items-center p-6 border-b">
-              <h2 className="text-xl font-bold">PDF Viewer</h2>
-              <button
-                onClick={() => setSelectedPdf(null)}
-                className="text-gray-500 hover:text-gray-700 text-2xl"
-              >
-                ✕
-              </button>
-            </div>
-            <div className="flex-1 p-6">
-              <iframe
-                src={selectedPdf.includes('drive.google.com') ? selectedPdf.replace('/view', '/preview') : selectedPdf}
-                className="w-full h-full rounded-lg border"
-                frameBorder="0"
-                allow="autoplay"
-                sandbox="allow-scripts allow-same-origin allow-forms"
-              />
-            </div>
-          </div>
-        </div>
-      )}
 
       <Footer />
     </div>

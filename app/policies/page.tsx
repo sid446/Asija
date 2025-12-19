@@ -9,7 +9,6 @@ import { useTheme } from "@/components/ThemeProvider";
 import { motion } from "framer-motion";
 import { InteractiveHoverButton } from "@/components/ui/InteractiveHoverButton";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/Accordian";
-import { Maximize2, X } from "lucide-react";
 
 type PolicyItem = {
   _id: string;
@@ -29,7 +28,6 @@ export default function PoliciesPage() {
   const isLight = theme === 'light';
   const [policies, setPolicies] = useState<PolicyItem[]>([]);
   const [employeePolicies, setEmployeePolicies] = useState<PolicyItem[]>([]);
-  const [selectedPdf, setSelectedPdf] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchPolicies = async () => {
@@ -237,31 +235,6 @@ export default function PoliciesPage() {
       </main>
 
       <Footer />
-
-      {/* Full Screen PDF Modal */}
-      {selectedPdf && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="relative w-full h-full max-w-6xl max-h-[90vh] bg-white rounded-xl overflow-hidden flex flex-col">
-            <div className="flex justify-end p-2 bg-gray-100 border-b">
-              <button 
-                onClick={() => setSelectedPdf(null)}
-                className="p-2 hover:bg-gray-200 rounded-full transition-colors"
-              >
-                <X className="w-6 h-6 text-gray-600" />
-              </button>
-            </div>
-            <div className="flex-1 bg-gray-50">
-              <iframe
-                src={selectedPdf.includes('drive.google.com') ? selectedPdf.replace('/view', '/preview') : selectedPdf}
-                className="w-full h-full"
-                frameBorder="0"
-                allow="autoplay"
-                sandbox="allow-scripts allow-same-origin allow-forms"
-              />
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
