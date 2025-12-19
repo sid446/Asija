@@ -5585,16 +5585,20 @@ export default function AdminPage() {
                           </div>
                         </div>
 
-                          <div className="flex items-center gap-3">
+                        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                           <button
                             onClick={fetchPolicies}
-                            className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+                            className="p-2 hover:bg-gray-200 rounded-lg transition-colors self-start sm:self-center flex-shrink-0"
                             title="Refresh List"
                           >
                             <RefreshCw className="w-4 h-4 text-gray-500" />
                           </button>
 
-                          <div className="flex bg-gray-200 p-1 rounded-xl overflow-x-auto">
+                          <div className="relative flex-1 min-w-0">
+                            <div className="flex bg-gray-200 p-1 rounded-xl overflow-x-auto policy-filter-scroll" style={{ scrollbarWidth: 'thin', scrollbarColor: '#9CA3AF #E5E7EB', maxWidth: 'min(400px, calc(100vw - 120px))' }}>
+                              <div className="flex gap-1 flex-nowrap">
+                                
+                            
                             {[
                               { key: 'all', label: 'All', icon: '📋', fullName: 'All' },
                               { key: 'general', label: 'General', icon: '📄', fullName: 'General' },
@@ -5612,7 +5616,7 @@ export default function AdminPage() {
                               <button
                                 key={filter.key}
                                 onClick={() => setPolicyFilter(filter.key)}
-                                className={`px-3 py-2 text-sm font-medium rounded-lg transition-all flex items-center gap-1 whitespace-nowrap ${
+                                className={`px-3 py-2 text-sm font-medium rounded-lg transition-all flex items-center gap-1 whitespace-nowrap flex-shrink-0 ${
                                   policyFilter === filter.key
                                     ? 'bg-white text-gray-900 shadow-sm'
                                     : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
@@ -5623,6 +5627,8 @@ export default function AdminPage() {
                                 {filter.label}
                               </button>
                             ))}
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>

@@ -181,3 +181,27 @@ body {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
+
+/* Custom scrollbar for policy filters */
+.policy-filter-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.policy-filter-scroll::-webkit-scrollbar-track {
+  background: #E5E7EB;
+  border-radius: 3px;
+}
+
+.policy-filter-scroll::-webkit-scrollbar-thumb {
+  background: #9CA3AF;
+  border-radius: 3px;
+}
+
+.policy-filter-scroll::-webkit-scrollbar-thumb:hover {
+  background: #6B7280;
+}
+
+.policy-filter-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #9CA3AF #E5E7EB;
+}
