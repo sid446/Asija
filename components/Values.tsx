@@ -48,15 +48,31 @@ const Values = () => {
   useEffect(() => {
     if (typeof window !== 'undefined' && cardsData.length > 0) {
       const hash = window.location.hash.replace('#', '');
-      if (hash) {
-        const card = cardsData.find(c => c._id === hash || c.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') === hash);
-        if (card) {
-          setSelectedCard(card);
-          // Scroll to values section
-          const element = document.getElementById('values');
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-          }
+      const urlParams = new URLSearchParams(window.location.search);
+      const cardParam = urlParams.get('card');
+      
+      let cardToOpen = null;
+      
+      if (cardParam) {
+        // Find card by ID or by slugified title
+        cardToOpen = cardsData.find(c => 
+          c._id === cardParam || 
+          c.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') === cardParam
+        );
+      } else if (hash) {
+        // Fallback to hash-based logic
+        cardToOpen = cardsData.find(c => 
+          c._id === hash || 
+          c.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') === hash
+        );
+      }
+      
+      if (cardToOpen) {
+        setSelectedCard(cardToOpen);
+        // Scroll to values section
+        const element = document.getElementById('values');
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
         }
       }
     }
