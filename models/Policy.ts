@@ -4,7 +4,7 @@ const PolicySchema = new Schema({
   title: { type: String, required: true },
   content: { type: String, required: false },
   category: { type: String, enum: ['general', 'employee'], default: 'general' },
-  subCategory: { type: String, enum: ['HR', 'IT', 'ADMIN', 'VERTICLE COLLECTIVES'], required: false },
+  subCategory: { type: String, required: false }, // Allow any string value for custom departments
   pdfUrl: { type: String, required: false },
   excelUrl: { type: String, required: false },
   policyType: { type: String, enum: ['text', 'pdf'], default: 'text' },

@@ -16,7 +16,7 @@ type PolicyItem = {
   title: string;
   content: string;
   category: 'general' | 'employee';
-  subCategory?: 'HR' | 'IT' | 'ADMIN' | 'VERTICLE COLLECTIVES';
+  subCategory?: string; // Allow any string value for custom departments
   pdfUrl?: string;
   policyType?: 'text' | 'pdf';
   order: number;
