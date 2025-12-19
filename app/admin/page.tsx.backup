@@ -23,9 +23,9 @@ import {
   Globe,
   RefreshCw,
   FileText,
+  FileSpreadsheet,
   PlusCircle,
-  MinusCircle,
-  Filter
+  MinusCircle
 } from 'lucide-react';
 import { getOptimizedImageUrl } from '@/lib/utils';
 
@@ -339,8 +339,6 @@ type EventCoverItem = {
 };
 
 type PolicyItem = {
-  excelUrl: any;
-  policyType: string;
   _id: string;
   title: string;
   content: string;
@@ -921,7 +919,6 @@ export default function AdminPage() {
   const [isExtractingCoords, setIsExtractingCoords] = useState(false);
   const [globalOfferingFormData, setGlobalOfferingFormData] = useState({ title: '', description: '', icon: 'ShieldCheck', order: 0 });
   const [policyFormData, setPolicyFormData] = useState<{
-    customSubCategory?: string;
     title: string;
     content: string;
     category: string;
@@ -930,7 +927,7 @@ export default function AdminPage() {
     excelUrl?: string;
     policyType?: string;
     order: number;
-  }>({ customSubCategory: '', title: '', content: '', category: 'general', subCategory: '', pdfUrl: '', excelUrl: '', policyType: 'text', order: 0 });
+  }>({ title: '', content: '', category: 'general', subCategory: '', pdfUrl: '', excelUrl: '', policyType: 'text', order: 0 });
   const [jobFormData, setJobFormData] = useState({
     title: '',
     department: '',
@@ -2527,29 +2524,18 @@ export default function AdminPage() {
     setMessage(null);
 
     try {
-      // Prepare the data for submission
-      let submitData = { ...policyFormData };
-
-      // Handle custom department
-      if (submitData.subCategory === 'OTHER' && submitData.customSubCategory) {
-        submitData.subCategory = submitData.customSubCategory.trim();
-      }
-
-      // Remove the customSubCategory field as it's not part of the database schema
-      delete submitData.customSubCategory;
-
       const url = editingPolicyId ? `/api/admin/policies/${editingPolicyId}` : '/api/admin/policies';
       const method = editingPolicyId ? 'PUT' : 'POST';
 
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(submitData),
+        body: JSON.stringify(policyFormData),
       });
 
       if (res.ok) {
         setMessage(editingPolicyId ? 'Policy updated successfully!' : 'Policy added successfully!');
-        setPolicyFormData({ customSubCategory: '', title: '', content: '', category: 'general', subCategory: '', pdfUrl: '', excelUrl: '', policyType: 'text', order: 0 });
+        setPolicyFormData({ title: '', content: '', category: 'general', subCategory: '', pdfUrl: '', order: 0 });
         setEditingPolicyId(null);
         fetchPolicies();
       } else {
@@ -2565,20 +2551,12 @@ export default function AdminPage() {
 
   const handlePolicyEdit = (item: PolicyItem) => {
     setEditingPolicyId(item._id);
-
-    // Check if the subCategory is one of the predefined ones
-    const predefinedDepartments = ['HR', 'IT', 'ADMIN', 'VERTICLE COLLECTIVES'];
-    const isPredefined = predefinedDepartments.includes(item.subCategory || '');
-
     setPolicyFormData({
       title: item.title,
       content: item.content,
       category: item.category,
-      subCategory: isPredefined ? item.subCategory : 'OTHER',
-      customSubCategory: isPredefined ? '' : (item.subCategory || ''),
+      subCategory: item.subCategory || '',
       pdfUrl: item.pdfUrl || '',
-      excelUrl: item.excelUrl || '',
-      policyType: item.policyType || 'text',
       order: item.order
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2597,22 +2575,15 @@ export default function AdminPage() {
     }
   };
 
-  function setShowForm(arg0: boolean): void {
-    throw new Error('Function not implemented.');
-  }
-
   return (
     <div className="min-h-screen bg-gray-50/50 text-gray-900 font-sans">
-      {/* Mobile Header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 z-30 flex items-center justify-between px-4 shadow-sm">
-        <span className="text-lg font-bold text-blue-600">Asija Admin</span>
-        <button 
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-        >
-          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
-      </div>
+      <main className="lg:ml-64 min-h-screen pt-16 lg:pt-0 transition-all duration-300">
+        <div className="p-4 lg:p-8 max-w-7xl mx-auto">
+          <h1>Admin Dashboard</h1>
+        </div>
+      </main>
+    </div>
+  );
 
       {/* Overlay */}
       {mobileMenuOpen && (
@@ -5367,425 +5338,299 @@ export default function AdminPage() {
                   <h1 className="text-2xl font-bold text-gray-900">Policies Management</h1>
                   <p className="text-gray-500 mt-1">Manage company policies and terms.</p>
                 </div>
-              </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-1">
                   <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sticky top-6">
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
-                        <FileText className="w-5 h-5 text-blue-600" />
-                      </div>
-                      <div>
-                        <h2 className="text-lg font-semibold">{editingPolicyId ? 'Edit Policy' : 'Add New Policy'}</h2>
-                        <p className="text-sm text-gray-500">Create or update company policies</p>
-                      </div>
+                    <div className="mb-6">
+                      <h2 className="text-lg font-semibold mb-2">{editingPolicyId ? '✏️ Edit Policy' : '➕ Add New Policy'}</h2>
+                      <p className="text-sm text-gray-600">
+                        {editingPolicyId ? 'Update the policy details below' : 'Create a new policy for your organization'}
+                      </p>
                     </div>
-
-                    <form onSubmit={handlePolicySubmit} className="space-y-5">
+                    <form onSubmit={handlePolicySubmit} className="space-y-6">
                       {/* Basic Information */}
                       <div className="space-y-4">
-                        <h3 className="text-sm font-medium text-gray-700 border-b pb-2">Basic Information</h3>
-
+                        <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-wider border-b border-gray-200 pb-2">
+                          📋 Basic Information
+                        </h3>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Policy Title</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Policy Title</label>
+                          <input name="title" value={policyFormData.title} onChange={handlePolicyChange} className="w-full px-4 py-2 border rounded-lg" required />
+                          <p className="text-xs text-gray-500 mt-1">Give your policy a clear, descriptive title</p>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Display Order</label>
                           <input
-                            name="title"
-                            value={policyFormData.title}
+                            name="order"
+                            type="number"
+                            value={policyFormData.order}
                             onChange={handlePolicyChange}
-                            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                            placeholder="Enter policy title..."
-                            required
+                            className="w-full px-4 py-2 border rounded-lg"
+                            min="0"
+                            placeholder="0"
                           />
+                          <p className="text-xs text-gray-500 mt-1">Lower numbers appear first (0 = highest priority)</p>
                         </div>
-
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                          <select
-                            name="category"
-                            value={policyFormData.category}
-                            onChange={handlePolicyChange}
-                            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                          >
-                            <option value="general">📋 General</option>
-                            <option value="employee">👥 Employee</option>
-                          </select>
-                        </div>
-
-                        {policyFormData.category === 'employee' && (
-                          <div className="space-y-3">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Department</label>
-                            <select
-                              name="subCategory"
-                              value={policyFormData.subCategory}
-                              onChange={handlePolicyChange}
-                              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                            >
-                              <option value="">Select Department</option>
-                              <option value="HR">👨‍💼 HR (Human Resources)</option>
-                              <option value="IT">💻 IT (Information Technology)</option>
-                              <option value="ADMIN">🏢 ADMIN (Administration)</option>
-                              <option value="VERTICLE COLLECTIVES">🤝 VERTICAL COLLECTIVES</option>
-                              <option value="OTHER">➕ Other (Custom Department)</option>
-                            </select>
-
-                            {policyFormData.subCategory === 'OTHER' && (
-                              <div className="mt-3">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Custom Department Name</label>
-                                <input
-                                  type="text"
-                                  name="customSubCategory"
-                                  value={policyFormData.customSubCategory || ''}
-                                  onChange={(e) => {
-                                    const value = e.target.value;
-                                    setPolicyFormData(prev => ({
-                                      ...prev,
-                                      customSubCategory: value,
-                                      subCategory: value ? 'OTHER' : ''
-                                    }));
-                                  }}
-                                  placeholder="Enter department name (e.g., Finance, Marketing, Operations)"
-                                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                                />
-                                <p className="text-xs text-gray-500 mt-1">This will create a new department category for policies</p>
-                              </div>
-                            )}
-                          </div>
-                        )}
                       </div>
 
-                      {/* Policy Type & Content */}
+                      {/* Categorization */}
                       <div className="space-y-4">
-                        <h3 className="text-sm font-medium text-gray-700 border-b pb-2">Policy Content</h3>
-
+                        <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-wider border-b border-gray-200 pb-2">
+                          🏷️ Categorization
+                        </h3>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                        <select name="category" value={policyFormData.category} onChange={handlePolicyChange} className="w-full px-4 py-2 border rounded-lg">
+                          <option value="general">General</option>
+                          <option value="employee">Employee</option>
+                        </select>
+                        <p className="text-xs text-gray-500 mt-1">
+                          {policyFormData.category === 'general' ? 'General policies apply to all users' : 'Employee policies are specific to different departments'}
+                        </p>
+                      </div>
+                      {policyFormData.category === 'employee' && (
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Policy Format</label>
-                          <div className="grid grid-cols-2 gap-3">
-                            <button
-                              type="button"
-                              onClick={() => setPolicyFormData(prev => ({ ...prev, policyType: 'text' }))}
-                              className={`p-3 border-2 rounded-xl text-sm font-medium transition-all ${
-                                policyFormData.policyType === 'text'
-                                  ? 'border-blue-500 bg-blue-50 text-blue-700'
-                                  : 'border-gray-200 hover:border-gray-300 text-gray-600'
-                              }`}
-                            >
-                              📝 Text Policy
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => setPolicyFormData(prev => ({ ...prev, policyType: 'pdf' }))}
-                              className={`p-3 border-2 rounded-xl text-sm font-medium transition-all ${
-                                policyFormData.policyType === 'pdf'
-                                  ? 'border-green-500 bg-green-50 text-green-700'
-                                  : 'border-gray-200 hover:border-gray-300 text-gray-600'
-                              }`}
-                            >
-                              📄 PDF Policy
-                            </button>
-                          </div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
+                          <select name="subCategory" value={policyFormData.subCategory} onChange={handlePolicyChange} className="w-full px-4 py-2 border rounded-lg">
+                            <option value="">Select Department</option>
+                            <option value="HR">👥 HR - Human Resources</option>
+                            <option value="IT">💻 IT - Information Technology</option>
+                            <option value="ADMIN">🏢 ADMIN - Administration</option>
+                            <option value="VERTICLE COLLECTIVES">🤝 VERTICAL COLLECTIVES - Business Units</option>
+                          </select>
+                          <p className="text-xs text-gray-500 mt-1">Choose the department this policy applies to</p>
                         </div>
+                      )}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Policy Format</label>
+                        <select name="policyType" value={policyFormData.policyType || 'text'} onChange={handlePolicyChange} className="w-full px-4 py-2 border rounded-lg">
+                          <option value="text">📝 Text Content - Write policy directly</option>
+                          <option value="pdf">📄 PDF/Document - Link to external file</option>
+                        </select>
+                        <p className="text-xs text-gray-500 mt-1">
+                          Choose how you want to provide the policy content
+                        </p>
+                      </div>
 
+                      {/* Content */}
+                      <div className="space-y-4">
+                        <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-wider border-b border-gray-200 pb-2">
+                          📄 Content
+                        </h3>
                         {(policyFormData.policyType === 'pdf' || !policyFormData.policyType) && (
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">📄 PDF/Document Link</label>
-                            <input
-                              type="text"
-                              name="pdfUrl"
-                              value={policyFormData.pdfUrl || ''}
-                              onChange={handlePolicyChange}
-                              placeholder="https://drive.google.com/file/d/... or https://docs.google.com/..."
-                              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                            />
-                            <p className="text-xs text-gray-500 mt-1">Paste a shareable Google Drive, OneDrive, or direct PDF link</p>
-                          </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Google Doc / PDF Link</label>
+                          <input
+                            type="text"
+                            name="pdfUrl"
+                            value={policyFormData.pdfUrl || ''}
+                            onChange={handlePolicyChange}
+                            placeholder="Paste Google Doc or PDF link here"
+                            className="w-full px-4 py-2 border rounded-lg"
+                          />
+                          <p className="text-xs text-gray-500 mt-1">Paste a shareable link (e.g., Google Drive link).</p>
+                        </div>
+                        )}
+                        {(policyFormData.policyType === 'text' || !policyFormData.policyType) && (
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Policy Content</label>
+                          <textarea
+                            name="content"
+                            value={policyFormData.content}
+                            onChange={handlePolicyChange}
+                            rows={8}
+                            placeholder="Enter the full policy text here..."
+                            className="w-full px-4 py-2 border rounded-lg"
+                          />
+                          <p className="text-xs text-gray-500 mt-1">Write the complete policy content in text format.</p>
+                        </div>
                         )}
 
-                        {(policyFormData.policyType === 'text' || !policyFormData.policyType) && (
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">📝 Policy Content</label>
-                            <textarea
-                              name="content"
-                              value={policyFormData.content}
-                              onChange={handlePolicyChange}
-                              rows={6}
-                              placeholder="Write the complete policy content here..."
-                              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
-                            />
-                            <p className="text-xs text-gray-500 mt-1">Write the complete policy text that will be displayed to employees</p>
-                          </div>
-                        )}
                       </div>
 
                       {/* Attachments */}
                       <div className="space-y-4">
-                        <h3 className="text-sm font-medium text-gray-700 border-b pb-2">Attachments (Optional)</h3>
-
+                        <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-wider border-b border-gray-200 pb-2">
+                          📎 Attachments & Resources
+                        </h3>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">📊 Excel/Spreadsheet Link</label>
-                          <input
-                            type="text"
-                            name="excelUrl"
-                            value={policyFormData.excelUrl || ''}
-                            onChange={handlePolicyChange}
-                            placeholder="https://docs.google.com/spreadsheets/d/... or https://excel.office.com/..."
-                            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                          />
-                          <p className="text-xs text-gray-500 mt-1">Add downloadable Excel files, spreadsheets, or data sheets</p>
-                        </div>
+                        <input
+                          type="text"
+                          name="excelUrl"
+                          value={policyFormData.excelUrl || ''}
+                          onChange={handlePolicyChange}
+                          placeholder="https://docs.google.com/spreadsheets/... or https://onedrive.live.com/..."
+                          className="w-full px-4 py-2 border rounded-lg"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">
+                          Add a link to an Excel file, Google Sheet, or other spreadsheet for additional resources
+                        </p>
                       </div>
 
                       {/* Actions */}
-                      <div className="pt-4 border-t space-y-3">
-                        <button
-                          type="submit"
-                          disabled={submitting}
-                          className="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium flex items-center justify-center gap-2"
-                        >
-                          {submitting ? (
-                            <>
-                              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                              {editingPolicyId ? 'Updating...' : 'Creating...'}
-                            </>
-                          ) : (
-                            <>
-                              <Plus className="w-4 h-4" />
-                              {editingPolicyId ? 'Update Policy' : 'Create Policy'}
-                            </>
-                          )}
-                        </button>
-
-                        {editingPolicyId && (
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setEditingPolicyId(null);
-                              setPolicyFormData({ title: '', content: '', category: 'general', subCategory: '', customSubCategory: '', pdfUrl: '', excelUrl: '', policyType: 'text', order: 0 });
-                            }}
-                            className="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all font-medium"
-                          >
-                            Cancel Editing
+                      <div className="pt-4 border-t border-gray-200">
+                        <div className="flex gap-2">
+                          <button type="submit" disabled={submitting} className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2">
+                            {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : (editingPolicyId ? '✏️' : '➕')}
+                            {editingPolicyId ? 'Update Policy' : 'Create Policy'}
                           </button>
-                        )}
+                          {editingPolicyId && (
+                            <button type="button" onClick={() => { setEditingPolicyId(null); setPolicyFormData({ title: '', content: '', category: 'general', subCategory: '', pdfUrl: '', excelUrl: '', policyType: 'text', order: 0 }); }} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                              Cancel
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </form>
                   </div>
                 </div>
                 <div className="lg:col-span-2">
                   <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-                    <div className="p-6 border-b bg-gray-50">
+                    <div className="p-4 border-b bg-gray-50">
                       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
-                            <FileText className="w-5 h-5 text-blue-600" />
-                          </div>
-                          <div>
-                            <h2 className="text-lg font-semibold text-gray-900">Policies Management</h2>
-                            <p className="text-sm text-gray-500">Manage and organize company policies</p>
-                          </div>
+                        <div>
+                          <h3 className="font-semibold text-gray-900">Policies Management</h3>
+                          <p className="text-sm text-gray-600">
+                            {policyFilter === 'all' && `${policies.length} total policies`}
+                            {policyFilter === 'general' && `${policies.filter(p => p.category === 'general').length} general policies`}
+                            {policyFilter === 'employee' && `${policies.filter(p => p.category === 'employee').length} employee policies`}
+                            {(policyFilter === 'HR' || policyFilter === 'IT' || policyFilter === 'ADMIN' || policyFilter === 'VERTICLE COLLECTIVES') &&
+                              `${policies.filter(p => p.category === 'employee' && p.subCategory === policyFilter).length} ${policyFilter.toLowerCase()} policies`
+                            }
+                          </p>
                         </div>
-
-                          <div className="flex items-center gap-3">
-                          <button
-                            onClick={fetchPolicies}
-                            className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
-                            title="Refresh List"
-                          >
-                            <RefreshCw className="w-4 h-4 text-gray-500" />
-                          </button>
-
-                          <div className="flex bg-gray-200 p-1 rounded-xl overflow-x-auto">
+                        <button onClick={fetchPolicies} className="p-2 hover:bg-gray-200 rounded-lg transition-colors" title="Refresh List">
+                          <RefreshCw className="w-4 h-4 text-gray-500" />
+                        </button>
+                      </div>
+                      
+                      <div className="flex flex-wrap gap-2">
+                        <div className="flex bg-gray-200 p-1 rounded-lg">
+                          {[
+                            { key: 'all', label: 'All Policies', icon: '📋' },
+                            { key: 'general', label: 'General', icon: '🌐' },
+                            { key: 'employee', label: 'Employee', icon: '👥' }
+                          ].map((filter) => (
+                            <button
+                              key={filter.key}
+                              onClick={() => setPolicyFilter(filter.key)}
+                              className={`px-3 py-1 text-xs font-medium rounded-md transition-all flex items-center gap-1 ${
+                                policyFilter === filter.key
+                                  ? 'bg-white text-gray-900 shadow-sm'
+                                  : 'text-gray-500 hover:text-gray-700'
+                              }`}
+                            >
+                              <span>{filter.icon}</span>
+                              {filter.label}
+                            </button>
+                          ))}
+                        </div>
+                        {policyFilter === 'employee' && (
+                          <div className="flex bg-blue-100 p-1 rounded-lg">
                             {[
-                              { key: 'all', label: 'All', icon: '📋', fullName: 'All' },
-                              { key: 'general', label: 'General', icon: '📄', fullName: 'General' },
-                              ...Array.from(new Set(policies.map(p => p.subCategory).filter(Boolean)))
-                                .map(dept => ({
-                                  key: `dept-${dept}`,
-                                  label: dept && dept.length > 10 ? dept.substring(0, 10) + '...' : dept,
-                                  icon: dept === 'HR' ? '👨‍💼' :
-                                        dept === 'IT' ? '💻' :
-                                        dept === 'ADMIN' ? '🏢' :
-                                        dept === 'VERTICLE COLLECTIVES' ? '🤝' : '🏷️',
-                                  fullName: dept
-                                }))
-                            ].map((filter) => (
+                              { key: 'HR', label: 'HR', icon: '👥' },
+                              { key: 'IT', label: 'IT', icon: '💻' },
+                              { key: 'ADMIN', label: 'Admin', icon: '🏢' },
+                              { key: 'VERTICLE COLLECTIVES', label: 'Verticals', icon: '🤝' }
+                            ].map((dept) => (
                               <button
-                                key={filter.key}
-                                onClick={() => setPolicyFilter(filter.key)}
-                                className={`px-3 py-2 text-sm font-medium rounded-lg transition-all flex items-center gap-1 whitespace-nowrap ${
-                                  policyFilter === filter.key
-                                    ? 'bg-white text-gray-900 shadow-sm'
-                                    : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                                key={dept.key}
+                                onClick={() => setPolicyFilter(dept.key)}
+                                className={`px-2 py-1 text-xs font-medium rounded-md transition-all flex items-center gap-1 ${
+                                  policyFilter === dept.key
+                                    ? 'bg-blue-600 text-white shadow-sm'
+                                    : 'text-blue-700 hover:bg-blue-200'
                                 }`}
-                                title={filter.fullName || filter.label}
                               >
-                                <span>{filter.icon}</span>
-                                {filter.label}
+                                <span>{dept.icon}</span>
+                                {dept.label}
                               </button>
                             ))}
                           </div>
-                        </div>
+                        )}
                       </div>
                     </div>
-
-                    <div className="divide-y divide-gray-100">
+                    <div className="divide-y">
                       {policies.length === 0 && (
-                        <div className="p-12 text-center">
-                          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <FileText className="w-8 h-8 text-blue-600" />
-                          </div>
-                          <h3 className="text-lg font-medium text-gray-900 mb-2">No policies yet</h3>
-                          <p className="text-gray-500 mb-4">
-                            Get started by creating your first policy. You can add general policies like privacy policy and terms of service, or employee policies for different departments.
-                          </p>
-                          <button
-                            onClick={() => setShowForm(true)}
-                            className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                          >
-                            <Plus className="w-4 h-4 mr-2" />
-                            Create First Policy
-                          </button>
+                        <div className="p-8 text-center text-gray-500">
+                          No policies found.
                         </div>
                       )}
-
                       {policies
                         .filter(p => {
                           if (policyFilter === 'all') return true;
-                          if (policyFilter === 'general') return p.category === 'general';
-                          if (policyFilter === 'employee') return p.category === 'employee';
-                          if (policyFilter.startsWith('dept-')) {
-                            const dept = policyFilter.replace('dept-', '');
-                            return p.subCategory === dept;
-                          }
-                          return false;
+                          if (policyFilter === 'general' || policyFilter === 'employee') return p.category === policyFilter;
+                          // Department filters
+                          return p.category === 'employee' && p.subCategory === policyFilter;
                         })
                         .map(item => (
-                        <div key={item._id} className="p-6 hover:bg-gray-50 group transition-all duration-200">
-                          <div className="flex items-start justify-between gap-4">
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center gap-3 mb-3">
-                                <h3 className="text-lg font-semibold text-gray-900 truncate">{item.title}</h3>
-
-                                {/* Category & Type Badges */}
-                                <div className="flex items-center gap-2 flex-shrink-0">
-                                  <span className={`text-xs font-semibold px-3 py-1 rounded-full ${
-                                    item.category === 'general'
-                                      ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                                      : 'bg-purple-100 text-purple-700 border border-purple-200'
-                                  }`}>
-                                    {item.category === 'general' ? '📋 General' : '👥 Employee'}
-                                  </span>
-
-                                  {item.subCategory && (
-                                    <span className={`text-xs font-semibold px-3 py-1 rounded-full border ${
-                                      item.subCategory === 'HR' ? 'bg-pink-100 text-pink-700 border-pink-200' :
-                                      item.subCategory === 'IT' ? 'bg-cyan-100 text-cyan-700 border-cyan-200' :
-                                      item.subCategory === 'ADMIN' ? 'bg-orange-100 text-orange-700 border-orange-200' :
-                                      item.subCategory === 'VERTICLE COLLECTIVES' ? 'bg-indigo-100 text-indigo-700 border-indigo-200' :
-                                      'bg-gray-100 text-gray-700 border-gray-200'
-                                    }`}>
-                                      {item.subCategory === 'HR' ? '👨‍💼 HR' :
-                                       item.subCategory === 'IT' ? '💻 IT' :
-                                       item.subCategory === 'ADMIN' ? '🏢 Admin' :
-                                       item.subCategory === 'VERTICLE COLLECTIVES' ? '🤝 Vertical' :
-                                       `🏷️ ${item.subCategory}`}
-                                    </span>
-                                  )}
-
-                                  <span className={`text-xs font-semibold px-3 py-1 rounded-full border ${
-                                    item.policyType === 'pdf' || item.pdfUrl
-                                      ? 'bg-green-100 text-green-700 border-green-200'
-                                      : 'bg-blue-100 text-blue-700 border-blue-200'
-                                  }`}>
-                                    {item.policyType === 'pdf' || item.pdfUrl ? '📄 PDF' : '📝 Text'}
-                                  </span>
-
-                                  {item.excelUrl && (
-                                    <span className="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200">
-                                      📊 Excel
-                                    </span>
-                                  )}
-
-                                  <span className="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded border border-gray-200">
-                                    #{item.order}
-                                  </span>
-                                </div>
-                              </div>
-
-                              {item.content && (
-                                <p className="text-sm text-gray-600 line-clamp-2 mb-3 leading-relaxed">
-                                  {item.content}
-                                </p>
+                        <div key={item._id} className="p-4 flex items-center justify-between hover:bg-gray-50 group transition-colors">
+                          <div className="flex-1 pr-4">
+                            <div className="flex items-center gap-2 mb-1">
+                              <h3 className="font-medium text-gray-900">{item.title}</h3>
+                              <span className={`text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-full ${
+                                item.category === 'general' 
+                                  ? 'bg-blue-100 text-blue-700 border border-blue-200' 
+                                  : 'bg-purple-100 text-purple-700 border border-purple-200'
+                              }`}>
+                                {item.category}
+                              </span>
+                              <span className="text-xs text-gray-400 bg-gray-100 px-1.5 rounded border border-gray-200">#{item.order}</span>
+                              {item.subCategory && (
+                                <span className={`text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-full border ${
+                                  item.subCategory === 'HR' ? 'bg-green-100 text-green-700 border-green-200' :
+                                  item.subCategory === 'IT' ? 'bg-orange-100 text-orange-700 border-orange-200' :
+                                  item.subCategory === 'ADMIN' ? 'bg-red-100 text-red-700 border-red-200' :
+                                  'bg-indigo-100 text-indigo-700 border-indigo-200'
+                                }`}>
+                                  {item.subCategory}
+                                </span>
                               )}
-
-                              {/* Attachments Preview */}
-                              <div className="flex items-center gap-4 text-xs text-gray-500">
-                                {item.pdfUrl && (
-                                  <div className="flex items-center gap-1">
-                                    <span className="text-green-600">📄</span>
-                                    <span>PDF Available</span>
-                                  </div>
-                                )}
-                                {item.excelUrl && (
-                                  <div className="flex items-center gap-1">
-                                    <span className="text-emerald-600">📊</span>
-                                    <span>Excel Available</span>
-                                  </div>
-                                )}
-                              </div>
+                              {item.pdfUrl && (
+                                <span className="text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-full bg-green-100 text-green-700 border border-green-200">
+                                  PDF
+                                </span>
+                              )}
+                              {(!item.pdfUrl || item.policyType === 'text') && item.content && (
+                                <span className="text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 border border-blue-200">
+                                  TEXT
+                                </span>
+                              )}
+                              {item.excelUrl && (
+                                <span className="flex items-center gap-1 text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200">
+                                  <FileSpreadsheet className="w-3 h-3" />
+                                  EXCEL
+                                </span>
+                              )}
                             </div>
-
-                            {/* Action Buttons */}
-                            <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                              <button
-                                onClick={() => handlePolicyEdit(item)}
-                                className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                                title="Edit Policy"
-                              >
-                                <Pencil className="w-4 h-4" />
-                              </button>
-                              <button
-                                onClick={() => handlePolicyDelete(item._id)}
-                                className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                                title="Delete Policy"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </button>
-                            </div>
+                            <p className="text-sm text-gray-500 line-clamp-2">{item.content}</p>
+                          </div>
+                          <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button 
+                              onClick={() => handlePolicyEdit(item)} 
+                              className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                              title="Edit Policy"
+                            >
+                              <Pencil className="w-4 h-4" />
+                            </button>
+                            <button 
+                              onClick={() => handlePolicyDelete(item._id)} 
+                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                              title="Delete Policy"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
                           </div>
                         </div>
                       ))}
-
                       {policies.filter(p => {
                         if (policyFilter === 'all') return true;
-                        if (policyFilter === 'general') return p.category === 'general';
-                        if (policyFilter === 'employee') return p.category === 'employee';
-                        if (policyFilter.startsWith('dept-')) {
-                          const dept = policyFilter.replace('dept-', '');
-                          return p.subCategory === dept;
-                        }
-                        return false;
+                        if (policyFilter === 'general' || policyFilter === 'employee') return p.category === policyFilter;
+                        return p.category === 'employee' && p.subCategory === policyFilter;
                       }).length === 0 && policies.length > 0 && (
-                        <div className="p-12 text-center">
-                          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <Filter className="w-8 h-8 text-gray-400" />
-                          </div>
-                          <h3 className="text-lg font-medium text-gray-900 mb-2">
-                            {policyFilter.startsWith('dept-')
-                              ? `No policies in ${policyFilter.replace('dept-', '')} department`
-                              : policyFilter === 'general'
-                              ? 'No general policies found'
-                              : policyFilter === 'employee'
-                              ? 'No employee policies found'
-                              : 'No policies in this category'
-                            }
-                          </h3>
-                          <p className="text-gray-500">
-                            {policyFilter.startsWith('dept-')
-                              ? `Try selecting a different department or create a new policy for ${policyFilter.replace('dept-', '')}.`
-                              : 'Try selecting a different category or create a new policy.'
-                            }
-                          </p>
+                        <div className="p-8 text-center text-gray-500">
+                          No policies found in this category.
                         </div>
                       )}
                     </div>
@@ -5808,4 +5653,4 @@ export default function AdminPage() {
       </main>
     </div>
   );
-}
+};

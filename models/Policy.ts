@@ -6,6 +6,8 @@ const PolicySchema = new Schema({
   category: { type: String, enum: ['general', 'employee'], default: 'general' },
   subCategory: { type: String, enum: ['HR', 'IT', 'ADMIN', 'VERTICLE COLLECTIVES'], required: false },
   pdfUrl: { type: String, required: false },
+  excelUrl: { type: String, required: false },
+  policyType: { type: String, enum: ['text', 'pdf'], default: 'text' },
   order: { type: Number, default: 0 },
 }, { timestamps: true });
 

@@ -18,6 +18,7 @@ type PolicyItem = {
   category: 'general' | 'employee';
   subCategory?: 'HR' | 'IT' | 'ADMIN' | 'VERTICLE COLLECTIVES';
   pdfUrl?: string;
+  policyType?: 'text' | 'pdf';
   order: number;
 };
 
@@ -158,48 +159,43 @@ export default function PoliciesPage() {
                   Employee & Internal Policies
                 </h2>
                 
-                <Accordion type="single" collapsible className="w-full space-y-4">
-                  {Object.entries(groupedEmployeePolicies).map(([category, items]) => (
-                    items.length > 0 && (
-                      <AccordionItem key={category} value={category} className="border rounded-lg px-4">
-                        <AccordionTrigger className={`text-lg font-medium ${isLight ? 'text-gray-800' : 'text-gray-200'}`}>
-                          {category} Policies
-                        </AccordionTrigger>
-                        <AccordionContent>
-                          <div className="space-y-4 pt-4">
-                            {items.map((policy) => (
-                              <div key={policy._id} className="p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                                <h4 className="font-semibold text-[#009edb] mb-2">{policy.title}</h4>
-                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{policy.content}</p>
-                                {policy.pdfUrl && (
-                                  <div className="mt-4">
-                                    <div className="w-full h-[500px] border rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 mb-2">
-                                      <iframe
-                                        src={policy.pdfUrl.includes('drive.google.com') ? policy.pdfUrl.replace('/view', '/preview') : policy.pdfUrl}
-                                        className="w-full h-full"
-                                        frameBorder="0"
-                                        title={policy.title}
-                                        allow="autoplay"
-                                        sandbox="allow-scripts allow-same-origin allow-forms"
-                                      />
-                                    </div>
-                                    <button
-                                      onClick={() => setSelectedPdf(policy.pdfUrl!)}
-                                      className="mt-2 flex items-center gap-2 text-sm text-[#009edb] hover:underline"
-                                    >
-                                      <Maximize2 className="w-4 h-4" />
-                                      View Full Screen
-                                    </button>
-                                  </div>
-                                )}
-                              </div>
-                            ))}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {[
+                    { name: 'HR Policies', slug: 'hr', description: 'Human Resources policies and guidelines', icon: '👥' },
+                    { name: 'IT Policies', slug: 'it', description: 'Information Technology and security policies', icon: '💻' },
+                    { name: 'Admin Policies', slug: 'admin', description: 'Administrative and operational policies', icon: '📋' },
+                    { name: 'Vertical Collectives', slug: 'vertical-collectives', description: 'Industry-specific policies and guidelines', icon: '🏢' }
+                  ].map((category, index) => (
+                    <motion.div
+                      key={category.slug}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1 }}
+                      className={`p-6 rounded-2xl border transition-all duration-300 hover:shadow-lg cursor-pointer group ${
+                        isLight
+                          ? 'bg-white border-gray-100 hover:border-[#009edb]/30'
+                          : 'bg-slate-950 border-white/5 hover:border-[#009edb]/30'
+                      }`}
+                      onClick={() => router.push(`/policies/${category.slug}`)}
+                    >
+                      <div className="text-center">
+                        <div className="text-4xl mb-4">{category.icon}</div>
+                        <h3 className="text-xl font-bold mb-3 text-[#009edb] group-hover:translate-y-[-2px] transition-transform">
+                          {category.name}
+                        </h3>
+                        <p className={`leading-relaxed text-sm ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
+                          {category.description}
+                        </p>
+                        <div className="mt-4 flex justify-center">
+                          <div className="text-[#009edb] group-hover:translate-x-1 transition-transform">
+                            →
                           </div>
-                        </AccordionContent>
-                      </AccordionItem>
-                    )
+                        </div>
+                      </div>
+                    </motion.div>
                   ))}
-                </Accordion>
+                </div>
               </section>
             )}
 
