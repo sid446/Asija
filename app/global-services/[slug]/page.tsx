@@ -1,6 +1,6 @@
 'use client';
 
-import  { useEffect, useState } from 'react';
+import  { useEffect, useLayoutEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -51,6 +51,13 @@ export default function RegionPage() {
       fetchRegion();
     }
   }, [params?.slug]);
+
+  // Scroll to top when component mounts
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+    // Fallback in case the immediate scroll doesn't work
+    setTimeout(() => window.scrollTo(0, 0), 100);
+  }, []);
 
   if (loading) {
     return (
