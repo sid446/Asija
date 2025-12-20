@@ -383,7 +383,7 @@ export default function TeamAnimated() {
                   {/* Background / Bio */}
                   {selectedMember.description && (
                     <div>
-                      <h3 className={`text-lg font-bold mb-3 uppercase tracking-wider ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Background</h3>
+                      <h3 className={`text-lg font-bold mb-3 uppercase tracking-wider ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>About {selectedMember.name}</h3>
                       <p className={`leading-relaxed whitespace-pre-line text-justify text-sm ${
                         theme === 'light' ? 'text-gray-800' : 'text-gray-300'
                       }`}>

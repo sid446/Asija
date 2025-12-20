@@ -8,7 +8,7 @@ import Footer from "@/components/Footer";
 import { useTheme } from "@/components/ThemeProvider";
 import { motion } from "framer-motion";
 import { InteractiveHoverButton } from "@/components/ui/InteractiveHoverButton";
-import { Maximize2, Download, FileText, File } from "lucide-react";
+import { Maximize2, FileText, Table, Download } from "lucide-react";
 import Link from "next/link";
 
 type PolicyItem = {
@@ -176,10 +176,10 @@ export default function DepartmentPoliciesPage() {
                             href={policy.pdfUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-500 transition-colors"
-                            title="Download PDF"
+                            className="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 transition-colors"
+                            title="View PDF Document"
                           >
-                            <Download className="h-5 w-5" />
+                            <FileText className="h-5 w-5" />
                           </a>
                         )}
                         {policy.excelUrl && (
@@ -187,10 +187,10 @@ export default function DepartmentPoliciesPage() {
                             href={policy.excelUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="p-2 rounded-lg bg-green-500/10 hover:bg-green-500/20 text-green-500 transition-colors"
-                            title="Download Excel"
+                            className="p-2 rounded-lg bg-green-500/10 hover:bg-green-500/20 text-green-600 dark:text-green-400 transition-colors"
+                            title="Download Excel Spreadsheet"
                           >
-                            <File className="h-5 w-5" />
+                            <Table className="h-5 w-5" />
                           </a>
                         )}
                       </div>
@@ -198,27 +198,36 @@ export default function DepartmentPoliciesPage() {
 
                     {policy.policyType === 'pdf' && policy.pdfUrl ? (
                       <div className="space-y-4">
-                        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                        <div className="flex items-center gap-2 text-red-600 dark:text-red-400">
                           <FileText className="h-5 w-5" />
-                          <span className="text-sm">PDF Document</span>
+                          <span className="text-sm font-medium">PDF Document</span>
                         </div>
                         <div className="flex gap-3">
                           <a
                             href={policy.pdfUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 px-4 py-2 bg-[#009edb] text-white rounded-lg hover:bg-[#009edb]/90 transition-colors"
+                            className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                           >
                             <Maximize2 className="h-4 w-4" />
                             View PDF
                           </a>
+                        </div>
+                      </div>
+                    ) : policy.excelUrl && !policy.pdfUrl ? (
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
+                          <Table className="h-5 w-5" />
+                          <span className="text-sm font-medium">Excel Spreadsheet</span>
+                        </div>
+                        <div className="flex gap-3">
                           <a
-                            href={policy.pdfUrl}
+                            href={policy.excelUrl}
                             download
-                            className="inline-flex items-center gap-2 px-4 py-2 border border-[#009edb] text-[#009edb] rounded-lg hover:bg-[#009edb]/10 transition-colors"
+                            className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
                           >
                             <Download className="h-4 w-4" />
-                            Download
+                            Download Excel
                           </a>
                         </div>
                       </div>
