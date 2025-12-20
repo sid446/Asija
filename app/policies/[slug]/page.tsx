@@ -305,7 +305,7 @@ export default function DepartmentPoliciesPage() {
 
               <Link href="/policies">
                 <InteractiveHoverButton
-                  text="← Back to All Policies"
+                  text="Back to All Policies"
                   className="w-full justify-center"
                 />
               </Link>
@@ -318,12 +318,7 @@ export default function DepartmentPoliciesPage() {
       <section className={`py-12 ${isLight ? 'bg-gray-50' : 'bg-slate-800'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link href="/policies">
-              <InteractiveHoverButton
-                text="← Back to All Policies"
-                className={`px-6 py-3 ${isLight ? 'bg-white border-gray-300 text-gray-900' : 'bg-slate-700 border-slate-600 text-white'}`}
-              />
-            </Link>
+           
             <Link href="/">
               <InteractiveHoverButton
                 text="Home"
