@@ -5425,6 +5425,20 @@ export default function AdminPage() {
                           <div className="flex-1">
                             <h3 className="font-semibold text-gray-900 mb-1">{location.label}</h3>
                             <p className="text-gray-600 text-sm mb-2">{location.address}</p>
+                            <div className="space-y-1 mb-2">
+                              {location.phones.length > 0 && (
+                                <div className="flex items-center gap-2 text-sm text-gray-600">
+                                  <Phone className="w-4 h-4" />
+                                  <span>{location.phones.join(', ')}</span>
+                                </div>
+                              )}
+                              {location.email && (
+                                <div className="flex items-center gap-2 text-sm text-gray-600">
+                                  <Globe className="w-4 h-4" />
+                                  <span>{location.email}</span>
+                                </div>
+                              )}
+                            </div>
                             <div className="flex gap-4 text-xs text-gray-500 font-mono">
                               <span>Lat: {location.lat}</span>
                               <span>Lng: {location.lng}</span>
