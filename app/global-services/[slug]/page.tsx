@@ -5,6 +5,8 @@ import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import CTA from '@/components/ui/CTA';
+import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
+import Link from 'next/link';
 import { CheckCircle2, Loader2 } from 'lucide-react';
 import { useParams } from 'next/navigation';
 
@@ -119,6 +121,20 @@ export default function RegionPage() {
       </section>
 
       <CTA />
+
+      <section className="py-8 bg-background text-foreground">
+        <div className="container mx-auto px-4 text-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link href="/">
+              <InteractiveHoverButton text="Home" className="bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90" />
+            </Link>
+            <Link href="/global-services">
+              <InteractiveHoverButton text="Back to Global Services" className="bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </div>
   );

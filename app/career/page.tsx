@@ -9,6 +9,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import RotatingText from '@/components/ui/RotatingText';
 import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
+import Link from 'next/link';
 
 type Job = {
   _id: string;
@@ -176,6 +177,14 @@ export default function CareerPage() {
           </div>
         )}
       </div>
+
+      <section className="py-8 bg-background text-foreground">
+        <div className="container mx-auto px-4 text-center">
+          <Link href="/">
+            <InteractiveHoverButton text="Home" className="bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90" />
+          </Link>
+        </div>
+      </section>
 
       <Footer />
     </div>

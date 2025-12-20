@@ -7,6 +7,8 @@ import Footer from '@/components/Footer';
 import { Loader2, Calendar, Folder, ChevronRight } from 'lucide-react';
 import GalleryCarousel from '@/components/GalleryCarousel';
 import { getOptimizedImageUrl } from '@/lib/utils';
+import Link from 'next/link';
+import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
 
 type GalleryItem = {
   _id: string;
@@ -284,6 +286,14 @@ export default function GalleryPage() {
           )}
         </div>
       </main>
+
+      <section className="py-8 bg-background text-foreground">
+        <div className="container mx-auto px-4 text-center">
+          <Link href="/">
+            <InteractiveHoverButton text="Home" className="bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90" />
+          </Link>
+        </div>
+      </section>
 
       <Footer />
 

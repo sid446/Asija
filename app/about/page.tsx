@@ -7,6 +7,8 @@ import Values from '@/components/Values';
 import Footer from '@/components/Footer';
 import Loader from '@/components/ui/Loader';
 import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
+import Link from 'next/link';
+import { useTheme } from '@/components/ThemeProvider';
 
  const defaultData = [
   {
@@ -275,6 +277,8 @@ export default function AboutPage() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showButton, setShowButton] = useState(false);
   const contentRef = useRef<HTMLParagraphElement>(null);
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
 
   const defaultFullText = `The journey of Asija & Associates LLP spans several decades of steady development. From its start as an individual practice to a multi-location professional firm, the growth has been steady structured, and grounded on the principles of discipline, ethics, and consistent professional learning and upgradation`;
 
@@ -436,6 +440,21 @@ export default function AboutPage() {
       </div>
 
       <Values />
+
+      {/* Navigation Section */}
+      <section className={``}>
+        <div className="">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10 ">
+            <Link href="/">
+              <InteractiveHoverButton
+                text="Home"
+                className={`px-6 py-3 ${isLight ? 'bg-white border-gray-300 text-gray-900' : 'bg-slate-700 border-slate-600 text-white'}`}
+              />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <Footer/>
       
     </div>

@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import CTA from '@/components/ui/CTA';
+import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
 import Link from 'next/link';
 import {  TrendingUp, ShieldCheck} from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
@@ -186,6 +187,15 @@ export default function GlobalServices() {
       </section>
 
       <CTA />
+
+      <section className="py-8 bg-background text-foreground">
+        <div className="container mx-auto px-4 text-center">
+          <Link href="/">
+            <InteractiveHoverButton text="Home" className="bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90" />
+          </Link>
+        </div>
+      </section>
+
       <Footer />
     </div>
   );
