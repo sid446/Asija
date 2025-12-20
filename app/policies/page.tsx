@@ -99,6 +99,35 @@ export default function PoliciesPage() {
           {/* Left Side - Policies (70%) */}
           <div className="w-full lg:w-[70%] space-y-12">
 
+            {/* General Policies Section */}
+            <section>
+              <h2 className={`text-2xl font-semibold mb-6 flex items-center gap-2 ${isLight ? 'text-gray-800' : 'text-gray-100'}`}>
+                <span className="w-2 h-8 bg-[#009edb] rounded-full"></span>
+                General Policies
+              </h2>
+              <div className="space-y-8">
+                {policies.map((policy, index) => (
+                  <motion.div 
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    className={`p-6 rounded-2xl border transition-all duration-300 hover:shadow-lg ${
+                      isLight 
+                        ? 'bg-white border-gray-100 hover:border-[#009edb]/30' 
+                        : 'bg-slate-950 border-white/5 hover:border-[#009edb]/30'
+                    }`}
+                  >
+                    <h3 className="text-xl font-bold mb-3 text-[#009edb]">{policy.title}</h3>
+                    <p className={`leading-relaxed ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
+                      {policy.content}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </section>
+
             {/* Legal Documents Section */}
             <section>
               <h2 className={`text-2xl font-semibold mb-6 flex items-center gap-2 ${isLight ? 'text-gray-800' : 'text-gray-100'}`}>
@@ -144,35 +173,6 @@ export default function PoliciesPage() {
                     Read our terms and conditions for using our services.
                   </p>
                 </motion.div>
-              </div>
-            </section>
-
-            {/* General Policies Section */}
-            <section>
-              <h2 className={`text-2xl font-semibold mb-6 flex items-center gap-2 ${isLight ? 'text-gray-800' : 'text-gray-100'}`}>
-                <span className="w-2 h-8 bg-[#009edb] rounded-full"></span>
-                General Policies
-              </h2>
-              <div className="space-y-8">
-                {policies.map((policy, index) => (
-                  <motion.div 
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    className={`p-6 rounded-2xl border transition-all duration-300 hover:shadow-lg ${
-                      isLight 
-                        ? 'bg-white border-gray-100 hover:border-[#009edb]/30' 
-                        : 'bg-slate-950 border-white/5 hover:border-[#009edb]/30'
-                    }`}
-                  >
-                    <h3 className="text-xl font-bold mb-3 text-[#009edb]">{policy.title}</h3>
-                    <p className={`leading-relaxed ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
-                      {policy.content}
-                    </p>
-                  </motion.div>
-                ))}
               </div>
             </section>
 
