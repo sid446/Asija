@@ -190,6 +190,18 @@ export default function TeamAnimated() {
                       </div>
                     )}
                     <div className="absolute inset-0 bg-linear-to-t from-[#009edb]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    {member.linkedin && (
+                      <a
+                        href={member.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="absolute top-3 right-3 w-10 h-10  hover:bg-white  rounded-full flex items-center justify-center opacity-80 hover:opacity-100 transition-all duration-300 "
+                        onClick={(e) => e.stopPropagation()}
+                        title="View LinkedIn Profile"
+                      >
+                        <img src="./linkedin.png" className='w-8' alt="" />
+                      </a>
+                    )}
                   </div>
                   <div className="mt-4 text-center">
                     <h3 className="text-lg font-semibold text-white group-hover:text-[#009edb] transition-colors duration-300">
@@ -338,7 +350,7 @@ export default function TeamAnimated() {
                   <p className="text-[#009edb] text-xl font-medium text-center sm:text-left">{selectedMember.role}</p>
                   
                   {selectedMember.linkedin && (
-                    <div className="mt-4 flex justify-center sm:justify-start">
+                    <div className="mt-4 flex justify-center sm:justify-start items-center gap-4">
                       <a
                         href={selectedMember.linkedin}
                         target="_blank"
@@ -349,40 +361,19 @@ export default function TeamAnimated() {
                           className="bg-[#0077B5] hover:bg-[#006399] border-[#0077B5] text-white px-6 py-2 text-sm"
                         />
                       </a>
+                      {selectedMember.email && (
+                        <a
+                          href={`mailto:${selectedMember.email}`}
+                          className="text-[#009edb] hover:text-[#008bc0] text-sm font-medium transition-colors"
+                        >
+                          {selectedMember.email}
+                        </a>
+                      )}
                     </div>
                   )}
                 </div>
 
                 <div className="h-px bg-linear-to-r from-transparent via-[#009edb] to-transparent mb-8" />
-
-                {/* Structured Information */}
-                <div className="space-y-5 mb-10">
-                  {selectedMember.mobile && (
-                    <div className="flex items-start gap-4">
-                      <span className={`font-semibold min-w-[180px] text-sm ${
-                        theme === 'light' ? 'text-gray-700' : 'text-gray-400'
-                      }`}>Mobile No.</span>
-                      <span className={theme === 'light' ? 'text-gray-600' : 'text-gray-500'}>:</span>
-                      <a href={`tel:${selectedMember.mobile}`} className="text-[#009edb] hover:text-[#008bc0] flex-1 text-sm transition-colors">
-                        {selectedMember.mobile}
-                      </a>
-                    </div>
-                  )}
-
-                  {selectedMember.email && (
-                    <div className="flex items-start gap-4">
-                      <span className={`font-semibold min-w-[180px] text-sm ${
-                        theme === 'light' ? 'text-gray-700' : 'text-gray-400'
-                      }`}>Email</span>
-                      <span className={theme === 'light' ? 'text-gray-600' : 'text-gray-500'}>:</span>
-                      <a href={`mailto:${selectedMember.email}`} className="text-[#009edb] hover:text-[#008bc0] flex-1 text-sm break-all transition-colors">
-                        {selectedMember.email}
-                      </a>
-                    </div>
-                  )}
-                </div>
-
-                <div className="h-px bg-linear-to-r from-transparent via-[#009edb] to-transparent mb-10" />
 
                 {/* Detailed Sections */}
                 <div className="space-y-8 mb-12">
