@@ -90,7 +90,6 @@ export const metadata: Metadata = {
   verification: {
     google: 'your-google-site-verification-code',
     yandex: 'your-yandex-verification-code',
-    bing: 'your-bing-verification-code',
   },
   icons: {
     icon: '/logo.png',
