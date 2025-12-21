@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Home } from "lucide-react";
+import { Home, Loader2 } from "lucide-react";
 import { InteractiveHoverButton } from "@/components/ui/InteractiveHoverButton";
 
 export default function LoginPage() {
@@ -156,9 +156,18 @@ export default function LoginPage() {
               <div className="flex flex-col gap-3">
                 <InteractiveHoverButton 
                   type="submit"
-                  text="Verify & Login"
+                  disabled={loading}
                   className="w-full mt-2 bg-[#009edb] text-white border-[#009edb]" 
-                />
+                >
+                  {loading ? (
+                    <div className="flex items-center gap-2">
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Verifying...
+                    </div>
+                  ) : (
+                    'Verify & Login'
+                  )}
+                </InteractiveHoverButton>
                 <div className="flex gap-2">
                   <button 
                     type="button"
@@ -171,9 +180,16 @@ export default function LoginPage() {
                     type="button"
                     onClick={sendOtp}
                     disabled={loading}
-                    className="flex-1 text-sm py-2 px-4 rounded-lg bg-[#009edb] text-white hover:bg-[#007acc] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex-1 text-sm py-2 px-4 rounded-lg bg-[#009edb] text-white hover:bg-[#007acc] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
-                    {loading ? 'Sending...' : 'Resend OTP'}
+                    {loading ? (
+                      <>
+                        <Loader2 className="w-3 h-3 animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      'Resend OTP'
+                    )}
                   </button>
                 </div>
               </div>

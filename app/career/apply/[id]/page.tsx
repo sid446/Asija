@@ -386,8 +386,16 @@ export default function JobApplicationPage() {
                             type="submit" 
                             disabled={submitting}
                             className="w-full md:w-auto"
-                            text={submitting ? "Submitting..." : "Submit Application"}
-                        />
+                        >
+                            {submitting ? (
+                                <div className="flex items-center gap-2">
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                    Submitting...
+                                </div>
+                            ) : (
+                                'Submit Application'
+                            )}
+                        </InteractiveHoverButton>
                     </div>
                 </form>
             )}
