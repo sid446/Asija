@@ -40,6 +40,7 @@ export default function PoliciesPage() {
   const [policies, setPolicies] = useState<PolicyItem[]>([]);
   const [employeePolicies, setEmployeePolicies] = useState<PolicyItem[]>([]);
   const [departments, setDepartments] = useState<DepartmentItem[]>([]);
+  const [expandedPolicies, setExpandedPolicies] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const fetchPolicies = async () => {
@@ -79,6 +80,18 @@ export default function PoliciesPage() {
     acc[deptSlug].push(policy);
     return acc;
   }, {} as Record<string, PolicyItem[]>);
+
+  const togglePolicyExpansion = (policyId: string) => {
+    setExpandedPolicies(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(policyId)) {
+        newSet.delete(policyId);
+      } else {
+        newSet.add(policyId);
+      }
+      return newSet;
+    });
+  };
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${isLight ? 'bg-white text-gray-900' : 'bg-slate-950 text-white'}`}>
@@ -120,9 +133,28 @@ export default function PoliciesPage() {
                     }`}
                   >
                     <h3 className="text-xl font-bold mb-3 text-[#009edb]">{policy.title}</h3>
-                    <p className={`leading-relaxed ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
-                      {policy.content}
-                    </p>
+                    <div className={`leading-relaxed ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
+                      {policy.content && (
+                        <>
+                          <p>
+                            {expandedPolicies.has(policy._id) 
+                              ? policy.content 
+                              : policy.content.length > 300 
+                                ? `${policy.content.substring(0, 300)}...` 
+                                : policy.content
+                            }
+                          </p>
+                          {policy.content.length > 300 && (
+                            <button
+                              onClick={() => togglePolicyExpansion(policy._id)}
+                              className="mt-2 text-[#009edb] hover:text-[#007acc] font-medium transition-colors duration-200"
+                            >
+                              {expandedPolicies.has(policy._id) ? 'Read Less' : 'Read More'}
+                            </button>
+                          )}
+                        </>
+                      )}
+                    </div>
                   </motion.div>
                 ))}
               </div>

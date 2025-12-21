@@ -9,12 +9,17 @@ function CTA() {
           <p className="text-sm sm:text-base md:text-lg mb-6 sm:mb-12 max-w-3xl mx-auto " style={{color:"white"}}>
             Let's discuss how our expertise can help you achieve financial excellence and sustainable growth.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
+          <div className="flex flex-row gap-4 sm:gap-6 justify-center items-center">
             <InteractiveHoverButton 
               text="Get Started Now" 
               className="bg-[#009edb] text-white border-[#009edb]"
               onClick={() => window.location.href = '/contact'}
             />
+             <InteractiveHoverButton 
+                                  text="Home" 
+                                  className="w-full bg-[#009edb] text-white border-[#009edb] w-auto sm:w-auto"
+                                  onClick={() => window.location.href = '/'}
+                                />
 
           </div>
         </div>
