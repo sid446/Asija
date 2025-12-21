@@ -28,7 +28,7 @@ export async function POST(request: Request) {
       .replace(/(^-|-$)/g, '');
 
     const insight = await Insight.create({ ...data, slug });
-    console.log('Created insight:', insight._id);
+    console.log('Created insight:', (insight as any)._id);
     return NextResponse.json(insight);
   } catch (error) {
     console.error('Error creating insight:', error);
