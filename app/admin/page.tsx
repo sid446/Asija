@@ -897,7 +897,7 @@ const AboutTab = ({ showTimeline = true }: { showTimeline?: boolean }) => {
 };
 
 export default function AdminPage() {
-  const [activeTab, setActiveTab] = useState('team');
+  const [activeTab, setActiveTab] = useState('dashboard');
   const [globalServicesSubTab, setGlobalServicesSubTab] = useState('content');
   const [gallerySubTab, setGallerySubTab] = useState('events');
   const [items, setItems] = useState<TeamItem[]>([]);
@@ -6693,12 +6693,177 @@ export default function AdminPage() {
           )}
 
           {activeTab === 'dashboard' && (
-            <div className="flex flex-col items-center justify-center h-[80vh] text-gray-400">
-              <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-6 animate-pulse">
-                <LayoutDashboard className="w-10 h-10 opacity-50" />
+            <div className="space-y-6">
+              {/* Welcome Header */}
+              <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-6 text-white">
+                <h1 className="text-2xl font-bold mb-2">Welcome back, Admin!</h1>
+                <p className="text-blue-100">Here's what's happening with your site today.</p>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Dashboard Overview</h3>
-              <p className="text-gray-500">Analytics and stats coming soon.</p>
+
+              {/* Stats Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">Total Applications</p>
+                      <p className="text-3xl font-bold text-gray-900">{applications.length}</p>
+                    </div>
+                    <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                      <FileText className="w-6 h-6 text-blue-600" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">Active Jobs</p>
+                      <p className="text-3xl font-bold text-gray-900">{jobs.length}</p>
+                    </div>
+                    <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                      <Briefcase className="w-6 h-6 text-green-600" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">Team Members</p>
+                      <p className="text-3xl font-bold text-gray-900">{items.length}</p>
+                    </div>
+                    <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                      <Users className="w-6 h-6 text-purple-600" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">Gallery Events</p>
+                      <p className="text-3xl font-bold text-gray-900">{gallery.length}</p>
+                    </div>
+                    <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+                      <ImageIcon className="w-6 h-6 text-orange-600" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Recent Job Applications */}
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                  <div className="p-6 border-b bg-gray-50">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg font-semibold text-gray-900">Recent Job Applications</h3>
+                      <button
+                        onClick={() => setActiveTab('career')}
+                        className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                      >
+                        View All →
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="divide-y divide-gray-100 max-h-96 overflow-y-auto">
+                    {loading ? (
+                      <div className="p-8 text-center text-gray-500">Loading applications...</div>
+                    ) : applications.length === 0 ? (
+                      <div className="p-8 text-center text-gray-500">No applications yet.</div>
+                    ) : (
+                      applications
+                        .sort((a, b) => new Date(b.appliedAt).getTime() - new Date(a.appliedAt).getTime())
+                        .slice(0, 5)
+                        .map((application) => (
+                          <div key={application._id} className="p-4 hover:bg-gray-50 transition-colors">
+                            <div className="flex justify-between items-start">
+                              <div className="flex-1">
+                                <div className="flex items-center gap-3 mb-1">
+                                  <h4 className="font-semibold text-gray-900">{application.fullName}</h4>
+                                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                    application.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                                    application.status === 'reviewed' ? 'bg-blue-100 text-blue-800' :
+                                    application.status === 'shortlisted' ? 'bg-green-100 text-green-800' :
+                                    'bg-red-100 text-red-800'
+                                  }`}>
+                                    {application.status}
+                                  </span>
+                                </div>
+                                <div className="text-sm text-gray-600">
+                                  <p>{application.email}</p>
+                                  <p className="text-xs text-gray-500 mt-1">
+                                    Applied {new Date(application.appliedAt).toLocaleDateString()}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                    )}
+                  </div>
+                </div>
+
+                {/* Frequently Used Options */}
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                  <div className="p-6 border-b bg-gray-50">
+                    <h3 className="text-lg font-semibold text-gray-900">Quick Actions</h3>
+                    <p className="text-sm text-gray-600 mt-1">Frequently used admin functions</p>
+                  </div>
+
+                  <div className="p-6">
+                    <div className="grid grid-cols-2 gap-4">
+                      <button
+                        onClick={() => setActiveTab('career')}
+                        className="flex flex-col items-center justify-center p-4 bg-blue-50 hover:bg-blue-100 rounded-xl transition-colors group"
+                      >
+                        <Briefcase className="w-8 h-8 text-blue-600 mb-2 group-hover:scale-110 transition-transform" />
+                        <span className="text-sm font-medium text-blue-700">Manage Jobs</span>
+                      </button>
+
+                      <button
+                        onClick={() => setActiveTab('team')}
+                        className="flex flex-col items-center justify-center p-4 bg-purple-50 hover:bg-purple-100 rounded-xl transition-colors group"
+                      >
+                        <Users className="w-8 h-8 text-purple-600 mb-2 group-hover:scale-110 transition-transform" />
+                        <span className="text-sm font-medium text-purple-700">Team Members</span>
+                      </button>
+
+                      <button
+                        onClick={() => setActiveTab('gallery')}
+                        className="flex flex-col items-center justify-center p-4 bg-orange-50 hover:bg-orange-100 rounded-xl transition-colors group"
+                      >
+                        <ImageIcon className="w-8 h-8 text-orange-600 mb-2 group-hover:scale-110 transition-transform" />
+                        <span className="text-sm font-medium text-orange-700">Gallery</span>
+                      </button>
+
+                      <button
+                        onClick={() => setActiveTab('content')}
+                        className="flex flex-col items-center justify-center p-4 bg-green-50 hover:bg-green-100 rounded-xl transition-colors group"
+                      >
+                        <FileText className="w-8 h-8 text-green-600 mb-2 group-hover:scale-110 transition-transform" />
+                        <span className="text-sm font-medium text-green-700">Content</span>
+                      </button>
+
+                      <button
+                        onClick={() => setActiveTab('insights')}
+                        className="flex flex-col items-center justify-center p-4 bg-indigo-50 hover:bg-indigo-100 rounded-xl transition-colors group"
+                      >
+                        <Lightbulb className="w-8 h-8 text-indigo-600 mb-2 group-hover:scale-110 transition-transform" />
+                        <span className="text-sm font-medium text-indigo-700">Insights</span>
+                      </button>
+
+                      <button
+                        onClick={() => setActiveTab('locations')}
+                        className="flex flex-col items-center justify-center p-4 bg-red-50 hover:bg-red-100 rounded-xl transition-colors group"
+                      >
+                        <Globe className="w-8 h-8 text-red-600 mb-2 group-hover:scale-110 transition-transform" />
+                        <span className="text-sm font-medium text-red-700">Locations</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </div>
