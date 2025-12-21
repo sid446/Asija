@@ -12,12 +12,12 @@ function CTA() {
           <div className="flex flex-row gap-4 sm:gap-6 justify-center items-center">
             <InteractiveHoverButton 
               text="Get Started Now" 
-              className="bg-[#009edb] text-white border-[#009edb]"
+              className="bg-theme text-white border-[#009edb]"
               onClick={() => window.location.href = '/contact'}
             />
              <InteractiveHoverButton 
                                   text="Home" 
-                                  className="w-full bg-[#009edb] text-white border-[#009edb] w-auto sm:w-auto"
+                                  className="w-full bg-theme text-white border-[#009edb] w-auto sm:w-auto"
                                   onClick={() => window.location.href = '/'}
                                 />
 

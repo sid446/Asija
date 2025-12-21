@@ -234,10 +234,16 @@ export default function TeamAnimated() {
       and strategic financial leadership to businesses and institutions across India and beyond.
     </p>
 
-    <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+    <div className="flex flex-row gap-6 justify-center items-center">
       <Link href="/contact">
         <InteractiveHoverButton
           text="Start a Conversation"
+          className="px-8 py-3"
+        />
+      </Link>
+       <Link href="/">
+        <InteractiveHoverButton
+          text="Home"
           className="px-8 py-3"
         />
       </Link>

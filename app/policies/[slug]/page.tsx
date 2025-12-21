@@ -40,7 +40,6 @@ export default function DepartmentPoliciesPage() {
   const [policies, setPolicies] = useState<PolicyItem[]>([]);
   const [department, setDepartment] = useState<DepartmentItem | null>(null);
   const [loading, setLoading] = useState(true);
-  const [expandedPolicies, setExpandedPolicies] = useState<Set<string>>(new Set());
 
   const slug = params!.slug as string;
 
@@ -84,18 +83,6 @@ export default function DepartmentPoliciesPage() {
       fetchData();
     }
   }, [status, session, router, slug]);
-
-  const togglePolicyExpansion = (policyId: string) => {
-    setExpandedPolicies(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(policyId)) {
-        newSet.delete(policyId);
-      } else {
-        newSet.add(policyId);
-      }
-      return newSet;
-    });
-  };
 
   if (loading) {
     return (
@@ -246,29 +233,10 @@ export default function DepartmentPoliciesPage() {
                       </div>
                     ) : (
                       <div className={`prose prose-lg max-w-none ${isLight ? 'prose-gray' : 'prose-invert'}`}>
-                        <div className={`leading-relaxed ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>
-                          {policy.content && (
-                            <>
-                              <div
-                                dangerouslySetInnerHTML={{
-                                  __html: expandedPolicies.has(policy._id)
-                                    ? policy.content.replace(/\n/g, '<br />')
-                                    : policy.content.length > 300
-                                      ? `${policy.content.substring(0, 300)}...`.replace(/\n/g, '<br />')
-                                      : policy.content.replace(/\n/g, '<br />')
-                                }}
-                              />
-                              {policy.content.length > 300 && (
-                                <button
-                                  onClick={() => togglePolicyExpansion(policy._id)}
-                                  className="mt-4 text-[#009edb] hover:text-[#007acc] font-medium transition-colors duration-200"
-                                >
-                                  {expandedPolicies.has(policy._id) ? 'Read Less' : 'Read More'}
-                                </button>
-                              )}
-                            </>
-                          )}
-                        </div>
+                        <div
+                          className={`leading-relaxed ${isLight ? 'text-gray-700' : 'text-gray-300'}`}
+                          dangerouslySetInnerHTML={{ __html: policy.content.replace(/\n/g, '<br />') }}
+                        />
                       </div>
                     )}
                   </motion.div>
