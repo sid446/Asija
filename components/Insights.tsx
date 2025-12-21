@@ -66,40 +66,7 @@ export default function     Insights() {
   }
 
   if (insights.length === 0) {
-    return (
-      <section className={`py-20 ${isLight ? 'bg-[#68a5bd]' : 'bg-slate-950'} transition-colors duration-300`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Section Header */}
-          <div className=" mb-16">
-            <div className="flex justify-left gap-3 mb-4">
-              <Lightbulb className="w-8 h-8 text-[#009edb]" />
-              <h2 className="text-3xl md:text-4xl font-bold text-theme">Latest Insights</h2>
-            </div>
-            <p className="text-xl text-muted max-w-3xl mx-auto">
-              Stay informed with our latest research, industry analysis, and thought leadership
-              on technology, business, and innovation trends.
-            </p>
-          </div>
-
-          {/* Empty State */}
-          <div className="text-center py-16">
-            <Lightbulb className="w-16 h-16 text-muted mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-theme mb-2">Insights Coming Soon</h3>
-            <p className="text-muted mb-6 max-w-2xl mx-auto">
-              We're working on bringing you valuable insights and thought leadership content.
-              Check back soon for the latest industry trends and analysis.
-            </p>
-            <Link
-              href="/insights"
-              className="inline-flex items-center gap-2 bg-[#009edb] text-white px-8 py-4 rounded-full font-semibold hover:bg-[#0077a3] transition-colors shadow-lg hover:shadow-xl"
-            >
-              Visit Insights Page
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-          </div>
-        </div>
-      </section>
-    );
+    return null; // Don't render the Insights section if there are no insights
   }
 
   // Transform insights data for Gallery4 component
