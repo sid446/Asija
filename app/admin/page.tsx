@@ -487,6 +487,10 @@ const AboutTab = ({ showTimeline = true }: { showTimeline?: boolean }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const isConfirmed = confirm('Are you sure you want to save this timeline entry?');
+    if (!isConfirmed) return;
+    
     setLoading(true);
 
     try {
@@ -529,6 +533,10 @@ const AboutTab = ({ showTimeline = true }: { showTimeline?: boolean }) => {
 
   const handleSectionSubmit = async (e: React.FormEvent, sectionName: string) => {
     e.preventDefault();
+    
+    const isConfirmed = confirm(`Are you sure you want to update ${sectionName}?`);
+    if (!isConfirmed) return;
+    
     setContentSubmitting(true);
     try {
       const res = await fetch('/api/admin/about-content', {
@@ -1136,6 +1144,10 @@ export default function AdminPage() {
 
   const handleHeroContentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const isConfirmed = confirm('Are you sure you want to update the hero content?');
+    if (!isConfirmed) return;
+    
     setSubmitting(true);
     setMessage(null);
 
@@ -1360,6 +1372,10 @@ export default function AdminPage() {
 
   const handleFaqSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const isConfirmed = confirm(editingFaqId ? 'Are you sure you want to update this FAQ?' : 'Are you sure you want to add this FAQ?');
+    if (!isConfirmed) return;
+    
     setSubmitting(true);
     setMessage(null);
 
@@ -1414,6 +1430,10 @@ export default function AdminPage() {
 
   const handleGallerySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const isConfirmed = confirm(editingGalleryId ? 'Are you sure you want to update this gallery event?' : 'Are you sure you want to add this gallery event?');
+    if (!isConfirmed) return;
+    
     setSubmitting(true);
     setMessage(null);
 
@@ -1512,6 +1532,10 @@ export default function AdminPage() {
 
   const handleEventCoverSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const isConfirmed = confirm(editingEventCoverId ? 'Are you sure you want to update this event cover?' : 'Are you sure you want to add this event cover?');
+    if (!isConfirmed) return;
+    
     setSubmitting(true);
     setMessage(null);
 
@@ -1623,6 +1647,10 @@ export default function AdminPage() {
 
   const handleContactContentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const isConfirmed = confirm('Are you sure you want to update the contact content?');
+    if (!isConfirmed) return;
+    
     setSubmitting(true);
     setMessage(null);
 
@@ -1980,6 +2008,10 @@ export default function AdminPage() {
 
   const handleLocationSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const isConfirmed = confirm(editingLocationId ? 'Are you sure you want to update this location?' : 'Are you sure you want to add this location?');
+    if (!isConfirmed) return;
+    
     setSubmitting(true);
     try {
       const url = editingLocationId 
@@ -2316,6 +2348,10 @@ export default function AdminPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const isConfirmed = confirm(editingTeamId ? 'Are you sure you want to update this team member?' : 'Are you sure you want to add this team member?');
+    if (!isConfirmed) return;
+    
     setMessage(null);
     setSubmitting(true);
 
@@ -2369,6 +2405,10 @@ export default function AdminPage() {
 
   const handleIndustrySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const isConfirmed = confirm(editingIndustryId ? 'Are you sure you want to update this industry?' : 'Are you sure you want to add this industry?');
+    if (!isConfirmed) return;
+    
     setMessage(null);
     setSubmitting(true);
 
@@ -2422,6 +2462,10 @@ export default function AdminPage() {
 
   const handleServiceSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const isConfirmed = confirm(editingServiceId ? 'Are you sure you want to update this service?' : 'Are you sure you want to add this service?');
+    if (!isConfirmed) return;
+    
     setMessage(null);
     setSubmitting(true);
 
@@ -2519,6 +2563,10 @@ export default function AdminPage() {
 
   const handleAboutCardSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const isConfirmed = confirm(editingAboutCardId ? 'Are you sure you want to update this about card?' : 'Are you sure you want to add this about card?');
+    if (!isConfirmed) return;
+    
     setMessage(null);
     setSubmitting(true);
 
@@ -2608,6 +2656,10 @@ export default function AdminPage() {
 
   const handleGlobalRegionSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const isConfirmed = confirm(editingGlobalRegionId ? 'Are you sure you want to update this global region?' : 'Are you sure you want to add this global region?');
+    if (!isConfirmed) return;
+    
     setSubmitting(true);
     setMessage(null);
 
