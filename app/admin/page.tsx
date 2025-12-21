@@ -1251,6 +1251,10 @@ export default function AdminPage() {
 
   const handleJobSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const isConfirmed = confirm(editingJobId ? 'Are you sure you want to update this job posting?' : 'Are you sure you want to add this job posting?');
+    if (!isConfirmed) return;
+    
     setSubmitting(true);
     setMessage(null);
 
@@ -2349,7 +2353,7 @@ export default function AdminPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    const isConfirmed = confirm(editingTeamId ? 'Are you sure you want to update this team member?' : 'Are you sure you want to add this team member?');
+    const isConfirmed = confirm(editingId ? 'Are you sure you want to update this team member?' : 'Are you sure you want to add this team member?');
     if (!isConfirmed) return;
     
     setMessage(null);
