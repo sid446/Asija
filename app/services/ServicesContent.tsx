@@ -114,8 +114,8 @@ const ExpandableMainItem: React.FC<{
             {hasSubItems && !hasDeepSubItems && (
               <div className="space-y-2">
                 {hasSubItems.map((sub, j) => (
-                  <div key={j} className="flex items-start gap-3 ml-10 text-sm">
-                    <span className="mt-1.5 text-[#009edb]">•</span>
+                  <div key={j} className="flex items-center gap-3 ml-4 text-sm">
+                    <div className="w-2 h-2 bg-[#009edb] rounded-full shrink-0" />
                     <span className={`${isLight ? 'text-gray-700' : 'text-gray-300'}`}>{sub}</span>
                   </div>
                 ))}
@@ -126,19 +126,19 @@ const ExpandableMainItem: React.FC<{
               <div className="space-y-5">
                 {Object.entries(hasDeepSubItems).map(([cat, items]) => (
                   <div key={cat}>
-                    <p className="font-semibold text-sm mb-3 ml-10 text-[#009edb]">{cat}</p>
+                    <p className="font-semibold text-sm mb-3 ml-4 text-[#009edb]">{cat}</p>
                     {Object.entries(items).map(([subCat, subItems]) => (
-                      <div key={subCat} className="ml-10">
-                        <p className={`font-medium text-sm mb-2 ml-6 ${isLight ? 'text-gray-800' : 'text-gray-200'}`}>{subCat}</p>
+                      <div key={subCat} className="ml-4">
+                        <p className={`font-medium text-sm mb-2 ml-4 ${isLight ? 'text-gray-800' : 'text-gray-200'}`}>{subCat}</p>
                         {Array.isArray(subItems) ? (
                           subItems.map((item, k) => (
-                            <div key={k} className="flex items-start gap-3 ml-16 text-xs">
-                              <span className="mt-1.5 text-gray-500">◦</span>
+                            <div key={k} className="flex items-center gap-3 ml-8 text-sm">
+                              <div className="w-1.5 h-1.5 bg-gray-500 rounded-full shrink-0" />
                               <span className={`${isLight ? 'text-gray-600' : 'text-gray-400'}`}>{item}</span>
                             </div>
                           ))
                         ) : (
-                          <div className={`ml-16 text-xs ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>{String(subItems)}</div>
+                          <div className={`ml-8 text-sm ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>{String(subItems)}</div>
                         )}
                       </div>
                     ))}
