@@ -4962,7 +4962,7 @@ export default function AdminPage() {
                             <div className="flex-1">
                               <div className="flex items-center gap-3 mb-2">
                                 {item.image && (
-                                  <img src={getOptimizedImageUrl(item.image, 100)} alt="Cover" className="w-10 h-10 object-cover rounded-lg" />
+                                  <img src={getOptimizedImageUrl(item.image, 600)} alt="Cover" className="w-16 h-16 object-cover rounded-lg" />
                                 )}
                                 <div>
                                   <h3 className="font-semibold text-gray-900">{item.type}</h3>

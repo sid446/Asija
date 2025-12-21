@@ -146,7 +146,7 @@ export default function GalleryPage() {
 
               {!selectedCategory ? (
                 // Categories View
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1">
+                <div className="grid grid-cols-1 gap-6">
                   {categories.map((category, idx) => {
                     // Get latest image for thumbnail
                     const categoryEvents = events.filter(e => (e.category || 'Uncategorized') === category);
@@ -162,7 +162,7 @@ export default function GalleryPage() {
                         onClick={() => setSelectedCategory(category)}
                         className="group cursor-pointer bg-white dark:bg-slate-800  overflow-hidden hover:shadow-lg transition-all"
                       >
-                        <div className="aspect-video bg-gray-100 dark:bg-slate-700 relative overflow-hidden">
+                        <div className="h-100 bg-gray-100 dark:bg-slate-700 relative overflow-hidden">
                           {thumbnail ? (
                             <img 
                               src={getOptimizedImageUrl(thumbnail, 600)} 
@@ -171,7 +171,7 @@ export default function GalleryPage() {
                             />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-gray-400 dark:text-gray-500">
-                              <Folder className="w-12 h-12" />
+                              <Folder className="w-8 h-8" />
                             </div>
                           )}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-opacity duration-300" />
@@ -186,7 +186,7 @@ export default function GalleryPage() {
                 </div>
               ) : !selectedYear ? (
                 // Years View (Folders)
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1">
+                <div className="grid grid-cols-1 gap-6">
                   {years.map((year, idx) => {
                     // Get latest image for thumbnail from this year
                     const yearEvents = events.filter(e => 
@@ -204,7 +204,7 @@ export default function GalleryPage() {
                         onClick={() => setSelectedYear(year)}
                         className="group cursor-pointer bg-white dark:bg-slate-800  overflow-hidden  transition-all"
                       >
-                        <div className="aspect-video bg-gray-100 dark:bg-slate-700 relative overflow-hidden">
+                        <div className="h-100 bg-gray-100 dark:bg-slate-700 relative overflow-hidden">
                           {thumbnail ? (
                             <img 
                               src={getOptimizedImageUrl(thumbnail, 600)} 
@@ -213,7 +213,7 @@ export default function GalleryPage() {
                             />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-gray-400 dark:text-gray-500">
-                              <Folder className="w-12 h-12" />
+                              <Folder className="w-8 h-8" />
                             </div>
                           )}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-opacity duration-300" />
@@ -229,7 +229,7 @@ export default function GalleryPage() {
               ) : (
                 // Events View (Grid)
                 <div className="space-y-8">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                  <div className="grid grid-cols-1 gap-6">
                     {filteredEvents.map((event, idx) => (
                       <motion.div
                         key={event._id}
@@ -239,7 +239,7 @@ export default function GalleryPage() {
                         className="group cursor-pointer flex flex-col h-full"
                         onClick={() => setSelectedEvent(event)}
                       >
-                        <div className="relative aspect-square overflow-hidden bg-gray-100 dark:bg-slate-800 mb-4 shadow-sm group-hover:shadow-md transition-shadow ">
+                        <div className="relative h-100 overflow-hidden bg-gray-100 dark:bg-slate-800 mb-4 shadow-sm group-hover:shadow-md transition-shadow ">
                           {(event.thumbnail || event.images.length > 0) ? (
                             <img
                               src={getOptimizedImageUrl(event.thumbnail || event.images[0], 600)}
