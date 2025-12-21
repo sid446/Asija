@@ -4,7 +4,7 @@ const JobApplicationSchema = new mongoose.Schema({
   jobId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'JobPost',
-    required: true,
+    required: false, // Made optional for general applications
   },
   fullName: {
     type: String,
@@ -22,9 +22,17 @@ const JobApplicationSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please provide your phone number'],
   },
+  position: {
+    type: String,
+    required: false, // For general applications
+  },
+  department: {
+    type: String,
+    required: false, // For general applications
+  },
   qualification: {
     type: String,
-    required: [true, 'Please provide your qualification'],
+    required: false, // Made optional
     enum: ['CA Final', 'CA Intermediate', 'CA Foundation', 'B.Com', 'M.Com', 'MBA', 'CS', 'CMA', 'Other'],
   },
   experience: {
@@ -37,18 +45,21 @@ const JobApplicationSchema = new mongoose.Schema({
   expectedCTC: {
     type: String,
   },
+  resume: {
+    type: String, // Store Cloudinary URL or filename
+    required: false,
+  },
   resumeLink: {
     type: String,
-    // required: [true, 'Please provide a link to your resume'], 
-    // Making optional for now as we might not have file upload ready
+    // Making optional for now
   },
   coverLetter: {
     type: String,
   },
   status: {
     type: String,
-    enum: ['Pending', 'Reviewed', 'Shortlisted', 'Rejected'],
-    default: 'Pending',
+    enum: ['pending', 'reviewed', 'shortlisted', 'rejected'],
+    default: 'pending',
   },
   appliedAt: {
     type: Date,

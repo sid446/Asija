@@ -141,7 +141,7 @@ const leftMenu: MenuItem[] = [
     label: 'Career',
     href: '/career',
     subs: [
-      { label: 'Apply Form', href: '/career' },
+      { label: 'Apply Form', href: '/apply-form' },
       { label: 'Current Openings', href: '/career' }
     ], 
     overview: 'Join a team of passionate professionals. Explore opportunities with us.'

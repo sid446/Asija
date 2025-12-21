@@ -68,10 +68,10 @@ function Hero() {
       {/* Content */}
       <div className="relative z-30 flex h-full items-center justify-center md:justify-start px-4 sm:px-6 md:px-10 lg:px-16 pt-20">
         <div className="w-full max-w-lg space-y-4 sm:space-y-5 md:space-y-6 text-center md:text-left">
-          <p className="font-bold text-xs sm:text-sm md:text-base tracking-widest uppercase" style={{ color: '#009edb' }}>
+          <p className="font-bold text-sm sm:text-base md:text-base tracking-widest uppercase" style={{ color: '#009edb' }}>
             {content.tagline}
           </p>
-          <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight" style={{ color: '#ffffff' }}>
+          <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-5xl leading-tight" style={{ color: '#ffffff' }}>
             {content.title}
           </h1>
           <div className="border-0 md:border-l-4 pl-0 md:pl-4 mx-auto md:mx-0 max-w-md md:max-w-none" style={{ borderColor: '#009edb' }}>

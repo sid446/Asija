@@ -373,6 +373,21 @@ type JobPostItem = {
   isActive: boolean;
 };
 
+type JobApplicationItem = {
+  _id: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  position?: string;
+  department?: string;
+  experience?: string;
+  coverLetter?: string;
+  resume?: string;
+  status: string;
+  appliedAt: string;
+  jobId?: string;
+};
+
 type LocationItem = {
   _id: string;
   label: string;
@@ -882,6 +897,7 @@ export default function AdminPage() {
   const [policies, setPolicies] = useState<PolicyItem[]>([]);
   const [departments, setDepartments] = useState<DepartmentItem[]>([]);
   const [jobs, setJobs] = useState<JobPostItem[]>([]);
+  const [applications, setApplications] = useState<JobApplicationItem[]>([]);
   const [locations, setLocations] = useState<LocationItem[]>([]);
   const [policyFilter, setPolicyFilter] = useState('all');
   const [showBulkOrderModal, setShowBulkOrderModal] = useState(false);
@@ -1201,6 +1217,21 @@ export default function AdminPage() {
     }
   };
 
+  const fetchApplications = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/admin/applications');
+      const data = await res.json();
+      if (data.success && Array.isArray(data.data)) {
+        setApplications(data.data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleJobSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
@@ -1284,6 +1315,42 @@ export default function AdminPage() {
       requirements: job.requirements.join(', ')
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleUpdateApplicationStatus = async (applicationId: string, status: string) => {
+    try {
+      const res = await fetch(`/api/admin/applications/${applicationId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      });
+
+      if (res.ok) {
+        fetchApplications();
+      } else {
+        console.error('Failed to update application status');
+      }
+    } catch (err) {
+      console.error('Error updating application status:', err);
+    }
+  };
+
+  const handleDeleteApplication = async (applicationId: string) => {
+    if (!confirm('Are you sure you want to delete this application?')) return;
+
+    try {
+      const res = await fetch(`/api/admin/applications/${applicationId}`, {
+        method: 'DELETE',
+      });
+
+      if (res.ok) {
+        fetchApplications();
+      } else {
+        console.error('Failed to delete application');
+      }
+    } catch (err) {
+      console.error('Error deleting application:', err);
+    }
   };
 
   const handleFaqSubmit = async (e: React.FormEvent) => {
@@ -2022,6 +2089,7 @@ export default function AdminPage() {
       fetchDepartments();
     }
     if (activeTab === 'jobs') fetchJobs();
+    if (activeTab === 'applications') fetchApplications();
     if (activeTab === 'global-services') {
       fetchGlobalServiceContent();
       fetchGlobalRegions();
@@ -2936,6 +3004,13 @@ export default function AdminPage() {
             >
               <Briefcase className="w-5 h-5 mr-3" />
               Career / Jobs
+            </button>
+            <button 
+              onClick={() => { setActiveTab('applications'); setMobileMenuOpen(false); }}
+              className={`flex items-center w-full px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${activeTab === 'applications' ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
+            >
+              <FileText className="w-5 h-5 mr-3" />
+              Job Applications
             </button>
             <button 
               onClick={() => { setActiveTab('locations'); setMobileMenuOpen(false); }}
@@ -5367,6 +5442,133 @@ export default function AdminPage() {
                       )}
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'applications' && (
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900">Job Applications</h1>
+                  <p className="text-gray-500 mt-1">View and manage all job applications.</p>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                <div className="p-4 border-b bg-gray-50 font-medium flex justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    <FileText className="w-4 h-4 text-blue-500" />
+                    <span>All Applications</span>
+                  </div>
+                  <span className="text-xs text-gray-500 bg-white px-2 py-1 rounded border">Total: {applications.length}</span>
+                </div>
+
+                <div className="divide-y divide-gray-100">
+                  {loading ? (
+                    <div className="p-8 text-center text-gray-500">Loading applications...</div>
+                  ) : applications.length === 0 ? (
+                    <div className="p-8 text-center text-gray-500">No applications found.</div>
+                  ) : (
+                    applications.map((application) => (
+                      <div key={application._id} className="p-5 hover:bg-gray-50 transition-colors">
+                        <div className="flex justify-between items-start">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-2">
+                              <h3 className="font-bold text-gray-900">{application.fullName}</h3>
+                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                application.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                                application.status === 'reviewed' ? 'bg-blue-100 text-blue-800' :
+                                application.status === 'shortlisted' ? 'bg-green-100 text-green-800' :
+                                'bg-red-100 text-red-800'
+                              }`}>
+                                {application.status}
+                              </span>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600 mb-3">
+                              <div>
+                                <span className="font-medium">Email:</span> {application.email}
+                              </div>
+                              <div>
+                                <span className="font-medium">Phone:</span> {application.phone}
+                              </div>
+                              {application.position && (
+                                <div>
+                                  <span className="font-medium">Position:</span> {application.position}
+                                </div>
+                              )}
+                              {application.department && (
+                                <div>
+                                  <span className="font-medium">Department:</span> {application.department}
+                                </div>
+                              )}
+                              {application.experience && (
+                                <div>
+                                  <span className="font-medium">Experience:</span> {application.experience}
+                                </div>
+                              )}
+                            </div>
+                            {application.coverLetter && (
+                              <div className="mb-3">
+                                <span className="font-medium text-sm text-gray-700">Cover Letter:</span>
+                                <p className="text-sm text-gray-600 mt-1 line-clamp-2">{application.coverLetter}</p>
+                              </div>
+                            )}
+                            <div className="flex items-center gap-4 text-xs text-gray-500">
+                              <span>Applied: {new Date(application.appliedAt).toLocaleDateString()}</span>
+                              {(application.resume || application.resumeLink) && (
+                                <span className="flex items-center gap-1">
+                                  <FileText className="w-3 h-3" />
+                                  {(() => {
+                                    const resumeUrl = application.resume || application.resumeLink;
+                                    return resumeUrl && resumeUrl.startsWith('http') ? (
+                                      <a
+                                        href={resumeUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-blue-600 hover:text-blue-800 underline"
+                                      >
+                                        View Resume
+                                      </a>
+                                    ) : (
+                                      'Resume attached'
+                                    );
+                                  })()}
+                                </span>
+                              )}
+                              {application.jobId && (
+                                <span>Applied for: {(application as any).jobId?.title || 'Specific Job'}</span>
+                              )}
+                              {!application.jobId && (
+                                <span className="text-blue-600">General Application</span>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="flex gap-2 ml-4">
+                            <select
+                              value={application.status}
+                              onChange={(e) => handleUpdateApplicationStatus(application._id, e.target.value)}
+                              className="px-3 py-1 text-xs border rounded-md bg-white"
+                            >
+                              <option value="pending">Pending</option>
+                              <option value="reviewed">Reviewed</option>
+                              <option value="shortlisted">Shortlisted</option>
+                              <option value="rejected">Rejected</option>
+                            </select>
+                            <button
+                              onClick={() => handleDeleteApplication(application._id)}
+                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                              title="Delete Application"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             </div>
