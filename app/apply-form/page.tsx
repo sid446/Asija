@@ -69,6 +69,10 @@ export default function ApplyFormPage() {
 		position: '',
 		department: '',
 		experience: '',
+		currentLocation: '',
+		preferredLocation: '',
+		age: '',
+		gender: '',
 		coverLetter: '',
 		resume: null as File | null,
 	});
@@ -294,6 +298,62 @@ export default function ApplyFormPage() {
 										<option value="3-5">3-5 years</option>
 										<option value="5-10">5-10 years</option>
 										<option value="10+">10+ years</option>
+									</Select>
+								</div>
+							</div>
+
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+								<div>
+									<Label htmlFor="currentLocation">Current Location</Label>
+									<Input
+										id="currentLocation"
+										name="currentLocation"
+										type="text"
+										value={formData.currentLocation}
+										onChange={handleInputChange}
+										placeholder="e.g., New Delhi, Mumbai"
+									/>
+								</div>
+								<div>
+									<Label htmlFor="preferredLocation">Preferred Location</Label>
+									<Input
+										id="preferredLocation"
+										name="preferredLocation"
+										type="text"
+										value={formData.preferredLocation}
+										onChange={handleInputChange}
+										placeholder="e.g., New Delhi, Mumbai"
+									/>
+								</div>
+							</div>
+
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+								<div>
+									<Label htmlFor="age">Age</Label>
+									<Input
+										id="age"
+										name="age"
+										type="number"
+										min="18"
+										max="65"
+										value={formData.age}
+										onChange={handleInputChange}
+										placeholder="Enter your age"
+									/>
+								</div>
+								<div>
+									<Label htmlFor="gender">Gender</Label>
+									<Select
+										id="gender"
+										name="gender"
+										value={formData.gender}
+										onChange={handleInputChange}
+									>
+										<option value="">Select Gender</option>
+										<option value="Male">Male</option>
+										<option value="Female">Female</option>
+										<option value="Other">Other</option>
+										<option value="Prefer not to say">Prefer not to say</option>
 									</Select>
 								</div>
 							</div>

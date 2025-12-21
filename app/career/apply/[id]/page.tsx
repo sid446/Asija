@@ -82,6 +82,10 @@ export default function JobApplicationPage() {
     phone: '',
     qualification: '',
     experience: '',
+    currentLocation: '',
+    preferredLocation: '',
+    age: '',
+    gender: '',
     currentCTC: '',
     expectedCTC: '',
     resumeLink: '',
@@ -134,7 +138,7 @@ export default function JobApplicationPage() {
       const res = await fetch('/api/career/apply', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, jobId: job?._id }),
+        body: JSON.stringify({ ...formData, jobId: job?._id || null }),
       });
       
       const data = await res.json();
@@ -366,6 +370,60 @@ export default function JobApplicationPage() {
                                 onChange={handleChange}
                                 placeholder="e.g. 8 LPA"
                             />
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <Label htmlFor="currentLocation">Current Location</Label>
+                            <Input 
+                                id="currentLocation"
+                                name="currentLocation"
+                                value={formData.currentLocation}
+                                onChange={handleChange}
+                                placeholder="e.g., New Delhi, Mumbai"
+                            />
+                        </div>
+                        <div>
+                            <Label htmlFor="preferredLocation">Preferred Location</Label>
+                            <Input 
+                                id="preferredLocation"
+                                name="preferredLocation"
+                                value={formData.preferredLocation}
+                                onChange={handleChange}
+                                placeholder="e.g., New Delhi, Mumbai"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <Label htmlFor="age">Age</Label>
+                            <Input 
+                                id="age"
+                                name="age"
+                                type="number"
+                                min="18"
+                                max="65"
+                                value={formData.age}
+                                onChange={handleChange}
+                                placeholder="Enter your age"
+                            />
+                        </div>
+                        <div>
+                            <Label htmlFor="gender">Gender</Label>
+                            <Select
+                                id="gender"
+                                name="gender"
+                                value={formData.gender}
+                                onChange={handleChange}
+                            >
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                                <option value="Prefer not to say">Prefer not to say</option>
+                            </Select>
                         </div>
                     </div>
 

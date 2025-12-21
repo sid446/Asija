@@ -381,6 +381,10 @@ type JobApplicationItem = {
   position?: string;
   department?: string;
   experience?: string;
+  currentLocation?: string;
+  preferredLocation?: string;
+  age?: string;
+  gender?: string;
   coverLetter?: string;
   resume?: string;
   resumeLink?: string;
@@ -5509,6 +5513,18 @@ export default function AdminPage() {
                                   <span className="font-medium">Experience:</span> {application.experience}
                                 </div>
                               )}
+                              <div>
+                                <span className="font-medium">Current Location:</span> {application.currentLocation || 'N/A'}
+                              </div>
+                              <div>
+                                <span className="font-medium">Preferred Location:</span> {application.preferredLocation || 'N/A'}
+                              </div>
+                              <div>
+                                <span className="font-medium">Age:</span> {application.age || 'N/A'}
+                              </div>
+                              <div>
+                                <span className="font-medium">Gender:</span> {application.gender || 'N/A'}
+                              </div>
                             </div>
                             {application.coverLetter && (
                               <div className="mb-3">

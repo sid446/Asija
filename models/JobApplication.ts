@@ -39,6 +39,23 @@ const JobApplicationSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please provide your experience'],
   },
+  currentLocation: {
+    type: String,
+    required: false,
+  },
+  preferredLocation: {
+    type: String,
+    required: false,
+  },
+  age: {
+    type: String,
+    required: false,
+  },
+  gender: {
+    type: String,
+    required: false,
+    enum: ['Male', 'Female', 'Other', 'Prefer not to say'],
+  },
   currentCTC: {
     type: String,
   },

@@ -24,6 +24,10 @@ export async function POST(request: Request) {
     const position = formData.get('position') as string;
     const department = formData.get('department') as string;
     const experience = formData.get('experience') as string;
+    const currentLocation = formData.get('currentLocation') as string;
+    const preferredLocation = formData.get('preferredLocation') as string;
+    const age = formData.get('age') as string;
+    const gender = formData.get('gender') as string;
     const coverLetter = formData.get('coverLetter') as string;
     const resume = formData.get('resume') as File;
 
@@ -76,6 +80,10 @@ export async function POST(request: Request) {
       position,
       department: department || 'Not specified',
       experience: experience || 'Not specified',
+      currentLocation: currentLocation || '',
+      preferredLocation: preferredLocation || '',
+      age: age || '',
+      gender: gender || '',
       coverLetter: coverLetter || '',
       resume: resumeUrl, // Store Cloudinary URL
       jobId: null, // General application, not tied to specific job
@@ -128,6 +136,22 @@ export async function POST(request: Request) {
                   <tr>
                     <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Experience</td>
                     <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${experience || 'Not specified'}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Current Location</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${currentLocation || 'Not specified'}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Preferred Location</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${preferredLocation || 'Not specified'}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Age</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${age || 'Not specified'}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Gender</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${gender || 'Not specified'}</td>
                   </tr>
                   <tr>
                     <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Resume</td>

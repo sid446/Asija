@@ -10,7 +10,13 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     
-    // Basic validation could go here
+    // Basic validation
+    if (!body.fullName || !body.email || !body.phone || !body.experience) {
+      return NextResponse.json(
+        { error: 'Missing required fields: fullName, email, phone, experience' },
+        { status: 400 }
+      );
+    }
     
     const application = await JobApplication.create(body);
 
@@ -71,6 +77,22 @@ export async function POST(request: Request) {
                   <tr>
                     <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Expected CTC</td>
                     <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${body.expectedCTC || 'N/A'}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Current Location</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${body.currentLocation || 'N/A'}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Preferred Location</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${body.preferredLocation || 'N/A'}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Age</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${body.age || 'N/A'}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Gender</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${body.gender || 'N/A'}</td>
                   </tr>
                 </table>
 
