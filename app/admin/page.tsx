@@ -383,6 +383,7 @@ type JobApplicationItem = {
   experience?: string;
   coverLetter?: string;
   resume?: string;
+  resumeLink?: string;
   status: string;
   appliedAt: string;
   jobId?: string;

@@ -77,7 +77,7 @@ export async function POST(request: Request) {
       department: department || 'Not specified',
       experience: experience || 'Not specified',
       coverLetter: coverLetter || '',
-      resume: resumeUrl || resumeFilename, // Use Cloudinary URL if available, fallback to filename
+      resume: resumeUrl, // Store Cloudinary URL
       jobId: null, // General application, not tied to specific job
       status: 'pending'
     };
@@ -134,7 +134,7 @@ export async function POST(request: Request) {
                     <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">
                       ${resumeUrl ?
                         `<a href="${resumeUrl}" target="_blank" style="color: #009edb; text-decoration: none; font-weight: 500;">View Resume</a>` :
-                        resumeFilename
+                        'No resume attached'
                       }
                     </td>
                   </tr>
