@@ -1,17 +1,10 @@
 import { NextResponse } from 'next/server';
-import mongoose from 'mongoose';
+import connectToDatabase from '@/lib/mongodb';
 import HeroContent from '@/models/HeroContent';
-
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/asija';
-
-const connectDB = async () => {
-  if (mongoose.connections[0].readyState) return;
-  await mongoose.connect(MONGODB_URI);
-};
 
 export async function GET() {
   try {
-    await connectDB();
+    await connectToDatabase();
     let content = await HeroContent.findOne();
 
     if (!content) {
@@ -24,8 +17,15 @@ export async function GET() {
         contactUs: 'Contact Us',
         videoPoster: 'https://res.cloudinary.com/db2qa9dzs/video/upload/so_0,w_1920,q_auto,f_jpg/v1764139755/855507-hd_1920_1080_25fps_kyxlva.jpg',
         videoWebm: 'https://res.cloudinary.com/db2qa9dzs/video/upload/f_webm,q_auto:eco,vc_auto,w_1920/v1764139755/855507-hd_1920_1080_25fps_kyxlva.webm',
-        videoMp4: 'https://res.cloudinary.com/db2qa9dzs/video/upload/f_mp4,q_auto:eco,vc_auto,w_1920/v1764139755/855507-hd_1920_1080_25fps_kyxlva.mp4'
+        videoMp4: 'https://res.cloudinary.com/db2qa9dzs/video/upload/f_mp4,q_auto:eco,vc_auto,w_1920/v1764139755/855507-hd_1920_1080_25fps_kyxlva.mp4',
+        showFAQ: true
       });
+    } else {
+      // Ensure showFAQ field exists for existing documents
+      if (content.showFAQ === undefined) {
+        content.showFAQ = true;
+        await content.save();
+      }
     }
 
     return NextResponse.json(content);
@@ -37,14 +37,18 @@ export async function GET() {
 
 export async function PUT(request: Request) {
   try {
-    await connectDB();
+    await connectToDatabase();
     const data = await request.json();
     
-    const content = await HeroContent.findOneAndUpdate({}, data, {
-      new: true,
-      upsert: true,
-      setDefaultsOnInsert: true,
-    });
+    const content = await HeroContent.findOneAndUpdate(
+      {}, // Find any document (should be only one)
+      data,
+      { 
+        new: true, 
+        upsert: true, 
+        setDefaultsOnInsert: true 
+      }
+    );
 
     return NextResponse.json(content);
   } catch (error) {

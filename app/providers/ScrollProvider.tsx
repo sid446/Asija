@@ -10,7 +10,7 @@ interface LenisOptions {
   easing?: (t: number) => number;
   smoothWheel?: boolean;
   smoothTouch?: boolean;
-  mouseMultiplier?: number;
+  mouseMultiplier?: number; 
   touchMultiplier?: number;
   infinite?: boolean;
   orientation?: 'vertical' | 'horizontal';

@@ -26,7 +26,8 @@ import {
   FileText,
   PlusCircle,
   MinusCircle,
-  Filter
+  Filter,
+  Lightbulb
 } from 'lucide-react';
 import { getOptimizedImageUrl } from '@/lib/utils';
 
@@ -251,6 +252,7 @@ type HeroContentData = {
   videoPoster: string;
   videoWebm: string;
   videoMp4: string;
+  showFAQ: boolean;
 };
 
 type ContactContentData = {
@@ -890,6 +892,7 @@ export default function AdminPage() {
   const [globalOfferingsError, setGlobalOfferingsError] = useState<string | null>(null);
   const [heroContent, setHeroContent] = useState<HeroContentData | null>(null);
   const [contactContent, setContactContent] = useState<ContactContentData | null>(null);
+  const [insights, setInsights] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -1040,8 +1043,21 @@ export default function AdminPage() {
     contactUs: '',
     videoPoster: '',
     videoWebm: '',
-    videoMp4: ''
+    videoMp4: '',
+    showFAQ: true
   });
+
+
+  const [insightFormData, setInsightFormData] = useState({
+    title: '',
+    description: '',
+    content: '',
+    image: '',
+    category: 'General',
+    published: true,
+    featured: false
+  });
+  const [editingInsightId, setEditingInsightId] = useState<string | null>(null);
 
   const [contactFormData, setContactFormData] = useState({
     tagline: '',
@@ -1080,7 +1096,8 @@ export default function AdminPage() {
           contactUs: data.contactUs || '',
           videoPoster: data.videoPoster || '',
           videoWebm: data.videoWebm || '',
-          videoMp4: data.videoMp4 || ''
+          videoMp4: data.videoMp4 || '',
+          showFAQ: Boolean(data.showFAQ)
         });
       }
     } catch (err) {
@@ -1091,8 +1108,9 @@ export default function AdminPage() {
   };
 
   const handleHeroContentChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setHeroFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target as HTMLInputElement;
+    const newValue = type === 'checkbox' ? checked : value;
+    setHeroFormData(prev => ({ ...prev, [name]: newValue }));
   };
 
   const handleHeroContentSubmit = async (e: React.FormEvent) => {
@@ -1557,6 +1575,118 @@ export default function AdminPage() {
     }
   };
 
+  const fetchInsights = async () => {
+    try {
+      const response = await fetch('/api/admin/insights');
+      if (response.ok) {
+        const data = await response.json();
+        setInsights(data);
+      }
+    } catch (error) {
+      console.error('Error fetching insights:', error);
+    }
+  };
+
+  const handleSaveInsight = async () => {
+    try {
+      let imageUrl = insightFormData.image || '';
+      if (insightImageFile) {
+        const form = new FormData();
+        form.append('file', insightImageFile);
+        const uploadRes = await fetch('/api/upload', {
+          method: 'POST',
+          body: form,
+        });
+        if (!uploadRes.ok) throw new Error('Image upload failed');
+        const uploadData = await uploadRes.json();
+        imageUrl = uploadData.secure_url;
+      }
+      const body = { ...insightFormData, image: imageUrl };
+      let response;
+      if (editingInsightId) {
+        response = await fetch(`/api/admin/insights/${editingInsightId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+      } else {
+        response = await fetch('/api/admin/insights', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+      }
+      if (response.ok) {
+        alert(editingInsightId ? 'Insight updated successfully!' : 'Insight saved successfully!');
+        setInsightFormData({
+          title: '',
+          description: '',
+          content: '',
+          image: '',
+          category: 'General',
+          published: true,
+          featured: false
+        });
+        setInsightImageFile(null);
+        setEditingInsightId(null);
+        fetchInsights();
+      } else {
+        alert('Failed to save insight');
+      }
+    } catch (error) {
+      console.error('Error saving insight:', error);
+      alert('Error saving insight');
+    }
+  };
+
+  const handleEditInsight = (insight: any) => {
+    setEditingInsightId(insight._id);
+    setInsightFormData({
+      title: insight.title || '',
+      description: insight.description || '',
+      content: insight.content || '',
+      image: insight.image || '',
+      category: insight.category || 'General',
+      published: insight.published ?? true,
+      featured: insight.featured ?? false
+    });
+    setInsightImageFile(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleCancelEditInsight = () => {
+    setEditingInsightId(null);
+    setInsightFormData({
+      title: '',
+      description: '',
+      content: '',
+      image: '',
+      category: 'General',
+      published: true,
+      featured: false
+    });
+    setInsightImageFile(null);
+  };
+
+  const handleDeleteInsight = async (id: string) => {
+    console.log('Admin deleting insight ID:', id);
+    if (!confirm('Are you sure you want to delete this insight?')) return;
+    try {
+      const response = await fetch(`/api/admin/insights/${id}`, {
+        method: 'DELETE'
+      });
+      if (response.ok) {
+        alert('Insight deleted successfully!');
+        fetchInsights();
+      } else {
+        alert('Failed to delete insight');
+      }
+    } catch (error) {
+      console.error('Error deleting insight:', error);
+      alert('Error deleting insight');
+    }
+  };
+
   const generateId = () => Math.random().toString(36).substr(2, 9);
 
   const addHierarchyItem = () => {
@@ -1674,6 +1804,7 @@ export default function AdminPage() {
   const [galleryImageFiles, setGalleryImageFiles] = useState<File[]>([]);
   const [galleryThumbnailFile, setGalleryThumbnailFile] = useState<File | null>(null);
   const [eventCoverImageFile, setEventCoverImageFile] = useState<File | null>(null);
+  const [insightImageFile, setInsightImageFile] = useState<File | null>(null);
 
   const fetchItems = async () => {
     setLoading(true);
@@ -1879,6 +2010,7 @@ export default function AdminPage() {
     if (activeTab === 'about-cards') fetchAboutCards();
     if (activeTab === 'hero-content') fetchHeroContent();
     if (activeTab === 'contact-content') fetchContactContent();
+    if (activeTab === 'insights') fetchInsights();
     if (activeTab === 'faq') fetchFaqs();
     if (activeTab === 'gallery') {
       fetchGallery();
@@ -2865,6 +2997,13 @@ export default function AdminPage() {
                 </div>
               )}
             </div>
+            <button 
+              onClick={() => { setActiveTab('insights'); setMobileMenuOpen(false); }}
+              className={`flex items-center w-full px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${activeTab === 'insights' ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
+            >
+              <Lightbulb className="w-5 h-5 mr-3" />
+              Insights
+            </button>
             <button 
               onClick={() => { setActiveTab('policies'); setMobileMenuOpen(false); }}
               className={`flex items-center w-full px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${activeTab === 'policies' ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
@@ -3958,6 +4097,24 @@ export default function AdminPage() {
                               className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
                             />
                           </div>
+                        </div>
+                      </div>
+
+                      <div className="border-t border-gray-200 pt-6 mt-2">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Display Settings</h3>
+                        
+                        <div className="flex items-center">
+                          <input
+                            type="checkbox"
+                            id="showFAQ"
+                            name="showFAQ"
+                            checked={heroFormData.showFAQ}
+                            onChange={handleHeroContentChange}
+                            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                          />
+                          <label htmlFor="showFAQ" className="ml-2 block text-sm text-gray-900">
+                            Show FAQ section on home page (Current: {heroFormData.showFAQ ? 'Yes' : 'No'})
+                          </label>
                         </div>
                       </div>
                     </div>
@@ -5475,6 +5632,196 @@ export default function AdminPage() {
                             <button
                               onClick={() => handleDeleteLocation(location._id)}
                               className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'insights' && (
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900">Insights Management</h1>
+                  <p className="text-gray-500 mt-1">Manage company insights and thought leadership content.</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Form Section */}
+                <div className="lg:col-span-1">
+                  <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sticky top-8">
+                    <h2 className="text-lg font-semibold text-gray-900 mb-6">
+                      {editingInsightId ? 'Edit Insight' : 'Add New Insight'}
+                    </h2>
+                    <form onSubmit={(e) => { e.preventDefault(); handleSaveInsight(); }} className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+                        <input
+                          type="text"
+                          value={insightFormData.title}
+                          onChange={(e) => setInsightFormData({ ...insightFormData, title: e.target.value })}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                        <textarea
+                          value={insightFormData.description}
+                          onChange={(e) => setInsightFormData({ ...insightFormData, description: e.target.value })}
+                          rows={3}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white resize-none"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Content</label>
+                        <textarea
+                          value={insightFormData.content}
+                          onChange={(e) => setInsightFormData({ ...insightFormData, content: e.target.value })}
+                          rows={6}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white resize-none"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Image</label>
+                        <div className="flex items-center justify-center w-full group">
+                          <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-200 border-dashed rounded-xl cursor-pointer bg-gray-50 group-hover:bg-blue-50/50 group-hover:border-blue-300 transition-all duration-300">
+                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                              <div className="p-3 bg-white rounded-full shadow-sm mb-2 group-hover:scale-110 transition-transform">
+                                <ImageIcon className="w-5 h-5 text-gray-400 group-hover:text-blue-500" />
+                              </div>
+                              <p className="text-xs text-gray-500 font-medium">{insightImageFile ? <span className="text-blue-600">{insightImageFile.name}</span> : (insightFormData.image ? <span className="text-gray-700">Current image</span> : 'Click to upload image')}</p>
+                            </div>
+                            <input type="file" className="hidden" onChange={(e) => setInsightImageFile(e.target.files?.[0] || null)} accept="image/*" />
+                          </label>
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                        <select
+                          value={insightFormData.category}
+                          onChange={(e) => setInsightFormData({ ...insightFormData, category: e.target.value })}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                        >
+                          <option value="General">General</option>
+                          <option value="Technology">Technology</option>
+                          <option value="Business">Business</option>
+                          <option value="Industry">Industry</option>
+                          <option value="Innovation">Innovation</option>
+                        </select>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <label className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            checked={insightFormData.published}
+                            onChange={(e) => setInsightFormData({ ...insightFormData, published: e.target.checked })}
+                            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                          />
+                          <span className="text-sm font-medium text-gray-700">Published</span>
+                        </label>
+                        <label className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            checked={insightFormData.featured}
+                            onChange={(e) => setInsightFormData({ ...insightFormData, featured: e.target.checked })}
+                            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                          />
+                          <span className="text-sm font-medium text-gray-700">Featured</span>
+                        </label>
+                      </div>
+
+                      <div className="flex gap-3 pt-2">
+                        <button
+                          type="submit"
+                          disabled={submitting}
+                          className="flex-1 px-4 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 focus:ring-4 focus:ring-blue-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-lg shadow-blue-600/20"
+                        >
+                          {submitting ? (
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                          ) : (
+                            <>
+                              <Save className="w-5 h-5 mr-2" />
+                              {editingInsightId ? 'Update' : 'Add'} Insight
+                            </>
+                          )}
+                        </button>
+                        {editingInsightId && (
+                          <button
+                            type="button"
+                            onClick={handleCancelEditInsight}
+                            className="px-4 py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition-all"
+                          >
+                            Cancel
+                          </button>
+                        )}
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                {/* List Section */}
+                <div className="lg:col-span-2 space-y-4">
+                  {loading ? (
+                    <div className="flex justify-center py-12">
+                      <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+                    </div>
+                  ) : insights.length === 0 ? (
+                    <div className="text-center py-12 bg-white rounded-2xl border border-dashed border-gray-300">
+                      <p className="text-gray-500">No insights found. Add one to get started.</p>
+                    </div>
+                  ) : (
+                    insights.map((insight) => (
+                      <div
+                        key={insight._id}
+                        className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all group"
+                      >
+                        <div className="flex justify-between items-start gap-4">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-2">
+                              {insight.image && (
+                                <img src={insight.image} alt="Insight" className="w-12 h-12 object-cover rounded-lg" />
+                              )}
+                              <h3 className="font-semibold text-gray-900">{insight.title}</h3>
+                              <span className={`px-2 py-1 text-xs rounded-md ${insight.published ? 'bg-green-50 text-green-700' : 'bg-gray-50 text-gray-600'}`}>
+                                {insight.published ? 'Published' : 'Draft'}
+                              </span>
+                              {insight.featured && (
+                                <span className="px-2 py-1 text-xs rounded-md bg-blue-50 text-blue-700">
+                                  Featured
+                                </span>
+                              )}
+                              <span className="px-2 py-1 text-xs rounded-md bg-purple-50 text-purple-700">
+                                {insight.category}
+                              </span>
+                            </div>
+                            <p className="text-gray-600 text-sm mb-2">{insight.description}</p>
+                            <p className="text-xs text-gray-500">
+                              Created: {new Date(insight.createdAt).toLocaleDateString()}
+                            </p>
+                          </div>
+                          <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button
+                              onClick={() => handleEditInsight(insight)}
+                              className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                              title="Edit"
+                            >
+                              <Pencil className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteInsight(insight._id)}
+                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                              title="Delete"
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>

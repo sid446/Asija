@@ -36,6 +36,10 @@ const HeroContentSchema = new Schema(
     videoMp4: {
         type: String,
         default: 'https://res.cloudinary.com/db2qa9dzs/video/upload/f_mp4,q_auto:eco,vc_auto,w_1920/v1764139755/855507-hd_1920_1080_25fps_kyxlva.mp4'
+    },
+    showFAQ: {
+      type: Boolean,
+      default: true,
     }
   },
   { timestamps: true }

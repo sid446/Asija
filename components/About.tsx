@@ -73,8 +73,8 @@ const About = () => {
 				{/* Top Blue Gradient Overlay */}
 				<div className="absolute inset-0 z-10 bg-linear-to-b from-[#009edb]/60 to-transparent pointer-events-none" />
 
-				<div className="relative z-20 max-w-7xl mx-auto max-h-screen overflow-y-auto px-2 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 md:py-10 lg:py-12">
-					<div className="pb-12 sm:pb-16 md:pb-20 lg:pb-28">
+				<div className="relative z-20 max-w-7xl mx-auto h-screen overflow-y-auto px-2 sm:px-4 md:px-6 lg:px-8 py-2 sm:py-4 md:py-5 lg:py-6">
+					<div className="">
 						<h1
 							className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-center transition-colors ${
 								isLight ? 'text-black' : 'text-white'
@@ -89,7 +89,7 @@ const About = () => {
 
 						<blockquote
 							className={`
-              mt-4 sm:mt-6 md:mt-8 lg:mt-10 text-sm sm:text-base md:text-lg lg:text-xl 
+              mt-4 sm:mt-6 md:mt-8 lg:mt-10 text-lg sm:text-2xl
               italic font-light leading-relaxed text-center
               ${'sm:border-l-4 sm:border-[#009edb] sm:pl-6 sm:text-left'} py-1 sm:py-2
               transition-colors 
@@ -99,7 +99,7 @@ const About = () => {
 						</blockquote>
 
 						<div
-							className={`mt-6 sm:mt-8 md:mt-10 space-y-3 sm:space-y-4 text-sm sm:text-base leading-relaxed font-light text-center sm:text-left transition-colors ${
+							className={`mt-6 sm:mt-8 md:mt-10 space-y-3 sm:space-y-4 text-lg sm:text-2xl font-light leading-relaxed  text-center sm:text-left transition-colors ${
 								isLight ? 'text-gray-700' : 'text-white'
 							}`}
 							style={{ color: 'white' }}
@@ -109,7 +109,7 @@ const About = () => {
 
 							<div className="hidden sm:block space-y-3 text-left">
 								<p>{content.description3 || 'Our firm has not only augmented in knowledge and skills but has also established a landmark achievement by becoming the first Chartered Accountancy firm in Lucknow to convert into a Limited Liability Partnership.'}</p>
-								<p className="mt-3 text-sm sm:text-base">
+								<p className="mt-3 text-lg sm:text-2xl font-light ">
 									{content.description4 || 'We, at Asija, aim to deliver quality to our stakeholders and strive to be the best at everything we do. We believe in working together to fulfill the needs of our clients beyond their expectations.'}
 								</p>
 							</div>

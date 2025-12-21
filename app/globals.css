@@ -205,3 +205,38 @@ body {
   scrollbar-width: thin;
   scrollbar-color: #9CA3AF #E5E7EB;
 }
+
+/* Prose styling for theme compatibility */
+.prose {
+  color: var(--theme-text);
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  color: var(--theme-text);
+}
+
+.prose p, .prose li, .prose blockquote {
+  color: var(--theme-text);
+}
+
+.prose strong {
+  color: var(--theme-text);
+}
+
+.prose a {
+  color: var(--theme-accent);
+}
+
+.prose code {
+  color: var(--theme-text);
+  background-color: var(--theme-surface);
+}
+
+.prose pre {
+  background-color: var(--theme-surface);
+  color: var(--theme-text);
+}
+
+.prose blockquote {
+  border-left-color: var(--theme-accent);
+}
