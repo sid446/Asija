@@ -17,6 +17,7 @@
     "@react-three/drei": "^10.7.6",
     "@react-three/fiber": "^9.4.0",
     "@studio-freight/lenis": "^1.0.42",
+    "@vercel/analytics": "^1.6.1",
     "bcryptjs": "^3.0.3",
     "camera-controls": "^2.9.0",
     "class-variance-authority": "^0.7.1",

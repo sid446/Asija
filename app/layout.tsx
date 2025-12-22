@@ -9,6 +9,7 @@ import ThemeProvider from '@/components/ThemeProvider';
 import { AuthProvider } from "@/components/AuthProvider";
 import DisclaimerModal from "@/components/DisclaimerModal";
 import { GoogleAnalytics } from "@/components/seo/SEOComponents";
+import { Analytics } from "@vercel/analytics/next"
 
 const inter = Inter({
   subsets: ['latin'],
@@ -205,6 +206,7 @@ export default function RootLayout({
               <ScrollProvider>
                 <DisclaimerModal />
                 {children}
+                <Analytics />
               </ScrollProvider>
             </TranslationProvider>
           </ThemeProvider>
