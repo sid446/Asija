@@ -220,7 +220,7 @@ const Footer = () => {
           className="pt-8 border-t border-theme flex flex-col sm:flex-row justify-between items-center gap-4"
         >
           <p className="text-muted text-sm text-center sm:text-left">
-            © 2024 Asija & Associates LLP. All rights reserved.
+            © 2026 Asija & Associates LLP. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-muted">
             <Link href="/policies/privacy-policy" className="hover:text-accent transition-colors">

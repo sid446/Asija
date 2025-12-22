@@ -118,7 +118,7 @@ export default function RootLayout({
               "url": "https://asija-three.vercel.app",
               "logo": "https://asija-three.vercel.app/logo.png",
               "description": "Leading global business consulting firm providing comprehensive professional services, corporate advisory, and international business solutions.",
-              "foundingDate": "2024",
+              "foundingDate": "2026",
               "industry": "Business Consulting",
               "serviceType": [
                 "Business Consulting",
