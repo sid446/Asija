@@ -84,4 +84,15 @@ const JobApplicationSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.models.JobApplication || mongoose.model('JobApplication', JobApplicationSchema);
+// Use a more robust model registration pattern for serverless environments
+let JobApplication: any;
+
+try {
+  // Try to get existing model
+  JobApplication = mongoose.model('JobApplication');
+} catch (error) {
+  // Model doesn't exist, create it
+  JobApplication = mongoose.model('JobApplication', JobApplicationSchema);
+}
+
+export default JobApplication;

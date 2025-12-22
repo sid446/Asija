@@ -3,6 +3,7 @@ import dbConnect from '@/lib/mongodb';
 import JobApplication from '@/models/JobApplication';
 import JobPost from '@/models/JobPost';
 import { transporter, mailOptions } from '@/lib/nodemailer';
+import mongoose from 'mongoose';
 
 export async function POST(request: Request) {
   await dbConnect();
@@ -23,7 +24,19 @@ export async function POST(request: Request) {
     // Fetch job details for the email
     let jobTitle = 'Unknown Job';
     try {
-      const job = await JobPost.findById(body.jobId);
+      // Ensure JobPost model is available
+      const JobPostModel = mongoose.models.JobPost || mongoose.model('JobPost', new mongoose.Schema({
+        title: String,
+        department: String,
+        location: String,
+        type: String,
+        description: String,
+        requirements: [String],
+        isActive: { type: Boolean, default: true },
+        createdAt: { type: Date, default: Date.now }
+      }));
+
+      const job = await JobPostModel.findById(body.jobId);
       if (job) jobTitle = job.title;
     } catch (err) {
       console.error('Error fetching job details for email:', err);

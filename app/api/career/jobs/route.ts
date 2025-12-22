@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import JobPost from '@/models/JobPost';
+import mongoose from 'mongoose';
 
 const SAMPLE_JOBS = [
   {
@@ -35,7 +36,19 @@ export async function GET() {
   try {
     await dbConnect();
 
-    let jobs = await JobPost.find({ isActive: true }).sort({ createdAt: -1 });
+    // Ensure JobPost model is available
+    const JobPostModel = mongoose.models.JobPost || mongoose.model('JobPost', new mongoose.Schema({
+      title: String,
+      department: String,
+      location: String,
+      type: String,
+      description: String,
+      requirements: [String],
+      isActive: { type: Boolean, default: true },
+      createdAt: { type: Date, default: Date.now }
+    }));
+
+    let jobs = await JobPostModel.find({ isActive: true }).sort({ createdAt: -1 });
 
     // Seed if empty
     if (jobs.length === 0) {
@@ -57,8 +70,21 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     await dbConnect();
+
+    // Ensure JobPost model is available
+    const JobPostModel = mongoose.models.JobPost || mongoose.model('JobPost', new mongoose.Schema({
+      title: String,
+      department: String,
+      location: String,
+      type: String,
+      description: String,
+      requirements: [String],
+      isActive: { type: Boolean, default: true },
+      createdAt: { type: Date, default: Date.now }
+    }));
+
     const body = await request.json();
-    const job = await JobPost.create(body);
+    const job = await JobPostModel.create(body);
     return NextResponse.json({ success: true, data: job }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ success: false, error: (error as Error).message }, { status: 400 });

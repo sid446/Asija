@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import JobPost from '@/models/JobPost';
+import mongoose from 'mongoose';
 
 export async function PUT(
   request: Request,
@@ -8,10 +9,23 @@ export async function PUT(
 ) {
   try {
     await dbConnect();
+
+    // Ensure JobPost model is available
+    const JobPostModel = mongoose.models.JobPost || mongoose.model('JobPost', new mongoose.Schema({
+      title: String,
+      department: String,
+      location: String,
+      type: String,
+      description: String,
+      requirements: [String],
+      isActive: { type: Boolean, default: true },
+      createdAt: { type: Date, default: Date.now }
+    }));
+
     const { id } = await params;
     const body = await request.json();
 
-    const job = await JobPost.findByIdAndUpdate(
+    const job = await JobPostModel.findByIdAndUpdate(
       id,
       { ...body },
       { new: true, runValidators: true }
@@ -40,9 +54,22 @@ export async function DELETE(
 ) {
   try {
     await dbConnect();
+
+    // Ensure JobPost model is available
+    const JobPostModel = mongoose.models.JobPost || mongoose.model('JobPost', new mongoose.Schema({
+      title: String,
+      department: String,
+      location: String,
+      type: String,
+      description: String,
+      requirements: [String],
+      isActive: { type: Boolean, default: true },
+      createdAt: { type: Date, default: Date.now }
+    }));
+
     const { id } = await params;
 
-    const job = await JobPost.findByIdAndDelete(id);
+    const job = await JobPostModel.findByIdAndDelete(id);
 
     if (!job) {
       return NextResponse.json(

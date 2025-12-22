@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+// Prevent model re-registration in serverless environments
 const JobPostSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -38,4 +39,15 @@ const JobPostSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.models.JobPost || mongoose.model('JobPost', JobPostSchema);
+// Use a more robust model registration pattern for serverless environments
+let JobPost: any;
+
+try {
+  // Try to get existing model
+  JobPost = mongoose.model('JobPost');
+} catch (error) {
+  // Model doesn't exist, create it
+  JobPost = mongoose.model('JobPost', JobPostSchema);
+}
+
+export default JobPost;

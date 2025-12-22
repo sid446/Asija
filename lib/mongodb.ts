@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import '@/models'; // Import all models to ensure registration
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
