@@ -18,7 +18,7 @@ const ServiceSchema: Schema = new Schema({
   title: { type: String, required: true },
   translationKey: { type: String, required: true },
   items: [{ type: String }],
-  insights: { type: Boolean, default: false },
+  insights: { type: Boolean, default: true },
   imgSrc: { type: String },
   description: { type: String },
   detailedDescription: { type: String },

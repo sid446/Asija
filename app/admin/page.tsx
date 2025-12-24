@@ -1028,7 +1028,7 @@ export default function AdminPage() {
     title: '',
     translationKey: '',
     items: '', // comma separated
-    insights: false,
+    insights: true,
     description: '',
     detailedDescription: '',
     benefits: '', // comma separated
@@ -2184,8 +2184,9 @@ export default function AdminPage() {
   };
 
   const handleServiceInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setServiceFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type } = e.target;
+    const inputValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
+    setServiceFormData(prev => ({ ...prev, [name]: inputValue }));
   };
 
   const handleAboutCardInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -2291,7 +2292,7 @@ export default function AdminPage() {
   const handleCancelServiceEdit = () => {
     setEditingServiceId(null);
     setServiceFormData({
-      title: '', translationKey: '', items: '', insights: false,
+      title: '', translationKey: '', items: '', insights: true,
       description: '', detailedDescription: '', benefits: '',
       subItems: '', deepSubItems: '', order: 0
     });
@@ -3838,6 +3839,20 @@ export default function AdminPage() {
                             className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm"
                             min="0"
                           />
+                        </div>
+
+                        <div className="flex items-center">
+                          <input
+                            type="checkbox"
+                            id="insights"
+                            name="insights"
+                            checked={serviceFormData.insights}
+                            onChange={handleServiceInputChange}
+                            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                          />
+                          <label htmlFor="insights" className="ml-2 block text-sm text-gray-900">
+                            Show "View Insights" button on home page (Current: {serviceFormData.insights ? 'Yes' : 'No'})
+                          </label>
                         </div>
                       </div>
 
