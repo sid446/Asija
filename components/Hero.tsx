@@ -18,6 +18,7 @@ type HeroContent = {
 function Hero() {
   const router = useRouter();
   const [content, setContent] = useState<HeroContent | null>(null);
+  const [videoLoaded, setVideoLoaded] = useState(false);
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -34,19 +35,25 @@ function Hero() {
     fetchContent();
   }, []);
 
-  if (!content) return null; // Or a loader
+  if (!content) return null; // Loading content
   
   return (
     <div className="fixed top-0 left-0 w-screen h-screen sm:h-[90vh] overflow-hidden border-b-4 border-[#009edb] z-10">
       {/* Video Background */}
+      {!videoLoaded && (
+        <div className="absolute inset-0 z-20 flex items-center justify-center bg-slate-950">
+          <div className="text-white text-lg">Loading video...</div>
+        </div>
+      )}
       <video
         className="absolute inset-0 w-full h-full object-cover"
         autoPlay
         loop
         muted
         playsInline
-        preload="auto"
+        preload="metadata"
         poster={content.videoPoster}
+        onCanPlay={() => setVideoLoaded(true)}
       >
         <source
           src={content.videoWebm}
