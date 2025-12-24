@@ -20,16 +20,16 @@ export async function GET() {
         videoPoster: '',
         videoWebm: '',
         videoMp4: '',
-        showFAQ: true,
-        showSnowfall: true
+        showFAQ: false,
+        showSnowfall: false
       });
     }
 
     // Ensure showFAQ field exists
     const contentWithShowFAQ = {
       ...heroContent,
-      showFAQ: heroContent.showFAQ !== undefined ? heroContent.showFAQ : true,
-      showSnowfall: heroContent.showSnowfall !== undefined ? heroContent.showSnowfall : true
+      showFAQ: heroContent.showFAQ !== undefined ? heroContent.showFAQ : false,
+      showSnowfall: heroContent.showSnowfall !== undefined ? heroContent.showSnowfall : false
     };
     
     console.log('Home API - Final content with showFAQ:', contentWithShowFAQ.showFAQ);
