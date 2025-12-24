@@ -96,8 +96,8 @@ export default function     Insights() {
         {/* Insights Gallery */}
         <Gallery4
           items={galleryData}
-          title="Insights"
-          description="Explore our latest insights and perspectives"
+          title=""
+          description=""
         />
 
         {/* Call to Action */}
