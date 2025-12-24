@@ -253,7 +253,6 @@ type HeroContentData = {
   videoWebm: string;
   videoMp4: string;
   showFAQ: boolean;
-  showSnowfall: boolean;
 };
 
 type ContactContentData = {
@@ -1076,8 +1075,7 @@ export default function AdminPage() {
     videoPoster: '',
     videoWebm: '',
     videoMp4: '',
-    showFAQ: true,
-    showSnowfall: true
+    showFAQ: true
   });
 
 
@@ -1120,7 +1118,6 @@ export default function AdminPage() {
       const res = await fetch('/api/admin/hero-content');
       const data = await res.json();
       console.log('Admin page - Fetched hero content:', data);
-      console.log('Admin page - showSnowfall from API:', data.showSnowfall);
       if (data && !data.error) {
         setHeroContent(data);
         setHeroFormData({
@@ -1132,10 +1129,8 @@ export default function AdminPage() {
           videoPoster: data.videoPoster || '',
           videoWebm: data.videoWebm || '',
           videoMp4: data.videoMp4 || '',
-          showFAQ: data.showFAQ !== undefined ? Boolean(data.showFAQ) : true,
-          showSnowfall: data.showSnowfall !== undefined ? Boolean(data.showSnowfall) : true
+          showFAQ: data.showFAQ !== undefined ? Boolean(data.showFAQ) : true
         });
-        console.log('Admin page - Set heroFormData showSnowfall:', Boolean(data.showSnowfall));
       }
     } catch (err) {
       console.error(err);
@@ -1161,7 +1156,6 @@ export default function AdminPage() {
     setMessage(null);
 
     console.log('Admin page - Submitting heroFormData:', heroFormData);
-    console.log('Admin page - showSnowfall value:', heroFormData.showSnowfall);
 
     try {
       const res = await fetch('/api/admin/hero-content', {
@@ -4281,20 +4275,6 @@ export default function AdminPage() {
                           />
                           <label htmlFor="showFAQ" className="ml-2 block text-sm text-gray-900">
                             Show FAQ section on home page (Current: {heroFormData.showFAQ ? 'Yes' : 'No'})
-                          </label>
-                        </div>
-
-                        <div className="flex items-center mt-4">
-                          <input
-                            type="checkbox"
-                            id="showSnowfall"
-                            name="showSnowfall"
-                            checked={heroFormData.showSnowfall}
-                            onChange={handleHeroContentChange}
-                            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                          />
-                          <label htmlFor="showSnowfall" className="ml-2 block text-sm text-gray-900">
-                            Show snowfall effect in navbar (Current: {heroFormData.showSnowfall ? 'Yes' : 'No'})
                           </label>
                         </div>
                       </div>

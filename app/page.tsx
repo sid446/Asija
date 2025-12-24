@@ -15,14 +15,12 @@ import { useState, useEffect } from 'react';
 
 interface HeroContent {
   showFAQ: boolean;
-  showSnowfall: boolean;
   // Add other properties as needed
 }
 
 export default function Home() {
   const [heroContent, setHeroContent] = useState<HeroContent | null>(null);
   const [loading, setLoading] = useState(true);
-  const [showSnowfall, setShowSnowfall] = useState(false);
 
   useEffect(() => {
     const fetchHeroContent = async () => {
@@ -31,12 +29,9 @@ export default function Home() {
         const data = await res.json();
         console.log('Home page fetched hero content:', data);
         console.log('showFAQ value:', data.showFAQ, 'Boolean:', Boolean(data.showFAQ));
-        console.log('showSnowfall value:', data.showSnowfall, 'Boolean:', Boolean(data.showSnowfall));
         setHeroContent({
-          ...data,
-          showSnowfall: data.showSnowfall !== undefined ? data.showSnowfall : false
+          ...data
         });
-        setShowSnowfall(data.showSnowfall !== undefined ? data.showSnowfall : false);
       } catch (error) {
         console.error('Failed to fetch hero content:', error);
       } finally {
@@ -58,7 +53,7 @@ export default function Home() {
       <Loader />
 
       <div className="relative">
-        <Navbar showSnowfall={showSnowfall} />
+        <Navbar />
         <Hero />
 
         <div className="relative z-40 pointer-events-none">

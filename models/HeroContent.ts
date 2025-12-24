@@ -40,10 +40,6 @@ const HeroContentSchema = new Schema(
     showFAQ: {
       type: Boolean,
       default: true,
-    },
-    showSnowfall: {
-      type: Boolean,
-      default: true,
     }
   },
   { timestamps: true }

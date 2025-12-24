@@ -8,7 +8,6 @@ import { useRouter } from 'next/navigation';
 import { useSession, signOut } from "next-auth/react";
 import { LogIn } from 'lucide-react';
 import { InteractiveHoverButton } from './ui/InteractiveHoverButton';
-import Snowfall from 'react-snowfall';
 
 type MenuItem = {
   label: string;
@@ -277,7 +276,7 @@ const NavItem = ({ label, isIcon, icon, isActive, hasDropdown, href }: NavItemPr
 /* --------------------------------------------------------------- */
 /*  MAIN NAVBAR                                                    */
 /* --------------------------------------------------------------- */
-export default function Navbar({ showSnowfall = true }: { showSnowfall?: boolean }) {
+export default function Navbar() {
   const router = useRouter();
   const { theme } = useTheme();
   const { data: session } = useSession();
@@ -369,7 +368,7 @@ export default function Navbar({ showSnowfall = true }: { showSnowfall?: boolean
   const findMenuItem = (label: string) => allMenu.find(item => item.label === label);
 
   const renderSubItems = (subs: MenuItem['subs']) => {
-    if (!subs || subs.length === 0) return <p className={`${(theme === 'light' && scrolled && !showSnowfall) ? 'text-gray-400' : 'text-white/50'} italic text-sm`}>No subitems available.</p>;
+    if (!subs || subs.length === 0) return <p className={`${(theme === 'light' && scrolled) ? 'text-gray-400' : 'text-white/50'} italic text-sm`}>No subitems available.</p>;
 
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6">
@@ -377,7 +376,7 @@ export default function Navbar({ showSnowfall = true }: { showSnowfall?: boolean
           if (typeof sub === 'string') {
             return (
               <div key={index} className="group">
-                <button className={`text-left ${(theme === 'light' && scrolled && !showSnowfall) ? 'text-gray-700' : 'text-white'} group-hover:text-[#009edb] text-base font-bold transition-all flex items-center gap-2 py-1 hover:translate-x-1`}>
+                <button className={`text-left ${(theme === 'light' && scrolled) ? 'text-gray-700' : 'text-white'} group-hover:text-[#009edb] text-base font-bold transition-all flex items-center gap-2 py-1 hover:translate-x-1`}>
                   <span className="w-1.5 h-1.5 bg-[#009edb] rounded-full opacity-0 group-hover:opacity-100 transition-all" />
                   {sub}
                 </button>
@@ -389,7 +388,7 @@ export default function Navbar({ showSnowfall = true }: { showSnowfall?: boolean
               <div key={(sub as any).title} className="group relative">
                 <Link 
                   href={(sub as any).href || '/services'}
-                  className={`${(theme === 'light' && scrolled && !showSnowfall) ? 'text-gray-900' : 'text-white'} group-hover:text-[#009edb] font-bold text-base mb-1 transition-all flex items-center gap-2 py-1 hover:translate-x-1`}
+                  className={`${(theme === 'light' && scrolled) ? 'text-gray-900' : 'text-white'} group-hover:text-[#009edb] font-bold text-base mb-1 transition-all flex items-center gap-2 py-1 hover:translate-x-1`}
                 >
                   <span className="w-1.5 h-1.5 bg-[#009edb] rounded-full opacity-0 group-hover:opacity-100 transition-all" />
                   {(sub as any).title}
@@ -416,7 +415,7 @@ export default function Navbar({ showSnowfall = true }: { showSnowfall?: boolean
               <div key={index} className="group">
                 <Link 
                   href={sub.href}
-                  className={`text-left ${(theme === 'light' && scrolled && !showSnowfall) ? 'text-gray-700' : 'text-white'} group-hover:text-[#009edb] text-base font-bold transition-all flex items-center gap-2 py-1 hover:translate-x-1`}
+                  className={`text-left ${(theme === 'light' && scrolled) ? 'text-gray-700' : 'text-white'} group-hover:text-[#009edb] text-base font-bold transition-all flex items-center gap-2 py-1 hover:translate-x-1`}
                 >
                   <span className="w-1.5 h-1.5 bg-[#009edb] rounded-full opacity-0 group-hover:opacity-100 transition-all" />
                   {sub.label}
@@ -460,7 +459,7 @@ export default function Navbar({ showSnowfall = true }: { showSnowfall?: boolean
                 <div key={(sub as any).title} className="space-y-2">
                   <Link 
                     href={(sub as any).href || '/services'}
-                    className={`${(theme === 'light' && scrolled && !showSnowfall) ? 'text-gray-900' : 'text-white'} font-bold text-sm block hover:text-[#009edb] transition-colors`}
+                    className={`${(theme === 'light' && scrolled) ? 'text-gray-900' : 'text-white'} font-bold text-sm block hover:text-[#009edb] transition-colors`}
                   >
                     {(sub as any).title}
                   </Link>
@@ -509,41 +508,12 @@ export default function Navbar({ showSnowfall = true }: { showSnowfall?: boolean
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled 
             ? (theme === 'light' 
-                ? (showSnowfall ? 'h-16 bg-[#009EDB]/90 backdrop-blur-lg shadow-lg shadow-black/5' : 'h-16 bg-white/90 backdrop-blur-lg shadow-lg shadow-black/5')
+                ? 'h-16 bg-white/90 backdrop-blur-lg shadow-lg shadow-black/5'
                 : 'h-16 bg-slate-950/95 backdrop-blur-lg shadow-lg shadow-slate-950/20'
               )
-            : (theme === 'light' && showSnowfall ? 'h-20 bg-[#009EDB]/90 backdrop-blur-lg shadow-lg shadow-black/5' : 'h-20 bg-slate-950')
+            : (theme === 'light' ? 'h-20 bg-slate-950' : 'h-20 bg-slate-950')
         }`}
       >
-        <AnimatePresence>
-          {showSnowfall && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                zIndex: 0
-              }}
-            >
-              <Snowfall
-                snowflakeCount={50}
-                speed={[0.2, 1.0]}
-                wind={[0.5, 1.0]}
-                radius={[0.5, 3.0]}
-                color="#ffffff"
-                style={{
-                  position: 'absolute',
-                  width: '100%',
-                  height: '100%'
-                }}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
         <div className="h-full flex justify-between items-center px-4 md:px-8 w-full mx-auto relative z-10">
           {/* LEFT SIDE */}
           <div className="flex gap-2 lg:gap-6 items-center">
@@ -583,7 +553,7 @@ export default function Navbar({ showSnowfall = true }: { showSnowfall?: boolean
               <div className="font-semibold text-white text-xs md:text-sm  tracking-loose">
                 ASIJA & ASSOCIATES LLP
               </div>
-              <div className="text-[10px] md:text-[10px] mt-0.5 tracking-wide ${(scrolled && theme === 'light' && !showSnowfall) ? 'text-theme-green' : 'text-white'}">
+              <div className="text-[10px] md:text-[10px] mt-0.5 tracking-wide ${(scrolled && theme === 'light') ? 'text-theme-green' : 'text-white'}">
                 Chartered Accountants
               </div>
             </motion.div>
