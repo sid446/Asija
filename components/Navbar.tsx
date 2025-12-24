@@ -515,21 +515,35 @@ export default function Navbar({ showSnowfall = true }: { showSnowfall?: boolean
             : (theme === 'light' && showSnowfall ? 'h-20 bg-[#009EDB]/90 backdrop-blur-lg shadow-lg shadow-black/5' : 'h-20 bg-slate-950')
         }`}
       >
-        {showSnowfall && (
-          <Snowfall
-            snowflakeCount={50}
-            speed={[0.2, 1.0]}
-            wind={[0.5, 1.0]}
-            radius={[0.5, 3.0]}
-            color="#ffffff"
-            style={{
-              position: 'absolute',
-              width: '100%',
-              height: '100%',
-              zIndex: 0
-            }}
-          />
-        )}
+        <AnimatePresence>
+          {showSnowfall && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              style={{
+                position: 'absolute',
+                width: '100%',
+                height: '100%',
+                zIndex: 0
+              }}
+            >
+              <Snowfall
+                snowflakeCount={50}
+                speed={[0.2, 1.0]}
+                wind={[0.5, 1.0]}
+                radius={[0.5, 3.0]}
+                color="#ffffff"
+                style={{
+                  position: 'absolute',
+                  width: '100%',
+                  height: '100%'
+                }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
         <div className="h-full flex justify-between items-center px-4 md:px-8 w-full mx-auto relative z-10">
           {/* LEFT SIDE */}
           <div className="flex gap-2 lg:gap-6 items-center">

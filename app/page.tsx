@@ -22,6 +22,7 @@ interface HeroContent {
 export default function Home() {
   const [heroContent, setHeroContent] = useState<HeroContent | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showSnowfall, setShowSnowfall] = useState(true);
 
   useEffect(() => {
     const fetchHeroContent = async () => {
@@ -35,6 +36,7 @@ export default function Home() {
           ...data,
           showSnowfall: data.showSnowfall !== undefined ? data.showSnowfall : true
         });
+        setShowSnowfall(data.showSnowfall !== undefined ? data.showSnowfall : true);
       } catch (error) {
         console.error('Failed to fetch hero content:', error);
       } finally {
@@ -43,6 +45,11 @@ export default function Home() {
     };
 
     fetchHeroContent();
+
+    // Poll every 10 seconds to check for updates
+    const interval = setInterval(fetchHeroContent, 10000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -51,7 +58,7 @@ export default function Home() {
       <Loader />
 
       <div className="relative">
-        <Navbar showSnowfall={heroContent?.showSnowfall ?? true} />
+        <Navbar showSnowfall={showSnowfall} />
         <Hero />
 
         <div className="relative z-40 pointer-events-none">
