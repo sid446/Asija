@@ -17,6 +17,7 @@ type Location = {
   lat: number;
   lng: number;
   googleMapsUrl: string;
+  order: number;
 };
 
 export default function LocationsPage() {
@@ -29,14 +30,9 @@ export default function LocationsPage() {
         const res = await fetch('/api/admin/locations');
         const data = await res.json();
         if (Array.isArray(data)) {
-          // Sort locations so "HEAD OFFICE" comes first
+          // Sort locations by order field
           const sortedLocations = data.sort((a: Location, b: Location) => {
-            const titleA = a.title.toUpperCase();
-            const titleB = b.title.toUpperCase();
-            
-            if (titleA.includes('HEAD OFFICE')) return -1;
-            if (titleB.includes('HEAD OFFICE')) return 1;
-            return 0;
+            return (a.order || 0) - (b.order || 0);
           });
           setLocations(sortedLocations);
         }

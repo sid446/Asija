@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useSession, signOut } from "next-auth/react";
 import { LogIn } from 'lucide-react';
 import { InteractiveHoverButton } from './ui/InteractiveHoverButton';
+import Snowfall from 'react-snowfall';
 
 type MenuItem = {
   label: string;
@@ -276,7 +277,7 @@ const NavItem = ({ label, isIcon, icon, isActive, hasDropdown, href }: NavItemPr
 /* --------------------------------------------------------------- */
 /*  MAIN NAVBAR                                                    */
 /* --------------------------------------------------------------- */
-export default function Navbar() {
+export default function Navbar({ showSnowfall = true }: { showSnowfall?: boolean }) {
   const router = useRouter();
   const { theme } = useTheme();
   const { data: session } = useSession();
@@ -511,7 +512,21 @@ export default function Navbar() {
             : 'h-20 bg-slate-950'
         }`}
       >
-        <div className="h-full flex justify-between items-center px-4 md:px-8 w-full mx-auto">
+        {showSnowfall && (
+          <Snowfall
+            snowflakeCount={50}
+            speed={[0.2, 1.0]}
+            wind={[0.5, 1.0]}
+            radius={[0.5, 3.0]}
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              zIndex: 0
+            }}
+          />
+        )}
+        <div className="h-full flex justify-between items-center px-4 md:px-8 w-full mx-auto relative z-10">
           {/* LEFT SIDE */}
           <div className="flex gap-2 lg:gap-6 items-center">
             

@@ -33,6 +33,7 @@ type Location = {
   lat: number;
   lng: number;
   googleMapsUrl: string;
+  order: number;
 };
 
 const Contact = () => {
@@ -56,14 +57,9 @@ const Contact = () => {
           setContent(contentData);
         }
         if (Array.isArray(locationsData)) {
-          // Sort locations so "HEAD OFFICE" comes first
+          // Sort locations by order field
           const sortedLocations = locationsData.sort((a, b) => {
-            const titleA = a.title.toUpperCase();
-            const titleB = b.title.toUpperCase();
-            
-            if (titleA.includes('HEAD OFFICE')) return -1;
-            if (titleB.includes('HEAD OFFICE')) return 1;
-            return 0;
+            return (a.order || 0) - (b.order || 0);
           });
           setLocations(sortedLocations);
         }

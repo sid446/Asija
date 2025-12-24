@@ -33,6 +33,10 @@ const LocationSchema = new Schema({
     type: String,
     required: true,
   },
+  order: {
+    type: Number,
+    default: 0,
+  },
 }, { timestamps: true });
 
 const Location = models.Location || model('Location', LocationSchema);

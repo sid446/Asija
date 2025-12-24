@@ -253,6 +253,7 @@ type HeroContentData = {
   videoWebm: string;
   videoMp4: string;
   showFAQ: boolean;
+  showSnowfall: boolean;
 };
 
 type ContactContentData = {
@@ -403,6 +404,7 @@ type LocationItem = {
   lat: number;
   lng: number;
   googleMapsUrl: string;
+  order: number;
 };
 
 const AboutTab = ({ showTimeline = true }: { showTimeline?: boolean }) => {
@@ -964,7 +966,8 @@ export default function AdminPage() {
     email: '',
     lat: 0,
     lng: 0,
-    googleMapsUrl: ''
+    googleMapsUrl: '',
+    order: 0
   });
   const [isExtractingCoords, setIsExtractingCoords] = useState(false);
   const [globalOfferingFormData, setGlobalOfferingFormData] = useState({ title: '', description: '', icon: 'ShieldCheck', order: 0 });
@@ -1073,7 +1076,8 @@ export default function AdminPage() {
     videoPoster: '',
     videoWebm: '',
     videoMp4: '',
-    showFAQ: true
+    showFAQ: true,
+    showSnowfall: true
   });
 
 
@@ -1115,6 +1119,8 @@ export default function AdminPage() {
     try {
       const res = await fetch('/api/admin/hero-content');
       const data = await res.json();
+      console.log('Admin page - Fetched hero content:', data);
+      console.log('Admin page - showSnowfall from API:', data.showSnowfall);
       if (data && !data.error) {
         setHeroContent(data);
         setHeroFormData({
@@ -1126,8 +1132,10 @@ export default function AdminPage() {
           videoPoster: data.videoPoster || '',
           videoWebm: data.videoWebm || '',
           videoMp4: data.videoMp4 || '',
-          showFAQ: Boolean(data.showFAQ)
+          showFAQ: data.showFAQ !== undefined ? Boolean(data.showFAQ) : true,
+          showSnowfall: data.showSnowfall !== undefined ? Boolean(data.showSnowfall) : true
         });
+        console.log('Admin page - Set heroFormData showSnowfall:', Boolean(data.showSnowfall));
       }
     } catch (err) {
       console.error(err);
@@ -1139,6 +1147,7 @@ export default function AdminPage() {
   const handleHeroContentChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type, checked } = e.target as HTMLInputElement;
     const newValue = type === 'checkbox' ? checked : value;
+    console.log('Admin page - handleHeroContentChange:', name, 'value:', newValue, 'type:', type);
     setHeroFormData(prev => ({ ...prev, [name]: newValue }));
   };
 
@@ -1150,6 +1159,9 @@ export default function AdminPage() {
     
     setSubmitting(true);
     setMessage(null);
+
+    console.log('Admin page - Submitting heroFormData:', heroFormData);
+    console.log('Admin page - showSnowfall value:', heroFormData.showSnowfall);
 
     try {
       const res = await fetch('/api/admin/hero-content', {
@@ -2046,7 +2058,8 @@ export default function AdminPage() {
           email: '',
           lat: 0,
           lng: 0,
-          googleMapsUrl: ''
+          googleMapsUrl: '',
+          order: 0
         });
         fetchLocations();
       }
@@ -2072,6 +2085,24 @@ export default function AdminPage() {
       console.error('Failed to delete location', error);
     } finally {
       setTimeout(() => setMessage(null), 3000);
+    }
+  };
+
+  const handleMoveLocation = async (locationId: string, direction: 'up' | 'down') => {
+    try {
+      const res = await fetch(`/api/admin/locations/${locationId}/move`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ direction }),
+      });
+
+      if (res.ok) {
+        fetchLocations(); // Refresh the list
+      } else {
+        console.error('Failed to move location');
+      }
+    } catch (error) {
+      console.error('Failed to move location', error);
     }
   };
 
@@ -4252,6 +4283,20 @@ export default function AdminPage() {
                             Show FAQ section on home page (Current: {heroFormData.showFAQ ? 'Yes' : 'No'})
                           </label>
                         </div>
+
+                        <div className="flex items-center mt-4">
+                          <input
+                            type="checkbox"
+                            id="showSnowfall"
+                            name="showSnowfall"
+                            checked={heroFormData.showSnowfall}
+                            onChange={handleHeroContentChange}
+                            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                          />
+                          <label htmlFor="showSnowfall" className="ml-2 block text-sm text-gray-900">
+                            Show snowfall effect in navbar (Current: {heroFormData.showSnowfall ? 'Yes' : 'No'})
+                          </label>
+                        </div>
                       </div>
                     </div>
 
@@ -5796,6 +5841,19 @@ export default function AdminPage() {
                         />
                       </div>
 
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Display Order</label>
+                        <input
+                          type="number"
+                          min="0"
+                          value={locationFormData.order}
+                          onChange={(e) => setLocationFormData({ ...locationFormData, order: parseInt(e.target.value) || 0 })}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                          placeholder="0"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">Lower numbers appear first. Use up/down buttons for quick reordering.</p>
+                      </div>
+
                       <div className="flex gap-3 pt-2">
                         <button
                           type="submit"
@@ -5855,7 +5913,12 @@ export default function AdminPage() {
                       >
                         <div className="flex justify-between items-start gap-4">
                           <div className="flex-1">
-                            <h3 className="font-semibold text-gray-900 mb-1">{location.label}</h3>
+                            <div className="flex items-center gap-2 mb-1">
+                              <h3 className="font-semibold text-gray-900">{location.label}</h3>
+                              <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                                Order: {location.order || 0}
+                              </span>
+                            </div>
                             <p className="text-gray-600 text-sm mb-2">{location.address}</p>
                             <div className="space-y-1 mb-2">
                               {location.phones.length > 0 && (
@@ -5886,6 +5949,22 @@ export default function AdminPage() {
                           </div>
                           <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                             <button
+                              onClick={() => handleMoveLocation(location._id, 'up')}
+                              disabled={locations.findIndex(l => l._id === location._id) === 0}
+                              className="p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                              title="Move up"
+                            >
+                              <ChevronUp className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleMoveLocation(location._id, 'down')}
+                              disabled={locations.findIndex(l => l._id === location._id) === locations.length - 1}
+                              className="p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                              title="Move down"
+                            >
+                              <ChevronDown className="w-4 h-4" />
+                            </button>
+                            <button
                               onClick={() => {
                                 setEditingLocationId(location._id);
                                 setLocationFormData({
@@ -5896,7 +5975,8 @@ export default function AdminPage() {
                                   email: location.email,
                                   lat: location.lat,
                                   lng: location.lng,
-                                  googleMapsUrl: location.googleMapsUrl
+                                  googleMapsUrl: location.googleMapsUrl,
+                                  order: location.order || 0
                                 });
                                 window.scrollTo({ top: 0, behavior: 'smooth' });
                               }}
