@@ -5882,7 +5882,8 @@ export default function AdminPage() {
                                 email: '',
                                 lat: 0,
                                 lng: 0,
-                                googleMapsUrl: ''
+                                googleMapsUrl: '',
+                                order: 0
                               });
                             }}
                             className="px-4 py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition-all"
