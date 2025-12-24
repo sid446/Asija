@@ -88,7 +88,7 @@ function Career() {
             
             {/* Mobile-optimized button layout */}
             <div className='flex flex-col sm:flex-row gap-3 sm:gap-4 transition-all duration-1000 delay-800'>
-              <Link href="/#contact" className='w-full sm:w-auto'>
+              <Link href="/apply-form" className='w-full sm:w-auto'>
                 <InteractiveHoverButton 
                   text="Apply Now"
                   className="w-full sm:w-auto"

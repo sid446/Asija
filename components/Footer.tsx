@@ -193,7 +193,7 @@ const Footer = () => {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="/contact"
+                  href="/apply-form"
                   className="text-muted hover:text-accent transition-all duration-300 text-sm sm:text-base inline-block hover:translate-x-1"
                 >
                   Apply Form
