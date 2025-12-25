@@ -133,7 +133,7 @@ async function dbConnect() {
 }
 
 // Graceful shutdown handler
-if (typeof process !== 'undefined') {
+if (typeof process !== 'undefined' && process.on) {
   process.on('SIGINT', async () => {
     console.log('Closing MongoDB connection...');
     if (cached.conn) {

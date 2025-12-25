@@ -120,7 +120,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: 'Registration submitted successfully. Pending approval.' });
   } catch (error) {
     console.error('Error submitting alumni form:', error);
-    if (error instanceof Error && error.message.includes('OTP') || error.message.includes('already exists')) {
+    if (error instanceof Error && (error.message.includes('OTP') || error.message.includes('already exists'))) {
       return NextResponse.json({ message: error.message }, { status: 400 });
     }
     return NextResponse.json({ message: 'Failed to submit registration' }, { status: 500 });
