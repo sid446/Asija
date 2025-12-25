@@ -14,12 +14,14 @@ interface FAQsState {
   faqs: FAQ[];
   loading: boolean;
   error: string | null;
+  fetched: boolean;
 }
 
 const initialState: FAQsState = {
   faqs: [],
   loading: false,
   error: null,
+  fetched: false,
 };
 
 export const fetchFAQs = createAsyncThunk(
@@ -52,6 +54,7 @@ const faqsSlice = createSlice({
       .addCase(fetchFAQs.fulfilled, (state, action: PayloadAction<FAQ[]>) => {
         state.loading = false;
         state.faqs = action.payload;
+        state.fetched = true;
       })
       .addCase(fetchFAQs.rejected, (state, action) => {
         state.loading = false;

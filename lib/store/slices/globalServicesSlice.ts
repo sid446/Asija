@@ -45,6 +45,7 @@ interface GlobalServicesState {
   offerings: GlobalOffering[];
   loading: boolean;
   error: string | null;
+  fetched: boolean;
 }
 
 const initialState: GlobalServicesState = {
@@ -53,6 +54,7 @@ const initialState: GlobalServicesState = {
   offerings: [],
   loading: false,
   error: null,
+  fetched: false,
 };
 
 export const fetchGlobalServiceContent = createAsyncThunk(
@@ -134,6 +136,9 @@ const globalServicesSlice = createSlice({
       .addCase(fetchGlobalOfferings.fulfilled, (state, action: PayloadAction<GlobalOffering[]>) => {
         state.loading = false;
         state.offerings = action.payload;
+        if (state.content && state.regions.length > 0) {
+          state.fetched = true;
+        }
       })
       .addCase(fetchGlobalOfferings.rejected, (state, action) => {
         state.loading = false;

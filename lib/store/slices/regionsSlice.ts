@@ -14,12 +14,14 @@ interface RegionsState {
   regions: Region[];
   loading: boolean;
   error: string | null;
+  fetched: boolean;
 }
 
 const initialState: RegionsState = {
   regions: [],
   loading: false,
   error: null,
+  fetched: false,
 };
 
 export const fetchRegions = createAsyncThunk(
@@ -52,6 +54,7 @@ const regionsSlice = createSlice({
       .addCase(fetchRegions.fulfilled, (state, action: PayloadAction<Region[]>) => {
         state.loading = false;
         state.regions = action.payload;
+        state.fetched = true;
       })
       .addCase(fetchRegions.rejected, (state, action) => {
         state.loading = false;

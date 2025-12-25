@@ -16,12 +16,14 @@ interface HeroState {
   content: HeroContent | null;
   loading: boolean;
   error: string | null;
+  fetched: boolean;
 }
 
 const initialState: HeroState = {
   content: null,
   loading: false,
   error: null,
+  fetched: false,
 };
 
 export const fetchHeroContent = createAsyncThunk(
@@ -54,6 +56,7 @@ const heroSlice = createSlice({
       .addCase(fetchHeroContent.fulfilled, (state, action: PayloadAction<HeroContent>) => {
         state.loading = false;
         state.content = action.payload;
+        state.fetched = true;
       })
       .addCase(fetchHeroContent.rejected, (state, action) => {
         state.loading = false;

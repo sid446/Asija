@@ -41,6 +41,7 @@ interface ContactState {
   locations: Location[];
   loading: boolean;
   error: string | null;
+  fetched: boolean;
 }
 
 const initialState: ContactState = {
@@ -48,6 +49,7 @@ const initialState: ContactState = {
   locations: [],
   loading: false,
   error: null,
+  fetched: false,
 };
 
 export const fetchContactContent = createAsyncThunk(
@@ -92,6 +94,9 @@ const contactSlice = createSlice({
       .addCase(fetchContactContent.fulfilled, (state, action: PayloadAction<ContactContent>) => {
         state.loading = false;
         state.contactContent = action.payload;
+        if (state.locations.length > 0) {
+          state.fetched = true;
+        }
       })
       .addCase(fetchContactContent.rejected, (state, action) => {
         state.loading = false;
@@ -104,6 +109,9 @@ const contactSlice = createSlice({
       .addCase(fetchLocations.fulfilled, (state, action: PayloadAction<Location[]>) => {
         state.loading = false;
         state.locations = action.payload;
+        if (state.contactContent) {
+          state.fetched = true;
+        }
       })
       .addCase(fetchLocations.rejected, (state, action) => {
         state.loading = false;
