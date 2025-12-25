@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import dbConnect from '@/lib/mongodb';
+import { dbGet, dbMutate } from '@/lib/database';
 import JobPost from '@/models/JobPost';
 import mongoose from 'mongoose';
 
@@ -34,57 +34,61 @@ const SAMPLE_JOBS = [
 
 export async function GET() {
   try {
-    await dbConnect();
+    const jobs = await dbGet(async () => {
+      // Ensure JobPost model is available
+      const JobPostModel = mongoose.models.JobPost || mongoose.model('JobPost', new mongoose.Schema({
+        title: String,
+        department: String,
+        location: String,
+        type: String,
+        description: String,
+        requirements: [String],
+        isActive: { type: Boolean, default: true },
+        createdAt: { type: Date, default: Date.now }
+      }));
 
-    // Ensure JobPost model is available
-    const JobPostModel = mongoose.models.JobPost || mongoose.model('JobPost', new mongoose.Schema({
-      title: String,
-      department: String,
-      location: String,
-      type: String,
-      description: String,
-      requirements: [String],
-      isActive: { type: Boolean, default: true },
-      createdAt: { type: Date, default: Date.now }
-    }));
+      let jobs = await JobPostModel.find({ isActive: true }).sort({ createdAt: -1 });
 
-    let jobs = await JobPostModel.find({ isActive: true }).sort({ createdAt: -1 });
+      // Seed if empty
+      if (jobs.length === 0) {
+        jobs = await JobPost.insertMany(SAMPLE_JOBS);
+      }
 
-    // Seed if empty
-    if (jobs.length === 0) {
-      jobs = await JobPost.insertMany(SAMPLE_JOBS);
-    }
+      return jobs;
+    });
 
     return NextResponse.json({ success: true, data: jobs });
   } catch (error) {
     console.error('Database Error:', error);
     // Fallback to sample data if DB fails, so the UI still works
-    return NextResponse.json({ 
-      success: true, 
+    return NextResponse.json({
+      success: true,
       data: SAMPLE_JOBS.map(job => ({ ...job, _id: 'fallback-' + Math.random() })),
-      isFallback: true 
+      isFallback: true
     });
   }
 }
 
 export async function POST(request: Request) {
   try {
-    await dbConnect();
-
-    // Ensure JobPost model is available
-    const JobPostModel = mongoose.models.JobPost || mongoose.model('JobPost', new mongoose.Schema({
-      title: String,
-      department: String,
-      location: String,
-      type: String,
-      description: String,
-      requirements: [String],
-      isActive: { type: Boolean, default: true },
-      createdAt: { type: Date, default: Date.now }
-    }));
-
     const body = await request.json();
-    const job = await JobPostModel.create(body);
+
+    const job = await dbMutate(async () => {
+      // Ensure JobPost model is available
+      const JobPostModel = mongoose.models.JobPost || mongoose.model('JobPost', new mongoose.Schema({
+        title: String,
+        department: String,
+        location: String,
+        type: String,
+        description: String,
+        requirements: [String],
+        isActive: { type: Boolean, default: true },
+        createdAt: { type: Date, default: Date.now }
+      }));
+
+      return await JobPostModel.create(body);
+    });
+
     return NextResponse.json({ success: true, data: job }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ success: false, error: (error as Error).message }, { status: 400 });

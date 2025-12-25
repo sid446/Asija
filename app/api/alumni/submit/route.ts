@@ -1,52 +1,55 @@
 import { NextResponse } from 'next/server';
-import dbConnect from '@/lib/mongodb';
+import { dbMutate } from '@/lib/database';
 import Alumni from '@/models/Alumni';
 import Otp from '@/models/Otp';
 import { transporter, mailOptions } from '@/lib/nodemailer';
 
 export async function POST(req: Request) {
   try {
-    await dbConnect();
     const body = await req.json();
-    const { 
-      fullName, email, phone, yearOfLeaving, designationAtAsija, 
-      currentProfessionalQualification, currentDesignation, linkedinProfile, otp 
+    const {
+      fullName, email, phone, yearOfLeaving, designationAtAsija,
+      currentProfessionalQualification, currentDesignation, linkedinProfile, otp
     } = body;
 
-    // Verify OTP again to ensure security before submission
-    const otpRecord = await Otp.findOne({ email });
-    if (!otpRecord || otpRecord.otp !== otp) {
-       return NextResponse.json({ message: 'Invalid or expired OTP. Please verify again.' }, { status: 400 });
-    }
+    const result = await dbMutate(async () => {
+      // Verify OTP again to ensure security before submission
+      const otpRecord = await Otp.findOne({ email });
+      if (!otpRecord || otpRecord.otp !== otp) {
+         throw new Error('Invalid or expired OTP. Please verify again.');
+      }
 
-    // Check if already registered
-    const existingAlumni = await Alumni.findOne({ email });
-    if (existingAlumni) {
-      return NextResponse.json({ message: 'Alumni with this email already exists' }, { status: 400 });
-    }
+      // Check if already registered
+      const existingAlumni = await Alumni.findOne({ email });
+      if (existingAlumni) {
+        throw new Error('Alumni with this email already exists');
+      }
 
-    // Create Alumni
-    const newAlumni = await Alumni.create({
-      fullName,
-      email,
-      phone,
-      yearOfLeaving,
-      designationAtAsija,
-      currentProfessionalQualification,
-      currentDesignation,
-      linkedinProfile,
-      status: 'Pending'
+      // Create Alumni
+      const newAlumni = await Alumni.create({
+        fullName,
+        email,
+        phone,
+        yearOfLeaving,
+        designationAtAsija,
+        currentProfessionalQualification,
+        currentDesignation,
+        linkedinProfile,
+        status: 'Pending'
+      });
+
+      // Delete used OTP
+      await Otp.deleteOne({ email });
+
+      return newAlumni;
     });
 
-    // Delete used OTP
-    await Otp.deleteOne({ email });
-
-    // Send Email to Admin
+    // Send Email to Admin (outside of database transaction since it's external)
     const adminEmail = process.env.ADMIN_EMAIL || process.env.EMAIL_USER;
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-    
-    const approveLink = `${baseUrl}/api/alumni/action?id=${newAlumni._id}&action=approve`;
-    const rejectLink = `${baseUrl}/api/alumni/action?id=${newAlumni._id}&action=reject`;
+
+    const approveLink = `${baseUrl}/api/alumni/action?id=${result._id}&action=approve`;
+    const rejectLink = `${baseUrl}/api/alumni/action?id=${result._id}&action=reject`;
 
     await transporter.sendMail({
       ...mailOptions,
@@ -59,10 +62,10 @@ export async function POST(req: Request) {
               <h1 style="margin: 0; font-size: 24px; font-weight: 600;">New Alumni Registration</h1>
               <p style="margin: 5px 0 0 0; opacity: 0.9;">Action Required</p>
             </div>
-            
+
             <div style="padding: 30px;">
               <h2 style="color: #333; font-size: 18px; border-bottom: 2px solid #009edb; padding-bottom: 8px; margin-bottom: 20px; margin-top: 0;">Alumni Details</h2>
-              
+
               <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px;">
                 <tr>
                   <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600; width: 40%;">Full Name</td>
@@ -105,7 +108,7 @@ export async function POST(req: Request) {
               </div>
               <p style="text-align: center; color: #666; font-size: 13px; margin-top: 15px;">Clicking these buttons will directly process the request.</p>
             </div>
-            
+
             <div style="background-color: #f4f4f4; padding: 15px; text-align: center; font-size: 12px; color: #888; border-top: 1px solid #eee;">
               &copy; ${new Date().getFullYear()} Asija & Associates LLP. All rights reserved.
             </div>
@@ -117,6 +120,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: 'Registration submitted successfully. Pending approval.' });
   } catch (error) {
     console.error('Error submitting alumni form:', error);
+    if (error instanceof Error && error.message.includes('OTP') || error.message.includes('already exists')) {
+      return NextResponse.json({ message: error.message }, { status: 400 });
+    }
     return NextResponse.json({ message: 'Failed to submit registration' }, { status: 500 });
   }
 }

@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server';
-import connectToDatabase from '@/lib/mongodb';
+import { dbGet, dbMutate } from '@/lib/database';
 import Location from '@/models/Location';
 
 export async function GET() {
   try {
-    await connectToDatabase();
-    const locations = await Location.find({}).sort({ order: 1, createdAt: -1 });
+    const locations = await dbGet(async () => {
+      return await Location.find({}).sort({ order: 1, createdAt: -1 });
+    });
+
     return NextResponse.json(locations);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch locations' }, { status: 500 });
@@ -14,16 +16,17 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    await connectToDatabase();
     const body = await request.json();
 
-    // Find the highest order value and assign the next one
-    const highestOrderLocation = await Location.findOne({}).sort({ order: -1 });
-    const nextOrder = highestOrderLocation ? highestOrderLocation.order + 1 : 0;
+    const location = await dbMutate(async () => {
+      // Find the highest order value and assign the next one
+      const highestOrderLocation = await Location.findOne({}).sort({ order: -1 });
+      const nextOrder = highestOrderLocation ? highestOrderLocation.order + 1 : 0;
 
-    const location = await Location.create({
-      ...body,
-      order: body.order !== undefined ? body.order : nextOrder
+      return await Location.create({
+        ...body,
+        order: body.order !== undefined ? body.order : nextOrder
+      });
     });
 
     return NextResponse.json(location, { status: 201 });

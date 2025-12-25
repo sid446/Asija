@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server';
-import connectToDatabase from '@/lib/mongodb';
+import { dbGet, dbMutate } from '@/lib/database';
 import Insight from '@/models/Insight';
 
 export async function GET() {
   try {
-    await connectToDatabase();
-    const insights = await Insight.find({}).sort({ createdAt: -1 });
+    const insights = await dbGet(async () => {
+      return await Insight.find({}).sort({ createdAt: -1 });
+    });
+
     console.log('Fetched insights:', insights.length, 'items');
     console.log('Insight IDs:', insights.map(i => i._id));
     return NextResponse.json(insights);
@@ -17,7 +19,6 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    await connectToDatabase();
     const data = await request.json();
     console.log('Creating insight with data:', data);
 
@@ -27,7 +28,10 @@ export async function POST(request: Request) {
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '');
 
-    const insight = await Insight.create({ ...data, slug });
+    const insight = await dbMutate(async () => {
+      return await Insight.create({ ...data, slug });
+    });
+
     console.log('Created insight:', (insight as any)._id);
     return NextResponse.json(insight);
   } catch (error) {
