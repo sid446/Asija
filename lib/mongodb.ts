@@ -58,7 +58,6 @@ async function dbConnect() {
 
       // SSL and Security
       ssl: true,
-      sslValidate: true,
 
       // Compression
       compressors: 'zlib', // Enable compression
