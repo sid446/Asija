@@ -47,12 +47,10 @@ async function dbConnect() {
 
       // Connection Settings
       bufferCommands: false, // Disable mongoose buffering
-      bufferMaxEntries: 0, // Disable mongoose buffering
       family: 4, // Use IPv4, skip trying IPv6
 
       // Heartbeat and Monitoring
       heartbeatFrequencyMS: 10000, // Check connection every 10 seconds
-      heartbeatTimeoutMS: 5000, // Heartbeat timeout
 
       // Retry and Reconnection
       retryWrites: true, // Enable retryable writes
