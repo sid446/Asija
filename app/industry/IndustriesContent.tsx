@@ -12,6 +12,9 @@ import Loader from '@/components/ui/Loader';
 import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
 
 import Link from 'next/link';
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
+import { fetchIndustries } from '@/lib/store/slices/industriesSlice';
+import type { Industry } from '@/lib/store/slices/industriesSlice';
 
 interface PageContent {
   heading: string;
@@ -24,14 +27,6 @@ interface Page {
   rightBgImage: string | null;
   leftContent: PageContent | null;
   rightContent: PageContent | null;
-}
-
-interface Industry {
-  _id: string;
-  title: string;
-  description: string;
-  details: string;
-  image: string;
 }
 
 const HeroSection = ({ isActive }: { isActive: boolean }) => (
@@ -83,26 +78,14 @@ export default function IndustriesContent() {
   const [expandedSection, setExpandedSection] = useState<'left' | 'right' | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [showFooter, setShowFooter] = useState(false);
-  const [industries, setIndustries] = useState<Industry[]>([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useAppDispatch();
+  const { industries, loading, error, fetched } = useAppSelector((state) => state.industries);
 
   useEffect(() => {
-    const fetchIndustries = async () => {
-      try {
-        const res = await fetch('/api/industries');
-        const data = await res.json();
-        if (data.industries) {
-          setIndustries(data.industries);
-        }
-      } catch (error) {
-        console.error('Failed to fetch industries:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchIndustries();
-  }, []);
+    if (!fetched && !loading) {
+      dispatch(fetchIndustries());
+    }
+  }, [dispatch, fetched, loading]);
 
   // Construct pages array
   const pages: Page[] = [
@@ -110,11 +93,11 @@ export default function IndustriesContent() {
     ...industries.map((industry, i) => {
       const isEven = i % 2 === 0;
       return {
-        leftBgImage: isEven ? industry.image : null,
-        rightBgImage: isEven ? null : industry.image,
+        leftBgImage: isEven ? (industry.image || null) : null,
+        rightBgImage: isEven ? null : (industry.image || null),
         // Text on the opposite side of the image
-        leftContent: isEven ? null : { heading: industry.title, description: industry.description, details: industry.details },
-        rightContent: isEven ? { heading: industry.title, description: industry.description, details: industry.details } : null,
+        leftContent: isEven ? null : { heading: industry.title, description: industry.description, details: industry.details || '' },
+        rightContent: isEven ? { heading: industry.title, description: industry.description, details: industry.details || '' } : null,
       };
     }),
     // Final Slide

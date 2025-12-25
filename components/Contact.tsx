@@ -4,6 +4,7 @@ import { useTheme } from './ThemeProvider';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { MapPin, Phone, Mail, ArrowRight } from 'lucide-react';
+import { useAppSelector } from '@/lib/store/hooks';
 
 type ContactContent = {
   tagline: string;
@@ -39,38 +40,14 @@ type Location = {
 const Contact = () => {
   const { theme } = useTheme();
   const isLight = theme === 'light';
-  const [content, setContent] = useState<ContactContent | null>(null);
-  const [locations, setLocations] = useState<Location[]>([]);
+  const { contactContent, locations } = useAppSelector((state) => state.contact);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [contentRes, locationsRes] = await Promise.all([
-          fetch('/api/admin/contact-content'),
-          fetch('/api/admin/locations')
-        ]);
-        
-        const contentData = await contentRes.json();
-        const locationsData = await locationsRes.json();
+  // Sort locations by order field
+  const sortedLocations = [...locations].sort((a, b) => {
+    return (a.order || 0) - (b.order || 0);
+  });
 
-        if (contentData && !contentData.error) {
-          setContent(contentData);
-        }
-        if (Array.isArray(locationsData)) {
-          // Sort locations by order field
-          const sortedLocations = locationsData.sort((a, b) => {
-            return (a.order || 0) - (b.order || 0);
-          });
-          setLocations(sortedLocations);
-        }
-      } catch (err) {
-        console.error('Failed to fetch contact data:', err);
-      }
-    };
-    fetchData();
-  }, []);
-
-  if (!content) return null;
+  if (!contactContent) return null;
 
   return (
     <section id="contact" className={`relative py-20 overflow-hidden transition-colors duration-300 ${isLight ? 'bg-white' : 'bg-slate-950'}`}>
@@ -85,13 +62,13 @@ const Contact = () => {
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-[#009edb] font-medium text-sm md:text-lg tracking-wider mb-2 uppercase">
-              {content.tagline}
+              {contactContent.tagline}
             </h2>
             <h1 className={`text-3xl md:text-5xl font-bold mb-6 ${isLight ? 'text-gray-900' : 'text-white'}`}>
-              {content.title} <span className="text-[#009edb]">.</span>
+              {contactContent.title} <span className="text-[#009edb]">.</span>
             </h1>
             <p className={`text-base md:text-lg mb-8 md:mb-10 leading-relaxed ${isLight ? 'text-gray-600' : 'text-white/70'}`}>
-              {content.description}
+              {contactContent.description}
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
@@ -102,11 +79,11 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className={`font-semibold text-lg mb-1 ${isLight ? 'text-gray-900' : 'text-white'}`}>
-                    {content.officeLocations}
+                    {contactContent.officeLocations}
                   </h3>
                   <div className={`space-y-4 ${isLight ? 'text-gray-600' : 'text-white/70'}`}>
                     {locations.length > 0 ? (
-                      locations.map((loc) => (
+                      sortedLocations.map((loc) => (
                         <div key={loc._id} className="text-sm">
                           <p className="font-medium text-[#009edb] mb-0.5">{loc.title}</p>
                           <p>{loc.address}</p>
@@ -114,8 +91,8 @@ const Contact = () => {
                       ))
                     ) : (
                       <p>
-                        {content.officeLocation1} <br />
-                        {content.officeLocation2}
+                        {contactContent.officeLocation1} <br />
+                        {contactContent.officeLocation2}
                       </p>
                     )}
                   </div>
@@ -129,11 +106,11 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className={`font-semibold text-lg mb-1 ${isLight ? 'text-gray-900' : 'text-white'}`}>
-                    {content.contactNo}
+                    {contactContent.contactNo}
                   </h3>
                   <div className={`${isLight ? 'text-gray-600' : 'text-white/70'}`}>
-                    <p>{content.phone1}</p>
-                    <p>{content.phone2}</p>
+                    <p>{contactContent.phone1}</p>
+                    <p>{contactContent.phone2}</p>
                   </div>
                 </div>
               </div>
@@ -145,11 +122,11 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className={`font-semibold text-lg mb-1 ${isLight ? 'text-gray-900' : 'text-white'}`}>
-                    {content.emails}
+                    {contactContent.emails}
                   </h3>
                   <div className={`${isLight ? 'text-gray-600' : 'text-white/70'}`}>
-                    <a href={`mailto:${content.email1}`} className="block hover:text-[#009edb] transition-colors">{content.email1}</a>
-                    <a href={`mailto:${content.email2}`} className="block hover:text-[#009edb] transition-colors">{content.email2}</a>
+                    <a href={`mailto:${contactContent.email1}`} className="block hover:text-[#009edb] transition-colors">{contactContent.email1}</a>
+                    <a href={`mailto:${contactContent.email2}`} className="block hover:text-[#009edb] transition-colors">{contactContent.email2}</a>
                   </div>
                 </div>
               </div>
@@ -160,7 +137,7 @@ const Contact = () => {
                 href="/contact" 
                 className="inline-flex items-center gap-2 px-8 py-4 bg-[#009edb] text-white font-semibold rounded-lg hover:bg-[#0077a3] transition-all hover:gap-3 shadow-lg shadow-[#009edb]/20"
               >
-                {content.enquiryForm} <ArrowRight size={20} />
+                {contactContent.enquiryForm} <ArrowRight size={20} />
               </Link>
             </div>
           </motion.div>
@@ -173,10 +150,10 @@ const Contact = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative w-full"
           >
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl w-full aspect-video lg:aspect-[21/9]">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl w-full aspect-video lg:aspect-21/9">
               <img 
-                src={content.image} 
-                alt={content.imageAlt} 
+                src={contactContent.image} 
+                alt={contactContent.imageAlt} 
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent pointer-events-none" />

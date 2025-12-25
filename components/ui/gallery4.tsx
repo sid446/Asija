@@ -155,20 +155,20 @@ const Gallery4 = ({
             {items.map((item) => (
               <CarouselItem
                 key={item.id}
-                className="max-w-[320px] pl-[20px] lg:max-w-[360px]"
+                className="max-w-[320px] pl-5 lg:max-w-[360px]"
               >
                 {item.href.startsWith('/') ? (
                   <div
                     className="group rounded-xl cursor-pointer"
                     onClick={() => router.push(item.href)}
                   >
-                    <div className="group relative h-full min-h-[27rem] max-w-full overflow-hidden  md:aspect-[5/4] lg:aspect-[16/9]">
+                    <div className="group relative h-full min-h-108 max-w-full overflow-hidden  md:aspect-5/4 lg:aspect-video">
                       <img
                         src={item.image}
                         alt={item.title}
                         className="absolute h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 h-full bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                      <div className="absolute inset-0 h-full bg-linear-to-t from-black/80 via-black/40 to-transparent" />
                       <div className="absolute inset-x-0 bottom-0 flex flex-col items-start p-6  md:p-8" style={{color:"white"}}>
                         <div className="mb-2 pt-4 text-xl font-semibold md:mb-3 md:pt-4 lg:pt-4">
                           {item.title}
@@ -186,13 +186,13 @@ const Gallery4 = ({
                 ) : (
                   <a href={item.href} target="_blank" rel="noopener noreferrer">
                     <div className="group rounded-xl cursor-pointer">
-                      <div className="group relative h-full min-h-[27rem] max-w-full overflow-hidden rounded-xl md:aspect-[5/4] lg:aspect-[16/9]">
+                      <div className="group relative h-full min-h-108 max-w-full overflow-hidden rounded-xl md:aspect-5/4 lg:aspect-video">
                         <img
                           src={item.image}
                           alt={item.title}
                           className="absolute h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
                         />
-                        <div className="absolute inset-0 h-full bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                        <div className="absolute inset-0 h-full bg-linear-to-t from-black/80 via-black/40 to-transparent" />
                         <div className="absolute inset-x-0 bottom-0 flex flex-col items-start p-6 text-white md:p-8">
                           <div className="mb-2 pt-4 text-xl font-semibold md:mb-3 md:pt-4 lg:pt-4">
                             {item.title}

@@ -1,56 +1,43 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Lightbulb } from 'lucide-react';
 import Gallery4 from '@/components/ui/gallery4';
 import { useTheme } from './ThemeProvider';
-
-interface Insight {
-  _id: string;
-  title: string;
-  description: string;
-  image?: string;
-  category: string;
-  slug: string;
-  published: boolean;
-  featured: boolean;
-  createdAt: string;
-}
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
+import { fetchInsights } from '@/lib/store/slices/insightsSlice';
+import type { Insight } from '@/lib/store/slices/insightsSlice';
 
 export default function     Insights() {
   const { theme } = useTheme();
   const isLight = theme === 'light';
-  const [insights, setInsights] = useState<Insight[]>([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useAppDispatch();
+  const { insights, loading, error, fetched } = useAppSelector((state) => state.insights);
 
   useEffect(() => {
-    fetchInsights();
-  }, []);
-
-  const fetchInsights = async () => {
-    try {
-      const response = await fetch('/api/insights');
-      if (response.ok) {
-        const data = await response.json();
-        // Get featured insights or latest 3 insights
-        const featuredOrLatest = data
-          .filter((insight: Insight) => insight.published)
-          .sort((a: Insight, b: Insight) => {
-            // Prioritize featured insights, then by creation date
-            if (a.featured && !b.featured) return -1;
-            if (!a.featured && b.featured) return 1;
-            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-          })
-          .slice(0, 3);
-        setInsights(featuredOrLatest);
-      }
-    } catch (error) {
-      console.error('Error fetching insights:', error);
-    } finally {
-      setLoading(false);
+    // Only fetch if we haven't fetched yet and not currently loading
+    if (!fetched && !loading) {
+      dispatch(fetchInsights());
     }
-  };
+  }, [dispatch, fetched, loading]);
+
+  if (loading) {
+    return (
+      <div className="min-h-[50vh] flex items-center justify-center">
+        <div className="text-lg">Loading insights...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    console.error('Failed to load insights:', error);
+    return (
+      <div className="min-h-[50vh] flex items-center justify-center">
+        <div className="text-lg text-red-500">Failed to load insights. Please try again later.</div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (

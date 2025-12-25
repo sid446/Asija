@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
 import { useRouter } from 'next/navigation';
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
+import { fetchHeroContent } from '@/lib/store/slices/heroSlice';
 
 type HeroContent = {
   tagline: string;
@@ -17,25 +19,30 @@ type HeroContent = {
 
 function Hero() {
   const router = useRouter();
-  const [content, setContent] = useState<HeroContent | null>(null);
+  const dispatch = useAppDispatch();
+  const { content, loading, error } = useAppSelector((state) => state.hero);
   const [videoLoaded, setVideoLoaded] = useState(false);
 
   useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const res = await fetch('/api/admin/hero-content');
-        const data = await res.json();
-        if (data && !data.error) {
-          setContent(data);
-        }
-      } catch (err) {
-        console.error('Failed to fetch hero content:', err);
-      }
-    };
-    fetchContent();
-  }, []);
+    // Only fetch if we don't have content or if there's an error
+    if (!content && !loading) {
+      dispatch(fetchHeroContent());
+    }
+  }, [dispatch, content, loading]);
 
-  if (!content) return null; // Loading content
+  if (loading || !content) {
+    return (
+      <div className="fixed top-0 left-0 w-screen h-screen sm:h-[90vh] overflow-hidden border-b-4 border-[#009edb] z-10 bg-slate-950 flex items-center justify-center">
+        <div className="text-white text-lg">Loading...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    console.error('Failed to load hero content:', error);
+    // Return default content if there's an error
+    return null;
+  }
   
   return (
     <div className="fixed top-0 left-0 w-screen h-screen sm:h-[90vh] overflow-hidden border-b-4 border-[#009edb] z-10">

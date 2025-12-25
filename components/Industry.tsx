@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from './ThemeProvider';
 import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
 import { WaveLoader } from './ui/WaveLoader';
+import { useAppSelector } from '@/lib/store/hooks';
 
 // ============================================================
 // PROGRESSIVE CAROUSEL COMPONENT (copied from your spec)
@@ -250,30 +251,14 @@ interface Industry {
 
 export default function Industries() {
   const { theme } = useTheme();
-  const [industries, setIndustries] = useState<Industry[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { industries, loading } = useAppSelector((state) => state.industries);
   const [activeSlider, setActiveSlider] = useState<string>('');
 
   useEffect(() => {
-    const fetchIndustries = async () => {
-      try {
-        const res = await fetch('/api/industries');
-        const data = await res.json();
-        if (data.industries && Array.isArray(data.industries)) {
-          setIndustries(data.industries);
-          if (data.industries.length > 0) {
-            setActiveSlider(data.industries[0]._id);
-          }
-        }
-      } catch (error) {
-        console.error('Failed to fetch industries:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchIndustries();
-  }, []);
+    if (industries.length > 0 && !activeSlider) {
+      setActiveSlider(industries[0]._id);
+    }
+  }, [industries, activeSlider]);
 
   if (loading) {
     return (

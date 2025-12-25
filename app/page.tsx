@@ -9,43 +9,20 @@ import Insights from "@/components/Insights";
 import Career from "@/components/Carrer";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
-import Loader from "@/components/ui/Loader";   // ← ADD THIS
+import Loader from "@/components/ui/Loader";
 import FAQAccordion from "@/components/FaqInteractable";
-import { useState, useEffect } from 'react';
-
-interface HeroContent {
-  showFAQ: boolean;
-  // Add other properties as needed
-}
+import { useInitializeAppData } from '@/lib/store/useInitializeAppData';
 
 export default function Home() {
-  const [heroContent, setHeroContent] = useState<HeroContent | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { isLoading, hasData, heroContent } = useInitializeAppData();
 
-  useEffect(() => {
-    const fetchHeroContent = async () => {
-      try {
-        const res = await fetch('/api/home-content');
-        const data = await res.json();
-        console.log('Home page fetched hero content:', data);
-        console.log('showFAQ value:', data.showFAQ, 'Boolean:', Boolean(data.showFAQ));
-        setHeroContent({
-          ...data
-        });
-      } catch (error) {
-        console.error('Failed to fetch hero content:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchHeroContent();
-
-    // Poll every 10 seconds to check for updates
-    const interval = setInterval(fetchHeroContent, 10000);
-
-    return () => clearInterval(interval);
-  }, []);
+  if (isLoading && !hasData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-950">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -65,7 +42,7 @@ export default function Home() {
             <IndustriesFlowMenu />
             <Career />
             <Contact />
-            {!loading && heroContent && Boolean(heroContent.showFAQ) && (
+            {!isLoading && heroContent && Boolean(heroContent.showFAQ) && (
               <>
                 {console.log('Rendering FAQ - showFAQ:', heroContent.showFAQ)}
                 <FAQAccordion/>

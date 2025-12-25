@@ -352,14 +352,14 @@ export default function AboutPage() {
       <Navbar />
 
       {/* Background Image + Gradient Overlay */}
-      <div className='absolute inset-x-0 top-0 h-[100vh] bg-gradient-to-t from-black/70 via-black/40 to-transparent pointer-events-none'></div>
+      <div className='absolute inset-x-0 top-0 h-screen bg-linear-to-t from-black/70 via-black/40 to-transparent pointer-events-none'></div>
       
       <Image
         src="/Culture.jpg"
         alt="About Us"
         width={1920}
         height={1080}
-        className="w-full h-[100vh] object-cover"
+        className="w-full h-screen object-cover"
         priority
       />
 

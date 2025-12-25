@@ -16,30 +16,35 @@ const About = () => {
         description4: ''
     });
     const [cards, setCards] = useState<any[]>([]);
+    const [fetched, setFetched] = useState(false);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const [contentRes, cardsRes] = await Promise.all([
-                    fetch('/api/admin/about-content'),
-                    fetch('/api/admin/about-cards')
-                ]);
-                
-                const contentData = await contentRes.json();
-                if (contentData && !contentData.error) {
-                    setContent(contentData);
-                }
+        if (!fetched) {
+            const fetchData = async () => {
+                try {
+                    const [contentRes, cardsRes] = await Promise.all([
+                        fetch('/api/admin/about-content'),
+                        fetch('/api/admin/about-cards')
+                    ]);
+                    
+                    const contentData = await contentRes.json();
+                    if (contentData && !contentData.error) {
+                        setContent(contentData);
+                    }
 
-                const cardsData = await cardsRes.json();
-                if (cardsData.items) {
-                    setCards(cardsData.items);
+                    const cardsData = await cardsRes.json();
+                    if (cardsData.items) {
+                        setCards(cardsData.items);
+                    }
+                } catch (error) {
+                    console.error('Failed to fetch about data', error);
+                } finally {
+                    setFetched(true);
                 }
-            } catch (error) {
-                console.error('Failed to fetch about data', error);
-            }
-        };
-        fetchData();
-    }, []);
+            };
+            fetchData();
+        }
+    }, [fetched]);
 
 	return (
 		<section

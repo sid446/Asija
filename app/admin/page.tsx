@@ -6457,7 +6457,7 @@ export default function AdminPage() {
                         <button
                           type="submit"
                           disabled={submitting}
-                          className="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium flex items-center justify-center gap-2"
+                          className="w-full px-4 py-3 bg-linear-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium flex items-center justify-center gap-2"
                         >
                           {submitting ? (
                             <>
@@ -6503,7 +6503,7 @@ export default function AdminPage() {
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-                          <div className="flex gap-2 self-start sm:self-center flex-shrink-0">
+                          <div className="flex gap-2 self-start sm:self-center shrink-0">
                             <button
                               onClick={fetchPolicies}
                               className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
@@ -6555,7 +6555,7 @@ export default function AdminPage() {
                               <button
                                 key={filter.key}
                                 onClick={() => setPolicyFilter(filter.key)}
-                                className={`px-3 py-2 text-sm font-medium rounded-lg transition-all flex items-center gap-1 whitespace-nowrap flex-shrink-0 ${
+                                className={`px-3 py-2 text-sm font-medium rounded-lg transition-all flex items-center gap-1 whitespace-nowrap shrink-0 ${
                                   policyFilter === filter.key
                                     ? 'bg-white text-gray-900 shadow-sm'
                                     : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
@@ -6614,7 +6614,7 @@ export default function AdminPage() {
                                 <h3 className="text-lg font-semibold text-gray-900 truncate">{item.title}</h3>
 
                                 {/* Category & Type Badges */}
-                                <div className="flex items-center gap-2 flex-shrink-0">
+                                <div className="flex items-center gap-2 shrink-0">
                                   <span className={`text-xs font-semibold px-3 py-1 rounded-full ${
                                     item.category === 'general'
                                       ? 'bg-blue-100 text-blue-700 border border-blue-200'
@@ -6771,7 +6771,7 @@ export default function AdminPage() {
           {activeTab === 'dashboard' && (
             <div className="space-y-6">
               {/* Welcome Header */}
-              <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-6 text-white">
+              <div className="bg-linear-to-r from-blue-600 to-purple-600 rounded-2xl p-6 text-white">
                 <h1 className="text-2xl font-bold mb-2">Welcome back, Admin!</h1>
                 <p className="text-blue-100">Here's what's happening with your site today.</p>
               </div>

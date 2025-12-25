@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { InteractiveHoverButton } from './ui/InteractiveHoverButton';
 import { WaveLoader } from './ui/WaveLoader';
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
+import { fetchServices } from '@/lib/store/slices/servicesSlice';
 
 interface Service {
   _id: string;
@@ -122,33 +124,29 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ group, index }) => {
 };
 
 export default function Services() {
-  const [services, setServices] = useState<Service[]>([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useAppDispatch();
+  const { services, loading, error, fetched } = useAppSelector((state) => state.services);
 
   useEffect(() => {
-    const fetchServices = async () => {
-      try {
-        const res = await fetch('/api/services');
-        const data = await res.json();
-        if (data.services && Array.isArray(data.services)) {
-            setServices(data.services);
-        } else if (Array.isArray(data)) {
-            setServices(data);
-        }
-      } catch (error) {
-        console.error('Failed to fetch services:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchServices();
-  }, []);
+    // Only fetch if we haven't fetched yet and not currently loading
+    if (!fetched && !loading) {
+      dispatch(fetchServices());
+    }
+  }, [dispatch, fetched, loading]);
 
   if (loading) {
     return (
       <div className="min-h-[50vh] flex items-center justify-center bg-theme">
-        <WaveLoader message="Loading Services..." />
+        <WaveLoader />
+      </div>
+    );
+  }
+
+  if (error) {
+    console.error('Failed to load services:', error);
+    return (
+      <div className="min-h-[50vh] flex items-center justify-center bg-theme">
+        <div className="text-white text-lg">Failed to load services. Please try again later.</div>
       </div>
     );
   }

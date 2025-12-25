@@ -6,19 +6,10 @@ import { Calendar, User, ArrowLeft, Share2, Lightbulb, Trash2 } from 'lucide-rea
 import { useTheme } from '@/components/ThemeProvider';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
+import { fetchInsights } from '@/lib/store/slices/insightsSlice';
+import type { Insight } from '@/lib/store/slices/insightsSlice';
 
-interface Insight {
-  _id: string;
-  title: string;
-  description: string;
-  content: string;
-  image?: string;
-  category: string;
-  slug: string;
-  published: boolean;
-  featured: boolean;
-  createdAt: string;
-}
 
 interface InsightPageProps {
   params: Promise<{
@@ -29,10 +20,18 @@ interface InsightPageProps {
 export default function InsightPage({ params }: InsightPageProps) {
   const { theme } = useTheme();
   const isLight = theme === 'light';
+  const dispatch = useAppDispatch();
+  const { fullInsights, fullFetched } = useAppSelector((state) => state.insights);
   const [slug, setSlug] = useState<string>('');
   const [insight, setInsight] = useState<Insight | null>(null);
   const [loading, setLoading] = useState(true);
   const [relatedInsights, setRelatedInsights] = useState<Insight[]>([]);
+
+  useEffect(() => {
+    if (!fullFetched) {
+      dispatch(fetchInsights());
+    }
+  }, [dispatch, fullFetched]);
 
   useEffect(() => {
     const getParams = async () => {
@@ -46,7 +45,7 @@ export default function InsightPage({ params }: InsightPageProps) {
     if (slug) {
       fetchInsight();
     }
-  }, [slug]);
+  }, [slug, fullInsights]);
 
   const fetchInsight = async () => {
     try {
@@ -55,12 +54,10 @@ export default function InsightPage({ params }: InsightPageProps) {
         const data = await response.json();
         setInsight(data);
 
-        // Fetch related insights from the same category
-        const relatedResponse = await fetch('/api/insights');
-        if (relatedResponse.ok) {
-          const allInsights = await relatedResponse.json();
-          const related = allInsights
-            .filter((i: Insight) => i.category === data.category && i._id !== data._id)
+        // Use fullInsights for related if available
+        if (fullInsights.length > 0) {
+          const related = fullInsights
+            .filter((i) => i.category === data.category && i._id !== data._id)
             .slice(0, 3);
           setRelatedInsights(related);
         }
@@ -150,7 +147,7 @@ export default function InsightPage({ params }: InsightPageProps) {
       <Navbar />
       <div className={`min-h-screen bg-theme transition-colors duration-300`}>
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-[#009edb] to-[#0077a3] text-white">
+      <div className="bg-linear-to-br from-[#009edb] to-[#0077a3] text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-30">
           <Link
             href="/insights"

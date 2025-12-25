@@ -9,6 +9,7 @@ import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
 import Link from 'next/link';
 import {  TrendingUp, ShieldCheck} from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
+import { useAppSelector } from '@/lib/store/hooks';
 
 type GlobalServiceContentData = {
   heroTitle: string;
@@ -36,33 +37,7 @@ type GlobalOfferingItem = {
 };
 
 export default function GlobalServices() {
-  const [content, setContent] = useState<GlobalServiceContentData | null>(null);
-  const [regions, setRegions] = useState<GlobalRegionItem[]>([]);
-  const [offerings, setOfferings] = useState<GlobalOfferingItem[]>([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [contentRes, regionsRes, offeringsRes] = await Promise.all([
-          fetch('/api/admin/global-service-content'),
-          fetch('/api/admin/global-regions'),
-          fetch('/api/admin/global-offerings')
-        ]);
-
-        const contentData = await contentRes.json();
-        const regionsData = await regionsRes.json();
-        const offeringsData = await offeringsRes.json();
-
-        if (contentData && !contentData.error) setContent(contentData);
-        if (Array.isArray(regionsData)) setRegions(regionsData);
-        if (Array.isArray(offeringsData)) setOfferings(offeringsData);
-      } catch (error) {
-        console.error('Failed to fetch data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const { content, regions, offerings } = useAppSelector((state) => state.globalServices);
 
   const getIcon = (iconName: string) => {
     const Icon = (LucideIcons as any)[iconName] || ShieldCheck;

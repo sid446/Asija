@@ -1,8 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Clock, CreditCard, Truck, ChevronDown, HelpCircle } from 'lucide-react';
 import { InteractiveHoverButton } from './ui/InteractiveHoverButton';
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
+import { fetchFAQs } from '@/lib/store/slices/faqsSlice';
 
 type FAQItem = {
   _id: string;
@@ -32,29 +34,18 @@ const AccordionContent = ({ children, isOpen }: { children: React.ReactNode; isO
 );
 
 export default function FAQAccordion() {
+  const dispatch = useAppDispatch();
+  const { faqs, loading, error } = useAppSelector((state) => state.faqs);
   const [openItem, setOpenItem] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [faqs, setFaqs] = useState<FAQItem[]>([]);
-  const [loading, setLoading] = useState(true);
 
   React.useEffect(() => {
     setIsVisible(true);
-    fetchFaqs();
-  }, []);
-
-  const fetchFaqs = async () => {
-    try {
-      const res = await fetch('/api/admin/faq');
-      const data = await res.json();
-      if (Array.isArray(data)) {
-        setFaqs(data);
-      }
-    } catch (error) {
-      console.error('Failed to fetch FAQs:', error);
-    } finally {
-      setLoading(false);
+    // Only fetch if we don't have FAQs or if there's an error
+    if (faqs.length === 0 && !loading) {
+      dispatch(fetchFAQs());
     }
-  };
+  }, [dispatch, faqs.length, loading]);
 
   const toggleItem = (id: string) => {
     setOpenItem(openItem === id ? null : id);
@@ -64,6 +55,31 @@ export default function FAQAccordion() {
     const icons = [Clock, CreditCard, Truck];
     return icons[index % icons.length];
   };
+
+  if (loading) {
+    return (
+      <section className="bg-[#009edb] min-h-[400px] py-12 sm:py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
+          <div className="text-center">
+            <div className="text-white text-lg">Loading FAQs...</div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    console.error('Failed to load FAQs:', error);
+    return (
+      <section className="bg-[#009edb] min-h-[400px] py-12 sm:py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
+          <div className="text-center">
+            <div className="text-white text-lg">Failed to load FAQs. Please try again later.</div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="bg-[#009edb] min-h-[400px] py-12 sm:py-16 md:py-20">

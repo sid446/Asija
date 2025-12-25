@@ -6,44 +6,23 @@ import { Calendar, User, ArrowRight, ArrowLeft, Lightbulb } from 'lucide-react';
 import { useTheme } from '@/components/ThemeProvider';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-
-interface Insight {
-  _id: string;
-  title: string;
-  description: string;
-  content: string;
-  image?: string;
-  category: string;
-  slug: string;
-  published: boolean;
-  featured: boolean;
-  createdAt: string;
-}
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
+import { fetchInsights } from '@/lib/store/slices/insightsSlice';
 
 export default function InsightsPage() {
   const { theme } = useTheme();
   const isLight = theme === 'light';
-  const [insights, setInsights] = useState<Insight[]>([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useAppDispatch();
+  const { fullInsights, loading, error, fullFetched } = useAppSelector((state) => state.insights);
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   useEffect(() => {
-    fetchInsights();
-  }, []);
-
-  const fetchInsights = async () => {
-    try {
-      const response = await fetch('/api/insights');
-      if (response.ok) {
-        const data = await response.json();
-        setInsights(data);
-      }
-    } catch (error) {
-      console.error('Error fetching insights:', error);
-    } finally {
-      setLoading(false);
+    if (!fullFetched && !loading) {
+      dispatch(fetchInsights());
     }
-  };
+  }, [dispatch, fullFetched, loading]);
+
+  const insights = fullInsights;
 
   const categories = ['All', ...Array.from(new Set(insights.map(insight => insight.category)))];
   const filteredInsights = selectedCategory === 'All'
@@ -61,7 +40,7 @@ export default function InsightsPage() {
     try {
       const res = await fetch(`/api/admin/insights/${id}`, { method: 'DELETE' });
       if (res.ok) {
-        setInsights(prev => prev.filter(insight => insight._id !== id));
+        dispatch(fetchInsights());
         alert('Insight deleted successfully!');
       } else {
         const data = await res.json();
@@ -88,7 +67,7 @@ export default function InsightsPage() {
       <Navbar />
       <div className={`min-h-screen bg-theme transition-colors duration-300`}>
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-[#009edb] to-[#0077a3] text-white">
+      <div className="bg-linear-to-br from-[#009edb] to-[#0077a3] text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <Link
             href="/"

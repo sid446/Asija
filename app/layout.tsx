@@ -8,8 +8,8 @@ import { TranslationProvider } from "@/components/TranslationProvider";
 import ThemeProvider from '@/components/ThemeProvider';
 import { AuthProvider } from "@/components/AuthProvider";
 import DisclaimerModal from "@/components/DisclaimerModal";
-import { GoogleAnalytics } from "@/components/seo/SEOComponents";
-import { Analytics } from "@vercel/analytics/next"
+import { ReduxProvider } from "@/components/ReduxProvider";
+import { Analytics } from '@vercel/analytics/react';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -199,18 +199,19 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.variable} antialiased`}>
-        <GoogleAnalytics />
-        <AuthProvider>
-          <ThemeProvider>
-            <TranslationProvider>
-              <ScrollProvider>
-                <DisclaimerModal />
-                {children}
-                <Analytics />
-              </ScrollProvider>
-            </TranslationProvider>
-          </ThemeProvider>
-        </AuthProvider>
+        <ReduxProvider>
+          <AuthProvider>
+            <ThemeProvider>
+              <TranslationProvider>
+                <ScrollProvider>
+                  <DisclaimerModal />
+                  {children}
+                  <Analytics />
+                </ScrollProvider>
+              </TranslationProvider>
+            </ThemeProvider>
+          </AuthProvider>
+        </ReduxProvider>
       </body>
     </html>
   );
