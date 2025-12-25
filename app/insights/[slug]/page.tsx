@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Calendar, User, ArrowLeft, Share2, Lightbulb, Trash2 } from 'lucide-react';
 import { useTheme } from '@/components/ThemeProvider';
 import Navbar from '@/components/Navbar';
@@ -18,6 +19,7 @@ interface InsightPageProps {
 }
 
 export default function InsightPage({ params }: InsightPageProps) {
+  const router = useRouter();
   const { theme } = useTheme();
   const isLight = theme === 'light';
   const dispatch = useAppDispatch();
@@ -100,7 +102,7 @@ export default function InsightPage({ params }: InsightPageProps) {
       const res = await fetch(`/api/admin/insights/${insight!._id}`, { method: 'DELETE' });
       if (res.ok) {
         alert('Insight deleted successfully!');
-        window.location.href = '/insights';
+        router.push('/insights');
       } else {
         const data = await res.json();
         alert(data.error || 'Failed to delete insight');

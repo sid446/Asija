@@ -108,4 +108,4 @@ export function useInitializeAppData() {
     hasData: !!(heroContent && services.length > 0 && insights.length > 0 && regions.length > 0 && faqs.length > 0 && industries.length > 0 && contactContent && locations.length > 0 && globalContent && globalRegions.length > 0 && offerings.length > 0),
     heroContent
   };
-}
+} 

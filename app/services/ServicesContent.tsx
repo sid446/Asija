@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { ArrowRight, Calendar, ShieldCheck, Users, Zap, GraduationCap, Globe, ChevronDown } from 'lucide-react';
 import Footer from '@/components/Footer';
@@ -155,6 +155,7 @@ const ExpandableMainItem: React.FC<{
 
 export default function ServicesContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const { theme } = useTheme();
   const [serviceGroups, setServiceGroups] = useState<ServiceGroup[]>([]);
   const [selectedService, setSelectedService] = useState<ServiceGroup | null>(null);
@@ -343,7 +344,7 @@ export default function ServicesContent() {
                     <InteractiveHoverButton 
                       text="Schedule a Consultation" 
                       className="w-full bg-[#009edb] text-white border-[#009edb]"
-                      onClick={() => window.location.href = '/contact'}
+                      onClick={() => router.push('/contact')}
                     />
                     
                    

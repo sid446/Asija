@@ -1,7 +1,10 @@
 import React from 'react'
 import { InteractiveHoverButton } from './InteractiveHoverButton'
+import { useRouter } from 'next/navigation'
 
 function CTA() {
+  const router = useRouter()
+
   return (
    <section className="py-8 sm:py-12 bg-[#05719b]">
         <div className="max-w-5xl mx-auto text-center px-4 sm:px-6">
@@ -13,12 +16,12 @@ function CTA() {
             <InteractiveHoverButton 
               text="Get Started Now" 
               className="bg-theme text-white border-[#009edb]"
-              onClick={() => window.location.href = '/contact'}
+              onClick={() => router.push('/contact')}
             />
              <InteractiveHoverButton 
                                   text="Home" 
                                   className="w-full bg-theme text-white border-[#009edb] w-auto sm:w-auto"
-                                  onClick={() => window.location.href = '/'}
+                                  onClick={() => router.push('/')}
                                 />
 
           </div>

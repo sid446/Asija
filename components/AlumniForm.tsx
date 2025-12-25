@@ -4,6 +4,7 @@ import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Loader2, CheckCircle, XCircle, ExternalLink, CircleCheck, Mail, ArrowRight } from 'lucide-react';
 import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
+import { useRouter } from 'next/navigation';
 
 const benefits = [
 	{
@@ -52,6 +53,7 @@ const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => (
 );
 
 export default function AlumniForm() {
+	const router = useRouter();
 	const [step, setStep] = useState<'email' | 'otp' | 'details' | 'success'>(
 		'email'
 	);
@@ -374,7 +376,7 @@ export default function AlumniForm() {
 								</p>
 								<div className="flex justify-center">
 									<InteractiveHoverButton
-										onClick={() => (window.location.href = '/')}
+										onClick={() => router.push('/')}
 										text="Return Home"
 									/>
 								</div>
