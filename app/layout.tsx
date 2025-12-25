@@ -10,6 +10,7 @@ import { AuthProvider } from "@/components/AuthProvider";
 import DisclaimerModal from "@/components/DisclaimerModal";
 import { ReduxProvider } from "@/components/ReduxProvider";
 import { Analytics } from '@vercel/analytics/react';
+import DataInitializer from "@/components/DataInitializer";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -200,6 +201,7 @@ export default function RootLayout({
       </head>
       <body className={`${inter.variable} antialiased`}>
         <ReduxProvider>
+          <DataInitializer />
           <AuthProvider>
             <ThemeProvider>
               <TranslationProvider>

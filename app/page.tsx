@@ -11,10 +11,20 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import Loader from "@/components/ui/Loader";
 import FAQAccordion from "@/components/FaqInteractable";
-import { useInitializeAppData } from '@/lib/store/useInitializeAppData';
+import { useAppSelector } from '@/lib/store/hooks';
 
 export default function Home() {
-  const { isLoading, hasData, heroContent } = useInitializeAppData();
+  const { content: heroContent, loading: heroLoading } = useAppSelector((state) => state.hero);
+  const { services, loading: servicesLoading } = useAppSelector((state) => state.services);
+  const { insights, loading: insightsLoading } = useAppSelector((state) => state.insights);
+  const { regions, loading: regionsLoading } = useAppSelector((state) => state.regions);
+  const { faqs, loading: faqsLoading } = useAppSelector((state) => state.faqs);
+  const { industries, loading: industriesLoading } = useAppSelector((state) => state.industries);
+  const { contactContent, locations, loading: contactLoading } = useAppSelector((state) => state.contact);
+  const { content: globalContent, regions: globalRegions, offerings, loading: globalServicesLoading } = useAppSelector((state) => state.globalServices);
+
+  const isLoading = heroLoading || servicesLoading || insightsLoading || regionsLoading || faqsLoading || industriesLoading || contactLoading || globalServicesLoading;
+  const hasData = !!(heroContent && services.length > 0 && insights.length > 0 && regions.length > 0 && faqs.length > 0 && industries.length > 0 && contactContent && locations.length > 0 && globalContent && globalRegions.length > 0 && offerings.length > 0);
 
   if (isLoading && !hasData) {
     return (
