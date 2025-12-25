@@ -56,9 +56,9 @@ async function dbConnect() {
       retryWrites: true, // Enable retryable writes
       retryReads: true, // Enable retryable reads
 
-      // SSL and Security (if needed)
-      // ssl: true,
-      // sslValidate: true,
+      // SSL and Security
+      ssl: true,
+      sslValidate: true,
 
       // Compression
       compressors: 'zlib', // Enable compression
