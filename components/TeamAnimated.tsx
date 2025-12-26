@@ -48,12 +48,21 @@ const renderSectionContent = (items: any[]) => {
   );
 };
 
+// Helper function to truncate text
+const truncateText = (text: string, maxLength: number) => {
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength).trim() + '...';
+};
+
 export default function TeamAnimated() {
   const { theme } = useTheme();
   const [members, setMembers] = useState<any[]>([]);
+  const [founder, setFounder] = useState<any>(null);
+  const [teamMembers, setTeamMembers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedMember, setSelectedMember] = useState<any>(null);
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [isFounderDescriptionExpanded, setIsFounderDescriptionExpanded] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -63,6 +72,10 @@ export default function TeamAnimated() {
         const data = await res.json();
         if (data.items) {
           setMembers(data.items);
+          const founderData = data.items.find((m: any) => m.name === "CA Uttam Chandra Asija");
+          setFounder(founderData);
+          const otherMembers = data.items.filter((m: any) => m.name !== "CA Uttam Chandra Asija");
+          setTeamMembers(otherMembers);
         }
       } catch (error) {
         console.error('Failed to fetch team members:', error);
@@ -156,7 +169,83 @@ export default function TeamAnimated() {
             </p>
           </motion.div>
 
-          {members.length === 0 ? (
+          {/* Founder Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className=" mb-8"
+          >
+            <h2 className="text-4xl   font-bold text-white mb-4">Founder <span className='text-5xl text-[#009edb]'>.</span></h2>
+            
+          </motion.div>
+
+          {founder && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="mb-12"
+            >
+              <div className="relative bg-theme p-8 md:p-12 w-full  mx-auto  border-2 border-[#009EDB]">
+                
+
+                <div className="relative z-10 flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                  {/* Founder Image */}
+                  <div className="flex-shrink-0">
+                    <div className="relative">
+                      
+                      <img
+                        src={founder.avatar || '/default-avatar.png'}
+                        alt={founder.name}
+                        className="relative w-64 h-80 md:w-72 md:h-96 rounded-xl object-cover  "
+                      />
+                    </div>
+                  </div>
+
+                  {/* Founder Info */}
+                  <div className="flex-1 text-center md:text-left">
+                    <div className="mb-6">
+                      <h3 className="text-3xl md:text-4xl font-bold mb-3 text-white">{founder.name}</h3>
+                      <p className="text-xl md:text-2xl font-semibold text-[#009edb] mb-2">{founder.role}</p>
+                      <div className="w-16 h-1 bg-[#009edb] mx-auto md:mx-0 rounded-full"></div>
+                    </div>
+                    <div className="text-gray-300 leading-relaxed text-lg">
+                      {/* Mobile: Show truncated text with Read More button */}
+                      <div className="md:hidden">
+                        <p className="mb-3">
+                          {isFounderDescriptionExpanded
+                            ? founder.description
+                            : truncateText(founder.description, 150)
+                          }
+                        </p>
+                        {founder.description.length > 150 && (
+                          <button
+                            onClick={() => setIsFounderDescriptionExpanded(!isFounderDescriptionExpanded)}
+                            className="text-[#009edb] hover:text-[#0077a3] font-semibold transition-colors duration-200 flex items-center gap-2"
+                          >
+                            {isFounderDescriptionExpanded ? 'Read Less' : 'Read More'}
+                            <span className={`transform transition-transform duration-200 ${isFounderDescriptionExpanded ? 'rotate-180' : ''}`}>
+                              
+                            </span>
+                          </button>
+                        )}
+                      </div>
+
+                      {/* Desktop: Show full text */}
+                      <div className="hidden md:block">
+                        <p>{founder.description}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {teamMembers.length === 0 ? (
             <div className="text-center text-gray-400 py-20">
               No team members found.
             </div>
@@ -168,7 +257,7 @@ export default function TeamAnimated() {
               viewport={{ once: true }}
               className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4"
             >
-              {members.map((member, index) => (
+              {teamMembers.map((member, index) => (
                 <motion.div
                   key={member._id || index}
                   variants={item}
