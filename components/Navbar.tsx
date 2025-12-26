@@ -224,7 +224,7 @@ const NavItem = ({ label, isIcon, icon, isActive, hasDropdown, href }: NavItemPr
 
   if (href) {
     return (
-      <Link href={href} className="relative px-1.5 2xl:px-4 py-6 text-white/90 hover:text-white text-sm font-medium transition-colors flex items-center gap-1 group whitespace-nowrap">
+      <Link href={href} scroll={false} className="relative px-1.5 2xl:px-4 py-6 text-white/90 hover:text-white text-sm font-medium transition-colors flex items-center gap-1 group whitespace-nowrap">
         {label}
         {hasDropdown && (
           <motion.div

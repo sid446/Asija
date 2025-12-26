@@ -134,7 +134,8 @@ const Contact = () => {
 
             <div className="mt-12 mb-12">
               <Link 
-                href="/contact" 
+                href="/contact"
+                scroll={false} 
                 className="inline-flex items-center gap-2 px-8 py-4 bg-[#009edb] text-white font-semibold rounded-lg hover:bg-[#0077a3] transition-all hover:gap-3 shadow-lg shadow-[#009edb]/20"
               >
                 {contactContent.enquiryForm} <ArrowRight size={20} />

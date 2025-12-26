@@ -336,7 +336,7 @@ export default function TeamAnimated() {
     </p>
 
     <div className="flex flex-row gap-6 justify-center items-center">
-      <Link href="/contact">
+      <Link href="/contact" scroll={false}>
         <InteractiveHoverButton
           text="Start a Conversation"
           className="px-8 py-3"

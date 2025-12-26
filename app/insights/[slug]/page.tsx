@@ -272,6 +272,7 @@ export default function InsightPage({ params }: InsightPageProps) {
           </p>
           <Link
             href="/contact"
+            scroll={false}
             className="inline-flex items-center gap-2 bg-white  px-6 py-3 rounded-full font-semibold hover:bg-blue-50 transition-colors" style={{color:"black"}}
           >
             Get in Touch <ArrowLeft className="w-4 h-4 rotate-180" />
