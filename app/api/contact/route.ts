@@ -2,14 +2,17 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Contact from '@/models/Contact';
 import { transporter, mailOptions } from '@/lib/nodemailer';
+import { dbMutate } from '@/lib/database';
 
 export async function POST(request: Request) {
   try {
-    await dbConnect();
     const body = await request.json();
-    
+
     // Save to Database
-    const contact = await Contact.create(body);
+    const contact = await dbMutate(async () => {
+      await dbConnect();
+      return await Contact.create(body);
+    });
 
     // Send Email
     const adminEmail = process.env.ADMIN_EMAIL || 'services@asija.in';
