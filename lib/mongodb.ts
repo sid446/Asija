@@ -28,14 +28,8 @@ if (!cached) {
 const isServerless = !!process.env.VERCEL || !!process.env.AWS_LAMBDA_FUNCTION_NAME || !!process.env.NETLIFY;
 
 async function dbConnect() {
-  const opts = {
-    // Connection Pool Settings
-    maxPoolSize: 10, // Maximum number of connections in the connection pool
-    minPoolSize: 2,  // Minimum number of connections to maintain in the pool
-    maxIdleTimeMS: 30000, // Close connections after 30 seconds of inactivity
-    socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
-    serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
-
+  // Adjust connection pool settings based on environment
+  const baseOpts = {
     // Connection Settings
     bufferCommands: false, // Disable mongoose buffering
     family: 4, // Use IPv4, skip trying IPv6
@@ -54,70 +48,30 @@ async function dbConnect() {
     compressors: 'zlib', // Enable compression
   };
 
+  // Different pool settings for serverless vs traditional servers
+  const poolOpts = isServerless ? {
+    // Serverless: Minimal pooling to avoid connection bloat
+    maxPoolSize: 1, // Only 1 connection per function
+    minPoolSize: 0, // No minimum connections
+    maxIdleTimeMS: 5000, // Close idle connections quickly (5 seconds)
+    socketTimeoutMS: 15000, // Shorter socket timeout (15 seconds)
+    serverSelectionTimeoutMS: 3000, // Faster server selection (3 seconds)
+  } : {
+    // Traditional server: Full pooling
+    maxPoolSize: 10, // Maximum number of connections in the connection pool
+    minPoolSize: 2,  // Minimum number of connections to maintain in the pool
+    maxIdleTimeMS: 30000, // Close connections after 30 seconds of inactivity
+    socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+    serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
+  };
+
+  const opts = { ...baseOpts, ...poolOpts };
+
   // In serverless environments, connections don't persist between function invocations
-  // So we check if we have a valid connection in the current invocation
+  // So we create a new connection for each request
   if (isServerless) {
-    // For serverless, check if we have an existing connection that's still valid
-    if (cached.conn && mongoose.connection.readyState === 1) {
-      console.log('Serverless: Reusing existing connection');
-      return cached.conn;
-    }
-
-    // Reset cache if connection is in a bad state
-    if (cached.conn && mongoose.connection.readyState === 0) {
-      console.log('Serverless: Connection is disconnected, resetting cache');
-      cached.conn = null;
-      cached.promise = null;
-    }
-
-    // If no valid connection, create a new one
-    if (!cached.promise) {
-      console.log('Serverless: Creating new connection');
-      cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose) => {
-        console.log('Serverless: Connected to MongoDB');
-
-        // Monitor connection events
-        mongoose.connection.on('connected', () => {
-          console.log('Serverless: Mongoose connected to MongoDB');
-          logConnectionStats();
-        });
-
-        mongoose.connection.on('error', (err) => {
-          console.error('Serverless: Mongoose connection error:', err);
-          // Reset cache on connection error
-          cached.conn = null;
-          cached.promise = null;
-        });
-
-        mongoose.connection.on('disconnected', () => {
-          console.log('Serverless: Mongoose disconnected from MongoDB');
-          // Reset cache on disconnect
-          cached.conn = null;
-          cached.promise = null;
-        });
-
-        // Monitor connection pool
-        mongoose.connection.on('reconnected', () => {
-          console.log('Serverless: Mongoose reconnected to MongoDB');
-          logConnectionStats();
-        });
-
-        // Monitor pool events
-        mongoose.connection.on('poolCreated', (event) => {
-          console.log('Serverless: Connection pool created:', event);
-        });
-
-        return mongoose;
-      });
-
-      cached.conn = await cached.promise;
-      return cached.conn;
-    }
-
-    // Wait for existing connection promise
-    cached.conn = await cached.promise;
-    return cached.conn;
-
+    console.log('Serverless: Creating new connection for this request');
+    return await mongoose.connect(MONGODB_URI!, opts);
   } else {
     // For traditional servers, use the standard caching
     // Check if we're in a disconnected state and reset cache
@@ -144,7 +98,14 @@ async function dbConnect() {
         });
 
         mongoose.connection.on('error', (err) => {
-          console.error('Traditional: Mongoose connection error:', err);
+          console.error('Traditional: Mongoose connection error:', err.message);
+          // Check for common Atlas IP whitelisting error
+          if (err.message && err.message.includes("IP that isn't whitelisted")) {
+            console.error('🔒 MongoDB Atlas IP Whitelisting Required:');
+            console.error('1. Go to https://cloud.mongodb.com');
+            console.error('2. Navigate to Network Access > Add IP Address');
+            console.error('3. Add your current IP or use 0.0.0.0/0 for testing (less secure)');
+          }
           // Reset cache on connection error
           cached.conn = null;
           cached.promise = null;

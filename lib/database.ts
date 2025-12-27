@@ -1,5 +1,8 @@
 // lib/database.ts - Database operations wrapper with connection pooling
+import mongoose from 'mongoose';
 import dbConnect, { logConnectionStats } from './mongodb';
+
+const isServerless = !!process.env.VERCEL || !!process.env.AWS_LAMBDA_FUNCTION_NAME || !!process.env.NETLIFY;
 
 export interface DatabaseOperation<T> {
   (): Promise<T>;
@@ -39,6 +42,17 @@ export async function executeDatabaseOperation<T>(
 
       // Execute the operation with timeout
       const result = await Promise.race([operation(), timeoutPromise]);
+
+      // In serverless environments, close the connection after the operation
+      // since connections don't persist between function invocations
+      if (isServerless) {
+        try {
+          await mongoose.connection.close();
+          console.log('Serverless: Connection closed after operation');
+        } catch (closeError) {
+          console.warn('Warning: Failed to close serverless connection:', closeError);
+        }
+      }
 
       return result;
 

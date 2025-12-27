@@ -11,8 +11,9 @@ async function checkConnections() {
     }
 
     console.log("Checking MongoDB connection status...");
+    console.log("MongoDB URI:", MONGODB_URI.replace(/\/\/[^:]+:[^@]+@/, "//***:***@")); // Hide credentials
 
-    // Connect to MongoDB with pool settings
+    // Connect to MongoDB with pool settings matching the main application
     await mongoose.connect(MONGODB_URI, {
       maxPoolSize: 10,
       minPoolSize: 2,
@@ -23,6 +24,7 @@ async function checkConnections() {
       heartbeatFrequencyMS: 10000,
       retryWrites: true,
       retryReads: true,
+      ssl: true,
       compressors: ["zlib"],
     });
 
