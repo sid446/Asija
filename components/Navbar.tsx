@@ -560,12 +560,7 @@ export default function Navbar() {
                 {/* LOGO */}
                 <motion.div 
                   className=""
-                  animate={{
-                    opacity: 1,
-                    width: 'auto',
-                    scale: scrolled ? 0.5 : 1,
-                    
-                  }}
+                  
                   transition={{ duration: 0.3 }}
                   style={{ overflow: 'hidden' }}
                 >
