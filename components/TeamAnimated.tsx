@@ -189,7 +189,7 @@ export default function TeamAnimated() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="mb-12"
             >
-              <div className="relative bg-theme p-8 md:p-12 w-full  mx-auto  z">
+              <div className="relative bg-theme p-8 md:p-12 w-full  mx-auto  border-2 border-[#009EDB]">
                 
 
                 <div className="relative z-10 flex flex-col md:flex-row items-center gap-8 md:gap-12">
@@ -200,7 +200,7 @@ export default function TeamAnimated() {
                       <img
                         src={founder.avatar || '/default-avatar.png'}
                         alt={founder.name}
-                        className="relative w-64 h-80 md:w-72 md:h-96 rounded-xl object-cover  "
+                        className="relative w-full h-64 md:w-72 md:h-96 rounded-xl object-cover  "
                       />
                     </div>
                   </div>

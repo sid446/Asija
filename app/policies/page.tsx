@@ -292,7 +292,7 @@ export default function PoliciesPage() {
           <section 
             id="employee-policies" 
             ref={(el) => { sectionRefs.current['employee-policies'] = el; }}
-            className="relative flex items-start justify-start overflow-y-auto  pt-24 pb-30  "
+            className="relative h-screen flex items-start justify-start overflow-y-auto  pt-24 sm:pt-35 "
           >
             <div className="absolute inset-0">
               <img 
