@@ -526,7 +526,7 @@ export default function Navbar() {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled 
             ? (theme === 'light' 
-                ? 'h-16 bg-[#F0F9FF] backdrop-blur-lg shadow-lg shadow-black/5'
+                ? 'h-16 bg-[#a8d5f4] backdrop-blur-lg shadow-lg shadow-black/5'
                 : 'h-16 bg-slate-950/95 backdrop-blur-lg shadow-lg shadow-slate-950/20'
               )
             : (theme === 'light' ? 'h-20 bg-slate-950' : 'h-20 bg-slate-950')

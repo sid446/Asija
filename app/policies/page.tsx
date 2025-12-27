@@ -184,7 +184,7 @@ export default function PoliciesPage() {
           >
             <div className="absolute inset-0">
               <img 
-                src="https://res.cloudinary.com/db2qa9dzs/image/upload/v1766834579/about1_vgjbnn.jpg" 
+                src="https://res.cloudinary.com/db2qa9dzs/image/upload/v1766855466/pexels-imadclicks-9883024_spnihn.jpg" 
                 alt="General Policies" 
                 className="w-full h-full object-cover"
               />
@@ -198,7 +198,7 @@ export default function PoliciesPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
               >
-                <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6 tracking-tight" style={{color: 'white'}}>{sections[0].title}</h2>
+                <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6 tracking-tight" style={{color: '#74d2f8'}}>{sections[0].title} <span className="text-6xl " style={{color: 'white'}}>.</span></h2>
                 <p className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 opacity-90 max-w-2xl  leading-relaxed" style={{color: 'white'}}>{sections[0].description}</p>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-6xl mx-auto">
@@ -214,10 +214,10 @@ export default function PoliciesPage() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: index * 0.1 }}
-                        className="bg-white/5 backdrop-blur-sm rounded-lg p-4 sm:p-6 lg:p-8 border border-white/10 hover:bg-white/10 transition-all duration-500 group"
+                        className="bg-white/5 backdrop-blur-lg rounded-lg p-4 sm:p-6 lg:p-8 border border-white/10 hover:bg-white/10 transition-all duration-500 group"
                       >
                         <div className="w-8 sm:w-12 h-px bg-white/30 mb-3 sm:mb-4 group-hover:bg-[#009edb] transition-colors duration-300" />
-                        <h3 className="text-lg sm:text-xl font-light mb-2 sm:mb-3 leading-tight" style={{color: 'white'}}>{policy.title}</h3>
+                        <h3 className="text-lg sm:text-xl font-light mb-2 sm:mb-3 leading-tight" style={{color: '#32c5ff'}}>{policy.title}</h3>
                         <p className="text-xs sm:text-sm opacity-70 leading-relaxed" style={{color: 'white'}}>
                           {shouldTruncate ? `${truncated}...` : content}
                         </p>
@@ -225,7 +225,7 @@ export default function PoliciesPage() {
                           <button
                             onClick={() => setSelectedPolicy(policy)}
                             className="mt-3 sm:mt-4 text-xs font-light tracking-wider uppercase opacity-50 hover:opacity-80 transition-opacity duration-300"
-                            style={{color: 'white'}}
+                            style={{color: '#32c5ff'}}
                           >
                             READ MORE
                           </button>
@@ -260,7 +260,7 @@ export default function PoliciesPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
               >
-                <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6 tracking-tight" style={{color: 'white'}}>{sections[1].title}</h2>
+                <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6 tracking-tight" style={{color: '#74d2f8'}}>{sections[1].title}<span className="text-6xl ml-4 " style={{color: 'white'}}>.</span></h2>
                 <p className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 opacity-90 max-w-2xl leading-relaxed" style={{color: 'white'}}>{sections[1].description}</p>
                 
                 <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 lg:gap-8 justify-center items-center max-w-4xl mx-auto">
@@ -272,7 +272,7 @@ export default function PoliciesPage() {
                     onClick={() => window.open('/policies/privacy-policy', '_blank')}
                   >
                     <div className="w-12 sm:w-16 h-px bg-white/30 mb-4 sm:mb-6 group-hover:bg-[#009edb] transition-colors duration-300" />
-                    <h3 className="text-xl sm:text-2xl font-light mb-3 sm:mb-4 leading-tight" style={{color: 'white'}}>Privacy Policy</h3>
+                    <h3 className="text-xl sm:text-2xl font-light mb-3 sm:mb-4 leading-tight" style={{color: '#74d2f8'}}>Privacy Policy</h3>
                     <p className="text-xs sm:text-sm opacity-70 leading-relaxed mb-4 sm:mb-6" style={{color: 'white'}}>Learn how we collect, use, and protect your personal information.</p>
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-light tracking-wider uppercase opacity-50" style={{color: 'white'}}>READ MORE</span>
@@ -289,7 +289,7 @@ export default function PoliciesPage() {
                     onClick={() => window.open('/policies/terms-of-service', '_blank')}
                   >
                     <div className="w-12 sm:w-16 h-px bg-white/30 mb-4 sm:mb-6 group-hover:bg-[#009edb] transition-colors duration-300" />
-                    <h3 className="text-xl sm:text-2xl font-light mb-3 sm:mb-4 leading-tight" style={{color: 'white'}}>Terms of Service</h3>
+                    <h3 className="text-xl sm:text-2xl font-light mb-3 sm:mb-4 leading-tight" style={{color: '#74d2f8'}}>Terms of Service</h3>
                     <p className="text-xs sm:text-sm opacity-70 leading-relaxed mb-4 sm:mb-6" style={{color: 'white'}}>Read our terms and conditions for using our services.</p>
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-light tracking-wider uppercase opacity-50" style={{color: 'white'}}>READ MORE</span>
@@ -323,7 +323,7 @@ export default function PoliciesPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
               >
-                <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6 tracking-tight" style={{color: 'white'}}>{sections[2].title}</h2>
+                <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6 tracking-tight" style={{color: '#74d2f8'}}>{sections[2].title}<span className="text-6xl ml-4" style={{color: 'white'}}>.</span></h2>
                 
                 <p className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 opacity-90" style={{color: 'white'}}>{sections[2].description}</p>
                 
@@ -352,7 +352,7 @@ export default function PoliciesPage() {
                         onClick={() => router.push(`/policies/${department.slug}`)}
                       >
                         <div className="w-8 sm:w-12 h-px bg-white/30 mb-4 sm:mb-6 group-hover:bg-[#009edb] transition-colors duration-300" />
-                        <h3 className="text-lg sm:text-xl font-light mb-3 sm:mb-4 leading-tight" style={{color: 'white'}}>
+                        <h3 className="text-lg sm:text-xl font-light mb-3 sm:mb-4 leading-tight" style={{color: '#74d2f8'}}>
                           {department.name}
                         </h3>
                         <p className="text-xs sm:text-sm opacity-70 leading-relaxed mb-4 sm:mb-6 line-clamp-2" style={{color: 'white'}}>
@@ -373,7 +373,7 @@ export default function PoliciesPage() {
 
         {/* Magazine-Style Navigation */}
         <div className="fixed right-4 md:right-8 top-1/2 transform -translate-y-1/2 z-50 hidden lg:block">
-          <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-4 md:p-6">
+          <div className="backdrop-blur-md bg-white/20 border border-white/10 rounded-2xl p-4 md:p-6">
             <div className="space-y-4 md:space-y-6">
               {sections.map((section, index) => {
                 const isActive = currentSectionIndex === index;
@@ -390,9 +390,7 @@ export default function PoliciesPage() {
                     transition={{ delay: index * 0.1 }}
                   >
                     <div className="flex items-center gap-2 md:gap-3">
-                      <div className={`w-1 h-6 md:h-8 rounded-full transition-all duration-300 ${
-                        isActive ? 'bg-[#009edb] w-2' : 'bg-white/30 group-hover:bg-white/60'
-                      }`} />
+                      
                       <div className="flex flex-col">
                         <span className={`text-xs md:text-sm font-light tracking-wider uppercase ${
                           isActive ? 'text-[#009edb]' : 'text-white/60'

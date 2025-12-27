@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useTheme } from './ThemeProvider';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { MapPin, Phone, Mail, ArrowRight } from 'lucide-react';
+import { MapPin, Phone, ArrowRight } from 'lucide-react';
 import { useAppSelector } from '@/lib/store/hooks';
 
 type ContactContent = {
@@ -52,7 +52,7 @@ const Contact = () => {
   return (
     <section id="contact" className={`relative py-20 overflow-hidden transition-colors duration-300 ${isLight ? 'bg-white' : 'bg-slate-950'}`}>
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12">
-        <div className="flex flex-col gap-12 lg:gap-20">
+        <div className="flex flex-col gap-12 lg:gap-23">
           
           {/* Left Content */}
           <motion.div 
@@ -71,17 +71,17 @@ const Contact = () => {
               {contactContent.description}
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-6 md:gap-10">
               {/* Location */}
               <div className="flex items-start gap-4 group">
-                <div className={`p-3 rounded-full shrink-0 transition-colors ${isLight ? 'bg-blue-50 text-[#009edb] group-hover:bg-[#009edb] group-hover:text-white' : 'bg-white/5 text-[#009edb] group-hover:bg-[#009edb] group-hover:text-white'}`}>
+                <div className={`p-3 rounded-full shrink-0 transition-colors ${isLight ? 'text-[#009edb] group-hover:bg-[#009edb] group-hover:text-white' : 'bg-white/5 text-[#009edb] group-hover:bg-[#009edb] group-hover:text-white'}`}>
                   <MapPin size={24} />
                 </div>
                 <div>
                   <h3 className={`font-semibold text-lg mb-1 ${isLight ? 'text-gray-900' : 'text-white'}`}>
                     {contactContent.officeLocations}
                   </h3>
-                  <div className={`space-y-4 ${isLight ? 'text-gray-600' : 'text-white/70'}`}>
+                  <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${isLight ? 'text-gray-600' : 'text-white/70'}`}>
                     {locations.length > 0 ? (
                       sortedLocations.map((loc) => (
                         <div key={loc._id} className="text-sm">
@@ -90,43 +90,43 @@ const Contact = () => {
                         </div>
                       ))
                     ) : (
-                      <p>
-                        {contactContent.officeLocation1} <br />
-                        {contactContent.officeLocation2}
-                      </p>
+                      <div className="col-span-full">
+                        <p>
+                          {contactContent.officeLocation1} <br />
+                          {contactContent.officeLocation2}
+                        </p>
+                      </div>
                     )}
                   </div>
                 </div>
               </div>
 
-              {/* Phone */}
-              <div className="flex items-start gap-4 group">
-                <div className={`p-3 rounded-full shrink-0 transition-colors ${isLight ? 'bg-blue-50 text-[#009edb] group-hover:bg-[#009edb] group-hover:text-white' : 'bg-white/5 text-[#009edb] group-hover:bg-[#009edb] group-hover:text-white'}`}>
-                  <Phone size={24} />
-                </div>
-                <div>
-                  <h3 className={`font-semibold text-lg mb-1 ${isLight ? 'text-gray-900' : 'text-white'}`}>
-                    {contactContent.contactNo}
-                  </h3>
-                  <div className={`${isLight ? 'text-gray-600' : 'text-white/70'}`}>
-                    <p>{contactContent.phone1}</p>
-                    <p>{contactContent.phone2}</p>
+              {/* Contact & Email */}
+              <div className="space-y-6">
+                {/* Phone */}
+                <div className="flex items-start gap-4 group">
+                  <div className={`p-3 rounded-full shrink-0 transition-colors ${isLight ? ' text-[#009edb] group-hover:bg-[#009edb] group-hover:text-white' : 'bg-white/5 text-[#009edb] group-hover:bg-[#009edb] group-hover:text-white'}`}>
+                    <Phone size={24} />
                   </div>
-                </div>
-              </div>
-
-              {/* Email */}
-              <div className="flex items-start gap-4 group">
-                <div className={`p-3 rounded-full shrink-0 transition-colors ${isLight ? 'bg-blue-50 text-[#009edb] group-hover:bg-[#009edb] group-hover:text-white' : 'bg-white/5 text-[#009edb] group-hover:bg-[#009edb] group-hover:text-white'}`}>
-                  <Mail size={24} />
-                </div>
-                <div>
-                  <h3 className={`font-semibold text-lg mb-1 ${isLight ? 'text-gray-900' : 'text-white'}`}>
-                    {contactContent.emails}
-                  </h3>
-                  <div className={`${isLight ? 'text-gray-600' : 'text-white/70'}`}>
-                    <a href={`mailto:${contactContent.email1}`} className="block hover:text-[#009edb] transition-colors">{contactContent.email1}</a>
-                    <a href={`mailto:${contactContent.email2}`} className="block hover:text-[#009edb] transition-colors">{contactContent.email2}</a>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <h3 className={`font-semibold text-lg mb-1 ${isLight ? 'text-gray-900' : 'text-white'}`}>
+                        {contactContent.contactNo}
+                      </h3>
+                      <div className={`${isLight ? 'text-gray-600' : 'text-white/70'}`}>
+                        <p>{contactContent.phone1}</p>
+                        <p>{contactContent.phone2}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className={`font-semibold text-lg mb-1 ${isLight ? 'text-gray-900' : 'text-white'}`}>
+                        {contactContent.emails}
+                      </h3>
+                      <div className={`flex flex-col ${isLight ? 'text-gray-600' : 'text-white/70'}`}>
+                        <a href={`mailto:${contactContent.email1}`} className="hover:text-[#009edb] transition-colors">{contactContent.email1}</a>
+                        <a href={`mailto:${contactContent.email2}`} className="hover:text-[#009edb] transition-colors">{contactContent.email2}</a>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

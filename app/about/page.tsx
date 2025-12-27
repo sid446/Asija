@@ -347,7 +347,7 @@ export default function AboutPage() {
   }, []);
 
   return (
-    <div className='w-full h-auto flex flex-col justify-center items-center'>
+    <div className='w-full bg-slate-950 h-auto flex flex-col justify-center items-center'>
       <Loader pageName="About Us" />
       <Navbar />
 
@@ -377,7 +377,7 @@ export default function AboutPage() {
       </div>
 
       {/* OUR STORY – RESPONSIVE LAYOUT */}
-      <div className='w-full h-auto flex flex-col lg:flex-row gap-6 sm:gap-8 p-6 sm:p-8 md:p-12 lg:p-20'>
+      <div className='w-full bg-theme h-auto flex flex-col lg:flex-row gap-6 sm:gap-8 p-6 sm:p-8 md:p-12 lg:p-20'>
         <div className='w-full lg:w-[40%] flex flex-col gap-4 sm:gap-10'>
           <h1 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold border-l-4 sm:border-l-10 px-3 sm:px-6 border-[#009edb] text-white drop-shadow-lg'>
             {aboutContent?.title || 'Our Story'}
@@ -423,32 +423,21 @@ export default function AboutPage() {
 
 
 
-      {/* Looking Ahead Section */}
-      <div className="w-full  bg-[#b5d6e3] z-20 py-20">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
-            {aboutContent?.futureTitle || 'Looking Ahead'}
-          </h2>
-          <span className="text-3xl md:text-4xl font-bold text-[#009edb]">{aboutContent?.futureSubtitle || 'Our Vision for the Future'}</span>
-          <p className="text-lg text-gray-600 leading-relaxed mt-8 mb-8">
-            {aboutContent?.futureDescription1 || 'As Asija & Associates LLP continues to expand its footprint across India and beyond, we remain deeply committed to our founding values of integrity, excellence, and professional independence. With a growing global presence, a strengthened leadership team, and a dynamic workforce, we are poised to embrace new opportunities in audit, advisory, compliance, systems, and development-sector consulting.'}
-          </p>
-          <p className="text-lg text-gray-600 leading-relaxed font-medium">
-            {aboutContent?.futureDescription2 || 'Our journey ahead is guided by innovation, technology-driven solutions, and a steadfast focus on delivering measurable value to clients. We look forward with pride, purpose, and confidence as we continue to build a firm that stands for trust, quality, and global capability.'}
-          </p>
-        </div>
+     
+    <div className=' bg-slate-950 z-10 '>
+      <div className='mt-20'>
+      <Values />
+      </div>
       </div>
 
-      <Values />
-
       {/* Navigation Section */}
-      <section className={``}>
+      <section className={`bg-slate-950 w-full`}>
         <div className="">
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10 ">
             <Link href="/">
               <InteractiveHoverButton
                 text="Home"
-                className={`px-6 py-3 ${isLight ? 'bg-white border-gray-300 text-gray-900' : 'bg-slate-700 border-slate-600 text-white'}`}
+                className={`px-6 py-3 ${isLight ? 'bg-gray-100 border-gray-300 text-gray-900' : 'bg-slate-700 border-slate-600 text-white'}`}
               />
             </Link>
           </div>
