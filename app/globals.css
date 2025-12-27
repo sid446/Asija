@@ -64,9 +64,9 @@ html {
 
 /* Theme variables (defaults = light theme) */
 :root {
-  --theme-bg: #c8e2e9;
-  --theme-surface: #f4f4f5;
-  --theme-card: #ffffff;
+  --theme-bg: #F0F9FF;
+  --theme-surface: #F0F9FF;
+  --theme-card: #F0F9FF;
   --theme-text: #000000;
   --theme-muted: #52525b;
   --theme-border: rgba(0,0,0,0.1);
