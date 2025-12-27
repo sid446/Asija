@@ -171,7 +171,7 @@ export default function PoliciesPage() {
           >
             <div className="absolute inset-0">
               <img 
-                src="/about1.jpg" 
+                src="https://res.cloudinary.com/db2qa9dzs/image/upload/v1766834579/about1_vgjbnn.jpg" 
                 alt="General Policies" 
                 className="w-full h-full object-cover"
               />
@@ -233,7 +233,7 @@ export default function PoliciesPage() {
           >
             <div className="absolute inset-0">
               <img 
-                src="/about2.jpg" 
+                src="https://res.cloudinary.com/db2qa9dzs/image/upload/v1766834528/pexels-mhajrinvincible-19025419_kgsosu.jpg" 
                 alt="Legal Documents" 
                 className="w-full h-full object-cover"
               />
@@ -296,7 +296,7 @@ export default function PoliciesPage() {
           >
             <div className="absolute inset-0">
               <img 
-                src="/ql.jpg" 
+                src="https://res.cloudinary.com/do5lklzbn/image/upload/v1766834244/ql_t1cg2w.jpg" 
                 alt="Employee Policies" 
                 className="w-full h-full object-cover"
               />
