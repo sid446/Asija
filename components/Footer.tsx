@@ -2,40 +2,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import useSWR from 'swr';
 
 const Footer = () => {
-  const [services, setServices] = React.useState<{ label: string; href: string }[]>([]);
-  const [regions, setRegions] = React.useState<{ label: string; href: string }[]>([]);
+  const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-  React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Fetch Services
-        const servicesRes = await fetch('/api/services');
-        if (servicesRes.ok) {
-          const servicesData = await servicesRes.json();
-          setServices(servicesData.map((s: any) => ({
-            label: s.title,
-            href: `/services?service=${encodeURIComponent(s.title)}`
-          })).slice(0, 6)); // Limit to 6
-        }
+  const { data: servicesData } = useSWR('/api/services', fetcher);
 
-        // Fetch Regions
-        const regionsRes = await fetch('/api/regions');
-        if (regionsRes.ok) {
-          const regionsData = await regionsRes.json();
-          setRegions(regionsData.map((r: any) => ({
-            label: r.name,
-            href: `/global-services/${r.slug}`
-          })));
-        }
-      } catch (error) {
-        console.error('Error fetching footer data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const services = servicesData ? servicesData.slice(0, 6).map((s: { title: string }) => ({
+    label: s.title,
+    href: `/services?service=${encodeURIComponent(s.title)}`
+  })) : [];
 
   const footerLinks = {
     company: [
@@ -147,7 +124,7 @@ const Footer = () => {
           >
             <h3 className="text-theme font-semibold text-lg mb-4">Services</h3>
             <ul className="space-y-3">
-              {services.map((link, index) => (
+              {services.map((link: { label: string; href: string }, index: number) => (
                 <li key={index}>
                   <Link
                     href={link.href}
