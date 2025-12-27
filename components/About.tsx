@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import AboutCard from './AboutCard';
 import Beams from './Beams';
 import { useTheme } from './ThemeProvider';
+import Link from 'next/link';
+import { InteractiveHoverButton } from './ui/InteractiveHoverButton';
 
 const About = () => {
 	const { theme } = useTheme();
@@ -118,6 +120,13 @@ const About = () => {
 									{content.description4 || 'We, at Asija, aim to deliver quality to our stakeholders and strive to be the best at everything we do. We believe in working together to fulfill the needs of our clients beyond their expectations.'}
 								</p>
 							</div>
+						</div>
+
+						{/* Learn More Button */}
+						<div className="mt-8 sm:mt-10 text-center">
+							<Link href="/about">
+								<InteractiveHoverButton text="Learn More About Us" />
+							</Link>
 						</div>
 					</div>
 				</div>

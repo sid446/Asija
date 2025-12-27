@@ -526,7 +526,7 @@ export default function Navbar() {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled 
             ? (theme === 'light' 
-                ? 'h-16 bg-white/90 backdrop-blur-lg shadow-lg shadow-black/5'
+                ? 'h-16 bg-[#F0F9FF] backdrop-blur-lg shadow-lg shadow-black/5'
                 : 'h-16 bg-slate-950/95 backdrop-blur-lg shadow-lg shadow-slate-950/20'
               )
             : (theme === 'light' ? 'h-20 bg-slate-950' : 'h-20 bg-slate-950')
@@ -737,7 +737,7 @@ export default function Navbar() {
           <motion.div
             className={`fixed left-0 right-0 backdrop-blur-xl shadow-2xl z-50 border-t ${
               theme === 'light' 
-                ? 'bg-white/98 border-gray-200 shadow-black/5' 
+                ? 'bg-sky-100 border-sky-200 shadow-sky-100/20' 
                 : 'bg-slate-950/98 border-white/5 shadow-slate-950/20'
             }`}
             style={{ top: scrolled ? '4rem' : '5rem' }}
