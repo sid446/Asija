@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
 import { fetchHeroContent } from '@/lib/store/slices/heroSlice';
 import { fetchServices } from '@/lib/store/slices/servicesSlice';
@@ -8,6 +8,18 @@ import { fetchFAQs } from '@/lib/store/slices/faqsSlice';
 import { fetchIndustries } from '@/lib/store/slices/industriesSlice';
 import { fetchContactContent, fetchLocations } from '@/lib/store/slices/contactSlice';
 import { fetchGlobalServiceContent, fetchGlobalRegions, fetchGlobalOfferings } from '@/lib/store/slices/globalServicesSlice';
+
+// Global refs to prevent multiple fetches across component remounts
+const industriesFetchedRef = { current: false };
+const servicesFetchedRef = { current: false };
+const insightsFetchedRef = { current: false };
+const regionsFetchedRef = { current: false };
+const faqsFetchedRef = { current: false };
+const contactFetchedRef = { current: false };
+const locationsFetchedRef = { current: false };
+const globalContentFetchedRef = { current: false };
+const globalRegionsFetchedRef = { current: false };
+const globalOfferingsFetchedRef = { current: false };
 
 export function useInitializeAppData() {
   const dispatch = useAppDispatch();
@@ -29,52 +41,62 @@ export function useInitializeAppData() {
       }
 
       // Fetch services if not loaded
-      if (services.length === 0 && !servicesLoading) {
+      if (services.length === 0 && !servicesLoading && !servicesFetchedRef.current) {
+        servicesFetchedRef.current = true;
         dispatch(fetchServices());
       }
 
       // Fetch insights if not loaded
-      if (insights.length === 0 && !insightsLoading) {
+      if (insights.length === 0 && !insightsLoading && !insightsFetchedRef.current) {
+        insightsFetchedRef.current = true;
         dispatch(fetchInsights());
       }
 
       // Fetch regions if not loaded
-      if (regions.length === 0 && !regionsLoading) {
+      if (regions.length === 0 && !regionsLoading && !regionsFetchedRef.current) {
+        regionsFetchedRef.current = true;
         dispatch(fetchRegions());
       }
 
       // Fetch FAQs if not loaded
-      if (faqs.length === 0 && !faqsLoading) {
+      if (faqs.length === 0 && !faqsLoading && !faqsFetchedRef.current) {
+        faqsFetchedRef.current = true;
         dispatch(fetchFAQs());
       }
 
       // Fetch industries if not loaded
-      if (industries.length === 0 && !industriesLoading) {
+      if (industries.length === 0 && !industriesLoading && !industriesFetchedRef.current) {
+        industriesFetchedRef.current = true;
         dispatch(fetchIndustries());
       }
 
       // Fetch contact content if not loaded
-      if (!contactContent && !contactLoading) {
+      if (!contactContent && !contactLoading && !contactFetchedRef.current) {
+        contactFetchedRef.current = true;
         dispatch(fetchContactContent());
       }
 
       // Fetch locations if not loaded
-      if (locations.length === 0 && !contactLoading) {
+      if (locations.length === 0 && !contactLoading && !locationsFetchedRef.current) {
+        locationsFetchedRef.current = true;
         dispatch(fetchLocations());
       }
 
       // Fetch global service content if not loaded
-      if (!globalContent && !globalServicesLoading) {
+      if (!globalContent && !globalServicesLoading && !globalContentFetchedRef.current) {
+        globalContentFetchedRef.current = true;
         dispatch(fetchGlobalServiceContent());
       }
 
       // Fetch global regions if not loaded
-      if (globalRegions.length === 0 && !globalServicesLoading) {
+      if (globalRegions.length === 0 && !globalServicesLoading && !globalRegionsFetchedRef.current) {
+        globalRegionsFetchedRef.current = true;
         dispatch(fetchGlobalRegions());
       }
 
       // Fetch global offerings if not loaded
-      if (offerings.length === 0 && !globalServicesLoading) {
+      if (offerings.length === 0 && !globalServicesLoading && !globalOfferingsFetchedRef.current) {
+        globalOfferingsFetchedRef.current = true;
         dispatch(fetchGlobalOfferings());
       }
     };

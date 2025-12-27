@@ -17,7 +17,7 @@ import globalServicesReducer from './slices/globalServicesSlice';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['hero', 'services', 'insights', 'regions', 'faqs', 'industries', 'contact', 'globalServices'], // Only persist these slices
+  whitelist: ['hero', 'services', 'insights', 'regions', 'faqs', 'contact', 'globalServices'], // Only persist these slices
 };
 
 // Combine reducers

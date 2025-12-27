@@ -106,7 +106,7 @@ export default function AsiaMap({ locations }: AsiaMapProps) {
 
               {/* Tooltip */}
               <g 
-                className="opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200 pointer-events-auto md:pointer-events-none scale-[2] md:scale-100"
+                className="opacity-0 md:group-hover:opacity-100 transition-opacity duration-200 pointer-events-auto md:pointer-events-none scale-[2] md:scale-100"
                 style={{ transformOrigin: '0 0' }}
               >
                 <rect

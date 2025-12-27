@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useSession, signOut } from "next-auth/react";
 import { LogIn } from 'lucide-react';
 import { InteractiveHoverButton } from './ui/InteractiveHoverButton';
+import { useAppSelector } from '@/lib/store/hooks';
 
 type MenuItem = {
   label: string;
@@ -286,6 +287,7 @@ export default function Navbar() {
   const [mobileOpenItem, setMobileOpenItem] = useState<string | null>(null);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [menuItems, setMenuItems] = useState(leftMenu);
+  const { industries } = useAppSelector((state) => state.industries);
 
   useEffect(() => {
     const fetchRegions = async () => {
@@ -355,6 +357,22 @@ export default function Navbar() {
     fetchRegions();
     fetchServices();
   }, []);
+
+  useEffect(() => {
+    if (industries.length > 0) {
+      const industrySubs = industries.map((industry: any) => ({
+        label: industry.title,
+        href: `/industry?section=${encodeURIComponent(industry.title)}`
+      }));
+
+      setMenuItems(prev => prev.map(item => {
+        if (item.label === 'Industries') {
+          return { ...item, subs: industrySubs };
+        }
+        return item;
+      }));
+    }
+  }, [industries]);
 
   useEffect(() => {
     const handleScroll = () => {
