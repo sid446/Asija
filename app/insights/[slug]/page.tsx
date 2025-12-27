@@ -59,7 +59,7 @@ export default function InsightPage({ params }: InsightPageProps) {
         // Use fullInsights for related if available
         if (fullInsights.length > 0) {
           const related = fullInsights
-            .filter((i) => i.category === data.category && i._id !== data._id)
+            .filter((i: Insight) => i.category === data.category && i._id !== data._id)
             .slice(0, 3);
           setRelatedInsights(related);
         }

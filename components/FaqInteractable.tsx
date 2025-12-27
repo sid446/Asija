@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Clock, CreditCard, Truck, ChevronDown, HelpCircle } from 'lucide-react';
 import { InteractiveHoverButton } from './ui/InteractiveHoverButton';
 import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
-import { fetchFAQs } from '@/lib/store/slices/faqsSlice';
+import { fetchFAQs, FAQ } from '@/lib/store/slices/faqsSlice';
 
 type FAQItem = {
   _id: string;
@@ -112,7 +112,7 @@ export default function FAQAccordion() {
               <div className="text-white text-center">Loading FAQs...</div>
             ) : (
               <Accordion type="single" collapsible className="w-full space-y-3 sm:space-y-4">
-                {faqs.map((item, index) => {
+                {faqs.map((item: FAQ, index: number) => {
                   const Icon = getIcon(index);
                   const isOpen = openItem === item._id;
                   

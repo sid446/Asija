@@ -1,15 +1,6 @@
 import { NextResponse } from 'next/server';
-import mongoose from 'mongoose';
 import AboutCard from '@/models/AboutCard';
-
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/asija';
-
-const connectDB = async () => {
-  if (mongoose.connections[0].readyState) return;
-  await mongoose.connect(MONGODB_URI);
-};
-
-const seedData = [
+import dbConnect from '@/lib/mongodb';const seedData = [
   {
     image: '/mission1.jpg',
     title: 'Vision & Mission',
@@ -62,7 +53,7 @@ const seedData = [
 
 export async function GET() {
   try {
-    await connectDB();
+    await dbConnect();
     let cards = await AboutCard.find().sort({ order: 1 });
 
     if (cards.length === 0) {
@@ -78,7 +69,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    await connectDB();
+    await dbConnect();
     const data = await request.json();
     const card = await AboutCard.create(data);
     return NextResponse.json(card);

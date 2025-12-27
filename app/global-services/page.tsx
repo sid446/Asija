@@ -20,20 +20,31 @@ type GlobalServiceContentData = {
   introDescription2: string;
 };
 
-type GlobalRegionItem = {
-  _id: string;
-  name: string;
-  image: string;
-  href: string;
-  order: number;
-};
-
 type GlobalOfferingItem = {
   _id: string;
   title: string;
   description: string;
   icon: string;
   order: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type GlobalRegionItem = {
+  _id: string;
+  name: string;
+  slug: string;
+  image: string;
+  href: string;
+  order: number;
+  heroImage?: string;
+  heroTitle?: string;
+  heroDescription?: string;
+  contentHeading?: string;
+  contentDescription?: string;
+  features?: string[];
+  createdAt: string;
+  updatedAt: string;
 };
 
 export default function GlobalServices() {
@@ -103,7 +114,7 @@ export default function GlobalServices() {
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {offerings.map((service, index) => (
+            {offerings.map((service: GlobalOfferingItem, index: number) => (
               <motion.div 
                 key={service._id}
                 initial={{ opacity: 0, y: 20 }}
@@ -132,7 +143,7 @@ export default function GlobalServices() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {regions.map((region, index) => (
+            {regions.map((region: GlobalRegionItem, index: number) => (
               <Link href={region.href} key={region._id}>
                 <motion.div 
                   whileHover={{ y: -10 }}

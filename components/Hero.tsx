@@ -58,7 +58,7 @@ function Hero() {
         loop
         muted
         playsInline
-        preload="metadata"
+        preload="none"
         poster={content.videoPoster}
         onCanPlay={() => setVideoLoaded(true)}
       >
@@ -76,7 +76,6 @@ function Hero() {
       {/* Gradient + Blur Overlay */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-linear-to-r from-slate-950/60 via-slate-950/35 to-transparent md:from-slate-950/60 md:via-slate-950/35 md:to-transparent bg-slate-950/40" />
-        <div className="absolute inset-0 bg-slate-950/25 backdrop-blur-sm md:backdrop-blur-md" />
       </div>
 
       {/* Content */}

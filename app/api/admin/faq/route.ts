@@ -1,13 +1,6 @@
 import { NextResponse } from 'next/server';
-import mongoose from 'mongoose';
 import FAQ from '@/models/FAQ';
-
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/asija';
-
-const connectDB = async () => {
-  if (mongoose.connections[0].readyState) return;
-  await mongoose.connect(MONGODB_URI);
-};
+import dbConnect from '@/lib/mongodb';
 
 const seedData = [
   {
@@ -26,7 +19,7 @@ const seedData = [
 
 export async function GET() {
   try {
-    await connectDB();
+    await dbConnect();
     let faqs = await FAQ.find().sort({ createdAt: 1 });
 
     if (faqs.length === 0) {
@@ -41,7 +34,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    await connectDB();
+    await dbConnect();
     const body = await request.json();
     const faq = await FAQ.create(body);
     return NextResponse.json(faq);

@@ -1,7 +1,23 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
 import { combineReducers } from '@reduxjs/toolkit';
+
+// Create a storage wrapper that handles SSR and missing localStorage
+const createNoopStorage = () => {
+  return {
+    getItem(_key: string) {
+      return Promise.resolve(null);
+    },
+    setItem(_key: string, value: any) {
+      return Promise.resolve(value);
+    },
+    removeItem(_key: string) {
+      return Promise.resolve();
+    },
+  };
+};
+
+const storage = typeof window !== 'undefined' ? require('redux-persist/lib/storage').default : createNoopStorage();
 
 // Import slices
 import heroReducer from './slices/heroSlice';
@@ -32,8 +48,14 @@ const rootReducer = combineReducers({
   globalServices: globalServicesReducer,
 });
 
-// Create persisted reducer
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+// Create persisted reducer with error handling
+let persistedReducer: any;
+try {
+  persistedReducer = persistReducer(persistConfig, rootReducer);
+} catch (error) {
+  console.warn('Redux persist failed to create persisted reducer, falling back to regular reducer:', error);
+  persistedReducer = rootReducer;
+}
 
 // Configure store
 export const store = configureStore({
@@ -41,13 +63,19 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
+        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE', 'persist/REGISTER'],
       },
     }),
 });
 
-// Create persistor
-export const persistor = persistStore(store);
+// Create persistor with error handling
+export let persistor: any;
+try {
+  persistor = persistStore(store);
+} catch (error) {
+  console.warn('Redux persist failed to create persistor, continuing without persistence:', error);
+  persistor = null;
+}
 
 // Export types
 export type RootState = ReturnType<typeof store.getState>;

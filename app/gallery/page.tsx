@@ -146,7 +146,7 @@ export default function GalleryPage() {
 
               {!selectedCategory ? (
                 // Categories View
-                <div className="grid grid-cols-1 gap-6">
+                <div className="grid grid-cols-3 gap-6">
                   {categories.map((category, idx) => {
                     // Get latest image for thumbnail
                     const categoryEvents = events.filter(e => (e.category || 'Uncategorized') === category);
@@ -186,7 +186,7 @@ export default function GalleryPage() {
                 </div>
               ) : !selectedYear ? (
                 // Years View (Folders)
-                <div className="grid grid-cols-1 gap-6">
+                <div className="grid grid-cols-3 gap-6">
                   {years.map((year, idx) => {
                     // Get latest image for thumbnail from this year
                     const yearEvents = events.filter(e => 
@@ -229,7 +229,7 @@ export default function GalleryPage() {
               ) : (
                 // Events View (Grid)
                 <div className="space-y-8">
-                  <div className="grid grid-cols-1 gap-6">
+                  <div className="grid grid-cols-3 gap-6">
                     {filteredEvents.map((event, idx) => (
                       <motion.div
                         key={event._id}

@@ -94,7 +94,7 @@ export default function IndustriesContent() {
   // Construct pages array
   const pages: Page[] = [
     // Industry Slides
-    ...industries.map((industry, i) => {
+    ...industries.map((industry: Industry, i: number) => {
       const isEven = i % 2 === 0;
       return {
         leftBgImage: isEven ? (industry.image || null) : null,
@@ -125,7 +125,7 @@ export default function IndustriesContent() {
 
   useEffect(() => {
     if (section && industries.length > 0) {
-      const index = industries.findIndex(ind => ind.title === section);
+      const index = industries.findIndex((ind: Industry) => ind.title === section);
       if (index !== -1) {
         setCurrentPage(index);
       }
@@ -433,7 +433,7 @@ export default function IndustriesContent() {
                 className="flex gap-2 overflow-x-auto max-w-[95vw] p-3 pointer-events-auto [&::-webkit-scrollbar]:hidden bg-slate-950/40 backdrop-blur-lg rounded-xl border border-white/10" 
                 style={{ scrollbarWidth: 'none' }}
               >
-                {industries.map((industry, i) => (
+                {industries.map((industry: Industry, i: number) => (
                   <button
                     key={i}
                     onClick={() => setCurrentPage(i)}

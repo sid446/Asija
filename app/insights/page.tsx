@@ -7,7 +7,7 @@ import { useTheme } from '@/components/ThemeProvider';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
-import { fetchInsights } from '@/lib/store/slices/insightsSlice';
+import { fetchInsights, Insight } from '@/lib/store/slices/insightsSlice';
 
 export default function InsightsPage() {
   const { theme } = useTheme();
@@ -22,15 +22,15 @@ export default function InsightsPage() {
     }
   }, [dispatch, fullFetched, loading]);
 
-  const insights = fullInsights;
+  const insights: Insight[] = fullInsights;
 
-  const categories = ['All', ...Array.from(new Set(insights.map(insight => insight.category)))];
+  const categories: string[] = ['All', ...Array.from(new Set(insights.map((insight: Insight) => insight.category)))];
   const filteredInsights = selectedCategory === 'All'
     ? insights
-    : insights.filter(insight => insight.category === selectedCategory);
+    : insights.filter((insight: Insight) => insight.category === selectedCategory);
 
-  const featuredInsights = insights.filter(insight => insight.featured);
-  const regularInsights = filteredInsights.filter(insight => !insight.featured);
+  const featuredInsights = insights.filter((insight: Insight) => insight.featured);
+  const regularInsights = filteredInsights.filter((insight: Insight) => !insight.featured);
 
   // TEMP: Replace with real admin check
   const isAdmin = typeof window !== 'undefined' && localStorage.getItem('isAdmin') === 'true';
@@ -95,7 +95,7 @@ export default function InsightsPage() {
           <div className="mb-16">
             <h2 className="text-3xl font-bold text-theme mb-8">Featured Insights</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {featuredInsights.map((insight) => (
+              {featuredInsights.map((insight: Insight) => (
                 <div key={insight._id} className="bg-card   overflow-hidden hover:shadow-xl transition-shadow border border-theme">
                   {insight.image && (
                     <img
@@ -167,7 +167,7 @@ export default function InsightsPage() {
 
         {/* All Insights */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {regularInsights.map((insight) => (
+          {regularInsights.map((insight: Insight) => (
             <div key={insight._id} className="bg-card overflow-hidden hover:shadow-xl transition-shadow border border-theme">
               {insight.image && (
                 <img

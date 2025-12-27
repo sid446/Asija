@@ -20,8 +20,10 @@ export const useTheme = () => {
 
 export default function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>('light');
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     // read saved preference or system preference
     try {
       const saved = localStorage.getItem('theme');
@@ -36,6 +38,8 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    if (!mounted) return;
+
     // Apply theme to document body and root so plain CSS respects it
     const root = document.documentElement;
     const body = document.body;
@@ -60,10 +64,19 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
     } catch (e) {
       // ignore
     }
-  }, [theme]);
+  }, [theme, mounted]);
 
   const setTheme = (t: Theme) => setThemeState(t);
   const toggleTheme = () => setThemeState((s) => (s === 'dark' ? 'light' : 'dark'));
+
+  // Prevent hydration mismatch by not rendering until mounted
+  if (!mounted) {
+    return (
+      <ThemeContext.Provider value={{ theme: 'light', setTheme, toggleTheme }}>
+        {children}
+      </ThemeContext.Provider>
+    );
+  }
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>

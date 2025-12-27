@@ -302,7 +302,7 @@ export default function Industries() {
         <ProgressSlider vertical={false} activeSlider={activeSlider} duration={6000}>
           
           <SliderContent className="relative w-full h-[350px] sm:h-[450px] md:h-[550px] lg:h-[600px] overflow-hidden">
-            {industries.map((item, index) => (
+            {industries.map((item: Industry, index: number) => (
               <SliderWrapper key={item._id} value={item._id} className="absolute inset-0">
                 <div className="relative w-full h-full rounded-xl sm:rounded-2xl overflow-hidden">
                   <img
@@ -343,7 +343,7 @@ export default function Industries() {
           </SliderContent>
 
           <SliderBtnGroup className='mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 touch-manipulation'>
-            {industries.map((item, index) => (
+            {industries.map((item: Industry, index: number) => (
               <SliderBtn
                 key={item._id}
                 value={item._id}

@@ -1,17 +1,8 @@
 import { NextResponse } from 'next/server';
-import mongoose from 'mongoose';
 import AboutTimeline from '@/models/AboutTimeline';
-
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/asija';
-
-const connectDB = async () => {
-  if (mongoose.connections[0].readyState) return;
-  await mongoose.connect(MONGODB_URI);
-};
-
-export async function GET() {
+import dbConnect from '@/lib/mongodb';export async function GET() {
   try {
-    await connectDB();
+    await dbConnect();
     const items = await AboutTimeline.find().sort({ order: 1 });
     return NextResponse.json(items);
   } catch (error) {
@@ -22,7 +13,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    await connectDB();
+    await dbConnect();
     const data = await request.json();
     const item = await AboutTimeline.create(data);
     return NextResponse.json(item);

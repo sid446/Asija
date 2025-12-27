@@ -57,7 +57,7 @@ export default function     Insights() {
   }
 
   // Transform insights data for Gallery4 component
-  const galleryData = insights.map((insight, index) => ({
+  const galleryData = insights.map((insight: Insight, index: number) => ({
     id: insight._id,
     title: insight.title,
     description: insight.description,

@@ -1,17 +1,8 @@
 import { NextResponse } from 'next/server';
-import mongoose from 'mongoose';
 import AboutCard from '@/models/AboutCard';
-
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/asija';
-
-const connectDB = async () => {
-  if (mongoose.connections[0].readyState) return;
-  await mongoose.connect(MONGODB_URI);
-};
-
-export async function GET() {
+import dbConnect from '@/lib/mongodb';export async function GET() {
   try {
-    await connectDB();
+    await dbConnect();
     const cards = await AboutCard.find().sort({ order: 1 });
 
     return NextResponse.json({ items: cards });

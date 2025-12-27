@@ -2,6 +2,9 @@
 
 /* globals.css */
 /* Optional: Soft shadow when About overlaps Hero */
+html {
+  scroll-behavior: auto;
+}
 .motion-about::before {
   content: '';
   position: absolute;
@@ -61,7 +64,7 @@
 
 /* Theme variables (defaults = light theme) */
 :root {
-  --theme-bg: #ffffff;
+  --theme-bg: #c8e2e9;
   --theme-surface: #f4f4f5;
   --theme-card: #ffffff;
   --theme-text: #000000;

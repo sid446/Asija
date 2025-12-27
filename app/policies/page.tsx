@@ -2,13 +2,12 @@
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useTheme } from "@/components/ThemeProvider";
 import { motion } from "framer-motion";
 import { InteractiveHoverButton } from "@/components/ui/InteractiveHoverButton";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/Accordian";
 import Link from "next/link";
 
 type DepartmentItem = {
@@ -40,7 +39,64 @@ export default function PoliciesPage() {
   const [policies, setPolicies] = useState<PolicyItem[]>([]);
   const [employeePolicies, setEmployeePolicies] = useState<PolicyItem[]>([]);
   const [departments, setDepartments] = useState<DepartmentItem[]>([]);
-  const [expandedPolicies, setExpandedPolicies] = useState<Set<string>>(new Set());
+  const [currentSectionIndex, setCurrentSectionIndex] = useState<number>(0);
+  const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
+  const sectionsContainerRef = useRef<HTMLDivElement>(null);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [selectedPolicy, setSelectedPolicy] = useState<PolicyItem | null>(null);
+
+  // Touch handlers for mobile swipe navigation
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientY);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientY);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe && currentSectionIndex < sections.length - 1) {
+      setCurrentSectionIndex(currentSectionIndex + 1);
+    }
+    if (isRightSwipe && currentSectionIndex > 0) {
+      setCurrentSectionIndex(currentSectionIndex - 1);
+    }
+  };
+
+  const sections = [
+    { 
+      id: 'general-policies', 
+      label: 'General', 
+      title: 'General Policies',
+      description: 'Transparency and integrity are at the core of our operations',
+      bgImage: '/about1.jpg',
+      color: 'from-blue-900/80 to-blue-700/80'
+    },
+    { 
+      id: 'legal-documents', 
+      label: 'Legal', 
+      title: 'Legal Documents',
+      description: 'Essential legal documents and terms of service',
+      bgImage: '/about2.jpg',
+      color: 'from-purple-900/80 to-purple-700/80'
+    },
+    { 
+      id: 'employee-policies', 
+      label: 'Employee', 
+      title: 'Employee & Internal Policies',
+      description: 'Department-specific guidelines and employee resources',
+      bgImage: '/about3.jpg',
+      color: 'from-green-900/80 to-green-700/80'
+    },
+  ];
 
   useEffect(() => {
     const fetchPolicies = async () => {
@@ -72,6 +128,18 @@ export default function PoliciesPage() {
     fetchDepartments();
   }, []);
 
+  // Keyboard handler for modal
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && selectedPolicy) {
+        setSelectedPolicy(null);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [selectedPolicy]);
+
   const groupedEmployeePolicies = employeePolicies.reduce((acc, policy) => {
     const deptSlug = policy.subCategory?.toLowerCase() || 'other';
     if (!acc[deptSlug]) {
@@ -81,233 +149,324 @@ export default function PoliciesPage() {
     return acc;
   }, {} as Record<string, PolicyItem[]>);
 
-  const togglePolicyExpansion = (policyId: string) => {
-    setExpandedPolicies(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(policyId)) {
-        newSet.delete(policyId);
-      } else {
-        newSet.add(policyId);
-      }
-      return newSet;
-    });
-  };
-
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${isLight ? 'bg-white text-gray-900' : 'bg-slate-950 text-white'}`}>
+    <div className={`h-screen overflow-hidden transition-colors duration-300 ${isLight ? 'bg-white text-gray-900' : 'bg-slate-950 text-white'}`}>
       <Navbar />
       
-      <main className="pt-30 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-12 text-center lg:text-left">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Company <span className="text-[#009edb]">Policies</span>
-          </h1>
-          <p className={`text-lg max-w-2xl ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
-            Transparency and integrity are at the core of our operations. Review our policies to understand how we operate and serve you.
-          </p>
-        </div>
+      <main className={`relative ${currentSectionIndex === 2 ? 'h-auto' : 'h-screen'} ${currentSectionIndex === 2 ? 'overflow-y-auto' : 'overflow-hidden'}`}>
+        {/* Hero Sections */}
+        <div 
+          ref={sectionsContainerRef}
+          className="space-y-0 transition-transform duration-600 ease-in-out"
+          style={{ transform: `translateY(-${currentSectionIndex * 100}vh)` }}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          {/* General Policies Section */}
+          <section 
+            id="general-policies" 
+            ref={(el) => { sectionRefs.current['general-policies'] = el; }}
+            className="relative h-screen flex items-center justify-start overflow-hidden pt-24 sm:pt-0"
+          >
+            <div className="absolute inset-0">
+              <img 
+                src="/about1.jpg" 
+                alt="General Policies" 
+                className="w-full h-full object-cover"
+              />
+              <div className={`absolute inset-0 bg-gradient-to-r from-black/30 to-black/10 `} />
+            </div>
+            
+            <div className="relative z-10 text-left text-white px-4 sm:px-6 lg:px-8 max-w-4xl">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+              >
+                <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6 tracking-tight" style={{color: 'white'}}>{sections[0].title}</h2>
+                <p className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 opacity-90 max-w-2xl  leading-relaxed" style={{color: 'white'}}>{sections[0].description}</p>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-6xl mx-auto">
+                  {policies.slice(0, 3).map((policy, index) => {
+                    const content = policy.content || '';
+                    const truncated = content.substring(0, 100);
+                    const shouldTruncate = content.length > 100;
+                    
+                    return (
+                      <motion.div 
+                        key={index}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: index * 0.1 }}
+                        className="bg-white/5 backdrop-blur-sm rounded-lg p-4 sm:p-6 lg:p-8 border border-white/10 hover:bg-white/10 transition-all duration-500 group"
+                      >
+                        <div className="w-8 sm:w-12 h-px bg-white/30 mb-3 sm:mb-4 group-hover:bg-[#009edb] transition-colors duration-300" />
+                        <h3 className="text-lg sm:text-xl font-light mb-2 sm:mb-3 leading-tight" style={{color: 'white'}}>{policy.title}</h3>
+                        <p className="text-xs sm:text-sm opacity-70 leading-relaxed" style={{color: 'white'}}>
+                          {shouldTruncate ? `${truncated}...` : content}
+                        </p>
+                        {shouldTruncate && (
+                          <button
+                            onClick={() => setSelectedPolicy(policy)}
+                            className="mt-3 sm:mt-4 text-xs font-light tracking-wider uppercase opacity-50 hover:opacity-80 transition-opacity duration-300"
+                            style={{color: 'white'}}
+                          >
+                            READ MORE
+                          </button>
+                        )}
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            </div>
+          </section>
 
-        <div className="flex flex-col lg:flex-row gap-12">
-          {/* Left Side - Policies (70%) */}
-          <div className="w-full lg:w-[70%] space-y-12">
-
-            {/* General Policies Section */}
-            <section>
-              <h2 className={`text-2xl font-semibold mb-6 flex items-center gap-2 ${isLight ? 'text-gray-800' : 'text-gray-100'}`}>
-                <span className="w-2 h-8 bg-[#009edb] rounded-full"></span>
-                General Policies
-              </h2>
-              <div className="space-y-8">
-                {policies.map((policy, index) => (
-                  <motion.div 
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+          {/* Legal Documents Section */}
+          <section 
+            id="legal-documents" 
+            ref={(el) => { sectionRefs.current['legal-documents'] = el; }}
+            className="relative h-screen flex items-center justify-start overflow-hidden pt-24  sm:pt-0"
+          >
+            <div className="absolute inset-0">
+              <img 
+                src="/about2.jpg" 
+                alt="Legal Documents" 
+                className="w-full h-full object-cover"
+              />
+              <div className={`absolute inset-0 bg-gradient-to-r from-black/30 to-black/10 `} />
+            </div>
+            
+            <div className="relative z-10 text-left text-white px-4 sm:px-6 lg:px-8 max-w-4xl">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+              >
+                <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6 tracking-tight" style={{color: 'white'}}>{sections[1].title}</h2>
+                <p className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 opacity-90 max-w-2xl leading-relaxed" style={{color: 'white'}}>{sections[1].description}</p>
+                
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 lg:gap-8 justify-center items-center max-w-4xl mx-auto">
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    className={`p-6 rounded-2xl border transition-all duration-300 hover:shadow-lg ${
-                      isLight 
-                        ? 'bg-white border-gray-100 hover:border-[#009edb]/30' 
-                        : 'bg-slate-950 border-white/5 hover:border-[#009edb]/30'
-                    }`}
+                    className="bg-white/5 backdrop-blur-sm rounded-lg p-4 sm:p-6 lg:p-8 border border-white/10 hover:bg-white/10 transition-all duration-500 cursor-pointer group w-full max-w-sm"
+                    onClick={() => window.open('/policies/privacy-policy', '_blank')}
                   >
-                    <h3 className="text-xl font-bold mb-3 text-[#009edb]">{policy.title}</h3>
-                    <div className={`leading-relaxed ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
-                      {policy.content && (
-                        <>
-                          <p>
-                            {expandedPolicies.has(policy._id) 
-                              ? policy.content 
-                              : policy.content.length > 300 
-                                ? `${policy.content.substring(0, 300)}...` 
-                                : policy.content
-                            }
-                          </p>
-                          {policy.content.length > 300 && (
-                            <button
-                              onClick={() => togglePolicyExpansion(policy._id)}
-                              className="mt-2 text-[#009edb] hover:text-[#007acc] font-medium transition-colors duration-200"
-                            >
-                              {expandedPolicies.has(policy._id) ? 'Read Less' : 'Read More'}
-                            </button>
-                          )}
-                        </>
-                      )}
+                    <div className="w-12 sm:w-16 h-px bg-white/30 mb-4 sm:mb-6 group-hover:bg-[#009edb] transition-colors duration-300" />
+                    <h3 className="text-xl sm:text-2xl font-light mb-3 sm:mb-4 leading-tight" style={{color: 'white'}}>Privacy Policy</h3>
+                    <p className="text-xs sm:text-sm opacity-70 leading-relaxed mb-4 sm:mb-6" style={{color: 'white'}}>Learn how we collect, use, and protect your personal information.</p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-light tracking-wider uppercase opacity-50" style={{color: 'white'}}>READ MORE</span>
+                      <div className="text-base sm:text-lg group-hover:translate-x-2 transition-transform duration-300" style={{color: 'white'}}>→</div>
                     </div>
                   </motion.div>
-                ))}
-              </div>
-            </section>
 
-            {/* Legal Documents Section */}
-            <section>
-              <h2 className={`text-2xl font-semibold mb-6 flex items-center gap-2 ${isLight ? 'text-gray-800' : 'text-gray-100'}`}>
-                <span className="w-2 h-8 bg-[#009edb] rounded-full"></span>
-                Legal Documents
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  className={`p-6 rounded-2xl border transition-all duration-300 hover:shadow-lg cursor-pointer group ${
-                    isLight
-                      ? 'bg-white border-gray-100 hover:border-[#009edb]/30'
-                      : 'bg-slate-950 border-white/5 hover:border-[#009edb]/30'
-                  }`}
-                  onClick={() => window.open('/policies/privacy-policy', '_blank')}
-                >
-                  <h3 className="text-xl font-bold mb-3 text-[#009edb] group-hover:translate-x-1 transition-transform">
-                    Privacy Policy
-                  </h3>
-                  <p className={`leading-relaxed ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
-                    Learn how we collect, use, and protect your personal information.
-                  </p>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.1 }}
-                  className={`p-6 rounded-2xl border transition-all duration-300 hover:shadow-lg cursor-pointer group ${
-                    isLight
-                      ? 'bg-white border-gray-100 hover:border-[#009edb]/30'
-                      : 'bg-slate-950 border-white/5 hover:border-[#009edb]/30'
-                  }`}
-                  onClick={() => window.open('/policies/terms-of-service', '_blank')}
-                >
-                  <h3 className="text-xl font-bold mb-3 text-[#009edb] group-hover:translate-x-1 transition-transform">
-                    Terms of Service
-                  </h3>
-                  <p className={`leading-relaxed ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
-                    Read our terms and conditions for using our services.
-                  </p>
-                </motion.div>
-              </div>
-            </section>
-
-            {/* Employee Policies Section */}
-            <section>
-              <h2 className={`text-2xl font-semibold mb-6 flex items-center gap-2 ${isLight ? 'text-gray-800' : 'text-gray-100'}`}>
-                <span className="w-2 h-8 bg-[#009edb] rounded-full"></span>
-                Employee & Internal Policies
-              </h2>
-
-              {!session && (
-                <div className={`p-4 rounded-lg mb-6 text-center ${isLight ? 'bg-blue-50 text-blue-800' : 'bg-blue-900/20 text-blue-200'}`}>
-                  <p>Please <Link href="/login" className="text-[#009edb] hover:underline font-medium">log in</Link> to view employee policies and department-specific guidelines.</p>
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2 }}
+                    className="bg-white/5 backdrop-blur-sm rounded-lg p-4 sm:p-6 lg:p-8 border border-white/10 hover:bg-white/10 transition-all duration-500 cursor-pointer group w-full max-w-sm"
+                    onClick={() => window.open('/policies/terms-of-service', '_blank')}
+                  >
+                    <div className="w-12 sm:w-16 h-px bg-white/30 mb-4 sm:mb-6 group-hover:bg-[#009edb] transition-colors duration-300" />
+                    <h3 className="text-xl sm:text-2xl font-light mb-3 sm:mb-4 leading-tight" style={{color: 'white'}}>Terms of Service</h3>
+                    <p className="text-xs sm:text-sm opacity-70 leading-relaxed mb-4 sm:mb-6" style={{color: 'white'}}>Read our terms and conditions for using our services.</p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-light tracking-wider uppercase opacity-50" style={{color: 'white'}}>READ MORE</span>
+                      <div className="text-base sm:text-lg group-hover:translate-x-2 transition-transform duration-300" style={{color: 'white'}}>→</div>
+                    </div>
+                  </motion.div>
                 </div>
-              )}
+              </motion.div>
+            </div>
+          </section>
 
-              {departments.length === 0 ? (
-                <div className="text-center py-8">
-                  <p className="text-gray-500">Loading departments...</p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {departments.map((department, index) => (
-                    <motion.div
-                      key={department.slug}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.1 }}
-                      className={`p-6 rounded-2xl border transition-all duration-300 hover:shadow-lg cursor-pointer group ${
-                        isLight
-                          ? 'bg-white border-gray-100 hover:border-[#009edb]/30'
-                          : 'bg-slate-950 border-white/5 hover:border-[#009edb]/30'
-                      }`}
-                      onClick={() => session ? router.push(`/policies/${department.slug}`) : router.push('/login')}
-                    >
-                      <div className="text-center">
-                        <div className="text-4xl mb-4">{department.icon}</div>
-                        <h3 className="text-xl font-bold mb-3 text-[#009edb] group-hover:translate-y-[-2px] transition-transform">
+          {/* Employee Policies Section */}
+          <section 
+            id="employee-policies" 
+            ref={(el) => { sectionRefs.current['employee-policies'] = el; }}
+            className="relative flex items-start justify-start overflow-y-auto  pt-24 pb-30  "
+          >
+            <div className="absolute inset-0">
+              <img 
+                src="/ql.jpg" 
+                alt="Employee Policies" 
+                className="w-full h-full object-cover"
+              />
+              <div className={`absolute inset-0 bg-gradient-to-r from-black/30 to-black/10 `} />
+            </div>
+            
+            <div className="relative z-10 text-left text-white px-4 sm:px-6 lg:px-8 max-w-6xl">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+              >
+                <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6 tracking-tight" style={{color: 'white'}}>{sections[2].title}</h2>
+                
+                <p className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 opacity-90" style={{color: 'white'}}>{sections[2].description}</p>
+                
+                {!session && (
+                  <div className="mb-6 sm:mb-8">
+                    <p className="text-base sm:text-lg opacity-80 mb-4 sm:mb-6" style={{color: 'white'}}>Please log in to view employee policies and department-specific guidelines.</p>
+                    <Link href="/login">
+                      <InteractiveHoverButton
+                        text="Login to View"
+                        className="bg-white/20 hover:bg-white/30 border-white/30 text-white"
+                      />
+                    </Link>
+                  </div>
+                )}
+
+                {session && departments.length > 0 && (
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                    {departments.map((department, index) => (
+                      <motion.div
+                        key={department.slug}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: index * 0.1 }}
+                        className="bg-white/5 backdrop-blur-sm rounded-lg p-3 sm:p-4 border border-white/10 hover:bg-white/10 transition-all duration-500 cursor-pointer group"
+                        onClick={() => router.push(`/policies/${department.slug}`)}
+                      >
+                        <div className="w-8 sm:w-12 h-px bg-white/30 mb-4 sm:mb-6 group-hover:bg-[#009edb] transition-colors duration-300" />
+                        <h3 className="text-lg sm:text-xl font-light mb-3 sm:mb-4 leading-tight" style={{color: 'white'}}>
                           {department.name}
                         </h3>
-                        <p className={`leading-relaxed text-sm ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
+                        <p className="text-xs sm:text-sm opacity-70 leading-relaxed mb-4 sm:mb-6 line-clamp-2" style={{color: 'white'}}>
                           {department.description}
                         </p>
-                        <div className="mt-4 flex justify-center">
-                          <div className="text-[#009edb] group-hover:translate-x-1 transition-transform">
-                            →
-                          </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-light tracking-wider uppercase opacity-50" style={{color: 'white'}}>VIEW POLICIES</span>
+                          <div className="text-sm sm:text-lg group-hover:translate-x-2 transition-transform duration-300" style={{color: 'white'}}>→</div>
                         </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              )}
-            </section>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            </div>
+          </section>
+        </div>
 
-          </div>
-
-          {/* Right Side - Image (30%) */}
-          <div className="w-full lg:w-[30%]">
-            <div className="sticky top-24 space-y-6">
-              <div className="relative rounded-2xl overflow-hidden aspect-3/4 shadow-2xl">
-                <div className="absolute inset-0 bg-linear-to-t from-slate-950/60 to-transparent z-10" />
-                <img 
-                  src="/about1.jpg" 
-                  alt="Office Culture" 
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                  <p className=" font-medium text-lg" style={{color:"white"}}>"Commitment to excellence defines our policy framework."</p>
-                </div>
-              </div>
-
-              <div className={`p-6 rounded-2xl border ${
-                isLight 
-                  ? 'bg-[#009edb]/10 border-[#009edb]/20' 
-                  : 'bg-[#009edb]/5 border-[#009edb]/10'
-              }`}>
-                <h4 className={`font-bold mb-2 ${isLight ? 'text-gray-900' : 'text-white'}`}>Need Assistance?</h4>
-                <p className={`text-sm mb-4 ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>
-                  If you have questions regarding our policies, please contact our HR department.
-                </p>
-                <InteractiveHoverButton
-                  text="Contact HR"
-                  className="w-full justify-center"
-                  onClick={() => window.open('https://mail.google.com/mail/?view=cm&fs=1&to=hr@asija.in', '_blank')}
-                />
+        {/* Magazine-Style Navigation */}
+        <div className="fixed right-4 md:right-8 top-1/2 transform -translate-y-1/2 z-50 hidden lg:block">
+          <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-4 md:p-6">
+            <div className="space-y-4 md:space-y-6">
+              {sections.map((section, index) => {
+                const isActive = currentSectionIndex === index;
                 
-              </div>
-              <Link href="/">
-              <InteractiveHoverButton
-                text="Home"
-                className={`px-6 py-3 ${isLight ? 'bg-white border-gray-300 w-full text-gray-900' : 'bg-slate-700 border-slate-600 text-white'}`}
-              />
-            </Link>
+                return (
+                  <motion.button
+                    key={section.id}
+                    onClick={() => setCurrentSectionIndex(index)}
+                    className={`block text-left transition-all duration-300 group ${
+                      isActive ? 'text-[#009edb]' : 'text-white/80 hover:text-white'
+                    }`}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <div className="flex items-center gap-2 md:gap-3">
+                      <div className={`w-1 h-6 md:h-8 rounded-full transition-all duration-300 ${
+                        isActive ? 'bg-[#009edb] w-2' : 'bg-white/30 group-hover:bg-white/60'
+                      }`} />
+                      <div className="flex flex-col">
+                        <span className={`text-xs md:text-sm font-light tracking-wider uppercase ${
+                          isActive ? 'text-[#009edb]' : 'text-white/60'
+                        }`} style={{color: 'white'}}>
+                          0{index + 1}
+                        </span>
+                        <span className={`text-base md:text-lg font-medium leading-tight ${
+                          isActive ? 'text-[#009edb]' : 'text-white group-hover:text-white'
+                        }`} style={{color: 'white'}}>
+                          {section.label}
+                        </span>
+                      </div>
+                    </div>
+                    {isActive && (
+                      <motion.div 
+                        className="mt-1 md:mt-2 h-px bg-[#009edb] rounded-full"
+                        initial={{ width: 0 }}
+                        animate={{ width: '100%' }}
+                        transition={{ duration: 0.3 }}
+                      />
+                    )}
+                  </motion.button>
+                );
+              })}
             </div>
           </div>
         </div>
+
+        {/* Mobile Navigation */}
+        <div className="fixed bottom-1 left-1/2 transform -translate-x-1/2 z-40 lg:hidden">
+          <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-full px-6 py-3">
+            <div className="flex items-center gap-3">
+              {sections.map((section, index) => (
+                <motion.button
+                  key={index}
+                  onClick={() => setCurrentSectionIndex(index)}
+                  className={`px-3 py-1 rounded-full transition-all duration-300 text-xs font-light tracking-wider uppercase ${
+                    currentSectionIndex === index ? 'bg-[#009edb] text-white scale-105' : 'bg-white/40 hover:bg-white/60 text-white'
+                  }`}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  {section.label}
+                </motion.button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+       
       </main>
 
       
-
-      <Footer />
+      {/* Modal */}
+      {selectedPolicy && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4"
+          onClick={() => setSelectedPolicy(null)}
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            className="bg-white/10 backdrop-blur-md rounded-lg p-4 sm:p-6 lg:p-8 max-w-2xl w-full max-h-[85vh] sm:max-h-[80vh] overflow-y-auto border border-white/20"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-start mb-4 sm:mb-6">
+              <h2 className="text-xl sm:text-2xl font-light leading-tight pr-4" style={{color: 'white'}}>
+                {selectedPolicy.title}
+              </h2>
+              <button
+                onClick={() => setSelectedPolicy(null)}
+                className="text-white/50 hover:text-white transition-colors duration-300 text-lg sm:text-xl flex-shrink-0"
+              >
+                ×
+              </button>
+            </div>
+            <div className="text-xs sm:text-sm opacity-80 leading-relaxed whitespace-pre-wrap" style={{color: 'white'}}>
+              {selectedPolicy.content}
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
     </div>
   );
 }

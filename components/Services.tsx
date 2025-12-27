@@ -178,7 +178,7 @@ export default function Services() {
         </motion.p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mt-16 sm:mt-20">
-          {services.map((group, idx) => (
+          {services.map((group: Service, idx: number) => (
             <ServiceCard key={group._id || idx} group={group} index={idx} />
           ))}
         </div>

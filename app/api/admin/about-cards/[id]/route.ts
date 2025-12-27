@@ -1,17 +1,10 @@
 import { NextResponse } from 'next/server';
-import mongoose from 'mongoose';
 import AboutCard from '@/models/AboutCard';
-
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/asija';
-
-const connectDB = async () => {
-  if (mongoose.connections[0].readyState) return;
-  await mongoose.connect(MONGODB_URI);
-};
+import dbConnect from '@/lib/mongodb';
 
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    await connectDB();
+    await dbConnect();
     const { id } = await params;
     const data = await request.json();
     const card = await AboutCard.findByIdAndUpdate(id, data, { new: true });
@@ -24,7 +17,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
 export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    await connectDB();
+    await dbConnect();
     const { id } = await params;
     await AboutCard.findByIdAndDelete(id);
     return NextResponse.json({ message: 'Card deleted successfully' });

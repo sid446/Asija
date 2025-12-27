@@ -110,6 +110,29 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                const theme = localStorage.getItem('theme');
+                if (theme === 'dark') {
+                  document.documentElement.setAttribute('data-theme', 'dark');
+                  document.body.style.backgroundColor = '#020617';
+                  document.body.style.color = '#ffffff';
+                } else {
+                  document.documentElement.setAttribute('data-theme', 'light');
+                  document.body.style.backgroundColor = '#ffffff';
+                  document.body.style.color = '#111827';
+                }
+              } catch (e) {
+                // fallback to light theme
+                document.documentElement.setAttribute('data-theme', 'light');
+                document.body.style.backgroundColor = '#ffffff';
+                document.body.style.color = '#111827';
+              }
+            `,
+          }}
+        />
+        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
