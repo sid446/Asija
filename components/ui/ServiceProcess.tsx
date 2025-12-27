@@ -40,7 +40,7 @@ function ServiceProcess() {
   ];
 
   return (
-     <section className="py-10 sm:py-20 px-4 sm:px-6 md:px-12 lg:px-20" style={{ backgroundColor: theme === 'dark' ? '#000000' : '#f0f0f0' }}>
+     <section className="py-10 sm:py-20 px-4 sm:px-6 md:px-12 lg:px-20" >
         <div className="mx-auto max-w-5xl space-y-8 sm:space-y-12">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="relative z-10 mx-auto max-w-2xl space-y-3 sm:space-y-6 text-center">
             <h2 className="text-balance text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold">
@@ -51,7 +51,7 @@ function ServiceProcess() {
             </p>
           </motion.div>
 
-          <div className="relative mx-auto max-w-7xl divide-x divide-y divide-[#2c2c2c] border border-[#2c2c2c] *:p-4 sm:*:p-6 md:*:p-8 grid sm:grid-cols-2 lg:grid-cols-3" style={{ backgroundColor: theme === 'dark' ? '#121212' : '#ffffff' }}>
+          <div className="relative mx-auto max-w-7xl divide-x divide-y divide-[#2c2c2c] border border-[#2c2c2c] *:p-4 sm:*:p-6 md:*:p-8 grid sm:grid-cols-2 lg:grid-cols-3" >
             {steps.map((item, i) => {
               const Icon = item.icon;
               return (
