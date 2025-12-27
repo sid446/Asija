@@ -541,7 +541,7 @@ export default function Navbar() {
               <motion.div className={`flex items-center gap-2 cursor-pointer flex-row-reverse`}>
                 {/* TEXT: Always visible */}
                 <motion.div
-                  className={`text-left leading-tight whitespace-nowrap ${scrolled ? '-ml-6' : ''} `}
+                  className={`text-left leading-tight whitespace-nowrap  `}
                   initial={false}
                   animate={{ 
                     opacity: 1,
@@ -567,7 +567,7 @@ export default function Navbar() {
                   <img
                     src={scrolled ? "/logo13.png" : "/logo12.png"}
                     alt="Asija Logo"
-                    className={`${scrolled ? 'w-30 md:w-30 p-0' : 'w-13 md:w-13'}`}
+                    className={`w-13 md:w-13`}
                   />
                 </motion.div>
               </motion.div>
