@@ -238,7 +238,7 @@ export default function ContactPage() {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      placeholder="John Doe"
+                      placeholder="Your Full Name"
                       className="w-full p-3 rounded-lg bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-[#009edb] transition-colors"
                       required
                     />
@@ -250,7 +250,7 @@ export default function ContactPage() {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      placeholder="john@example.com"
+                      placeholder="Your Email Address"
                       className="w-full p-3 rounded-lg bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-[#009edb] transition-colors"
                       required
                     />
@@ -265,7 +265,7 @@ export default function ContactPage() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      placeholder="+91 98765 43210"
+                      placeholder="Your Phone Number"
                       className="w-full p-3 rounded-lg bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-[#009edb] transition-colors"
                       required
                     />
@@ -291,7 +291,7 @@ export default function ContactPage() {
                       name="jobTitle"
                       value={formData.jobTitle}
                       onChange={handleChange}
-                      placeholder="Manager"
+                      placeholder="Your Designation"
                       className="w-full p-3 rounded-lg bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-[#009edb] transition-colors"
                     />
                   </div>
@@ -302,7 +302,7 @@ export default function ContactPage() {
                       name="zipcode"
                       value={formData.zipcode}
                       onChange={handleChange}
-                      placeholder="123456"
+                      placeholder="Your Area Zipcode"
                       className="w-full p-3 rounded-lg bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-[#009edb] transition-colors"
                     />
                   </div>
@@ -315,7 +315,7 @@ export default function ContactPage() {
                     name="location"
                     value={formData.location}
                     onChange={handleChange}
-                    placeholder="City, Country"
+                    placeholder="Your City, Country"
                     className="w-full p-3 rounded-lg bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:border-[#009edb] transition-colors"
                   />
                 </div>
