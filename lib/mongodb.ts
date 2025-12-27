@@ -70,6 +70,11 @@ async function dbConnect() {
   // In serverless environments, connections don't persist between function invocations
   // So we create a new connection for each request
   if (isServerless) {
+    // Check if we already have a connection in serverless mode
+    if (mongoose.connection.readyState === 1) {
+      console.log('Serverless: Reusing existing connection');
+      return mongoose;
+    }
     console.log('Serverless: Creating new connection for this request');
     return await mongoose.connect(MONGODB_URI!, opts);
   } else {

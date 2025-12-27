@@ -43,16 +43,17 @@ export async function executeDatabaseOperation<T>(
       // Execute the operation with timeout
       const result = await Promise.race([operation(), timeoutPromise]);
 
-      // In serverless environments, close the connection after the operation
-      // since connections don't persist between function invocations
-      if (isServerless) {
-        try {
-          await mongoose.connection.close();
-          console.log('Serverless: Connection closed after operation');
-        } catch (closeError) {
-          console.warn('Warning: Failed to close serverless connection:', closeError);
-        }
-      }
+      // In serverless environments, we used to close the connection after the operation
+      // but this can cause issues if the operation is still running asynchronously
+      // Let the serverless platform handle connection cleanup naturally
+      // if (isServerless) {
+      //   try {
+      //     await mongoose.connection.close();
+      //     console.log('Serverless: Connection closed after operation');
+      //   } catch (closeError) {
+      //     console.warn('Warning: Failed to close serverless connection:', closeError);
+      //   }
+      // }
 
       return result;
 
