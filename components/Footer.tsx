@@ -9,7 +9,7 @@ const Footer = () => {
 
   const { data: servicesData } = useSWR('/api/services', fetcher);
 
-  const services = servicesData ? servicesData.slice(0, 6).map((s: { title: string }) => ({
+  const services = Array.isArray(servicesData) ? servicesData.slice(0, 6).map((s: { title: string }) => ({
     label: s.title,
     href: `/services?service=${encodeURIComponent(s.title)}`
   })) : [];

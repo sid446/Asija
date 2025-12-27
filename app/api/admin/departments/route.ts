@@ -7,11 +7,14 @@ export async function GET() {
     await connectToDatabase();
 
     const departments = await Department.find({}).sort({ order: 1 });
+    // Ensure we always return an array
+    const departmentsArray = Array.isArray(departments) ? departments : [];
 
-    return NextResponse.json(departments);
+    return NextResponse.json(departmentsArray);
   } catch (error) {
     console.error('Error fetching departments:', error);
-    return NextResponse.json({ error: 'Failed to fetch departments' }, { status: 500 });
+    // Return empty array on error to prevent frontend crashes
+    return NextResponse.json([]);
   }
 }
 

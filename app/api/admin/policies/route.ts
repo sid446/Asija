@@ -6,9 +6,13 @@ export async function GET() {
   await dbConnect();
   try {
     const policies = await Policy.find().sort({ order: 1, createdAt: -1 });
-    return NextResponse.json(policies);
+    // Ensure we always return an array
+    const policiesArray = Array.isArray(policies) ? policies : [];
+    return NextResponse.json(policiesArray);
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch policies' }, { status: 500 });
+    console.error('Failed to fetch policies:', error);
+    // Return empty array on error to prevent frontend crashes
+    return NextResponse.json([]);
   }
 }
 

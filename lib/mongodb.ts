@@ -176,6 +176,7 @@ export function getConnectionStats() {
   }
 
   const conn = mongoose.connection;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const pool = (conn.db?.client as any)?.topology?.s?.pool;
 
   return {

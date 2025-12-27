@@ -8,10 +8,13 @@ export async function GET() {
     return await dbGet(async () => {
       await dbConnect();
       const services = await Service.find({}).sort({ order: 1, createdAt: 1 });
-      return NextResponse.json(services);
+      // Ensure we always return an array
+      const servicesArray = Array.isArray(services) ? services : [];
+      return NextResponse.json(servicesArray);
     });
   } catch (error) {
     console.error('Failed to fetch services:', error);
-    return NextResponse.json({ error: 'Failed to fetch services' }, { status: 500 });
+    // Return empty array on error to prevent frontend crashes
+    return NextResponse.json([]);
   }
 }
