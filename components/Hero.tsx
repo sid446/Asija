@@ -73,9 +73,9 @@ function Hero() {
         Your browser does not support the video tag.
       </video>
 
-      {/* Gradient + Blur Overlay */}
+      {/* Gradient Overlay */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-linear-to-r from-slate-950/60 via-slate-950/35 to-transparent md:from-slate-950/60 md:via-slate-950/35 md:to-transparent bg-slate-950/40" />
+        <div className="absolute inset-0 backdrop-blur-sm bg-linear-to-r from-slate-950/60 via-slate-950/35 to-transparent md:from-slate-950/60 md:via-slate-950/35 md:to-transparent" />
       </div>
 
       {/* Content */}
