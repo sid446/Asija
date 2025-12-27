@@ -137,17 +137,32 @@ export default function PoliciesPage() {
     }
   }, [policies, departments]);
 
-  // Keyboard handler for modal
+  // Keyboard handler for modal and navigation
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && selectedPolicy) {
-        setSelectedPolicy(null);
+      if (selectedPolicy) {
+        if (event.key === 'Escape') {
+          setSelectedPolicy(null);
+        }
+      } else {
+        // Arrow key navigation for sections
+        if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
+          event.preventDefault();
+          if (currentSectionIndex < sections.length - 1) {
+            setCurrentSectionIndex(currentSectionIndex + 1);
+          }
+        } else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
+          event.preventDefault();
+          if (currentSectionIndex > 0) {
+            setCurrentSectionIndex(currentSectionIndex - 1);
+          }
+        }
       }
     };
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [selectedPolicy]);
+  }, [selectedPolicy, currentSectionIndex, sections.length]);
 
   const groupedEmployeePolicies = employeePolicies.reduce((acc, policy) => {
     const deptSlug = policy.subCategory?.toLowerCase() || 'other';
