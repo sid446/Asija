@@ -177,7 +177,7 @@ export default function TeamAnimated() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className=" mb-8"
           >
-            
+            <h2 className="text-4xl   font-bold text-white mb-4">Founder <span className='text-5xl text-[#009edb]'>.</span></h2>
             
           </motion.div>
 
@@ -188,26 +188,25 @@ export default function TeamAnimated() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="mb-12"
-            > 
-              <div className="relative  w-full bg-[#bee0ed]  mx-auto p-6  ">
-              <h2 className="text-4xl   font-bold text-white mb-6">Founder <span className='text-5xl text-[#009edb]'>.</span></h2>
+            >
+              <div className="relative bg-theme p-8 md:p-12 w-full  mx-auto  z">
                 
 
-                <div className="relative z-10 flex flex-col md:flex-row items-center gap-8 md:gap-8">
+                <div className="relative z-10 flex flex-col md:flex-row items-center gap-8 md:gap-12">
                   {/* Founder Image */}
-                  <div className="flex-shrink-0   mb-5">
+                  <div className="flex-shrink-0">
                     <div className="relative">
                       
                       <img
                         src={founder.avatar || '/default-avatar.png'}
                         alt={founder.name}
-                        className="relative w-70 h-90 md:w-80 md:h-120  object-cover  "
+                        className="relative w-64 h-80 md:w-72 md:h-96 rounded-xl object-cover  "
                       />
                     </div>
                   </div>
 
                   {/* Founder Info */}
-                  <div className="flex-1 text-center md:text-left pt-10">
+                  <div className="flex-1 text-center md:text-left">
                     <div className="mb-6">
                       <h3 className="text-3xl md:text-4xl font-bold mb-3 text-white">{founder.name}</h3>
                       <p className="text-xl md:text-2xl font-semibold text-[#009edb] mb-2">{founder.role}</p>
