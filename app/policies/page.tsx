@@ -453,14 +453,14 @@ export default function PoliciesPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4"
+          className="fixed inset-0 bg-black/50 backdrop-blur-xl z-50 flex items-center justify-center p-2 sm:p-4"
           onClick={() => setSelectedPolicy(null)}
         >
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
-            className="bg-white/10 backdrop-blur-md rounded-lg p-4 sm:p-6 lg:p-8 max-w-2xl w-full max-h-[85vh] sm:max-h-[80vh] overflow-y-auto border border-white/20"
+            className="bg-white/10 backdrop-blur-xl rounded-lg p-4 sm:p-6 lg:p-8 max-w-2xl w-full max-h-[85vh] sm:max-h-[80vh] overflow-y-auto border border-white/20"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-start mb-4 sm:mb-6">

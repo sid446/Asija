@@ -19,7 +19,7 @@ export const useTheme = () => {
 };
 
 export default function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('light');
+  const [theme, setThemeState] = useState<Theme>('dark');
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -30,10 +30,10 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
       if (saved === 'light' || saved === 'dark') {
         setThemeState(saved as Theme);
       } else {
-        setThemeState('light');
+        setThemeState('dark');
       }
     } catch (e) {
-      setThemeState('light');
+      setThemeState('dark');
     }
   }, []);
 
