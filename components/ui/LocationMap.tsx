@@ -239,7 +239,7 @@ export function LocationMap({
               }}
               transition={{ duration: 0.2 }}
             >
-              <div className="w-1.5 h-1.5 rounded-full bg-[#009edb]" />
+              <div className="w-1.5 h-1.5 rounded-full bg-white" />
               <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400 tracking-wide uppercase">Live</span>
             </motion.div>
           </div>

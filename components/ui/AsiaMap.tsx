@@ -74,7 +74,7 @@ export default function AsiaMap({ locations }: AsiaMapProps) {
               cy={point.y}
               r={0.25}
               className={`${
-                theme === "dark" ? "fill-neutral-700" : "fill-neutral-300"
+                theme === "dark" ? "fill-neutral-700" : "fill-neutral-700"
               } transition-all duration-700 ease-out hover:duration-0 hover:fill-[#009edb] hover:scale-[2.5]`}
               style={{ transformBox: 'fill-box', transformOrigin: 'center' }}
             />
