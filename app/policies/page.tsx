@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import { useTheme } from "@/components/ThemeProvider";
 import { motion } from "framer-motion";
 import { InteractiveHoverButton } from "@/components/ui/InteractiveHoverButton";
+import Loader from "@/components/ui/Loader";
 import Link from "next/link";
 
 type DepartmentItem = {
@@ -45,6 +46,7 @@ export default function PoliciesPage() {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [selectedPolicy, setSelectedPolicy] = useState<PolicyItem | null>(null);
+  const [loading, setLoading] = useState(true);
 
   // Touch handlers for mobile swipe navigation
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -128,6 +130,13 @@ export default function PoliciesPage() {
     fetchDepartments();
   }, []);
 
+  // Set loading to false after data is fetched
+  useEffect(() => {
+    if (policies.length >= 0 && departments.length >= 0) {
+      setLoading(false);
+    }
+  }, [policies, departments]);
+
   // Keyboard handler for modal
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -148,6 +157,10 @@ export default function PoliciesPage() {
     acc[deptSlug].push(policy);
     return acc;
   }, {} as Record<string, PolicyItem[]>);
+
+  if (loading) {
+    return <Loader pageName="Policies" />;
+  }
 
   return (
     <div className={`h-screen overflow-hidden transition-colors duration-300 ${isLight ? 'bg-white text-gray-900' : 'bg-slate-950 text-white'}`}>
