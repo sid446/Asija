@@ -376,7 +376,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      setScrolled(window.scrollY > 40);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -536,45 +536,46 @@ export default function Navbar() {
           {/* LEFT SIDE */}
           <div className="flex gap-2 lg:gap-6 items-center">
             
-            <motion.div className="flex items-center gap-1.5 md:gap-3 cursor-pointer">
+            <motion.div className={`flex items-center gap-1.5 md:gap-3  cursor-pointer`}>
             <Link href="/">
-              <motion.div 
-                className="bg-white rounded-full p-1.5"
-                animate={{
-                  opacity: scrolled ? 0 : 1,
-                  width: scrolled ? 0 : 'auto',
-                  scale: scrolled ? 0 : 1,
-                  padding: scrolled ? 0 : '0.375rem'
-                }}
-                transition={{ duration: 0.3 }}
-                style={{ overflow: 'hidden' }}
-              >
-                <img
-                  src="/logo.png"
-                  alt="Asija Logo"
-                  className="w-14 md:w-14"
-                />
+              <motion.div className={`flex items-center gap-2 cursor-pointer flex-row-reverse`}>
+                {/* TEXT: Always visible */}
+                <motion.div
+                  className={`text-left leading-tight whitespace-nowrap ${scrolled ? '-ml-6' : ''} `}
+                  initial={false}
+                  animate={{ 
+                    opacity: 1,
+                    width: 'auto'
+                  }}
+                  transition={{ duration: 0.3, ease: 'easeInOut' }}
+                >
+                  <div className={`font-bold text-white text-xs md:text-sm tracking-loose`}>
+                    ASIJA & ASSOCIATES LLP
+                  </div>
+                  <div className={`text-[10px] md:text-[10px] mt-0.5 tracking-wide ${(scrolled && theme === 'light') ? 'text-theme-green' : 'text-white'}`}>
+                    Chartered Accountants
+                  </div>
+                </motion.div>
+
+                {/* LOGO */}
+                <motion.div 
+                  className=""
+                  animate={{
+                    opacity: 1,
+                    width: 'auto',
+                    scale: scrolled ? 0.5 : 1,
+                    
+                  }}
+                  transition={{ duration: 0.3 }}
+                  style={{ overflow: 'hidden' }}
+                >
+                  <img
+                    src={scrolled ? "/logo13.png" : "/logo12.png"}
+                    alt="Asija Logo"
+                    className={`${scrolled ? 'w-30 md:w-30 p-0' : 'w-13 md:w-13'}`}
+                  />
+                </motion.div>
               </motion.div>
-            </Link>
-            
-            {/* TEXT: Always visible */}
-            <Link href="/">
-            <motion.div
-              className="text-left leading-tight overflow-hidden whitespace-nowrap"
-              initial={false}
-              animate={{ 
-                opacity: 1,
-                width: 'auto',
-              }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
-            >
-              <div className="font-semibold text-white text-xs md:text-sm  tracking-loose">
-                ASIJA & ASSOCIATES LLP
-              </div>
-              <div className="text-[10px] md:text-[10px] mt-0.5 tracking-wide ${(scrolled && theme === 'light') ? 'text-theme-green' : 'text-white'}">
-                Chartered Accountants
-              </div>
-            </motion.div>
             </Link>
           </motion.div>
 
