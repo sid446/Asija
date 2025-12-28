@@ -99,10 +99,10 @@ const HoverNavigation: React.FC = () => {
                 'hero': 'Home',
                 'about': 'About',
                 'insights': 'Insights',
-                'services': 'Services',
-                'industries': 'Industries',
-                'career': 'Career',
-                'contact': 'Contact'
+                'services': 'Ser.',
+                'industries': 'Indus.',
+                'career': 'jobs',
+                'contact': 'Cont.'
               };
 
               return (
