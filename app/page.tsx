@@ -11,6 +11,7 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import Loader from "@/components/ui/Loader";
 import FAQAccordion from "@/components/FaqInteractable";
+import HoverNavigation from "@/components/HoverNavigation";
 import { useAppSelector } from '@/lib/store/hooks';
 
 export default function Home() {
@@ -41,17 +42,32 @@ export default function Home() {
 
       <div className="relative">
         <Navbar />
-        <Hero />
+        <HoverNavigation />
+        <div id="hero">
+          <Hero />
+        </div>
 
         <div className="relative z-40 pointer-events-none">
           <div className="h-screen sm:h-[90vh]" />
           <div className="pointer-events-auto">
-            <AboutUs />
-            <Insights />
-            <Services />
-            <IndustriesFlowMenu />
-            <Career />
-            <Contact />
+            <div id="about">
+              <AboutUs />
+            </div>
+            <div id="insights">
+              <Insights />
+            </div>
+            <div id="services">
+              <Services />
+            </div>
+            <div id="industries">
+              <IndustriesFlowMenu />
+            </div>
+            <div id="career">
+              <Career />
+            </div>
+            <div id="contact">
+              <Contact />
+            </div>
             {!isLoading && heroContent && Boolean(heroContent.showFAQ) && (
               <>
                 {console.log('Rendering FAQ - showFAQ:', heroContent.showFAQ)}
