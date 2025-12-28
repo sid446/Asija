@@ -1,10 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
+import React, { useMemo, memo } from "react";
 import DottedMap from "dotted-map";
 import { useTheme } from "@/components/ThemeProvider";
-import { motion } from "framer-motion";
-import { LocationMap } from "./LocationMap";
 
 interface Location {
   lat: number;
@@ -19,7 +17,7 @@ interface AsiaMapProps {
   locations: Location[];
 }
 
-export default function AsiaMap({ locations }: AsiaMapProps) {
+export default memo(function AsiaMap({ locations }: AsiaMapProps) {
   const { theme } = useTheme();
 
   const { mapPoints, projectedLocations, viewBox, bounds } = useMemo(() => {
@@ -81,31 +79,24 @@ export default function AsiaMap({ locations }: AsiaMapProps) {
           ))}
 
           {projectedLocations.map((loc, i) => (
-            <g 
-              key={i} 
+            <g
+              key={i}
               transform={`translate(${loc.x}, ${loc.y})`}
               className="cursor-pointer group"
               onClick={() => window.open(loc.googleMapsUrl, '_blank')}
             >
-              <motion.circle
+              <circle
                 r={2.5}
-                className="fill-[#009edb]/30"
-                initial={{ scale: 0.5, opacity: 0 }}
-                animate={{ scale: 1.5, opacity: 0 }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeOut",
-                }}
+                className="fill-[#009edb]/30 animate-pulse"
               />
-              
+
               <circle
                 r={1.0}
                 className="fill-[#009edb] stroke-white dark:stroke-slate-900 stroke-[0.2]"
               />
 
               {/* Tooltip */}
-              <g 
+              <g
                 className="opacity-0 md:group-hover:opacity-100 transition-opacity duration-200 pointer-events-auto md:pointer-events-none scale-[2] md:scale-100"
                 style={{ transformOrigin: '0 0' }}
               >
@@ -133,4 +124,4 @@ export default function AsiaMap({ locations }: AsiaMapProps) {
       </div>
     </div>
   );
-}
+});

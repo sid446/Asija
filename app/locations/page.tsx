@@ -1,11 +1,23 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense, useMemo } from 'react';
+import dynamic from 'next/dynamic';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import AsiaMap from '@/components/ui/AsiaMap';
 import { MapPin, Phone, Mail, ExternalLink, Loader2 } from 'lucide-react';
-import { motion } from 'framer-motion';
+
+// Lazy load the heavy AsiaMap component
+const AsiaMap = dynamic(() => import('@/components/ui/AsiaMap'), {
+  loading: () => (
+    <div className="flex items-center justify-center h-96 bg-gray-100 dark:bg-slate-800 rounded-2xl">
+      <div className="text-center">
+        <Loader2 className="w-8 h-8 text-blue-600 animate-spin mx-auto mb-2" />
+        <p className="text-sm text-gray-600 dark:text-gray-400">Loading map...</p>
+      </div>
+    </div>
+  ),
+  ssr: false // Disable server-side rendering for the map
+});
 
 type Location = {
   _id: string;
@@ -23,11 +35,13 @@ type Location = {
 export default function LocationsPage() {
   const [locations, setLocations] = useState<Location[]>([]);
   const [loading, setLoading] = useState(true);
+  const [mapLoaded, setMapLoaded] = useState(false);
 
   useEffect(() => {
     const fetchLocations = async () => {
       try {
         const res = await fetch('/api/admin/locations');
+        if (!res.ok) throw new Error('Failed to fetch');
         const data = await res.json();
         if (Array.isArray(data)) {
           // Sort locations by order field
@@ -46,6 +60,12 @@ export default function LocationsPage() {
     fetchLocations();
   }, []);
 
+  const sortedLocations = useMemo(() => {
+    return locations.sort((a: Location, b: Location) => {
+      return (a.order || 0) - (b.order || 0);
+    });
+  }, [locations]);
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-slate-950">
       <Navbar />
@@ -60,34 +80,76 @@ export default function LocationsPage() {
           </div>
 
           {loading ? (
-            <div className="flex justify-center py-20">
-              <Loader2 className="w-10 h-10 text-blue-600 animate-spin" />
+            <div className="space-y-8">
+              {/* Map skeleton */}
+              <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-6 border border-gray-100 dark:border-gray-800">
+                <div className="h-96 bg-gray-200 dark:bg-slate-700 rounded-xl animate-pulse flex items-center justify-center">
+                  <div className="text-center">
+                    <Loader2 className="w-8 h-8 text-blue-600 animate-spin mx-auto mb-2" />
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Loading map...</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Address cards skeleton */}
+              <div className="space-y-6">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-800">
+                    <div className="animate-pulse">
+                      <div className="h-6 bg-gray-200 dark:bg-slate-700 rounded w-1/3 mb-4"></div>
+                      <div className="space-y-3">
+                        <div className="h-4 bg-gray-200 dark:bg-slate-700 rounded w-full"></div>
+                        <div className="h-4 bg-gray-200 dark:bg-slate-700 rounded w-3/4"></div>
+                        <div className="h-4 bg-gray-200 dark:bg-slate-700 rounded w-1/2"></div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
               {/* Map Section */}
-              <motion.div 
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5 }}
-                className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-6 border border-gray-100 dark:border-gray-800"
-              >
-                <AsiaMap locations={locations} />
+              <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-6 border border-gray-100 dark:border-gray-800">
+                {!mapLoaded ? (
+                  <div className="text-center py-12">
+                    <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <MapPin className="w-8 h-8 text-blue-600" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Interactive Map</h3>
+                    <p className="text-gray-600 dark:text-gray-400 mb-6">View all our locations on an interactive map</p>
+                    <button
+                      onClick={() => setMapLoaded(true)}
+                      className="bg-[#009edb] hover:bg-[#0088cc] text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
+                    >
+                      Load Map
+                    </button>
+                  </div>
+                ) : (
+                  <Suspense fallback={
+                    <div className="flex items-center justify-center h-96 bg-gray-100 dark:bg-slate-800 rounded-xl">
+                      <div className="text-center">
+                        <Loader2 className="w-8 h-8 text-blue-600 animate-spin mx-auto mb-2" />
+                        <p className="text-sm text-gray-600 dark:text-gray-400">Loading map...</p>
+                      </div>
+                    </div>
+                  }>
+                    <AsiaMap locations={sortedLocations} />
+                  </Suspense>
+                )}
                 <p className="text-center text-sm text-gray-500 mt-4">
                   Interactive Map: Click on a location to view on Google Maps
                 </p>
-              </motion.div>
+              </div>
 
               {/* Address Cards */}
               <div className="space-y-6">
-                {locations.map((loc, idx) => (
-                  <motion.div
+                {sortedLocations.map((loc, idx) => (
+                  <div
                     key={loc._id}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: idx * 0.1 }}
-                    className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-800 hover:shadow-xl transition-shadow group cursor-pointer"
+                    className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-800 hover:shadow-xl transition-all duration-300 group cursor-pointer transform hover:scale-[1.02]"
                     onClick={() => window.open(loc.googleMapsUrl, '_blank')}
+                    style={{ animationDelay: `${idx * 100}ms` }}
                   >
                     <div className="flex items-start justify-between">
                       <div>
@@ -121,7 +183,7 @@ export default function LocationsPage() {
                       </div>
                       <ExternalLink className="w-5 h-5 text-gray-400 group-hover:text-[#009edb] transition-colors" />
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
             </div>
