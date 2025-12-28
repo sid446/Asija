@@ -1,10 +1,10 @@
 // Test script to verify API endpoints are working
 const endpoints = [
-  'http://localhost:3000/api/admin/about-content',
-  'http://localhost:3000/api/about-cards',
-  'http://localhost:3000/api/regions',
-  'http://localhost:3000/api/industries',
-  'http://localhost:3000/api/services'
+  "http://localhost:3000/api/admin/about-content",
+  "http://localhost:3000/api/about-cards",
+  "http://localhost:3000/api/regions",
+  "http://localhost:3000/api/industries",
+  "http://localhost:3000/api/services",
 ];
 
 async function testEndpoint(url) {
@@ -20,15 +20,15 @@ async function testEndpoint(url) {
 }
 
 async function runTests() {
-  console.log('Testing API endpoints...\n');
+  console.log("Testing API endpoints...\n");
 
   for (const endpoint of endpoints) {
     await testEndpoint(endpoint);
     // Small delay between requests
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
   }
 
-  console.log('\nTest completed.');
+  console.log("\nTest completed.");
 }
 
 runTests();

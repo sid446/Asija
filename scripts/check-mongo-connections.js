@@ -11,7 +11,10 @@ async function checkConnections() {
     }
 
     console.log("Checking MongoDB connection status...");
-    console.log("MongoDB URI:", MONGODB_URI.replace(/\/\/[^:]+:[^@]+@/, "//***:***@")); // Hide credentials
+    console.log(
+      "MongoDB URI:",
+      MONGODB_URI.replace(/\/\/[^:]+:[^@]+@/, "//***:***@")
+    ); // Hide credentials
 
     // Connect to MongoDB with pool settings matching the main application
     await mongoose.connect(MONGODB_URI, {
