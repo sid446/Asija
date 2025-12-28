@@ -98,10 +98,10 @@ const HoverNavigation: React.FC = () => {
               const mobileLabels: { [key: string]: string } = {
                 'hero': 'Home',
                 'about': 'About',
-                'insights': 'News',
-                'services': 'Work',
-                'industries': 'Ind.',
-                'career': 'Jobs',
+                'insights': 'Insights',
+                'services': 'Services',
+                'industries': 'Industries',
+                'career': 'Career',
                 'contact': 'Contact'
               };
 
@@ -109,13 +109,13 @@ const HoverNavigation: React.FC = () => {
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.sectionId)}
-                  className={`flex flex-col items-center justify-center px-1 py-1 mx-0.5 rounded-md transition-all duration-200 min-w-[38px] ${
+                  className={`flex flex-col items-center justify-center px-2 py-2 mx-0.5 rounded-md transition-all duration-200 min-w-[38px] ${
                     activeSection === item.sectionId
                       ? 'text-[#009edb] scale-105 bg-[#009edb]/20 border border-[#009edb]'
                       : 'text-white/70 hover:text-white hover:scale-105 hover:bg-white/10 border border-transparent'
                   }`}
                 >
-                  <span className="text-[9px] font-medium leading-tight text-center">
+                  <span className="text-[12px] font-medium leading-tight text-center">
                     {mobileLabels[item.id] || item.label}
                   </span>
                 </button>
