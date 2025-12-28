@@ -142,7 +142,7 @@ const HoverNavigation: React.FC = () => {
                   </svg>
                 )}
               </div>
-              <span className="text-[8px] font-medium leading-tight text-center">
+              <span className="text-[8px] font-medium leading-tight text-center" style={{ color:'white' }}>
                 {item.label}
               </span>
             </button>
@@ -172,11 +172,11 @@ const HoverNavigation: React.FC = () => {
             title={item.label}
           >
             {/* Label - Always visible when expanded */}
-            <div className={`mr-3 px-3 py-1 bg-slate-900/90 backdrop-blur-sm text-white text-sm font-medium rounded-md transition-all duration-300 whitespace-nowrap ${
+            <div className={`mr-3 px-3 py-1 bg-slate-900/90 backdrop-blur-sm text-sm font-medium rounded-md transition-all duration-300 whitespace-nowrap ${
               isVisible
                 ? 'opacity-100 translate-x-0'
                 : 'opacity-0 -translate-x-2 pointer-events-none'
-            }`}>
+            }`} style={{color:"white"}}>
               {item.label}
             </div>
 
