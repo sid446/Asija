@@ -73,6 +73,7 @@ function Hero() {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [loadedVideos, setLoadedVideos] = useState<Set<string>>(new Set());
   const [imageLoadingStates, setImageLoadingStates] = useState<Record<string, 'loading' | 'loaded'>>({});
+  const [videoQualityStates, setVideoQualityStates] = useState<Record<string, 'low' | 'medium' | 'high'>>({});
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -202,57 +203,89 @@ function Hero() {
       {/* Hovered Section Video */}
       {activeSection && (() => {
         const section = sections.find(s => s.id === activeSection);
-        const isVideoLoaded = loadedVideos.has(activeSection);
-        const imageState = imageLoadingStates[activeSection] || 'loading';
-        
+        const videoQuality = videoQualityStates[activeSection] || 'low';
+
         return section ? (
           <div className="absolute inset-0">
-            {/* Progressive Image Loading */}
-            {!isVideoLoaded && section.image && (
-              <div className="absolute inset-0">
-                <img
-                  src={section.image}
-                  alt={section.title}
-                  className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ${
-                    imageState === 'loaded' 
-                      ? 'filter-none opacity-100 scale-100' 
-                      : 'filter blur-sm opacity-60 scale-105'
-                  }`}
-                  style={{
-                    filter: imageState === 'loading' ? 'blur(10px) brightness(0.8)' : 'none'
-                  }}
-                />
-                {imageState === 'loading' && (
-                  <div className="absolute inset-0 bg-slate-950/20 animate-pulse" />
-                )}
-              </div>
-            )}
-            
-            {/* Video */}
+            {/* Progressive Video Loading */}
             <video
-              key={section.id} // Add key to force re-mount when section changes
-              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${isVideoLoaded ? 'opacity-100' : 'opacity-0'}`}
+              key={`${section.id}-${videoQuality}`} // Change key when quality updates
+              className="absolute inset-0 w-full h-full object-cover transition-all duration-300"
               autoPlay
               loop
               muted
               playsInline
               preload="metadata"
               onLoadStart={() => {
-                // Reset loaded state when new video starts loading
-                setLoadedVideos(prev => {
-                  const newSet = new Set(prev);
-                  newSet.delete(activeSection);
-                  return newSet;
-                });
+                // Start with low quality immediately
+                setVideoQualityStates(prev => ({
+                  ...prev,
+                  [activeSection]: 'low'
+                }));
               }}
               onCanPlay={() => {
-                setLoadedVideos(prev => new Set([...prev, activeSection]));
+                // Upgrade to medium quality
+                setVideoQualityStates(prev => ({
+                  ...prev,
+                  [activeSection]: 'medium'
+                }));
+              }}
+              onCanPlayThrough={() => {
+                // Finally upgrade to high quality
+                setVideoQualityStates(prev => ({
+                  ...prev,
+                  [activeSection]: 'high'
+                }));
               }}
             >
-              <source src={section.videoWebm} type="video/webm" />
-              <source src={section.videoMp4} type="video/mp4" />
-              Your browser does not support the video tag.
+              {/* Low quality sources - load immediately */}
+              {videoQuality === 'low' && (
+                <>
+                  <source
+                    src={section.videoWebm?.replace('/upload/', '/upload/q_10,f_webm/') || ''}
+                    type="video/webm"
+                  />
+                  <source
+                    src={section.videoMp4?.replace('/upload/', '/upload/q_10,f_mp4/') || ''}
+                    type="video/mp4"
+                  />
+                </>
+              )}
+
+              {/* Medium quality sources */}
+              {videoQuality === 'medium' && (
+                <>
+                  <source
+                    src={section.videoWebm?.replace('/upload/', '/upload/q_50,f_webm/') || ''}
+                    type="video/webm"
+                  />
+                  <source
+                    src={section.videoMp4?.replace('/upload/', '/upload/q_50,f_mp4/') || ''}
+                    type="video/mp4"
+                  />
+                </>
+              )}
+
+              {/* High quality sources */}
+              {videoQuality === 'high' && (
+                <>
+                  <source src={section.videoWebm} type="video/webm" />
+                  <source src={section.videoMp4} type="video/mp4" />
+                </>
+              )}
+
+              {/* Fallback image */}
+              <img
+                src={section.image}
+                alt={section.title}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
             </video>
+
+            {/* Loading indicator for very initial load */}
+            {videoQuality === 'low' && (
+              <div className="absolute inset-0 bg-slate-950/10 animate-pulse" />
+            )}
           </div>
         ) : null;
       })()}
