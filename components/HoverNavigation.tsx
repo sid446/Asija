@@ -114,10 +114,47 @@ const HoverNavigation: React.FC = () => {
                       ? 'text-[#009edb] scale-105 bg-[#009edb]/20 border border-[#009edb]'
                       : 'text-white/70 hover:text-white hover:scale-105 hover:bg-white/10 border border-transparent'
                   }`}
+                  title={mobileLabels[item.id] || item.label} // Tooltip for accessibility
                 >
-                  <span className="text-[12px] font-medium leading-tight text-center">
-                    {mobileLabels[item.id] || item.label}
-                  </span>
+                  {/* Section Icons */}
+                  <div className="w-6 h-6 mb-0.5">
+                    {item.id === 'hero' && (
+                      <svg fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10.707 2.293a1 1 0 00-1.414 0l-5.5 5.5a1 1 0 001.414 1.414L9 5.414V17a1 1 0 102 0V5.414l3.793 3.793a1 1 0 001.414-1.414l-5.5-5.5z"/>
+                      </svg>
+                    )}
+                    {item.id === 'about' && (
+                      <svg fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"/>
+                      </svg>
+                    )}
+                    {item.id === 'insights' && (
+                      <svg fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M2 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 002 2H4a2 2 0 01-2-2V5zm3 1h6v4H5V6zm6 6H5v2h6v-2z" clipRule="evenodd"/>
+                      </svg>
+                    )}
+                    {item.id === 'services' && (
+                      <svg fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd"/>
+                      </svg>
+                    )}
+                    {item.id === 'industries' && (
+                      <svg fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd"/>
+                      </svg>
+                    )}
+                    {item.id === 'career' && (
+                      <svg fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                      </svg>
+                    )}
+                    {item.id === 'contact' && (
+                      <svg fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                      </svg>
+                    )}
+                  </div>
                 </button>
               );
             })}
