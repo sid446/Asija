@@ -330,7 +330,7 @@ function Hero() {
             ))}
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-4 mt-15 sm:mt-6 justify-center items-center md:justify-start px-4 sm:px-0">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-4 mt-6 sm:mt-6 justify-center items-center md:justify-start px-4 sm:px-0">
             <InteractiveHoverButton 
               text={isMobile ? getDynamicButtonContent().text : content.learnMore}
               className="w-full sm:w-auto px-6 sm:px-6 py-3 sm:py-3 bg-transparent text-zinc-100 border-2 border-[#009edb] rounded-full hover:bg-[#009edb] transition-colors duration-300 text-sm sm:text-base font-medium" 
