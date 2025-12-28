@@ -54,6 +54,28 @@ const HoverNavigation: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Keyboard navigation with arrow keys
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      const currentIndex = navItems.findIndex(item => item.sectionId === activeSection);
+
+      if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
+        event.preventDefault();
+        const nextIndex = (currentIndex + 1) % navItems.length;
+        const nextSection = navItems[nextIndex].sectionId;
+        scrollToSection(nextSection);
+      } else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
+        event.preventDefault();
+        const prevIndex = currentIndex === 0 ? navItems.length - 1 : currentIndex - 1;
+        const prevSection = navItems[prevIndex].sectionId;
+        scrollToSection(prevSection);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [activeSection]);
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
