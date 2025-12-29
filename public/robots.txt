@@ -26,4 +26,4 @@ Disallow: /_next/
 Disallow: /static/
 
 # Allow sitemap
-Sitemap: https://asija-three.vercel.app/sitemap.xml
+Sitemap: https://asija.org/sitemap.xml
