@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useSession, signOut } from "next-auth/react";
 import { LogIn } from 'lucide-react';
 import { InteractiveHoverButton } from './ui/InteractiveHoverButton';
+import SearchBar from './SearchBar';
 import { useAppSelector } from '@/lib/store/hooks';
 
 type MenuItem = {
@@ -606,6 +607,9 @@ export default function Navbar() {
 
           {/* RIGHT SIDE – Desktop */}
           <nav className="hidden min-[1100px]:flex gap-1 2xl:gap-4 items-center">
+            {/* Search Bar */}
+            <SearchBar />
+
             {rightMenu.map((item) => (
               <motion.div
                 key={item.label}
@@ -821,6 +825,11 @@ export default function Navbar() {
                   >
                     <CloseIcon />
                   </button>
+                </div>
+
+                {/* Search Bar */}
+                <div className="mb-6">
+                  <SearchBar />
                 </div>
 
                 {/* Menu Items */}

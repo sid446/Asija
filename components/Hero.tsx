@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
 import { fetchHeroContent } from '@/lib/store/slices/heroSlice';
 import { InteractiveHoverButton } from './ui/InteractiveHoverButton';
+import { useTheme } from './ThemeProvider';
+import Image from 'next/image';
 
 type HeroContent = {
   tagline: string;
@@ -40,7 +42,7 @@ const sections: Section[] = [
     id: 'growth',
     title: '40 Years',
     subtitle: 'of Growth',
-    image: 'forty1.png', // Update with your actual image path
+    image: '/forty1.png', // Update with your actual image path
     videoWebm: 'https://res.cloudinary.com/db2qa9dzs/video/upload/v1766917157/forty1_gk6qyr.webm',
     videoMp4: 'https://res.cloudinary.com/db2qa9dzs/video/upload/v1766917157/forty1_gk6qyr.mp4',
     logo: '/forty.png' // Update with your actual logo path
@@ -48,7 +50,7 @@ const sections: Section[] = [
   {
     id: 'partner',
     title: ' Led by 12+',
-    subtitle: 'CA/CPA/CMA Professionals',
+    subtitle: 'CA/CPA/CMA',
     image: '/partner1.png', // Update with your actual image path
     videoWebm: 'https://res.cloudinary.com/db2qa9dzs/video/upload/v1766915757/partner1_stqu2o.webm',
     videoMp4: 'https://res.cloudinary.com/db2qa9dzs/video/upload/v1766915757/partner1_stqu2o.mp4',
@@ -58,10 +60,10 @@ const sections: Section[] = [
     id: 'india',
     title: ' 120+ ',
     subtitle: 'team size',
-    image: '/india1.png', // Update with your actual image path
+    image: '/in.png', // Update with your actual image path
     videoWebm: 'https://res.cloudinary.com/db2qa9dzs/video/upload/v1766916673/india_sygy0i.webm',
     videoMp4: 'https://res.cloudinary.com/db2qa9dzs/video/upload/v1766916673/india_sygy0i.mp4',
-    logo: '/india.png' // Update with your actual logo path
+    logo: '/in.png' // Update with your actual logo path
   }
 ];
 
@@ -69,6 +71,7 @@ function Hero() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { content, loading, error } = useAppSelector((state) => state.hero);
+  const { theme } = useTheme();
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [loadedVideos, setLoadedVideos] = useState<Set<string>>(new Set());
@@ -175,16 +178,22 @@ function Hero() {
   }
   
   return (
-    <div className="fixed top-0 left-0 w-screen h-screen sm:h-screen md:h-[90vh] overflow-hidden border-b-4 border-[#009edb] z-10">
+    <div className="fixed top-0 left-0 w-screen h-screen   overflow-hidden border-b-4 border-[#009edb] z-10">
       {/* Video Background */}
-      {!videoLoaded && !activeSection && (
+      {/* {!videoLoaded && !activeSection && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-slate-950">
           <div className="text-white text-sm sm:text-lg">Loading video...</div>
         </div>
-      )}
-      
-      {/* Default Video */}
-      <video
+      )} */}
+      <Image 
+        className='absolute inset-0 w-full h-full object-cover' 
+        src={theme === 'light' ? "/bg2.jpg" : "/bg1.jpg"} 
+        alt="Hero background"
+        fill
+        priority
+      />
+     
+      {/* <video
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${activeSection ? 'opacity-0' : 'opacity-100'}`}
         autoPlay
         loop
@@ -197,7 +206,7 @@ function Hero() {
         <source src={content.videoWebm} type="video/webm" />
         <source src={content.videoMp4} type="video/mp4" />
         Your browser does not support the video tag.
-      </video>
+      </video> */}
 
       {/* Hovered Section Video */}
       {activeSection && (() => {
@@ -206,11 +215,11 @@ function Hero() {
         const imageState = imageLoadingStates[activeSection] || 'loading';
         
         return section ? (
-          <div className="absolute inset-0">
+          <div className="absolute inset-0 z-20 group">
             {/* Progressive Image Loading */}
             {!isVideoLoaded && section.image && (
               <div className="absolute inset-0">
-                <img
+                <Image
                   src={section.image}
                   alt={section.title}
                   className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ${
@@ -221,6 +230,7 @@ function Hero() {
                   style={{
                     filter: imageState === 'loading' ? 'blur(10px) brightness(0.8)' : 'none'
                   }}
+                  fill
                 />
                 {imageState === 'loading' && (
                   <div className="absolute inset-0 bg-slate-950/20 animate-pulse" />
@@ -231,7 +241,7 @@ function Hero() {
             {/* Video */}
             <video
               key={section.id} // Add key to force re-mount when section changes
-              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${isVideoLoaded ? 'opacity-100' : 'opacity-0'}`}
+              className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 blur-lg ${isVideoLoaded ? 'opacity-100 group-hover:blur-lg' : 'opacity-0'}`}
               autoPlay
               loop
               muted
@@ -253,6 +263,9 @@ function Hero() {
               <source src={section.videoMp4} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
+
+            {/* Blur Overlay on Hover */}
+            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
           </div>
         ) : null;
       })()}
@@ -288,21 +301,25 @@ function Hero() {
             {sections.map((section) => (
               <div
                 key={section.id}
-                className="flex-shrink-0 cursor-pointer group min-w-0 "
+                className="flex-shrink-0 cursor-pointer group min-w-0 relative"
                 onMouseEnter={!isMobile ? () => handleSectionHover(section.id) : undefined} // PC: Hover to activate
                 onMouseLeave={!isMobile ? () => setActiveSection(null) : undefined} // PC: Hover out to deactivate
                 onClick={!isMobile ? () => handleSectionClick(section.id) : () => handleSectionHover(section.id)} // PC: Click to redirect, Mobile: Tap to activate
               >
-                <div className="relative flex flex-col items-center md:items-start min-w-[80px] sm:min-w-[100px]">
+                
+
+                <div className="relative flex flex-col items-center md:items-start min-w-[80px] sm:min-w-[100px] z-20">
                   {/* Logo */}
                   <div className={`w-8 h-8 sm:w-12 sm:h-12 mb-2 sm:mb-3 flex items-center justify-center transition-all duration-500 ${
                     activeSection === section.id 
                       ? 'opacity-100' 
                       : 'opacity-60 group-hover:opacity-80'
                   }`}>
-                    <img 
+                    <Image 
                       src={section.logo} 
                       alt={section.title}
+                      width={48}
+                      height={48}
                       className={`w-full h-full object-contain transition-all duration-500 ${
                         activeSection === section.id ? 'brightness-0 invert' : 'brightness-0 invert opacity-70'
                       }`}
@@ -322,7 +339,7 @@ function Hero() {
                   </div>
                   
                   {/* Subtitle */}
-                  <div className={`text-xs w-20   tracking-tight mt-0.5 sm:mt-1 transition-all duration-500 text-center md:text-left `} style={{color:"white"}}>
+                  <div className={`text-xs w-20 uppercase tracking-tight mt-0.5 sm:mt-1 transition-all duration-500 text-center md:text-left `} style={{color:"white"}}>
                     {section.subtitle}
                   </div>
                 </div>

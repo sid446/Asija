@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { useAppSelector } from '@/lib/store/hooks';
+import { useTheme } from '@/components/ThemeProvider';
 
 interface NavItem {
   id: string;
@@ -13,6 +14,8 @@ const HoverNavigation: React.FC = () => {
   const [activeSection, setActiveSection] = useState('hero');
 
   const { content: heroContent } = useAppSelector((state) => state.hero);
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
 
   // Dynamic nav items based on hero content settings
   const navItems: NavItem[] = [
@@ -23,7 +26,7 @@ const HoverNavigation: React.FC = () => {
     { id: 'industries', label: 'Industries', sectionId: 'industries' },
     { id: 'career', label: 'Career', sectionId: 'career' },
     { id: 'contact', label: 'Contact', sectionId: 'contact' },
-    { id: 'footer', label: 'Footer', sectionId: 'footer' },
+    { id: 'footer', label: 'End', sectionId: 'footer' },
   ];
 
   // Detect mobile device
@@ -174,28 +177,64 @@ const HoverNavigation: React.FC = () => {
   }
 
   return (
-    <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-50">
-      {/* Navigation Bars */}
-      <div className="flex flex-col space-y-4 transition-all duration-300 opacity-100 translate-x-0">
-        {navItems.filter(item => item.id !== 'footer').map((item) => (
-          <button
-            key={item.id}
-            onClick={() => scrollToSection(item.sectionId)}
-            className="group relative flex items-center justify-end min-h-[32px] transition-all duration-300 hover:translate-x-[12px]"
-            title={item.label}
-          >
-            {/* Label - Always visible */}
-            <div className="mr-3 px-3 py-1 bg-[#009edb]/40 backdrop-blur-2xl text-sm font-medium rounded-md transition-all duration-300 whitespace-nowrap opacity-100 translate-x-0" style={{color:"white"}}>
-              {item.label}
+    <div className="fixed  flex  right-0 p-2 top-1/2 transform -translate-y-1/2 rounded-l-3xl z-50">
+      {/* Navigation Dots */}
+      <div className="flex flex-col  items-center  transition-all duration-300 opacity-100 translate-x-0">
+        {navItems.map((item, index) => (
+          <div key={item.id} className="relative flex flex-col items-center h-16">
+            <div className="flex items-center">
+              {/* Text Label - Left side */}
+              <div 
+                className={`w-16 text-right  transition-all duration-300 ${
+                  activeSection === item.sectionId
+                    ? 'text-md font-semibold scale-110'
+                    : 'text-sm font-medium group-hover:scale-105'
+                }`}
+                style={{ color: isLight ? '#021046' : 'white' }}
+              >
+                {item.label}
+              </div>
+              
+              <button
+                onClick={() => scrollToSection(item.sectionId)}
+                className="group relative flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300 hover:scale-110"
+                title={item.label}
+              >
+                {/* Radio Dot with Outer Ring */}
+                <div className="relative flex items-center justify-center">
+                  {/* Outer Ring - Always visible, changes color */}
+                  <div className={`w-4 h-4 rounded-full border-2 transition-all duration-300 ${
+                    activeSection === item.sectionId
+                      ? 'border-[#009edb] shadow-blue-500/50 scale-125'
+                      : isLight 
+                        ? 'border-[#021046]/70 group-hover:border-[#021046]' 
+                        : 'border-white/70 group-hover:border-white/90'
+                  }`} />
+                  
+                  {/* Inner Circle - Only visible when active */}
+                  <div className={`absolute w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                    activeSection === item.sectionId
+                      ? 'bg-[#009edb] scale-125 shadow-blue-500/50'
+                      : 'bg-transparent'
+                  }`} />
+                </div>
+              </button>
             </div>
 
-            {/* Active indicator - Vertical bar */}
-            <div className={`w-1.5 h-8 rounded-full transition-all duration-300 shadow-sm ${
-              activeSection === item.sectionId
-                ? 'bg-[#009edb] scale-x-150 shadow-blue-500/50'
-                : 'bg-white/70 group-hover:bg-white/90 shadow-white/20'
-            }`} />
-          </button>
+            {/* Base Vertical Line - Only for non-footer items */}
+            {item.id !== 'footer' && (
+              <div className={`absolute top-8.5 right-6 w-0.5 h-10 ${isLight ? 'bg-[#021046]/40' : 'bg-white/40'}`} />
+            )}
+            
+            {/* Animated Blue Line - Only for non-footer items */}
+            {item.id !== 'footer' && (
+              <div className={`absolute top-8.5 right-[23.6px] w-[2.5px] transition-all duration-1000 ease-in ${
+                activeSection === item.sectionId
+                  ? 'h-10 bg-[#009edb] shadow-blue-500/30'
+                  : 'h-0 bg-[#009edb]'
+              }`} />
+            )}
+          </div>
         ))}
       </div>
     </div>

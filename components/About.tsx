@@ -50,7 +50,7 @@ const About = () => {
 
 	return (
 		<section
-			className={`relative w-full overflow-hidden transition-colors duration-300 ${
+			className={`relative w-full overflow-hidden transition-colors duration-300 mt-24 ${
 				isLight ? 'bg-[#68a5bd]' : 'bg-slate-950'
 			}`}
 		>
