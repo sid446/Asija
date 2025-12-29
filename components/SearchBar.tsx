@@ -174,7 +174,7 @@ const SearchBar: React.FC = () => {
     setFilteredResults(results.slice(0, 10));
   }, [query, services, industries, policies]);
 
-  // Handle click outside
+  // Handle click outside and prevent body scroll
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
@@ -184,9 +184,18 @@ const SearchBar: React.FC = () => {
       }
     };
 
+    if (isSearchOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.body.style.overflow = '';
+    };
+  }, [isSearchOpen]);
 
   const handleIconClick = () => {
     setIsSearchOpen(!isSearchOpen);
@@ -237,7 +246,7 @@ const SearchBar: React.FC = () => {
   };
 
   return (
-    <div ref={searchRef} className="relative">
+    <>
       {/* Search Icon Button */}
       {!isSearchOpen && (
         <button
@@ -260,126 +269,149 @@ const SearchBar: React.FC = () => {
         </button>
       )}
 
-      {/* Search Input */}
-      {isSearchOpen && (
-        <div className="relative">
-          <input
-            ref={inputRef}
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onFocus={handleInputFocus}
-            onBlur={handleInputBlur}
-            placeholder="Search services, industries, policies & pages..."
-            className={`w-64 px-4 py-2 pl-10 pr-10 text-sm rounded-lg border transition-all duration-200 ${
-              theme === 'light'
-                ? 'bg-white/90 border-gray-300 text-gray-900 placeholder-gray-500 focus:border-[#009edb] focus:ring-2 focus:ring-[#009edb]/20'
-                : 'bg-slate-800/90 border-slate-600 text-white placeholder-gray-400 focus:border-[#009edb] focus:ring-2 focus:ring-[#009edb]/20'
-            }`}
-          />
-          <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
-            <svg
-              className={`w-4 h-4 ${theme === 'light' ? 'text-gray-400' : 'text-gray-500'}`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
-          <button
-            onClick={() => {
-              setIsSearchOpen(false);
-              setIsOpen(false);
-              setQuery('');
-            }}
-            className={`absolute right-3 top-1/2 transform -translate-y-1/2 p-1 rounded-full transition-colors ${
-              theme === 'light' ? 'hover:bg-gray-200 text-gray-400' : 'hover:bg-slate-600 text-gray-500'
-            }`}
-            aria-label="Close search"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-          {isLoading && (
-            <div className="absolute right-12 top-1/2 transform -translate-y-1/2">
-              <div className="w-4 h-4 border-2 border-[#009edb] border-t-transparent rounded-full animate-spin"></div>
-            </div>
-          )}
-        </div>
-      )}
-
+      {/* Full-width Search Overlay */}
       <AnimatePresence>
-        {isOpen && (query.trim() || filteredResults.length > 0) && (
+        {isSearchOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className={`absolute top-full mt-2 w-full md:w-96 max-h-96 overflow-hidden rounded-lg shadow-xl border z-50 ${
-              theme === 'light'
-                ? 'bg-white border-gray-200'
-                : 'bg-slate-800 border-slate-600'
-            }`}
+            ref={searchRef}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-16 left-0 right-0 z-[60] bg-black/50 backdrop-blur-sm"
+            style={{ height: 'calc(100vh - 4rem)' }}
             onWheel={(e) => e.stopPropagation()}
             onTouchMove={(e) => e.stopPropagation()}
           >
-            <div className="max-h-96 overflow-y-auto">
-              {filteredResults.length > 0 ? (
-                <div className="py-2">
-                  {filteredResults.map((result, index) => (
-                    <Link
-                      key={index}
-                      href={result.href}
-                      onClick={handleResultClick}
-                      className={`block px-4 py-3 hover:bg-[#009edb]/10 transition-colors border-b last:border-b-0 ${
-                        theme === 'light' ? 'border-gray-100' : 'border-slate-700'
-                      }`}
+            <div className={`w-full h-full ${theme === 'light' ? 'bg-white' : 'bg-slate-900'}`}>
+              {/* Close button */}
+              <div className="flex justify-end p-4">
+                <button
+                  onClick={() => {
+                    setIsSearchOpen(false);
+                    setIsOpen(false);
+                    setQuery('');
+                  }}
+                  className={`p-2 rounded-full transition-colors ${
+                    theme === 'light' ? 'hover:bg-gray-100 text-gray-600' : 'hover:bg-slate-700 text-gray-400'
+                  }`}
+                  aria-label="Close search"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Search Input */}
+              <div className="px-4 pb-6">
+                <div className="max-w-2xl mx-auto relative">
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    onFocus={handleInputFocus}
+                    placeholder="Search services, industries, policies & pages..."
+                    className={`w-full px-6 py-4 pl-14 pr-14 text-lg rounded-xl border-2 transition-all duration-200 ${
+                      theme === 'light'
+                        ? 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-[#009edb] focus:ring-2 focus:ring-[#009edb]/20'
+                        : 'bg-slate-800 border-slate-600 text-white placeholder-gray-400 focus:border-[#009edb] focus:ring-2 focus:ring-[#009edb]/20'
+                    }`}
+                    autoFocus
+                  />
+                  <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                    <svg
+                      className={`w-6 h-6 ${theme === 'light' ? 'text-gray-400' : 'text-gray-500'}`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
                     >
-                      <div className="flex items-start gap-3">
-                        <span className="text-lg">{getTypeIcon(result.type)}</span>
-                        <div className="flex-1 min-w-0">
-                          <div className={`font-medium text-sm truncate ${
-                            theme === 'light' ? 'text-gray-900' : 'text-white'
-                          }`}>
-                            {result.title}
-                          </div>
-                          <div className={`text-xs mt-1 ${
-                            theme === 'light' ? 'text-gray-500' : 'text-gray-400'
-                          }`}>
-                            {result.description}
-                          </div>
-                          <div className={`text-xs mt-1 ${getTypeColor(result.type)}`}>
-                            {result.type.replace('-', ' ').toUpperCase()}
-                          </div>
-                        </div>
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </div>
+                  {isLoading && (
+                    <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                      <div className="w-6 h-6 border-2 border-[#009edb] border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Search Results */}
+              <div className="flex-1">
+                <div className="w-full mx-auto h-full">
+                  {query.trim() && filteredResults.length > 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: 0.1 }}
+                      className="h-full overflow-y-auto px-4"
+                      onWheel={(e) => e.stopPropagation()}
+                      onTouchMove={(e) => e.stopPropagation()}
+                    >
+                      <div className="grid gap-4 md:grid-cols-6 lg:grid-cols-6">
+                        {filteredResults.map((result, index) => (
+                          <Link
+                            key={index}
+                            href={result.href}
+                            onClick={handleResultClick}
+                            className={`block p-4 rounded-lg hover:bg-[#009edb]/10 transition-all duration-200 border ${
+                              theme === 'light'
+                                ? 'bg-white border-gray-200 hover:border-[#009edb]/30'
+                                : 'bg-slate-800 border-slate-700 hover:border-[#009edb]/30'
+                            }`}
+                          >
+                            <div className="flex items-start gap-3">
+                              <span className="text-2xl">{getTypeIcon(result.type)}</span>
+                              <div className="flex-1 min-w-0">
+                                <div className={`font-semibold text-base truncate ${
+                                  theme === 'light' ? 'text-gray-900' : 'text-white'
+                                }`}>
+                                  {result.title}
+                                </div>
+                                <div className={`text-sm mt-2 leading-relaxed line-clamp-2 ${
+                                  theme === 'light' ? 'text-gray-600' : 'text-gray-300'
+                                }`}>
+                                  {result.description}
+                                </div>
+                                <div className={`text-xs mt-2 font-medium ${getTypeColor(result.type)}`}>
+                                  {result.type.replace('-', ' ').toUpperCase()}
+                                </div>
+                              </div>
+                            </div>
+                          </Link>
+                        ))}
                       </div>
-                    </Link>
-                  ))}
+                    </motion.div>
+                  )}
+
+                  {query.trim() && filteredResults.length === 0 && (
+                    <div className="flex items-center justify-center h-full px-4">
+                      <div className={`text-center ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
+                        
+                        <div className="text-xl font-medium mb-2">No results found</div>
+                        <div className="text-lg">Try searching for services, industries, policies, or pages</div>
+                      </div>
+                    </div>
+                  )}
+
+                  {!query.trim() && (
+                    <div className="flex items-center justify-center h-full px-4">
+                      <div className={`text-center ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
+                        
+                        <div className="text-xl font-medium mb-2">Start your search</div>
+                        <div className="text-lg">Search for services, industries, policies, and pages</div>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              ) : query.trim() ? (
-                <div className="px-4 py-8 text-center">
-                  <div className={`text-sm ${
-                    theme === 'light' ? 'text-gray-500' : 'text-gray-400'
-                  }`}>
-                    No results found for &quot;{query}&quot;
-                  </div>
-                </div>
-              ) : (
-                <div className="px-4 py-8 text-center">
-                  <div className={`text-sm ${
-                    theme === 'light' ? 'text-gray-500' : 'text-gray-400'
-                  }`}>
-                    Start typing to search services, industries, policies &amp; pages...
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </>
   );
 };
 
