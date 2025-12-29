@@ -91,6 +91,7 @@ export default function     Insights() {
         <div className="text-center ">
           <Link
             href="/insights"
+            prefetch={false}
             className="inline-flex items-center gap-2 bg-[#009edb] text-white px-8 py-4 rounded-full font-semibold hover:bg-[#0077a3] transition-colors shadow-lg hover:shadow-xl"
           >
             View All Insights

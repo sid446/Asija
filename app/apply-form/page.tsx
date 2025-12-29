@@ -200,7 +200,7 @@ export default function ApplyFormPage() {
 						}`}
 					>
 						<div className="flex items-center gap-4 mb-6">
-							<Link href="/career">
+							<Link href="/career" prefetch={false}>
 								<button className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
 									isLight ? 'hover:bg-gray-100 text-gray-600' : 'hover:bg-slate-800 text-gray-400'
 								}`}>

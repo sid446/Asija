@@ -82,6 +82,7 @@ export default function LoginPage() {
     <div className="min-h-screen w-full flex bg-theme relative">
       <Link 
         href="/" 
+        prefetch={false}
         className="absolute top-6 right-6 z-50 p-3 rounded-full bg-surface border border-theme text-theme hover:bg-[#009edb] hover:text-white hover:border-[#009edb] transition-all duration-300 shadow-lg group"
         title="Back to Home"
       >

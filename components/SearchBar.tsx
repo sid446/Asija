@@ -318,6 +318,7 @@ const SearchBar: React.FC = () => {
                           <Link
                             key={index}
                             href={result.href}
+                            prefetch={false}
                             onClick={handleResultClick}
                             className={`block p-4 rounded-lg hover:bg-[#009edb]/10 transition-all duration-200 border ${
                               theme === 'light'

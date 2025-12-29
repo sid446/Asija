@@ -96,7 +96,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ group, index }) => {
 
 
                 {group.insights && (
-                  <Link href={`/services?service=${encodeURIComponent(group.title)}`}>
+                  <Link href={`/services?service=${encodeURIComponent(group.title)}`} prefetch={false}>
                     <InteractiveHoverButton
                       text="View Insights"
                       className="w-auto"

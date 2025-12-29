@@ -180,7 +180,7 @@ const Values = () => {
                 {/* Modal Footer */}
                 <div className="sticky bottom-0 p-6 border-t border-gray-200 dark:border-white/10 bg-white dark:bg-slate-950 flex gap-3 flex-shrink-0">
                   {selectedCard.title === 'Culture' && (
-                    <Link href="/gallery" className="flex-1">
+                    <Link href="/gallery" prefetch={false} className="flex-1">
                       <InteractiveHoverButton
                         text="View Gallery"
                         className="w-full bg-[#009edb] hover:bg-[#007acc] text-white border-[#009edb]"

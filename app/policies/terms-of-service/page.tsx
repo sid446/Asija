@@ -27,6 +27,7 @@ export default function TermsOfServicePage() {
           >
             <Link
               href="/policies"
+              prefetch={false}
               className="inline-flex items-center gap-2 text-muted hover:text-accent transition-colors mb-6"
             >
               <ArrowLeft className="w-4 h-4" />

@@ -102,6 +102,7 @@ const Footer = () => {
                   {link.href.startsWith('/') ? (
                     <Link
                       href={link.href}
+                      prefetch={false}
                       className="text-muted hover:text-accent transition-all duration-300 text-sm sm:text-base inline-block hover:translate-x-1"
                     >
                       {link.label}
@@ -132,6 +133,7 @@ const Footer = () => {
                 <li key={index}>
                   <Link
                     href={link.href}
+                    prefetch={false}
                     className="text-muted hover:text-accent transition-all duration-300 text-sm sm:text-base inline-block hover:translate-x-1"
                   >
                     {link.label}
@@ -141,6 +143,7 @@ const Footer = () => {
               <li>
                 <Link
                   href="/global-services"
+                  prefetch={false}
                   className="text-muted hover:text-accent transition-all duration-300 text-sm sm:text-base inline-block hover:translate-x-1"
                 >
                   Global Services
@@ -175,6 +178,7 @@ const Footer = () => {
               <li>
                 <Link
                   href="/apply-form"
+                  prefetch={false}
                   className="text-muted hover:text-accent transition-all duration-300 text-sm sm:text-base inline-block hover:translate-x-1"
                 >
                   Apply Form
@@ -183,6 +187,7 @@ const Footer = () => {
               <li>
                 <Link
                   href="/career"
+                  prefetch={false}
                   className="text-muted hover:text-accent transition-all duration-300 text-sm sm:text-base inline-block hover:translate-x-1"
                 >
                   Current Openings

@@ -134,6 +134,7 @@ export default function InsightPage({ params }: InsightPageProps) {
           </p>
           <Link
             href="/insights"
+            prefetch={false}
             className="inline-flex items-center gap-2 bg-[#009edb] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#0077a3] transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -153,6 +154,7 @@ export default function InsightPage({ params }: InsightPageProps) {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-30">
           <Link
             href="/insights"
+            prefetch={false}
             className="inline-flex items-center gap-2 text-blue-100 hover:text-white mb-6 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -237,6 +239,7 @@ export default function InsightPage({ params }: InsightPageProps) {
                 <Link
                   key={relatedInsight._id}
                   href={`/insights/${relatedInsight.slug}`}
+                  prefetch={false}
                   className="bg-card rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow group border border-theme"
                 >
                   {relatedInsight.image && (
@@ -273,6 +276,7 @@ export default function InsightPage({ params }: InsightPageProps) {
           <Link
             href="/contact"
             scroll={false}
+            prefetch={false}
             className="inline-flex items-center gap-2 bg-white  px-6 py-3 rounded-full font-semibold hover:bg-blue-50 transition-colors" style={{color:"black"}}
           >
             Get in Touch <ArrowLeft className="w-4 h-4 rotate-180" />

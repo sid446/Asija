@@ -336,13 +336,13 @@ export default function TeamAnimated() {
     </p>
 
     <div className="flex flex-row gap-6 justify-center items-center">
-      <Link href="/contact" scroll={false}>
+      <Link href="/contact" scroll={false} prefetch={false}>
         <InteractiveHoverButton
           text="Start a Conversation"
           className="px-8 py-3"
         />
       </Link>
-       <Link href="/">
+       <Link href="/" prefetch={false}>
         <InteractiveHoverButton
           text="Home"
           className="px-8 py-3"

@@ -38,6 +38,7 @@ const Button: React.FC<ButtonProps> = ({
     >
       <Link
         href={link}
+        prefetch={false}
         className={`
           flex group w-full sm:w-auto
           ${fullWidthOnMobile ? '' : 'sm:inline-flex'}
