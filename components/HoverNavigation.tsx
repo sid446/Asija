@@ -182,10 +182,14 @@ const HoverNavigation: React.FC = () => {
       <div className="flex flex-col  items-center  transition-all duration-300 opacity-100 translate-x-0">
         {navItems.map((item, index) => (
           <div key={item.id} className="relative flex flex-col items-center h-16">
-            <div className="flex items-center">
+            <button
+              onClick={() => scrollToSection(item.sectionId)}
+              className="group relative flex items-center justify-center transition-all duration-300 hover:scale-105"
+              title={item.label}
+            >
               {/* Text Label - Left side */}
               <div 
-                className={`w-16 text-right  transition-all duration-300 ${
+                className={`w-16 text-right mr-2 transition-all duration-300 ${
                   activeSection === item.sectionId
                     ? 'text-md font-semibold scale-110'
                     : 'text-sm font-medium group-hover:scale-105'
@@ -195,31 +199,25 @@ const HoverNavigation: React.FC = () => {
                 {item.label}
               </div>
               
-              <button
-                onClick={() => scrollToSection(item.sectionId)}
-                className="group relative flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300 hover:scale-110"
-                title={item.label}
-              >
-                {/* Radio Dot with Outer Ring */}
-                <div className="relative flex items-center justify-center">
-                  {/* Outer Ring - Always visible, changes color */}
-                  <div className={`w-4 h-4 rounded-full border-2 transition-all duration-300 ${
-                    activeSection === item.sectionId
-                      ? 'border-[#009edb] shadow-blue-500/50 scale-125'
-                      : isLight 
-                        ? 'border-[#021046]/70 group-hover:border-[#021046]' 
-                        : 'border-white/70 group-hover:border-white/90'
-                  }`} />
-                  
-                  {/* Inner Circle - Only visible when active */}
-                  <div className={`absolute w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                    activeSection === item.sectionId
-                      ? 'bg-[#009edb] scale-125 shadow-blue-500/50'
-                      : 'bg-transparent'
-                  }`} />
-                </div>
-              </button>
-            </div>
+              {/* Radio Dot with Outer Ring */}
+              <div className="relative flex items-center justify-center w-12 h-12 rounded-full">
+                {/* Outer Ring - Always visible, changes color */}
+                <div className={`w-4 h-4 rounded-full border-2 transition-all duration-300 ${
+                  activeSection === item.sectionId
+                    ? 'border-[#009edb] shadow-blue-500/50 scale-125'
+                    : isLight 
+                      ? 'border-[#021046]/70 group-hover:border-[#021046]' 
+                      : 'border-white/70 group-hover:border-white/90'
+                }`} />
+                
+                {/* Inner Circle - Only visible when active */}
+                <div className={`absolute w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                  activeSection === item.sectionId
+                    ? 'bg-[#009edb] scale-125 shadow-blue-500/50'
+                    : 'bg-transparent'
+                }`} />
+              </div>
+            </button>
 
             {/* Base Vertical Line - Only for non-footer items */}
             {item.id !== 'footer' && (
