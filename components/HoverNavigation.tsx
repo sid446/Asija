@@ -177,7 +177,7 @@ const HoverNavigation: React.FC = () => {
   }
 
   return (
-    <div className="fixed  flex  right-0 p-2 top-1/2 transform -translate-y-1/2 rounded-l-3xl z-50">
+    <div className="fixed  flex  right-0 p-2 top-1/2 transform -translate-y-1/2 rounded-l-3xl z-45">
       {/* Navigation Dots */}
       <div className="flex flex-col  items-center  transition-all duration-300 opacity-100 translate-x-0">
         {navItems.map((item, index) => (
@@ -189,7 +189,7 @@ const HoverNavigation: React.FC = () => {
             >
               {/* Text Label - Left side */}
               <div 
-                className={`w-16 text-right mr-2 transition-all duration-300 ${
+                className={`w-16    text-center  mr-2 transition-all duration-300 ${
                   activeSection === item.sectionId
                     ? 'text-md font-semibold scale-110'
                     : 'text-sm font-medium group-hover:scale-105'
@@ -200,7 +200,7 @@ const HoverNavigation: React.FC = () => {
               </div>
               
               {/* Radio Dot with Outer Ring */}
-              <div className="relative flex items-center justify-center w-12 h-12 rounded-full">
+              <div className="relative  flex items-center justify-center w-12 h-12 rounded-full">
                 {/* Outer Ring - Always visible, changes color */}
                 <div className={`w-4 h-4 rounded-full border-2 transition-all duration-300 ${
                   activeSection === item.sectionId
