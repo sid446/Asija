@@ -188,7 +188,7 @@ function About() {
           })}
         </section>
         <div className="flex justify-start m-1 sm:m-2">
-          <Link href="/test">
+          <Link href="/test" prefetch={false}>
             <InteractiveHoverButton text="Learn More" />
           </Link>
         </div>

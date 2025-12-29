@@ -329,7 +329,7 @@ export default function Industries() {
                         </p>
                       </div>
                       
-                      <Link href={`/industry?section=${encodeURIComponent(item.title)}`}>
+                      <Link href={`/industry?section=${encodeURIComponent(item.title)}`} prefetch={false}>
                         <InteractiveHoverButton
                           text="Learn More"
                           className="self-start sm:self-end shrink-0"

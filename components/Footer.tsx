@@ -204,10 +204,10 @@ const Footer = () => {
             © 2026 Asija & Associates LLP. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-muted">
-            <Link href="/policies/privacy-policy" className="hover:text-accent transition-colors">
+            <Link href="/policies/privacy-policy" prefetch={false} className="hover:text-accent transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/policies/terms-of-service" className="hover:text-accent transition-colors">
+            <Link href="/policies/terms-of-service" prefetch={false} className="hover:text-accent transition-colors">
               Terms of Service
             </Link>
           </div>

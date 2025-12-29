@@ -105,7 +105,7 @@ const About = () => {
 
 						{/* Learn More Button */}
 						<div className="mt-8 sm:mt-10 text-center">
-							<Link href="/about">
+							<Link href="/about" prefetch={false}>
 								<InteractiveHoverButton text="Learn More About Us" />
 							</Link>
 						</div>

@@ -145,10 +145,10 @@ export default function ApplyFormPage() {
 							Thank you for your interest in joining Asija & Associates LLP. We'll review your application and get back to you soon.
 						</p>
 						<div className="space-y-3">
-							<Link href="/career">
+							<Link href="/career" prefetch={false}>
 								<InteractiveHoverButton text="View Open Positions" />
 							</Link>
-							<Link href="/">
+							<Link href="/" prefetch={false}>
 								<InteractiveHoverButton text="Back to Home" className="bg-transparent border border-[#009edb] text-[#009edb] hover:bg-[#009edb] hover:text-white" />
 							</Link>
 						</div>

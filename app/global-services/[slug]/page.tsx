@@ -133,7 +133,7 @@ export default function RegionPage() {
         <div className="container mx-auto px-4 text-center">
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             
-            <Link href="/global-services">
+            <Link href="/global-services" prefetch={false}>
               <InteractiveHoverButton text="Back to Global Services" className="bg-theme text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90" />
             </Link>
           </div>

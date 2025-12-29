@@ -345,7 +345,7 @@ export default function PoliciesPage() {
                 {!session && (
                   <div className="mb-6 sm:mb-8">
                     <p className="text-base sm:text-lg opacity-80 mb-4 sm:mb-6" style={{color: 'white'}}>Please log in to view employee policies and department-specific guidelines.</p>
-                    <Link href="/login">
+                    <Link href="/login" prefetch={false}>
                       <InteractiveHoverButton
                         text="Login to View"
                         className="bg-white/20 hover:bg-white/30 border-white/30 text-white"

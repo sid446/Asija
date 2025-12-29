@@ -463,10 +463,10 @@ export default function JobApplicationPage() {
       <section className="py-8 bg-background text-foreground">
         <div className="container mx-auto px-4 text-center">
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link href="/">
+            <Link href="/" prefetch={false}>
               <InteractiveHoverButton text="Home" className="bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90" />
             </Link>
-            <Link href="/career">
+            <Link href="/career" prefetch={false}>
               <InteractiveHoverButton text="Back to Openings" className="bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90" />
             </Link>
           </div>

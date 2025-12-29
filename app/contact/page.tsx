@@ -398,7 +398,7 @@ export default function ContactPage() {
       <section className="py-12 ">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link href="/">
+            <Link href="/" prefetch={false}>
               <InteractiveHoverButton
                 text="Home"
                 className="px-6 py-3 bg-white border-gray-300 text-gray-900"

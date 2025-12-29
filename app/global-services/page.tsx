@@ -144,7 +144,7 @@ export default function GlobalServices() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {regions.map((region: GlobalRegionItem, index: number) => (
-              <Link href={region.href} key={region._id}>
+              <Link href={region.href} key={region._id} prefetch={false}>
                 <motion.div 
                   whileHover={{ y: -10 }}
                   className="group relative h-80 rounded-2xl overflow-hidden cursor-pointer bg-white dark:bg-slate-900 shadow-lg"

@@ -108,7 +108,7 @@ export default function DepartmentPoliciesPage() {
             <p className={`mb-8 ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
               The department you're looking for doesn't exist.
             </p>
-            <Link href="/policies">
+            <Link href="/policies" prefetch={false}>
               <InteractiveHoverButton text="Back to Policies" />
             </Link>
           </div>
@@ -148,7 +148,7 @@ export default function DepartmentPoliciesPage() {
                 <p className={`mb-6 ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
                   There are currently no policies in this department.
                 </p>
-                <Link href="/policies">
+                <Link href="/policies" prefetch={false}>
                   <InteractiveHoverButton text="Back to All Policies" />
                 </Link>
               </div>
@@ -303,13 +303,13 @@ export default function DepartmentPoliciesPage() {
                 />
               </div>
 
-              <Link href="/policies">
+              <Link href="/policies" prefetch={false}>
                 <InteractiveHoverButton
                   text="Back to All Policies"
                   className="w-full justify-center"
                 />
               </Link>
-              <Link href="/">
+              <Link href="/" prefetch={false}>
                 <InteractiveHoverButton
                   text="Home"
                   className="w-full justify-center mt-2"

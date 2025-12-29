@@ -100,7 +100,7 @@ const AboutCard = ({
 
         {/* Button */}
         {link ? (
-          <Link href={link}>
+          <Link href={link} prefetch={false}>
             <ButtonContent />
           </Link>
         ) : (

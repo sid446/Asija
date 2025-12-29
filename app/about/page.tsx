@@ -434,7 +434,7 @@ export default function AboutPage() {
       <section className={`bg-slate-950 w-full`}>
         <div className="">
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10 ">
-            <Link href="/">
+            <Link href="/" prefetch={false}>
               <InteractiveHoverButton
                 text="Home"
                 className={`px-6 py-3 ${isLight ? 'bg-gray-100 border-gray-300 text-gray-900' : 'bg-slate-700 border-slate-600 text-white'}`}

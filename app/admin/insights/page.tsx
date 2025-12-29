@@ -261,6 +261,7 @@ export default function AdminInsightsPage() {
           <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
             <Link
               href="/admin"
+              prefetch={false}
               className="flex items-center w-full px-4 py-3 text-sm font-medium text-gray-600 rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-all duration-200"
             >
               <LayoutDashboard className="w-5 h-5 mr-3" />
@@ -273,7 +274,7 @@ export default function AdminInsightsPage() {
           </nav>
 
           <div className="p-4 border-t border-gray-100">
-            <Link href="/" className="flex items-center w-full px-4 py-3 text-sm font-medium text-red-600 rounded-xl hover:bg-red-50 transition-all duration-200">
+            <Link href="/" prefetch={false} className="flex items-center w-full px-4 py-3 text-sm font-medium text-red-600 rounded-xl hover:bg-red-50 transition-all duration-200">
               <LogOut className="w-5 h-5 mr-3" />
               Exit to Site
             </Link>
@@ -522,6 +523,7 @@ export default function AdminInsightsPage() {
                         <Link
                           href={`/insights/${insight.slug}`}
                           target="_blank"
+                          prefetch={false}
                           className="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors"
                           title="View insight"
                         >

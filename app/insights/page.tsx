@@ -71,6 +71,7 @@ export default function InsightsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <Link
             href="/"
+            prefetch={false}
             className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors mb-6"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -126,6 +127,7 @@ export default function InsightsPage() {
                       </div>
                       <Link
                         href={`/insights/${insight.slug}`}
+                        prefetch={false}
                         className="flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium"
                       >
                         Read More <ArrowRight className="w-4 h-4" />
@@ -195,6 +197,7 @@ export default function InsightsPage() {
                   </div>
                   <Link
                     href={`/insights/${insight.slug}`}
+                    prefetch={false}
                     className="flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium"
                   >
                     Read More <ArrowRight className="w-4 h-4" />

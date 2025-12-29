@@ -84,7 +84,7 @@ export default function AdminPoliciesPage() {
         {/* Header */}
         <div className="mb-12 text-center lg:text-left">
           <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
-            <Link href="/policies" className="text-[#009edb] hover:text-[#0077a3] transition-colors">
+            <Link href="/policies" prefetch={false} className="text-[#009edb] hover:text-[#0077a3] transition-colors">
               ← Back to Policies
             </Link>
           </div>
