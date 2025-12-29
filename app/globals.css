@@ -73,9 +73,9 @@ html {
 
 /* Theme variables (defaults = light theme) */
 :root {
-  --theme-bg: #a8d5f4;
+  --theme-bg: #d5e8f5;
   --theme-surface: #c6e2f5;
-  --theme-card: #aadafa;
+  --theme-card: #d5e8f5;
   --theme-text: #000000;
   --theme-muted: #52525b;
   --theme-border: rgba(0,0,0,0.1);
