@@ -2,29 +2,21 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useAppSelector } from '@/lib/store/hooks';
 
 const Footer = () => {
-  const [services, setServices] = useState<any[]>([]);
+  const { services } = useAppSelector((state) => state.services);
+  const [processedServices, setProcessedServices] = useState<any[]>([]);
 
   useEffect(() => {
-    const fetchServices = async () => {
-      try {
-        const res = await fetch('/api/services');
-        if (res.ok) {
-          const servicesData = await res.json();
-          const processedServices = Array.isArray(servicesData) ? servicesData.map((s: { title: string }) => ({
-            label: s.title,
-            href: `/services?service=${encodeURIComponent(s.title)}`
-          })) : [];
-          setServices(processedServices);
-        }
-      } catch (error) {
-        console.error('Failed to fetch services for footer', error);
-      }
-    };
-
-    fetchServices();
-  }, []);
+    if (services.length > 0) {
+      const processed = services.map((s: { title: string }) => ({
+        label: s.title,
+        href: `/services?service=${encodeURIComponent(s.title)}`
+      }));
+      setProcessedServices(processed);
+    }
+  }, [services]);
 
   const footerLinks = {
     company: [
@@ -136,7 +128,7 @@ const Footer = () => {
           >
             <h3 className="text-theme font-semibold text-lg mb-4">Services</h3>
             <ul className="space-y-3">
-              {services.map((link: { label: string; href: string }, index: number) => (
+              {processedServices.map((link: { label: string; href: string }, index: number) => (
                 <li key={index}>
                   <Link
                     href={link.href}

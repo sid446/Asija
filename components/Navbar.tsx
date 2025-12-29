@@ -289,75 +289,58 @@ export default function Navbar() {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [menuItems, setMenuItems] = useState(leftMenu);
   const { industries } = useAppSelector((state) => state.industries);
+  const { regions } = useAppSelector((state) => state.regions);
+  const { services } = useAppSelector((state) => state.services);
 
   useEffect(() => {
-    const fetchRegions = async () => {
-      try {
-        const res = await fetch('/api/regions');
-        if (res.ok) {
-          const regions = await res.json();
-          
-          const saarcCountries = ['Afghanistan', 'Bangladesh', 'Bhutan', 'India', 'Maldives', 'Nepal', 'Pakistan', 'Sri Lanka'];
-          const saarcSubs: any[] = [];
-          const otherSubs: any[] = [];
+    // Use Redux data instead of fetching directly
+    if (regions.length > 0) {
+      const saarcCountries = ['Afghanistan', 'Bangladesh', 'Bhutan', 'India', 'Maldives', 'Nepal', 'Pakistan', 'Sri Lanka'];
+      const saarcSubs: any[] = [];
+      const otherSubs: any[] = [];
 
-          regions.forEach((r: any) => {
-             if (saarcCountries.includes(r.name)) {
-                saarcSubs.push({ label: r.name, href: `/global-services/${r.slug}` });
-             } else {
-                otherSubs.push({ label: r.name, href: `/global-services/${r.slug}` });
-             }
-          });
+      regions.forEach((r: any) => {
+         if (saarcCountries.includes(r.name)) {
+            saarcSubs.push({ label: r.name, href: `/global-services/${r.slug}` });
+         } else {
+            otherSubs.push({ label: r.name, href: `/global-services/${r.slug}` });
+         }
+      });
 
-          const finalSubs = [...otherSubs];
-          if (saarcSubs.length > 0) {
-             finalSubs.push({
-                title: 'SAARC',
-                items: saarcSubs,
-                href: '/global-services',
-                insights: false
-             });
-          }
-
-          setMenuItems(prev => prev.map(item => {
-            if (item.label === 'Asija Global') {
-              return { ...item, subs: finalSubs };
-            }
-            return item;
-          }));
-        }
-      } catch (error) {
-        console.error('Failed to fetch regions', error);
+      const finalSubs = [...otherSubs];
+      if (saarcSubs.length > 0) {
+         finalSubs.push({
+            title: 'SAARC',
+            items: saarcSubs,
+            href: '/global-services',
+            insights: false
+         });
       }
-    };
 
-    const fetchServices = async () => {
-      try {
-        const res = await fetch('/api/services');
-        if (res.ok) {
-          const services = await res.json();
-          const serviceSubs = services.map((service: any) => ({
-            title: service.title,
-            items: service.items,
-            insights: service.insights,
-            href: `/services?service=${encodeURIComponent(service.title)}`
-          }));
-
-          setMenuItems(prev => prev.map(item => {
-            if (item.label === 'Services') {
-              return { ...item, subs: serviceSubs };
-            }
-            return item;
-          }));
+      setMenuItems(prev => prev.map(item => {
+        if (item.label === 'Asija Global') {
+          return { ...item, subs: finalSubs };
         }
-      } catch (error) {
-        console.error('Failed to fetch services', error);
-      }
-    };
+        return item;
+      }));
+    }
 
-    fetchRegions();
-    fetchServices();
-  }, []);
+    if (services.length > 0) {
+      const serviceSubs = services.map((service: any) => ({
+        title: service.title,
+        items: service.items,
+        insights: service.insights,
+        href: `/services?service=${encodeURIComponent(service.title)}`
+      }));
+
+      setMenuItems(prev => prev.map(item => {
+        if (item.label === 'Services') {
+          return { ...item, subs: serviceSubs };
+        }
+        return item;
+      }));
+    }
+  }, [regions, services]);
 
   useEffect(() => {
     if (industries.length > 0) {

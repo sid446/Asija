@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
-import { fetchHeroContent } from '@/lib/store/slices/heroSlice';
 import { InteractiveHoverButton } from './ui/InteractiveHoverButton';
 import { useTheme } from './ThemeProvider';
 import Image from 'next/image';
@@ -69,7 +68,6 @@ const sections: Section[] = [
 
 function Hero() {
   const router = useRouter();
-  const dispatch = useAppDispatch();
   const { content, loading, error } = useAppSelector((state) => state.hero);
   const { theme } = useTheme();
   const [videoLoaded, setVideoLoaded] = useState(false);
@@ -78,11 +76,7 @@ function Hero() {
   const [imageLoadingStates, setImageLoadingStates] = useState<Record<string, 'loading' | 'loaded'>>({});
   const [isMobile, setIsMobile] = useState(false);
 
-  useEffect(() => {
-    if (!content && !loading) {
-      dispatch(fetchHeroContent());
-    }
-  }, [dispatch, content, loading]);
+  // Hero content is now loaded globally by DataInitializer
 
   // Detect mobile device - PC will use hover, mobile will use tap
   useEffect(() => {

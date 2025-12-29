@@ -6,8 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { InteractiveHoverButton } from './ui/InteractiveHoverButton';
 import { WaveLoader } from './ui/WaveLoader';
-import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
-import { fetchServices } from '@/lib/store/slices/servicesSlice';
+import { useAppSelector } from '@/lib/store/hooks';
 
 interface Service {
   _id: string;
@@ -124,15 +123,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ group, index }) => {
 };
 
 export default function Services() {
-  const dispatch = useAppDispatch();
   const { services, loading, error, fetched } = useAppSelector((state) => state.services);
-
-  useEffect(() => {
-    // Only fetch if we haven't fetched yet and not currently loading
-    if (!fetched && !loading) {
-      dispatch(fetchServices());
-    }
-  }, [dispatch, fetched, loading]);
 
   if (loading) {
     return (

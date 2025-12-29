@@ -12,7 +12,7 @@ import CTA from '@/components/ui/CTA';
 import ServiceProcess from '@/components/ui/ServiceProcess';
 import Loader from '@/components/ui/Loader';
 import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
-import Link from 'next/link';
+import { useAppSelector } from '@/lib/store/hooks';
 
 interface ServiceGroup {
   title: string;
@@ -157,36 +157,18 @@ export default function ServicesContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { theme } = useTheme();
-  const [serviceGroups, setServiceGroups] = useState<ServiceGroup[]>([]);
+  const { services, loading } = useAppSelector((state) => state.services);
   const [selectedService, setSelectedService] = useState<ServiceGroup | null>(null);
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
-  const [loading, setLoading] = useState(true);
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const fetchServices = async () => {
-      try {
-        const response = await fetch('/api/services');
-        if (response.ok) {
-          const data = await response.json();
-          setServiceGroups(data);
-        }
-      } catch (error) {
-        console.error('Failed to fetch services:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchServices();
-  }, []);
-
-  useEffect(() => {
     const serviceName = searchParams?.get('service');
-    if (serviceName && serviceGroups.length > 0) {
-      const service = serviceGroups.find(s => s.title === serviceName);
+    if (serviceName && services.length > 0) {
+      const service = services.find((s: any) => s.title === serviceName);
       if (service) setSelectedService(service);
     }
-  }, [searchParams, serviceGroups]);
+  }, [searchParams, services]);
 
   useEffect(() => {
     if (selectedService) {
@@ -253,7 +235,7 @@ export default function ServicesContent() {
           <p className='text-xs sm:text-sm md:text-base lg:text-lg max-w-3xl text-gray-300'>We deliver precise, compliant, and value-driven solutions tailored to your business needs.</p>
         </div>
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-          {serviceGroups.map((service, index) => (
+          {(services as ServiceGroup[]).map((service, index) => (
             <motion.div key={service.title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.15, duration: 0.6 }}>
               <ServiceCard service={service} onClick={() => setSelectedService(service)} />
             </motion.div>
