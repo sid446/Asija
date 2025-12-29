@@ -31,7 +31,7 @@ const leftMenu: MenuItem[] = [
     href: '/about',
     subs: [
       { label: 'Who We Are', href: '/about' },
-      { label: 'Life at Asija - (year wise)', href: '/about#values' },
+      { label: 'Life at Asija - (year wise)', href: '/about#ourjourney' },
       { label: 'Our Purpose and Values', href: '/about#values' },
       { label: 'Our Team / Strength', href: '/team' },
       { label: 'Gallery', href: '/gallery' },

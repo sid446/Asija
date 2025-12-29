@@ -29,8 +29,8 @@ type Section = {
 const sections: Section[] = [
   {
     id: '1985',
-    title: '1985',
-    subtitle: 'Born',
+    title: '1986',
+    subtitle: ' Founded',
     image: '/1985.png',
     videoWebm: 'https://res.cloudinary.com/db2qa9dzs/video/upload/v1766915919/foundation_ilkgwp.webm',
     videoMp4: 'https://res.cloudinary.com/db2qa9dzs/video/upload/v1766915919/foundation_ilkgwp.mp4',
@@ -47,8 +47,8 @@ const sections: Section[] = [
   },
   {
     id: 'partner',
-    title: 'Partner-Led',
-    subtitle: 'Practice',
+    title: ' Led by 12+',
+    subtitle: 'CA/CPA/CMA Professionals',
     image: '/partner1.png', // Update with your actual image path
     videoWebm: 'https://res.cloudinary.com/db2qa9dzs/video/upload/v1766915757/partner1_stqu2o.webm',
     videoMp4: 'https://res.cloudinary.com/db2qa9dzs/video/upload/v1766915757/partner1_stqu2o.mp4',
@@ -56,8 +56,8 @@ const sections: Section[] = [
   },
   {
     id: 'india',
-    title: 'India Wide',
-    subtitle: 'Presence',
+    title: ' 120+ ',
+    subtitle: 'team size',
     image: '/india1.png', // Update with your actual image path
     videoWebm: 'https://res.cloudinary.com/db2qa9dzs/video/upload/v1766916673/india_sygy0i.webm',
     videoMp4: 'https://res.cloudinary.com/db2qa9dzs/video/upload/v1766916673/india_sygy0i.mp4',
@@ -265,21 +265,21 @@ function Hero() {
       {/* Content */}
       <div className="relative z-30 flex h-full items-center justify-center md:justify-start px-4 sm:px-6 md:px-10 lg:px-16 pt-16 sm:pt-20">
         <div className="w-full max-w-2xl space-y-3 sm:space-y-4 md:space-y-5 lg:space-y-6 text-center md:text-left">
-          <p className="font-bold text-sm mb-8 sm:mb-2 sm:text-sm md:text-base tracking-widest uppercase" style={{ color: '#009edb' }}>
+          <p className="font-bold text-xs mb-8 sm:mb-2 sm:text-sm md:text-base tracking-widest uppercase" style={{ color: '#009edb' }}>
             {content.tagline}
           </p>
-          <h1 className="font-bold text-3xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight px-2 sm:px-0" style={{color:"white"}}>
+          <h1 className="font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight px-2 sm:px-0" style={{color:"white"}}>
             {content.title}
           </h1>
           <div className="border-0 md:border-l-4 pl-0 md:pl-4 mx-auto md:mx-0 max-w-sm sm:max-w-md md:max-w-lg px-4 sm:px-0" style={{ borderColor: '#009edb' }}>
-            <p className="text-base sm:text-base md:text-base lg:text-lg leading-relaxed" style={{color:"#e1ebef"}}>
+            <p className="text-xs sm:text-base md:text-base lg:text-lg leading-relaxed" style={{color:"#e1ebef"}}>
               {content.description}
             </p>
           </div>
 
           {/* Interactive Sections */}
           <div
-            className="flex flex-row gap-4 sm:gap-6 md:gap-8 mt-8 sm:mt-10 justify-center md:justify-start overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 hide-scrollbar"
+            className="flex flex-row gap-2 sm:gap-6 md:gap-8 mt-8 sm:mt-10 justify-center md:justify-start overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 hide-scrollbar"
             style={{
               scrollbarWidth: 'none',
               msOverflowStyle: 'none'
@@ -288,14 +288,14 @@ function Hero() {
             {sections.map((section) => (
               <div
                 key={section.id}
-                className="flex-shrink-0 cursor-pointer group min-w-0"
+                className="flex-shrink-0 cursor-pointer group min-w-0 "
                 onMouseEnter={!isMobile ? () => handleSectionHover(section.id) : undefined} // PC: Hover to activate
                 onMouseLeave={!isMobile ? () => setActiveSection(null) : undefined} // PC: Hover out to deactivate
                 onClick={!isMobile ? () => handleSectionClick(section.id) : () => handleSectionHover(section.id)} // PC: Click to redirect, Mobile: Tap to activate
               >
                 <div className="relative flex flex-col items-center md:items-start min-w-[80px] sm:min-w-[100px]">
                   {/* Logo */}
-                  <div className={`w-10 h-10 sm:w-12 sm:h-12 mb-2 sm:mb-3 flex items-center justify-center transition-all duration-500 ${
+                  <div className={`w-8 h-8 sm:w-12 sm:h-12 mb-2 sm:mb-3 flex items-center justify-center transition-all duration-500 ${
                     activeSection === section.id 
                       ? 'opacity-100' 
                       : 'opacity-60 group-hover:opacity-80'
@@ -322,7 +322,7 @@ function Hero() {
                   </div>
                   
                   {/* Subtitle */}
-                  <div className={`text-xs uppercase tracking-widest mt-0.5 sm:mt-1 transition-all duration-500 text-center md:text-left `} style={{color:"white"}}>
+                  <div className={`text-xs w-20   tracking-tight mt-0.5 sm:mt-1 transition-all duration-500 text-center md:text-left `} style={{color:"white"}}>
                     {section.subtitle}
                   </div>
                 </div>

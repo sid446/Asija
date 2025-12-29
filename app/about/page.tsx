@@ -419,7 +419,7 @@ export default function AboutPage() {
           )}
         </div>
       </div>
-      <Timeline data={timelineData} />
+      <Timeline  data={timelineData} />
 
 
 

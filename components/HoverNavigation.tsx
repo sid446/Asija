@@ -15,10 +15,10 @@ const navItems: NavItem[] = [
   { id: 'industries', label: 'Industries', sectionId: 'industries' },
   { id: 'career', label: 'Career', sectionId: 'career' },
   { id: 'contact', label: 'Contact', sectionId: 'contact' },
+  { id: 'footer', label: 'Footer', sectionId: 'footer' },
 ];
 
 const HoverNavigation: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
 
@@ -37,19 +37,30 @@ const HoverNavigation: React.FC = () => {
   useEffect(() => {
     const handleScroll = () => {
       const sections = navItems.map(item => item.sectionId);
-      const scrollPosition = window.scrollY + 100;
+      const scrollPosition = window.scrollY + 200; // Increased offset to better detect footer
 
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = document.getElementById(sections[i]);
-        if (section && section.offsetTop <= scrollPosition) {
-          setActiveSection(sections[i]);
-          break;
+        if (section) {
+          console.log(`Section ${sections[i]}: offsetTop=${section.offsetTop}, scrollPosition=${scrollPosition}`);
+          if (section.offsetTop <= scrollPosition) {
+            console.log(`Setting activeSection to ${sections[i]}`);
+            setActiveSection(sections[i]);
+            break;
+          }
+        } else {
+          console.log(`Section ${sections[i]} not found`);
         }
       }
     };
 
     window.addEventListener('scroll', handleScroll);
     handleScroll(); // Initial check
+
+    // Recheck after a short delay to ensure all elements are loaded
+    setTimeout(() => {
+      handleScroll();
+    }, 1000);
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -68,6 +79,7 @@ const HoverNavigation: React.FC = () => {
         event.preventDefault();
         const prevIndex = currentIndex === 0 ? navItems.length - 1 : currentIndex - 1;
         const prevSection = navItems[prevIndex].sectionId;
+        console.log('ArrowUp: currentSection =', activeSection, 'currentIndex =', currentIndex, 'prevSection =', prevSection);
         scrollToSection(prevSection);
       }
     };
@@ -92,7 +104,7 @@ const HoverNavigation: React.FC = () => {
     return (
       <div className="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-md border-t border-white/10 z-50 px-2 py-3">
         <div className="flex justify-around items-center max-w-md mx-auto">
-          {navItems.map((item, index) => (
+          {navItems.filter(item => item.id !== 'footer').map((item, index) => (
             <button
               key={item.id}
               onClick={() => scrollToSection(item.sectionId)}
@@ -141,8 +153,13 @@ const HoverNavigation: React.FC = () => {
                     <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
                   </svg>
                 )}
+                {item.id === 'footer' && (
+                  <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"/>
+                  </svg>
+                )}
               </div>
-              <span className="text-[8px] font-medium leading-tight text-center" style={{ color:'white' }}>
+              <span className="text-[8px] font-medium leading-tight text-center" style={{ color:'#009edb' }}>
                 {item.label}
               </span>
             </button>
@@ -153,30 +170,18 @@ const HoverNavigation: React.FC = () => {
   }
 
   return (
-    <div
-      className="fixed right-6 top-1/2 transform -translate-y-1/2 z-50"
-      onMouseEnter={() => setIsVisible(true)}
-      onMouseLeave={() => setIsVisible(false)}
-    >
+    <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-50">
       {/* Navigation Bars */}
-      <div className={`flex flex-col space-y-4 transition-all duration-300 ${
-        isVisible ? 'opacity-100 translate-x-0' : 'opacity-60 translate-x-2'
-      }`}>
-        {navItems.map((item) => (
+      <div className="flex flex-col space-y-4 transition-all duration-300 opacity-100 translate-x-0">
+        {navItems.filter(item => item.id !== 'footer').map((item) => (
           <button
             key={item.id}
             onClick={() => scrollToSection(item.sectionId)}
-            className={`group relative flex items-center justify-end min-h-[32px] transition-all duration-300 ${
-              isVisible ? 'hover:translate-x-[12px]' : ''
-            }`}
+            className="group relative flex items-center justify-end min-h-[32px] transition-all duration-300 hover:translate-x-[12px]"
             title={item.label}
           >
-            {/* Label - Always visible when expanded */}
-            <div className={`mr-3 px-3 py-1 bg-slate-900/90 backdrop-blur-sm text-sm font-medium rounded-md transition-all duration-300 whitespace-nowrap ${
-              isVisible
-                ? 'opacity-100 translate-x-0'
-                : 'opacity-0 -translate-x-2 pointer-events-none'
-            }`} style={{color:"white"}}>
+            {/* Label - Always visible */}
+            <div className="mr-3 px-3 py-1 bg-[#009edb]/40 backdrop-blur-2xl text-sm font-medium rounded-md transition-all duration-300 whitespace-nowrap opacity-100 translate-x-0" style={{color:"white"}}>
               {item.label}
             </div>
 
@@ -189,11 +194,6 @@ const HoverNavigation: React.FC = () => {
           </button>
         ))}
       </div>
-
-      {/* Hover area indicator */}
-      <div className={`absolute -left-6 top-0 bottom-0 w-12 transition-opacity duration-300 ${
-        isVisible ? 'opacity-0' : 'opacity-100'
-      }`} />
     </div>
   );
 };
