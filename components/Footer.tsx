@@ -1,18 +1,30 @@
 'use client';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import useSWR from 'swr';
 
 const Footer = () => {
-  const fetcher = (url: string) => fetch(url).then((res) => res.json());
+  const [services, setServices] = useState<any[]>([]);
 
-  const { data: servicesData } = useSWR('/api/services', fetcher);
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const res = await fetch('/api/services');
+        if (res.ok) {
+          const servicesData = await res.json();
+          const processedServices = Array.isArray(servicesData) ? servicesData.map((s: { title: string }) => ({
+            label: s.title,
+            href: `/services?service=${encodeURIComponent(s.title)}`
+          })) : [];
+          setServices(processedServices);
+        }
+      } catch (error) {
+        console.error('Failed to fetch services for footer', error);
+      }
+    };
 
-  const services = Array.isArray(servicesData) ? servicesData.slice(0, 6).map((s: { title: string }) => ({
-    label: s.title,
-    href: `/services?service=${encodeURIComponent(s.title)}`
-  })) : [];
+    fetchServices();
+  }, []);
 
   const footerLinks = {
     company: [
