@@ -1,52 +1,33 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import AboutCard from './AboutCard';
 import Beams from './Beams';
 import { useTheme } from './ThemeProvider';
 import Link from 'next/link';
 import { InteractiveHoverButton } from './ui/InteractiveHoverButton';
+import { useAppSelector } from '@/lib/store/hooks';
 
 const About = () => {
 	const { theme } = useTheme();
 	const isLight = theme === 'light';
-    const [content, setContent] = useState({
-        title: '',
-        quote: '',
-        description1: '',
-        description2: '',
-        description3: '',
-        description4: ''
-    });
-    const [cards, setCards] = useState<any[]>([]);
-    const [fetched, setFetched] = useState(false);
+	
+	// Get data from Redux store
+	const aboutContent = useAppSelector((state) => state.about.content);
+	const aboutCards = useAppSelector((state) => state.aboutCards.cards);
+	const aboutLoading = useAppSelector((state) => state.about.loading);
+	const cardsLoading = useAppSelector((state) => state.aboutCards.loading);
 
-    useEffect(() => {
-        if (!fetched) {
-            const fetchData = async () => {
-                try {
-                    const [contentRes, cardsRes] = await Promise.all([
-                        fetch('/api/admin/about-content'),
-                        fetch('/api/admin/about-cards')
-                    ]);
-                    
-                    const contentData = await contentRes.json();
-                    if (contentData && !contentData.error) {
-                        setContent(contentData);
-                    }
-
-                    const cardsData = await cardsRes.json();
-                    if (cardsData.items) {
-                        setCards(cardsData.items);
-                    }
-                } catch (error) {
-                    console.error('Failed to fetch about data', error);
-                } finally {
-                    setFetched(true);
-                }
-            };
-            fetchData();
-        }
-    }, [fetched]);
+	// Use Redux data or provide fallbacks
+	const content = aboutContent || {
+		title: '',
+		quote: '',
+		description1: '',
+		description2: '',
+		description3: '',
+		description4: ''
+	};
+	
+	const cards = aboutCards || [];
 
 	return (
 		<section
@@ -154,7 +135,7 @@ const About = () => {
 							</h2>
 
 							<div className="grid grid-cols-2 sm:grid-cols-2  lg:grid-cols-3 gap-4 mt-0  sm:mt-15 sm:gap-6 mb-10">
-								{cards.map((card, index) => {
+								{cards.map((card: any, index: number) => {
                                     // Navigate to about page with card parameter to open modal
                                     const cardParam = card._id || card.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
 

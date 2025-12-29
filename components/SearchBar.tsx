@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useTheme } from './ThemeProvider';
+import { useAppSelector } from '@/lib/store/hooks';
 
 interface Service {
   title: string;
@@ -24,10 +25,13 @@ interface Policy {
 
 const SearchBar: React.FC = () => {
   const { theme } = useTheme();
+  
+  // Get data from Redux store
+  const services = useAppSelector((state) => state.services.services);
+  const industries = useAppSelector((state) => state.industries.industries);
+  const policies = useAppSelector((state) => state.policies.policies);
+  
   const [query, setQuery] = useState('');
-  const [services, setServices] = useState<Service[]>([]);
-  const [industries, setIndustries] = useState<Industry[]>([]);
-  const [policies, setPolicies] = useState<Policy[]>([]);
   const [filteredResults, setFilteredResults] = useState<{
     type: string;
     title: string;
@@ -36,44 +40,8 @@ const SearchBar: React.FC = () => {
   }[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  // Fetch services and industries
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const [servicesRes, industriesRes, policiesRes] = await Promise.all([
-          fetch('/api/services'),
-          fetch('/api/industries'),
-          fetch('/api/admin/policies')
-        ]);
-
-        if (servicesRes.ok) {
-          const servicesData = await servicesRes.json();
-          setServices(servicesData);
-        }
-
-        if (industriesRes.ok) {
-          const industriesData = await industriesRes.json();
-          setIndustries(industriesData.industries || []);
-        }
-
-        if (policiesRes.ok) {
-          const policiesData = await policiesRes.json();
-          setPolicies(policiesData);
-        }
-      } catch (error) {
-        console.error('Failed to fetch search data:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   // Filter results based on query
   useEffect(() => {
@@ -106,7 +74,7 @@ const SearchBar: React.FC = () => {
     }[] = [];
 
     // Search services
-    services.forEach(service => {
+    services.forEach((service: any) => {
       if (service.title.toLowerCase().includes(lowerQuery) ||
           service.description.toLowerCase().includes(lowerQuery)) {
         results.push({
@@ -118,7 +86,7 @@ const SearchBar: React.FC = () => {
       }
 
       // Search service items
-      service.items.forEach(item => {
+      service.items?.forEach((item: string) => {
         if (item.toLowerCase().includes(lowerQuery)) {
           results.push({
             type: 'service-item',
@@ -131,7 +99,7 @@ const SearchBar: React.FC = () => {
     });
 
     // Search industries
-    industries.forEach(industry => {
+    industries.forEach((industry: any) => {
       if (industry.title.toLowerCase().includes(lowerQuery) ||
           industry.description.toLowerCase().includes(lowerQuery)) {
         results.push({
@@ -157,7 +125,7 @@ const SearchBar: React.FC = () => {
     });
 
     // Search policies
-    policies.forEach(policy => {
+    policies.forEach((policy: any) => {
       if (policy.title.toLowerCase().includes(lowerQuery) ||
           (policy.content && policy.content.toLowerCase().includes(lowerQuery)) ||
           (policy.subCategory && policy.subCategory.toLowerCase().includes(lowerQuery))) {
@@ -330,11 +298,6 @@ const SearchBar: React.FC = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                   </div>
-                  {isLoading && (
-                    <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                      <div className="w-6 h-6 border-2 border-[#009edb] border-t-transparent rounded-full animate-spin"></div>
-                    </div>
-                  )}
                 </div>
               </div>
 

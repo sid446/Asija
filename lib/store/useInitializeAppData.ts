@@ -8,6 +8,9 @@ import { fetchFAQs } from '@/lib/store/slices/faqsSlice';
 import { fetchIndustries } from '@/lib/store/slices/industriesSlice';
 import { fetchContactContent, fetchLocations } from '@/lib/store/slices/contactSlice';
 import { fetchGlobalServiceContent, fetchGlobalRegions, fetchGlobalOfferings } from '@/lib/store/slices/globalServicesSlice';
+import { fetchAboutContent } from '@/lib/store/slices/aboutSlice';
+import { fetchAboutCards } from '@/lib/store/slices/aboutCardsSlice';
+import { fetchPolicies } from '@/lib/store/slices/policiesSlice';
 
 // Global refs to prevent multiple fetches across component remounts
 const industriesFetchedRef = { current: false };
@@ -20,6 +23,9 @@ const locationsFetchedRef = { current: false };
 const globalContentFetchedRef = { current: false };
 const globalRegionsFetchedRef = { current: false };
 const globalOfferingsFetchedRef = { current: false };
+const aboutContentFetchedRef = { current: false };
+const aboutCardsFetchedRef = { current: false };
+const policiesFetchedRef = { current: false };
 
 export function useInitializeAppData() {
   const dispatch = useAppDispatch();
@@ -31,6 +37,9 @@ export function useInitializeAppData() {
   const { industries, loading: industriesLoading } = useAppSelector((state) => state.industries);
   const { contactContent, locations, loading: contactLoading } = useAppSelector((state) => state.contact);
   const { content: globalContent, regions: globalRegions, offerings, loading: globalServicesLoading } = useAppSelector((state) => state.globalServices);
+  const { content: aboutContent, loading: aboutLoading } = useAppSelector((state) => state.about);
+  const { cards: aboutCards, loading: aboutCardsLoading } = useAppSelector((state) => state.aboutCards);
+  const { policies, loading: policiesLoading } = useAppSelector((state) => state.policies);
 
   useEffect(() => {
     // Initialize all data on app start
@@ -99,6 +108,24 @@ export function useInitializeAppData() {
         globalOfferingsFetchedRef.current = true;
         dispatch(fetchGlobalOfferings());
       }
+
+      // Fetch about content if not loaded
+      if (!aboutContent && !aboutLoading && !aboutContentFetchedRef.current) {
+        aboutContentFetchedRef.current = true;
+        dispatch(fetchAboutContent());
+      }
+
+      // Fetch about cards if not loaded
+      if (aboutCards.length === 0 && !aboutCardsLoading && !aboutCardsFetchedRef.current) {
+        aboutCardsFetchedRef.current = true;
+        dispatch(fetchAboutCards());
+      }
+
+      // Fetch policies if not loaded
+      if (policies.length === 0 && !policiesLoading && !policiesFetchedRef.current) {
+        policiesFetchedRef.current = true;
+        dispatch(fetchPolicies());
+      }
     };
 
     initializeData();
@@ -122,12 +149,18 @@ export function useInitializeAppData() {
     globalContent,
     globalRegions.length,
     offerings.length,
-    globalServicesLoading
+    globalServicesLoading,
+    aboutContent,
+    aboutLoading,
+    aboutCards.length,
+    aboutCardsLoading,
+    policies.length,
+    policiesLoading
   ]);
 
   return {
-    isLoading: heroLoading || servicesLoading || insightsLoading || regionsLoading || faqsLoading || industriesLoading || contactLoading || globalServicesLoading,
-    hasData: !!(heroContent && services.length > 0 && insights.length > 0 && regions.length > 0 && faqs.length > 0 && industries.length > 0 && contactContent && locations.length > 0 && globalContent && globalRegions.length > 0 && offerings.length > 0),
+    isLoading: heroLoading || servicesLoading || insightsLoading || regionsLoading || faqsLoading || industriesLoading || contactLoading || globalServicesLoading || aboutLoading || aboutCardsLoading || policiesLoading,
+    hasData: !!(heroContent && services.length > 0 && insights.length > 0 && regions.length > 0 && faqs.length > 0 && industries.length > 0 && contactContent && locations.length > 0 && globalContent && globalRegions.length > 0 && offerings.length > 0 && aboutContent && aboutCards.length > 0 && policies.length >= 0),
     heroContent
   };
 } 

@@ -28,12 +28,15 @@ import faqsReducer from './slices/faqsSlice';
 import industriesReducer from './slices/industriesSlice';
 import contactReducer from './slices/contactSlice';
 import globalServicesReducer from './slices/globalServicesSlice';
+import aboutReducer from './slices/aboutSlice';
+import aboutCardsReducer from './slices/aboutCardsSlice';
+import policiesReducer from './slices/policiesSlice';
 
 // Persist configuration
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['hero', 'services', 'insights', 'regions', 'faqs', 'contact', 'globalServices'], // Only persist these slices
+  whitelist: ['hero', 'services', 'insights', 'regions', 'faqs', 'contact', 'globalServices', 'about', 'aboutCards', 'policies'], // Only persist these slices
 };
 
 // Combine reducers
@@ -46,6 +49,9 @@ const rootReducer = combineReducers({
   industries: industriesReducer,
   contact: contactReducer,
   globalServices: globalServicesReducer,
+  about: aboutReducer,
+  aboutCards: aboutCardsReducer,
+  policies: policiesReducer,
 });
 
 // Create persisted reducer with error handling
