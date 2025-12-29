@@ -29,6 +29,8 @@ import {
   Filter,
   Lightbulb
 } from 'lucide-react';
+import { useAppDispatch } from '@/lib/store/hooks';
+import { fetchHeroContent as fetchHeroContentThunk } from '@/lib/store/slices/heroSlice';
 import { getOptimizedImageUrl } from '@/lib/utils';
 
 type SectionItem = {
@@ -253,6 +255,7 @@ type HeroContentData = {
   videoWebm: string;
   videoMp4: string;
   showFAQ: boolean;
+  showInsights: boolean;
 };
 
 type ContactContentData = {
@@ -898,6 +901,7 @@ const AboutTab = ({ showTimeline = true }: { showTimeline?: boolean }) => {
 };
 
 export default function AdminPage() {
+  const dispatch = useAppDispatch();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [globalServicesSubTab, setGlobalServicesSubTab] = useState('content');
   const [gallerySubTab, setGallerySubTab] = useState('events');
@@ -1075,7 +1079,8 @@ export default function AdminPage() {
     videoPoster: '',
     videoWebm: '',
     videoMp4: '',
-    showFAQ: true
+    showFAQ: true,
+    showInsights: true
   });
 
 
@@ -1129,7 +1134,8 @@ export default function AdminPage() {
           videoPoster: data.videoPoster || '',
           videoWebm: data.videoWebm || '',
           videoMp4: data.videoMp4 || '',
-          showFAQ: data.showFAQ !== undefined ? Boolean(data.showFAQ) : true
+          showFAQ: data.showFAQ !== undefined ? Boolean(data.showFAQ) : true,
+          showInsights: data.showInsights !== undefined ? Boolean(data.showInsights) : true
         });
       }
     } catch (err) {
@@ -1167,6 +1173,7 @@ export default function AdminPage() {
       if (res.ok) {
         setMessage('Hero content updated successfully!');
         fetchHeroContent();
+        dispatch(fetchHeroContentThunk());
       } else {
         setMessage('Failed to update hero content.');
       }
@@ -4290,6 +4297,20 @@ export default function AdminPage() {
                           />
                           <label htmlFor="showFAQ" className="ml-2 block text-sm text-gray-900">
                             Show FAQ section on home page (Current: {heroFormData.showFAQ ? 'Yes' : 'No'})
+                          </label>
+                        </div>
+
+                        <div className="flex items-center mt-4">
+                          <input
+                            type="checkbox"
+                            id="showInsights"
+                            name="showInsights"
+                            checked={heroFormData.showInsights}
+                            onChange={handleHeroContentChange}
+                            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                          />
+                          <label htmlFor="showInsights" className="ml-2 block text-sm text-gray-900">
+                            Show Insights section on home page (Current: {heroFormData.showInsights ? 'Yes' : 'No'})
                           </label>
                         </div>
                       </div>

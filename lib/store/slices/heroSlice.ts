@@ -10,6 +10,7 @@ export interface HeroContent {
   videoWebm: string;
   videoMp4: string;
   showFAQ: boolean;
+  showInsights: boolean;
 }
 
 interface HeroState {

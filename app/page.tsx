@@ -53,9 +53,11 @@ export default function Home() {
             <div id="about">
               <AboutUs />
             </div>
-            <div id="insights">
-              <Insights />
-            </div>
+            {!isLoading && heroContent && Boolean(heroContent.showInsights) && (
+              <div id="insights">
+                <Insights />
+              </div>
+            )}
             <div id="services">
               <Services />
             </div>

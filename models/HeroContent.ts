@@ -40,6 +40,10 @@ const HeroContentSchema = new Schema(
     showFAQ: {
       type: Boolean,
       default: true,
+    },
+    showInsights: {
+      type: Boolean,
+      default: true,
     }
   },
   { timestamps: true }

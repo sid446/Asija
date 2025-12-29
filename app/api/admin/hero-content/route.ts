@@ -18,12 +18,17 @@ export async function GET() {
           videoPoster: 'https://res.cloudinary.com/db2qa9dzs/video/upload/so_0,w_1920,q_auto,f_jpg/v1764139755/855507-hd_1920_1080_25fps_kyxlva.jpg',
           videoWebm: 'https://res.cloudinary.com/db2qa9dzs/video/upload/f_webm,q_auto:eco,vc_auto,w_1920/v1764139755/855507-hd_1920_1080_25fps_kyxlva.webm',
           videoMp4: 'https://res.cloudinary.com/db2qa9dzs/video/upload/f_mp4,q_auto:eco,vc_auto,w_1920/v1764139755/855507-hd_1920_1080_25fps_kyxlva.mp4',
-          showFAQ: true
+          showFAQ: true,
+          showInsights: true
         });
       } else {
-        // Ensure showFAQ field exists for existing documents
+        // Ensure showFAQ and showInsights fields exist for existing documents
         if (content.showFAQ === undefined) {
           content.showFAQ = true;
+          await content.save();
+        }
+        if (content.showInsights === undefined) {
+          content.showInsights = true;
           await content.save();
         }
       }
@@ -43,6 +48,7 @@ export async function GET() {
 export async function PUT(request: Request) {
   try {
     const data = await request.json();
+    console.log('Admin API PUT - Received data:', data);
 
     const updateData = {
       ...data
@@ -60,6 +66,7 @@ export async function PUT(request: Request) {
       );
     });
 
+    console.log('Admin API PUT - Saved content:', content);
     return NextResponse.json(content);
   } catch (error) {
     console.error('Error updating hero content:', error);

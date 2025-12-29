@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import { useAppSelector } from '@/lib/store/hooks';
 
 interface NavItem {
   id: string;
@@ -7,20 +8,23 @@ interface NavItem {
   sectionId: string;
 }
 
-const navItems: NavItem[] = [
-  { id: 'hero', label: 'Home', sectionId: 'hero' },
-  { id: 'about', label: 'About', sectionId: 'about' },
-  { id: 'insights', label: 'Insights', sectionId: 'insights' },
-  { id: 'services', label: 'Services', sectionId: 'services' },
-  { id: 'industries', label: 'Industries', sectionId: 'industries' },
-  { id: 'career', label: 'Career', sectionId: 'career' },
-  { id: 'contact', label: 'Contact', sectionId: 'contact' },
-  { id: 'footer', label: 'Footer', sectionId: 'footer' },
-];
-
 const HoverNavigation: React.FC = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
+
+  const { content: heroContent } = useAppSelector((state) => state.hero);
+
+  // Dynamic nav items based on hero content settings
+  const navItems: NavItem[] = [
+    { id: 'hero', label: 'Home', sectionId: 'hero' },
+    { id: 'about', label: 'About', sectionId: 'about' },
+    ...(heroContent?.showInsights ? [{ id: 'insights', label: 'Insights', sectionId: 'insights' }] : []),
+    { id: 'services', label: 'Services', sectionId: 'services' },
+    { id: 'industries', label: 'Industries', sectionId: 'industries' },
+    { id: 'career', label: 'Career', sectionId: 'career' },
+    { id: 'contact', label: 'Contact', sectionId: 'contact' },
+    { id: 'footer', label: 'Footer', sectionId: 'footer' },
+  ];
 
   // Detect mobile device
   useEffect(() => {
