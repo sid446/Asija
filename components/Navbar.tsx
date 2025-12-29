@@ -226,7 +226,7 @@ const NavItem = ({ label, isIcon, icon, isActive, hasDropdown, href }: NavItemPr
 
   if (href) {
     return (
-      <Link href={href} scroll={false} className="relative px-1.5 2xl:px-4 py-6 text-white/90 hover:text-white text-sm font-bold transition-colors flex items-center gap-1 group whitespace-nowrap">
+      <Link href={href} scroll={false} prefetch={false} className="relative px-1.5 2xl:px-4 py-6 text-white/90 hover:text-white text-sm font-bold transition-colors flex items-center gap-1 group whitespace-nowrap">
         {label}
         {hasDropdown && (
           <motion.div
@@ -390,6 +390,7 @@ export default function Navbar() {
               <div key={(sub as any).title} className="group relative">
                 <Link 
                   href={(sub as any).href || '/services'}
+                  prefetch={false}
                   className={`${(theme === 'light' && scrolled) ? 'text-gray-900' : 'text-white'} group-hover:text-[#009edb] font-bold text-base mb-1 transition-all flex items-center gap-2 py-1 hover:translate-x-1`}
                 >
                   <span className="w-1.5 h-1.5 bg-[#009edb] rounded-full opacity-0 group-hover:opacity-100 transition-all" />
@@ -402,6 +403,7 @@ export default function Navbar() {
                       <Link 
                         key={i}
                         href={item.href}
+                        prefetch={false}
                         className="block text-sm text-gray-600 hover:text-[#009edb] dark:text-gray-300 dark:hover:text-[#009edb] transition-colors py-1.5 px-2 hover:bg-gray-50 dark:hover:bg-white/5 rounded-md"
                       >
                         {item.label}
@@ -417,6 +419,7 @@ export default function Navbar() {
               <div key={index} className="group">
                 <Link 
                   href={sub.href}
+                  prefetch={false}
                   className={`text-left ${(theme === 'light' && scrolled) ? 'text-gray-700' : 'text-white'} group-hover:text-[#009edb] text-base font-bold transition-all flex items-center gap-2 py-1 hover:translate-x-1`}
                 >
                   <span className="w-1.5 h-1.5 bg-[#009edb] rounded-full opacity-0 group-hover:opacity-100 transition-all" />
@@ -461,6 +464,7 @@ export default function Navbar() {
                 <div key={(sub as any).title} className="space-y-2">
                   <Link 
                     href={(sub as any).href || '/services'}
+                    prefetch={false}
                     className={`${(theme === 'light' && scrolled) ? 'text-gray-900' : 'text-white'} font-bold text-sm block hover:text-[#009edb] transition-colors`}
                   >
                     {(sub as any).title}
@@ -472,6 +476,7 @@ export default function Navbar() {
                         <Link 
                           key={i}
                           href={item.href}
+                          prefetch={false}
                           className="block text-xs text-gray-500 hover:text-[#009edb] dark:text-gray-400 dark:hover:text-[#009edb] transition-colors"
                         >
                           {item.label}
@@ -487,6 +492,7 @@ export default function Navbar() {
                 <Link
                   key={index}
                   href={sub.href}
+                  prefetch={false}
                   style={{
                     color: theme === 'light' ? '#6b7280' : '#ffffff',
                   }}
@@ -521,7 +527,7 @@ export default function Navbar() {
           <div className="flex gap-2 lg:gap-6 items-center">
             
             <motion.div className={`flex items-center gap-1.5 md:gap-3  cursor-pointer`}>
-            <Link href="/">
+            <Link href="/" prefetch={false}>
               <motion.div className={`flex items-center gap-2 cursor-pointer flex-row-reverse`}>
                 {/* TEXT: Always visible */}
                 <motion.div
@@ -620,7 +626,7 @@ export default function Navbar() {
 
             {/* Admin Dashboard (visible only to service@asija.in) */}
             {session?.user?.email === 'service@asija.in' && (
-              <Link href="/admin" className="ml-1 2xl:ml-4 px-2 2xl:px-3 py-2 rounded-md bg-[#0b76a3] hover:bg-[#0077a3] text-white text-sm font-medium">
+              <Link href="/admin" prefetch={false} className="ml-1 2xl:ml-4 px-2 2xl:px-3 py-2 rounded-md bg-[#0b76a3] hover:bg-[#0077a3] text-white text-sm font-medium">
                 Dashboard
               </Link>
             )}
@@ -689,7 +695,7 @@ export default function Navbar() {
                 </AnimatePresence>
               </div>
             ) : (
-               <Link href="/login" className="text-white hover:text-[#009edb] text-sm font-medium ml-1 2xl:ml-4 flex items-center justify-center gap-1">
+               <Link href="/login" prefetch={false} className="text-white hover:text-[#009edb] text-sm font-medium ml-1 2xl:ml-4 flex items-center justify-center gap-1">
                  Login <LogIn size={15}/>
                </Link>
             )}
