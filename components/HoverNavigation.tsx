@@ -49,14 +49,10 @@ const HoverNavigation: React.FC = () => {
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = document.getElementById(sections[i]);
         if (section) {
-          console.log(`Section ${sections[i]}: offsetTop=${section.offsetTop}, scrollPosition=${scrollPosition}`);
           if (section.offsetTop <= scrollPosition) {
-            console.log(`Setting activeSection to ${sections[i]}`);
             setActiveSection(sections[i]);
             break;
           }
-        } else {
-          console.log(`Section ${sections[i]} not found`);
         }
       }
     };
@@ -86,7 +82,6 @@ const HoverNavigation: React.FC = () => {
         event.preventDefault();
         const prevIndex = currentIndex === 0 ? navItems.length - 1 : currentIndex - 1;
         const prevSection = navItems[prevIndex].sectionId;
-        console.log('ArrowUp: currentSection =', activeSection, 'currentIndex =', currentIndex, 'prevSection =', prevSection);
         scrollToSection(prevSection);
       }
     };
