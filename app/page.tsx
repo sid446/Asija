@@ -27,17 +27,11 @@ export default function Home() {
   const isLoading = heroLoading || servicesLoading || insightsLoading || regionsLoading || faqsLoading || industriesLoading || contactLoading || globalServicesLoading;
   const hasData = !!(heroContent && services.length > 0 && insights.length > 0 && regions.length > 0 && faqs.length > 0 && industries.length > 0 && contactContent && locations.length > 0 && globalContent && globalRegions.length > 0 && offerings.length > 0);
 
-  if (isLoading && !hasData) {
-    return (
-      
-        <Loader />
-      
-    );
-  }
+  
 
   return (
     <>
-     
+      <Loader isLoading={isLoading} />
 
       <div className="relative">
         <Navbar />
@@ -70,7 +64,10 @@ export default function Home() {
               <Contact />
             </div>
             {!isLoading && heroContent && Boolean(heroContent.showFAQ) && (
-              <FAQAccordion/>
+              <>
+                {console.log('Rendering FAQ - showFAQ:', heroContent.showFAQ)}
+                <FAQAccordion/>
+              </>
             )}
             <Footer />
           </div>
