@@ -27,11 +27,11 @@ export default function Home() {
   const isLoading = heroLoading || servicesLoading || insightsLoading || regionsLoading || faqsLoading || industriesLoading || contactLoading || globalServicesLoading;
   const hasData = !!(heroContent && services.length > 0 && insights.length > 0 && regions.length > 0 && faqs.length > 0 && industries.length > 0 && contactContent && locations.length > 0 && globalContent && globalRegions.length > 0 && offerings.length > 0);
 
-  
+ 
 
   return (
     <>
-      <Loader isLoading={isLoading} />
+      {isLoading && !hasData && <Loader pageName="Home" />}
 
       <div className="relative">
         <Navbar />
