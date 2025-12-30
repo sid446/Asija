@@ -1,20 +1,18 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import AboutUs from "@/components/About";
 import Hero from "@/components/Hero";
+import Services from "@/components/Services";
 import Navbar from "@/components/Navbar";
+import IndustriesFlowMenu from "@/components/Industry";
 import Insights from "@/components/Insights";
+import Career from "@/components/Carrer";
+import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import Loader from "@/components/ui/Loader";
 import FAQAccordion from "@/components/FaqInteractable";
 import HoverNavigation from "@/components/HoverNavigation";
 import { useAppSelector } from '@/lib/store/hooks';
-
-const Services = dynamic(() => import("@/components/Services"), { ssr: false });
-const IndustriesFlowMenu = dynamic(() => import("@/components/Industry"), { ssr: false });
-const Career = dynamic(() => import("@/components/Carrer"), { ssr: false });
-const Contact = dynamic(() => import("@/components/Contact"), { ssr: false });
 
 export default function Home() {
   const { content: heroContent, loading: heroLoading } = useAppSelector((state) => state.hero);
