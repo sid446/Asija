@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Asija - Global Business & Professional Services',
     description: 'Leading global business consulting firm providing comprehensive professional services, corporate advisory, and international business solutions.',
-    url: 'https://asija-three.vercel.app',
+    url: 'https://asija.org',
     siteName: 'Asija',
     images: [
       {
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     images: ['https://res.cloudinary.com/db2qa9dzs/image/upload/v1767077176/Gemini_Generated_Image_qrix1rqrix1rqrix-removebg-preview_oqzzij.png'],
   },
   alternates: {
-    canonical: 'https://asija-three.vercel.app',
+    canonical: 'https://asija.org',
   },
 }
 
