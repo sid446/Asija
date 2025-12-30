@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     siteName: 'Asija',
     images: [
       {
-        url: 'https://asija-three.vercel.app/logo.png',
+        url: '/logo.png',
         width: 1200,
         height: 630,
         alt: 'Asija - Global Business Solutions',
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Asija - Global Business & Professional Services',
     description: 'Leading global business consulting firm providing comprehensive professional services, corporate advisory, and international business solutions.',
-    images: ['https://asija-three.vercel.app/logo.png'],
+    images: ['/logo.png'],
   },
   alternates: {
     canonical: 'https://asija-three.vercel.app',

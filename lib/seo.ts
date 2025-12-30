@@ -1,5 +1,7 @@
 import { Metadata } from 'next'
 
+const LOGO_URL = 'https://asija-three.vercel.app/logo.png'
+
 export function generateSEO({
   title,
   description,
@@ -17,7 +19,7 @@ export function generateSEO({
 }): Metadata {
   const baseUrl = 'https://asija-three.vercel.app'
   const fullUrl = url ? `${baseUrl}${url}` : baseUrl
-  const imageUrl = image || `${baseUrl}/logo.png`
+  const imageUrl = image || LOGO_URL
 
   return {
     title,
@@ -95,7 +97,7 @@ export function generateArticleStructuredData(article: {
     "@type": "Article",
     "headline": article.title,
     "description": article.description,
-    "image": article.image || "https://asija-three.vercel.app/logo.png",
+    "image": article.image || LOGO_URL,
     "url": `https://asija-three.vercel.app${article.url}`,
     "datePublished": article.publishedTime,
     "dateModified": article.modifiedTime || article.publishedTime,
@@ -108,7 +110,7 @@ export function generateArticleStructuredData(article: {
       "name": "Asija",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://asija-three.vercel.app/logo.png"
+        "url": LOGO_URL
       }
     }
   }

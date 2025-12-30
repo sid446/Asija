@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     siteName: 'Asija - Global Business Solutions',
     images: [
       {
-        url: 'https://asija-three.vercel.app/logo.png',
+        url: '/logo.png',
         width: 1200,
         height: 630,
         alt: 'Asija - Global Business & Professional Services',
@@ -73,7 +73,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Asija - Global Business & Professional Services | International Consulting',
     description: 'Leading global business consulting firm providing comprehensive professional services, corporate advisory, and international business solutions.',
-    images: ['https://asija-three.vercel.app/logo.png'],
+    images: ['/logo.png'],
     creator: '@asija_services',
   },
   robots: {
@@ -95,8 +95,6 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: '/logo.png',
-    shortcut: '/logo.png',
-    apple: '/logo.png',
   },
   manifest: '/manifest.json',
 };

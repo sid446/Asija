@@ -13,13 +13,7 @@
   "icons": [
     {
       "src": "/logo.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/logo.png",
-      "sizes": "512x512",
+      "sizes": "192x192 512x512",
       "type": "image/png",
       "purpose": "any maskable"
     }
@@ -29,22 +23,19 @@
       "name": "Services",
       "short_name": "Services",
       "description": "Explore our professional services",
-      "url": "/services",
-      "icons": [{ "src": "/logo.png", "sizes": "96x96" }]
+      "url": "/services"
     },
     {
       "name": "Contact",
       "short_name": "Contact",
       "description": "Get in touch with us",
-      "url": "/contact",
-      "icons": [{ "src": "/logo.png", "sizes": "96x96" }]
+      "url": "/contact"
     },
     {
       "name": "Career",
       "short_name": "Career",
       "description": "Join our team",
-      "url": "/career",
-      "icons": [{ "src": "/logo.png", "sizes": "96x96" }]
+      "url": "/career"
     }
   ]
 }
