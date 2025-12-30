@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     siteName: 'Asija - Global Business Solutions',
     images: [
       {
-        url: '/logo.png',
+        url: 'https://res.cloudinary.com/db2qa9dzs/image/upload/v1767077176/Gemini_Generated_Image_qrix1rqrix1rqrix-removebg-preview_oqzzij.png',
         width: 1200,
         height: 630,
         alt: 'Asija - Global Business & Professional Services',
@@ -73,7 +73,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Asija - Global Business & Professional Services | International Consulting',
     description: 'Leading global business consulting firm providing comprehensive professional services, corporate advisory, and international business solutions.',
-    images: ['/logo.png'],
+    images: ['https://res.cloudinary.com/db2qa9dzs/image/upload/v1767077176/Gemini_Generated_Image_qrix1rqrix1rqrix-removebg-preview_oqzzij.png'],
     creator: '@asija_services',
   },
   robots: {
@@ -94,7 +94,7 @@ export const metadata: Metadata = {
     yandex: 'your-yandex-verification-code',
   },
   icons: {
-    icon: '/logo.png',
+    icon: 'https://res.cloudinary.com/db2qa9dzs/image/upload/v1767077176/Gemini_Generated_Image_qrix1rqrix1rqrix-removebg-preview_oqzzij.png',
   },
   manifest: '/manifest.json',
 };
@@ -139,7 +139,7 @@ export default function RootLayout({
               "name": "Asija",
               "alternateName": "Asija & Associates LLP",
               "url": "https://asija-three.vercel.app",
-              "logo": "https://asija-three.vercel.app/logo.png",
+              "logo": "https://res.cloudinary.com/db2qa9dzs/image/upload/v1767077176/Gemini_Generated_Image_qrix1rqrix1rqrix-removebg-preview_oqzzij.png",
               "description": "Leading global business consulting firm providing comprehensive professional services, corporate advisory, and international business solutions.",
               "foundingDate": "2026",
               "industry": "Business Consulting",
@@ -219,7 +219,7 @@ export default function RootLayout({
             })
           }}
         />
-        <link rel="preload" href="/logo.png" as="image" />
+        <link rel="preload" href="https://res.cloudinary.com/db2qa9dzs/image/upload/v1767077176/Gemini_Generated_Image_qrix1rqrix1rqrix-removebg-preview_oqzzij.png" as="image" />
       </head>
       <body className={`${inter.variable} antialiased`}>
         <ReduxProvider>

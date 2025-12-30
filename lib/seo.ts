@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-const LOGO_URL = 'https://asija-three.vercel.app/logo.png'
+const LOGO_URL = 'https://res.cloudinary.com/db2qa9dzs/image/upload/v1767077176/Gemini_Generated_Image_qrix1rqrix1rqrix-removebg-preview_oqzzij.png'
 
 export function generateSEO({
   title,
