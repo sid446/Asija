@@ -1,15 +1,26 @@
 // components/Loader.tsx
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { WaveLoader } from './WaveLoader';
 
 interface LoaderProps {
-  isLoading?: boolean;
   pageName?: string;
 }
 
-export default function Loader({ isLoading = true, pageName }: LoaderProps) {
+export default function Loader({ pageName }: LoaderProps) {
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simulate loading (1 second total)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000); // 1 second
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <AnimatePresence>
       {isLoading && (

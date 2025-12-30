@@ -37,7 +37,8 @@ export default function Home() {
 
   return (
     <>
-      <Loader isLoading={isLoading} />
+      {/* Loader – appears first */}
+      <Loader />
 
       <div className="relative">
         <Navbar />
