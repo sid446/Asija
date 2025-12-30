@@ -37,8 +37,7 @@ export default function Home() {
 
   return (
     <>
-      {/* Loader – appears first */}
-      <Loader />
+      <Loader isLoading={isLoading} />
 
       <div className="relative">
         <Navbar />
@@ -71,10 +70,7 @@ export default function Home() {
               <Contact />
             </div>
             {!isLoading && heroContent && Boolean(heroContent.showFAQ) && (
-              <>
-                {console.log('Rendering FAQ - showFAQ:', heroContent.showFAQ)}
-                <FAQAccordion/>
-              </>
+              <FAQAccordion/>
             )}
             <Footer />
           </div>
