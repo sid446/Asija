@@ -16,7 +16,7 @@ export default function Loader({ isLoading = false, pageName }: LoaderProps) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowLoader(false);
-    }, 1000); // 1 second minimum
+    }, 2000); // 1 second minimum
 
     return () => clearTimeout(timer);
   }, []);
