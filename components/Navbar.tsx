@@ -559,18 +559,18 @@ export default function Navbar() {
                     <Image
                       src="/logo13.png"
                       alt="Asija Logo"
-                      width={52}
-                      height={52}
-                      className="w-13 md:w-13"
+                      width={64}
+                      height={64}
+                      className="w-16 md:w-16"
                       priority
                     />
                   ) : (
                     <Image
                       src="/logo12.png"
                       alt="Asija Logo"
-                      width={52}
-                      height={52}
-                      className="w-13 md:w-13"
+                      width={64}
+                      height={64}
+                      className="w-16 md:w-16"
                       priority
                     />
                   )}
