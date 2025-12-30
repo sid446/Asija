@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useSession, signOut } from "next-auth/react";
 import { LogIn } from 'lucide-react';
 import { InteractiveHoverButton } from './ui/InteractiveHoverButton';
+import Image from 'next/image';
 import SearchBar from './SearchBar';
 import { useAppSelector } from '@/lib/store/hooks';
 
@@ -554,11 +555,25 @@ export default function Navbar() {
                   transition={{ duration: 0.3 }}
                   style={{ overflow: 'hidden' }}
                 >
-                  <img
-                    src={scrolled ? "/logo13.png" : "/logo12.png"}
-                    alt="Asija Logo"
-                    className={`w-13 md:w-13`}
-                  />
+                  {scrolled ? (
+                    <Image
+                      src="/logo13.png"
+                      alt="Asija Logo"
+                      width={52}
+                      height={52}
+                      className="w-13 md:w-13"
+                      priority
+                    />
+                  ) : (
+                    <Image
+                      src="/logo12.png"
+                      alt="Asija Logo"
+                      width={52}
+                      height={52}
+                      className="w-13 md:w-13"
+                      priority
+                    />
+                  )}
                 </motion.div>
               </motion.div>
             </Link>

@@ -219,6 +219,7 @@ export default function RootLayout({
             })
           }}
         />
+        <link rel="preload" href="/logo.png" as="image" />
       </head>
       <body className={`${inter.variable} antialiased`}>
         <ReduxProvider>
