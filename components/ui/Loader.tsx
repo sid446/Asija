@@ -6,24 +6,31 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { WaveLoader } from './WaveLoader';
 
 interface LoaderProps {
+  isLoading?: boolean;
   pageName?: string;
 }
 
-export default function Loader({ pageName }: LoaderProps) {
-  const [isLoading, setIsLoading] = useState(true);
+export default function Loader({ isLoading = false, pageName }: LoaderProps) {
+  const [showLoader, setShowLoader] = useState(true);
 
-  // Simulate loading (1 second total)
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000); // 1 second
+      setShowLoader(false);
+    }, 1000); // 1 second minimum
 
     return () => clearTimeout(timer);
   }, []);
 
+  // Hide loader when data is loaded, even if less than 1 second
+  useEffect(() => {
+    if (!isLoading) {
+      setShowLoader(false);
+    }
+  }, [isLoading]);
+
   return (
     <AnimatePresence>
-      {isLoading && (
+      {showLoader && (
         <motion.div
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-theme overflow-hidden"
           initial={{ y: 0 }}
