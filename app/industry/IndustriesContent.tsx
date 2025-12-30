@@ -13,11 +13,9 @@ import { InteractiveHoverButton } from '@/components/ui/InteractiveHoverButton';
 
 import Link from 'next/link';
 import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
-import { fetchIndustries } from '@/lib/store/slices/industriesSlice';
+import { Industry } from '@/lib/store/slices/industriesSlice';
 
-// Global ref to prevent multiple fetches
-const industriesPageFetchedRef = { current: false };
-import type { Industry } from '@/lib/store/slices/industriesSlice';
+// import type { Industry } from '@/lib/store/slices/industriesSlice';
 
 interface PageContent {
   heading: string;
@@ -84,12 +82,12 @@ export default function IndustriesContent() {
   const dispatch = useAppDispatch();
   const { industries, loading, error, fetched } = useAppSelector((state) => state.industries);
 
-  useEffect(() => {
-    if (!industriesPageFetchedRef.current && !loading) {
-      industriesPageFetchedRef.current = true;
-      dispatch(fetchIndustries());
-    }
-  }, [dispatch, loading]);
+  // useEffect(() => {
+  //   if (!industriesPageFetchedRef.current && !loading) {
+  //     industriesPageFetchedRef.current = true;
+  //     dispatch(fetchIndustries());
+  //   }
+  // }, [dispatch, loading]);
 
   // Construct pages array
   const pages: Page[] = [
