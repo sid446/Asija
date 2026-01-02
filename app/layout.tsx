@@ -20,8 +20,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Asija - Global Business & Professional Services | International Consulting",
-    template: "%s | Asija - Global Business Solutions"
+    default: "Asija and Associates LLP - Audit, Taxation, Consulting and Financial Services",
+    template: "%s | Asija and Associates LLP "
   },
   description: "Leading global business consulting firm providing comprehensive professional services, corporate advisory, and international business solutions. Trusted partner for multinational corporations across Asia and beyond.",
   keywords: [
