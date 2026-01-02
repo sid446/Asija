@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
-import { Scroll } from "lucide-react";
+
 import ScrollProvider from "./providers/ScrollProvider";
 import { TranslationProvider } from "@/components/TranslationProvider";
 import ThemeProvider from '@/components/ThemeProvider';
@@ -49,17 +49,17 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://asija-three.vercel.app'),
+  metadataBase: new URL('https://asija.org'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://asija-three.vercel.app',
-    title: 'Asija - Global Business & Professional Services | International Consulting',
+    url: 'https://asija.org',
+    title: 'Asija and Associates LLP - Audit, Taxation, Consulting and Financial Services',
     description: 'Leading global business consulting firm providing comprehensive professional services, corporate advisory, and international business solutions.',
-    siteName: 'Asija - Global Business Solutions',
+    siteName: 'Asija and Associates LLP',
     images: [
       {
         url: 'https://res.cloudinary.com/db2qa9dzs/image/upload/v1767077176/Gemini_Generated_Image_qrix1rqrix1rqrix-removebg-preview_oqzzij.png',
