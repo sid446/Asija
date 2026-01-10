@@ -88,7 +88,7 @@ export default function JobApplicationPage() {
     gender: '',
     currentCTC: '',
     expectedCTC: '',
-    resumeLink: '',
+    resume: null as File | null,
     coverLetter: ''
   });
 
@@ -129,16 +129,28 @@ export default function JobApplicationPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setFormData(prev => ({ ...prev, resume: file }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
     setMessage(null);
 
     try {
+      const submitData = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        if (value !== null) {
+          submitData.append(key, value);
+        }
+      });
+      submitData.append('jobId', job?._id || '');
+
       const res = await fetch('/api/career/apply', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, jobId: job?._id || null }),
+        body: submitData,
       });
       
       const data = await res.json();
@@ -333,21 +345,6 @@ export default function JobApplicationPage() {
                                 onChange={handleChange}
                             />
                         </div>
-                        <div>
-                            <Label htmlFor="resumeLink">Resume Link (Drive/LinkedIn)</Label>
-                            <div className="relative">
-                                <Upload className="absolute left-3 top-2.5 h-5 w-5 text-muted" />
-                                <Input 
-                                    id="resumeLink"
-                                    name="resumeLink"
-                                    type="url"
-                                    placeholder="https://..."
-                                    className="pl-10"
-                                    value={formData.resumeLink}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                        </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -437,6 +434,41 @@ export default function JobApplicationPage() {
                             onChange={handleChange}
                             placeholder="Tell us why you're a good fit..."
                         />
+                    </div>
+
+                    <div>
+                        <Label htmlFor="resume">Resume/CV *</Label>
+                        <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-[#009edb] transition-colors">
+                            <div className="space-y-1 text-center">
+                                <Upload className={`mx-auto h-12 w-12 ${isLight ? 'text-gray-400' : 'text-gray-500'}`} />
+                                <div className="flex text-sm text-gray-600">
+                                    <label
+                                        htmlFor="resume"
+                                        className="relative cursor-pointer bg-white rounded-md font-medium text-[#009edb] hover:text-[#0077a3] focus-within:outline-none"
+                                    >
+                                        <span>Upload your resume</span>
+                                        <input
+                                            id="resume"
+                                            name="resume"
+                                            type="file"
+                                            className="sr-only"
+                                            accept=".pdf,.doc,.docx"
+                                            required
+                                            onChange={handleFileChange}
+                                        />
+                                    </label>
+                                    <p className="pl-1">or drag and drop</p>
+                                </div>
+                                <p className={`text-xs ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
+                                    PDF, DOC, DOCX up to 10MB
+                                </p>
+                            </div>
+                        </div>
+                        {formData.resume && (
+                            <p className="mt-2 text-sm text-green-600">
+                                Selected: {formData.resume.name}
+                            </p>
+                        )}
                     </div>
 
                     <div className="pt-4 flex justify-center">

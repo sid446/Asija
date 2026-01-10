@@ -187,6 +187,103 @@ export async function POST(request: Request) {
       // Don't fail the application submission if email fails
     }
 
+    // Send Confirmation Email to Applicant
+    try {
+      console.log(`Attempting to send confirmation email to: ${email}`);
+      await transporter.sendMail({
+        ...mailOptions,
+        to: email, // Send to Applicant
+        subject: `Application Submitted Successfully for ${position}`,
+        html: `
+          <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px;">
+            <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+              <div style="background-color: #28a745; color: #ffffff; padding: 25px; text-align: center;">
+                <h1 style="margin: 0; font-size: 24px; font-weight: 600;">Application Submitted Successfully</h1>
+                <p style="margin: 5px 0 0 0; opacity: 0.9;">Position: ${position}</p>
+              </div>
+              
+              <div style="padding: 30px;">
+                <p style="font-size: 16px; color: #333; margin-bottom: 20px;">Dear ${fullName},</p>
+                <p style="font-size: 16px; color: #333; margin-bottom: 20px;">Thank you for applying for the position of <strong>${position}</strong>. Your application has been submitted successfully. Below is a summary of the information you provided:</p>
+                
+                <h2 style="color: #333; font-size: 18px; border-bottom: 2px solid #28a745; padding-bottom: 8px; margin-bottom: 20px; margin-top: 0;">Your Application Details</h2>
+                
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px;">
+                  <tr>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600; width: 40%;">Full Name</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${fullName}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Email</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${email}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Phone</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${phone}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Position Applied For</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${position}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Department</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${department || 'Not specified'}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Experience</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${experience || 'Not specified'}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Current Location</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${currentLocation || 'Not specified'}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Preferred Location</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${preferredLocation || 'Not specified'}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Age</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${age || 'Not specified'}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Gender</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">${gender || 'Not specified'}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; font-weight: 600;">Resume</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #333;">
+                      ${resumeUrl ?
+                        `<a href="${resumeUrl}" target="_blank" style="color: #28a745; text-decoration: none; font-weight: 500;">View Your Resume</a>` :
+                        'No resume attached'
+                      }
+                    </td>
+                  </tr>
+                </table>
+
+                ${coverLetter ? `
+                  <h2 style="color: #333; font-size: 18px; border-bottom: 2px solid #28a745; padding-bottom: 8px; margin-bottom: 20px;">Cover Letter</h2>
+                  <div style="background-color: #f8f9fa; padding: 20px; border-left: 4px solid #28a745; border-radius: 4px; color: #444; line-height: 1.6;">
+                    ${coverLetter.replace(/\n/g, '<br>')}
+                  </div>
+                ` : ''}
+
+                <p style="font-size: 16px; color: #333; margin-top: 30px;">We will review your application and get back to you soon. If you have any questions, please contact us.</p>
+                <p style="font-size: 16px; color: #333;">Best regards,<br>Asija & Associates LLP Team</p>
+              </div>
+              
+              <div style="background-color: #f4f4f4; padding: 15px; text-align: center; font-size: 12px; color: #888; border-top: 1px solid #eee;">
+                &copy; ${new Date().getFullYear()} Asija & Associates LLP. All rights reserved.
+              </div>
+            </div>
+          </div>
+        `,
+      });
+      console.log('Confirmation email sent successfully to applicant');
+    } catch (emailError) {
+      console.error('Failed to send confirmation email:', emailError);
+      // Don't fail the application submission if email fails
+    }
+
     return NextResponse.json({
       success: true,
       message: 'Application submitted successfully',

@@ -127,13 +127,13 @@ export default function ApplyFormPage() {
 
 	if (submitted) {
 		return (
-			<div className={`min-h-screen flex flex-col ${isLight ? 'bg-white' : 'bg-slate-950'}`}>
+			<div className={`min-h-screen  flex flex-col ${isLight ? 'bg-white' : 'bg-slate-950'}`}>
 				<Navbar />
-				<div className="flex-1 flex items-center justify-center px-4">
+				<div className="flex-1 flex items-center justify-center p-40 px-4">
 					<motion.div
 						initial={{ opacity: 0, scale: 0.9 }}
 						animate={{ opacity: 1, scale: 1 }}
-						className={`max-w-md w-full p-8 rounded-2xl text-center ${
+						className={`max-w-md w-full p-8  rounded-2xl text-center ${
 							isLight ? 'bg-white border border-gray-200' : 'bg-slate-900/50 border border-white/10'
 						}`}
 					>
