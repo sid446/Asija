@@ -80,7 +80,7 @@ export default function LocationsPage() {
           </div>
 
           {loading ? (
-            <div className="space-y-8">
+            <div className="space-y-12">
               {/* Map skeleton */}
               <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-6 border border-gray-100 dark:border-gray-800">
                 <div className="h-96 bg-gray-200 dark:bg-slate-700 rounded-xl animate-pulse flex items-center justify-center">
@@ -92,8 +92,8 @@ export default function LocationsPage() {
               </div>
 
               {/* Address cards skeleton */}
-              <div className="space-y-6">
-                {[1, 2, 3].map((i) => (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
                   <div key={i} className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-800">
                     <div className="animate-pulse">
                       <div className="h-6 bg-gray-200 dark:bg-slate-700 rounded w-1/3 mb-4"></div>
@@ -108,7 +108,7 @@ export default function LocationsPage() {
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+            <div className="space-y-12">
               {/* Map Section */}
               <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-6 border border-gray-100 dark:border-gray-800">
                 {!mapLoaded ? (
@@ -143,7 +143,7 @@ export default function LocationsPage() {
               </div>
 
               {/* Address Cards */}
-              <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {sortedLocations.map((loc, idx) => (
                   <div
                     key={loc._id}
@@ -152,8 +152,8 @@ export default function LocationsPage() {
                     style={{ animationDelay: `${idx * 100}ms` }}
                   >
                     <div className="flex items-start justify-between">
-                      <div>
-                        <h3 className="text-xl font-bold text-[#009edb] mb-2 group-hover:underline decoration-2 underline-offset-4">
+                      <div className="flex-1">
+                        <h3 className="text-xl uppercase font-bold text-[#009edb] mb-3 group-hover:underline decoration-2 underline-offset-4">
                           {loc.title}
                         </h3>
                         <div className="space-y-3 text-gray-600 dark:text-gray-300">
@@ -181,7 +181,7 @@ export default function LocationsPage() {
                           </div>
                         </div>
                       </div>
-                      <ExternalLink className="w-5 h-5 text-gray-400 group-hover:text-[#009edb] transition-colors" />
+                      <ExternalLink className="w-5 h-5 text-gray-400 group-hover:text-[#009edb] transition-colors ml-2 shrink-0" />
                     </div>
                   </div>
                 ))}

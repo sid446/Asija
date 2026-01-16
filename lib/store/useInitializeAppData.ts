@@ -19,7 +19,6 @@ const insightsFetchedRef = { current: false };
 const regionsFetchedRef = { current: false };
 const faqsFetchedRef = { current: false };
 const contactFetchedRef = { current: false };
-const locationsFetchedRef = { current: false };
 const globalContentFetchedRef = { current: false };
 const globalRegionsFetchedRef = { current: false };
 const globalOfferingsFetchedRef = { current: false };
@@ -86,8 +85,7 @@ export function useInitializeAppData() {
       }
 
       // Fetch locations if not loaded
-      if (locations.length === 0 && !contactLoading && !locationsFetchedRef.current) {
-        locationsFetchedRef.current = true;
+      if (locations.length === 0 && !contactLoading) {
         dispatch(fetchLocations());
       }
 
