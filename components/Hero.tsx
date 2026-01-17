@@ -148,8 +148,8 @@ function Hero() {
         };
       case 'india':
         return {
-          text: 'Our Locations',
-          redirect: '/locations'
+          text: 'Our Experts',
+          redirect: '/team'
         };
       default:
         return {
