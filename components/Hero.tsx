@@ -114,7 +114,7 @@ function Hero() {
           router.push('/team');
           break;
         case 'india':
-          router.push('/locations');
+          router.push('/team');
           break;
         default:
           router.push('/about');
