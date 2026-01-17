@@ -96,7 +96,7 @@ const Contact = () => {
               {contactContent.description}
             </p>
 
-            <div className="space-y-4">
+            <div className="space-y-4 ">
               {/* Locations */}
               <div className="flex items-start gap-4 group">
                 <div className={`p-3 rounded-full shrink-0 transition-colors ${isLight ? 'text-[#009edb] group-hover:bg-[#009edb] group-hover:text-white' : 'bg-white/5 text-[#009edb] group-hover:bg-[#009edb] group-hover:text-white'}`}>
@@ -125,7 +125,37 @@ const Contact = () => {
                   </div>
                 </div>
               </div>
+              <div className="space-y-6 mt-10 ">
+                {/* Phone */}
+                <div className="flex items-start gap-4 group">
+                  <div className={`p-3 rounded-full shrink-0 transition-colors ${isLight ? ' text-[#009edb] group-hover:bg-[#009edb] group-hover:text-white' : 'bg-white/5 text-[#009edb] group-hover:bg-[#009edb] group-hover:text-white'}`}>
+                    <Phone size={24} />
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <h3 className={`font-semibold text-lg mb-1 ${isLight ? 'text-gray-900' : 'text-white'}`}>
+                        {contactContent.contactNo}
+                      </h3>
+                      <div className={`${isLight ? 'text-gray-600' : 'text-white/70'}`}>
+                        <p>{contactContent.phone1}</p>
+                        <p>{contactContent.phone2}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className={`font-semibold text-lg mb-1 ${isLight ? 'text-gray-900' : 'text-white'}`}>
+                        {contactContent.emails}
+                      </h3>
+                      <div className={`flex flex-col ${isLight ? 'text-gray-600' : 'text-white/70'}`}>
+                        <a href={`mailto:${contactContent.email1}`} className="hover:text-[#009edb] transition-colors">{contactContent.email1}</a>
+                        <a href={`mailto:${contactContent.email2}`} className="hover:text-[#009edb] transition-colors">{contactContent.email2}</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+            
+
 
             <div className="mt-12 mb-12">
               <Link 

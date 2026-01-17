@@ -26,7 +26,7 @@ const HoverNavigation: React.FC = () => {
     { id: 'industries', label: 'Industries', sectionId: 'industries' },
     { id: 'career', label: 'Career', sectionId: 'career' },
     { id: 'contact', label: 'Contact', sectionId: 'contact' },
-    { id: 'footer', label: 'End', sectionId: 'footer' },
+    { id: 'footer', label: 'Quick Links', sectionId: 'footer' },
   ];
 
   // Detect mobile device
@@ -184,7 +184,7 @@ const HoverNavigation: React.FC = () => {
             >
               {/* Text Label - Left side */}
               <div 
-                className={`w-16    text-center  mr-2 transition-all duration-300 ${
+                className={`w-20   text-center  mr-2 transition-all duration-300 ${
                   activeSection === item.sectionId
                     ? 'text-md font-semibold scale-110'
                     : 'text-sm font-medium group-hover:scale-105'
