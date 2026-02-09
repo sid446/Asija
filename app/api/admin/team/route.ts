@@ -21,7 +21,7 @@ export async function POST(req: Request) {
     const {
       name, role, avatar, linkedin, qualifications,
       specialization, experience, membership,
-      associationYears, mobile, email, description, order
+      associationYears, mobile, email, description, order, isVisible
     } = body;
 
     if (!name) return NextResponse.json({ message: 'Name is required' }, { status: 400 });
@@ -31,7 +31,8 @@ export async function POST(req: Request) {
         name, role, avatar, linkedin, qualifications,
         specialization, experience, membership,
         associationYears, mobile, email, description,
-        order: order || 0
+        order: order || 0,
+        isVisible: isVisible !== false
       });
     });
 

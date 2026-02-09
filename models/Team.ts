@@ -20,6 +20,7 @@ const TeamSchema = new mongoose.Schema({
   email: { type: String },
   description: { type: String },
   order: { type: Number, default: 0 },
+  isVisible: { type: Boolean, default: true },
 }, { timestamps: true });
 
 // Prevent Mongoose OverwriteModelError by checking if the model exists

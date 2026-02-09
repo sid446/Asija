@@ -71,10 +71,12 @@ export default function TeamAnimated() {
         const res = await fetch('/api/admin/team');
         const data = await res.json();
         if (data.items) {
-          setMembers(data.items);
-          const founderData = data.items.find((m: any) => m.name === "CA Uttam Chandra Asija");
+          // Filter only visible members
+          const visibleMembers = data.items.filter((m: any) => m.isVisible !== false);
+          setMembers(visibleMembers);
+          const founderData = visibleMembers.find((m: any) => m.name === "CA Uttam Chandra Asija");
           setFounder(founderData);
-          const otherMembers = data.items.filter((m: any) => m.name !== "CA Uttam Chandra Asija");
+          const otherMembers = visibleMembers.filter((m: any) => m.name !== "CA Uttam Chandra Asija");
           setTeamMembers(otherMembers);
         }
       } catch (error) {

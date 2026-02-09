@@ -53,7 +53,8 @@ type TeamItem = {
   mobile?: string;
   email?: string;
   description?: string;
-  order?: number; // <-- Add this line
+  order?: number;
+  isVisible?: boolean;
 };
 
 // Helper Component for Section Editing
@@ -1018,7 +1019,8 @@ export default function AdminPage() {
     mobile: '',
     email: '',
     description: '',
-    order: 0
+    order: 0,
+    isVisible: true
   });
 
   const [industryFormData, setIndustryFormData] = useState({
@@ -2215,7 +2217,8 @@ export default function AdminPage() {
       mobile: item.mobile || '',
       email: item.email || '',
       description: item.description || '',
-      order: typeof item.order === 'number' ? item.order : 0
+      order: typeof item.order === 'number' ? item.order : 0,
+      isVisible: item.isVisible !== false
     });
     setImageFile(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2283,7 +2286,8 @@ export default function AdminPage() {
     setFormData({
       name: '', role: '', linkedin: '', qualifications: [], 
       specialization: [], experience: [], membership: '', 
-      associationYears: '', mobile: '', email: '', description: '', order: 0
+      associationYears: '', mobile: '', email: '', description: '', order: 0,
+      isVisible: true
     });
     setImageFile(null);
   };
@@ -3349,6 +3353,20 @@ export default function AdminPage() {
                             className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
                           />
                         </div>
+
+                        <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-200">
+                          <input
+                            type="checkbox"
+                            id="isVisible"
+                            checked={formData.isVisible}
+                            onChange={(e) => setFormData(prev => ({ ...prev, isVisible: e.target.checked }))}
+                            className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
+                          />
+                          <label htmlFor="isVisible" className="flex-1 cursor-pointer">
+                            <span className="block text-sm font-semibold text-gray-700">Visible on Main Page</span>
+                            <span className="block text-xs text-gray-500 mt-0.5">When enabled, this team member will appear on the public team page</span>
+                          </label>
+                        </div>
                       </div>
 
                       <button 
@@ -3441,6 +3459,9 @@ export default function AdminPage() {
                                       LinkedIn
                                     </span>
                                   )}
+                                  <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium ${item.isVisible !== false ? 'bg-green-50 text-green-600 border border-green-100' : 'bg-red-50 text-red-600 border border-red-100'}`}>
+                                    {item.isVisible !== false ? 'Visible' : 'Hidden'}
+                                  </span>
                                 </div>
                               </div>
                             </div>
