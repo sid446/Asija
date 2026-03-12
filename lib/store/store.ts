@@ -64,6 +64,25 @@ try {
 }
 
 // Configure store
+// Auto-clear old cache if cacheVersion is missing (for insights)
+if (typeof window !== 'undefined') {
+  try {
+    const persisted = localStorage.getItem('persist:root');
+    if (persisted) {
+      const parsed = JSON.parse(persisted);
+      // If insights slice exists and cacheVersion is missing, clear cache
+      if (parsed.insights) {
+        const insightsState = JSON.parse(parsed.insights);
+        if (!insightsState.cacheVersion) {
+          localStorage.removeItem('persist:root');
+        }
+      }
+    }
+  } catch (e) {
+    // Ignore errors
+  }
+}
+
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
