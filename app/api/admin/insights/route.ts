@@ -39,8 +39,14 @@ export async function POST(request: Request) {
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '');
 
+    // Accept image and video URLs
     const insight = await dbMutate(async () => {
-      return await Insight.create({ ...data, slug });
+      return await Insight.create({
+        ...data,
+        slug,
+        image: data.image || '',
+        video: data.video || '',
+      });
     });
 
     console.log('Created insight:', (insight as any)._id);

@@ -14,10 +14,8 @@ const InsightSchema = new Schema(
       type: String,
       required: true,
     },
-    image: {
-      type: String,
-      required: false,
-    },
+    image: { type: String, required: false },
+    video: { type: String }, // Video URL
     category: {
       type: String,
       default: 'General',

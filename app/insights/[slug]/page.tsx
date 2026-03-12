@@ -211,7 +211,18 @@ export default function InsightPage({ params }: InsightPageProps) {
 
       {/* Content Section */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {insight.image && (
+        {insight.video ? (
+          <div className="mb-12">
+            <video
+              src={insight.video}
+              controls
+              playsInline
+              preload="metadata"
+              poster={insight.image || undefined}
+              className="w-full h-64 md:h-96 object-cover shadow-lg"
+            />
+          </div>
+        ) : insight.image ? (
           <div className="mb-12">
             <img
               src={insight.image}
@@ -219,7 +230,7 @@ export default function InsightPage({ params }: InsightPageProps) {
               className="w-full h-64 md:h-96 object-cover  shadow-lg"
             />
           </div>
-        )}
+        ) : null}
 
         <div className="bg-card  shadow-lg p-8 md:p-12 border border-theme">
           <div
@@ -242,13 +253,21 @@ export default function InsightPage({ params }: InsightPageProps) {
                   prefetch={false}
                   className="bg-card rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow group border border-theme"
                 >
-                  {relatedInsight.image && (
+                  {relatedInsight.video ? (
+                    <video
+                      src={relatedInsight.video}
+                      preload="metadata"
+                      playsInline
+                      poster={relatedInsight.image || undefined}
+                      className="w-full h-32 object-cover group-hover:scale-105 transition-transform"
+                    />
+                  ) : relatedInsight.image ? (
                     <img
                       src={relatedInsight.image}
                       alt={relatedInsight.title}
                       className="w-full h-32 object-cover group-hover:scale-105 transition-transform"
                     />
-                  )}
+                  ) : null}
                   <div className="p-4">
                     <span className="px-2 py-1 bg-[#009edb]/10 text-[#009edb] text-xs font-medium rounded-full mb-2 inline-block">
                       {relatedInsight.category}
