@@ -1,3 +1,14 @@
+// Version endpoint for cache busting
+export async function GET_VERSION() {
+  try {
+    // Get the latest updated insight
+    const latest = await Insight.findOne({}).sort({ updatedAt: -1 }).select('updatedAt');
+    const version = latest ? latest.updatedAt.toISOString() : new Date().toISOString();
+    return NextResponse.json({ version });
+  } catch (error) {
+    return NextResponse.json({ version: new Date().toISOString() });
+  }
+}
 import { NextResponse } from 'next/server';
 import { dbGet, dbMutate } from '@/lib/database';
 import Insight from '@/models/Insight';
