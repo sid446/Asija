@@ -28,6 +28,7 @@ import {
   MinusCircle,
   Filter,
   Lightbulb
+  , Upload
 } from 'lucide-react';
 import { useAppDispatch } from '@/lib/store/hooks';
 import { fetchHeroContent as fetchHeroContentThunk } from '@/lib/store/slices/heroSlice';
@@ -1091,6 +1092,7 @@ export default function AdminPage() {
     description: '',
     content: '',
     image: '',
+    video: '',
     category: 'General',
     published: true,
     featured: false
@@ -1709,6 +1711,7 @@ export default function AdminPage() {
   const handleSaveInsight = async () => {
     try {
       let imageUrl = insightFormData.image || '';
+      let videoUrl = insightFormData.video || '';
       if (insightImageFile) {
         const form = new FormData();
         form.append('file', insightImageFile);
@@ -1720,7 +1723,18 @@ export default function AdminPage() {
         const uploadData = await uploadRes.json();
         imageUrl = uploadData.secure_url;
       }
+      // Upload video if present
+      if (insightVideoFile) {
+        const formV = new FormData();
+        formV.append('file', insightVideoFile);
+        const uploadResV = await fetch('/api/upload', { method: 'POST', body: formV });
+        if (!uploadResV.ok) throw new Error('Video upload failed');
+        const uploadDataV = await uploadResV.json();
+        videoUrl = uploadDataV.secure_url || uploadDataV.url;
+      }
       const body = { ...insightFormData, image: imageUrl };
+      // include video URL
+      body.video = videoUrl;
       let response;
       if (editingInsightId) {
         response = await fetch(`/api/admin/insights/${editingInsightId}`, {
@@ -1742,11 +1756,14 @@ export default function AdminPage() {
           description: '',
           content: '',
           image: '',
+          video: '',
           category: 'General',
           published: true,
           featured: false
         });
         setInsightImageFile(null);
+        setInsightVideoFile(null);
+        setInsightVideoPreview('');
         setEditingInsightId(null);
         fetchInsights();
       } else {
@@ -1765,11 +1782,14 @@ export default function AdminPage() {
       description: insight.description || '',
       content: insight.content || '',
       image: insight.image || '',
+      video: insight.video || '',
       category: insight.category || 'General',
       published: insight.published ?? true,
       featured: insight.featured ?? false
     });
     setInsightImageFile(null);
+    setInsightVideoFile(null);
+    setInsightVideoPreview(insight.video || '');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -1780,11 +1800,14 @@ export default function AdminPage() {
       description: '',
       content: '',
       image: '',
+      video: '',
       category: 'General',
       published: true,
       featured: false
     });
     setInsightImageFile(null);
+    setInsightVideoFile(null);
+    setInsightVideoPreview('');
   };
 
   const handleDeleteInsight = async (id: string) => {
@@ -1924,6 +1947,8 @@ export default function AdminPage() {
   const [galleryThumbnailFile, setGalleryThumbnailFile] = useState<File | null>(null);
   const [eventCoverImageFile, setEventCoverImageFile] = useState<File | null>(null);
   const [insightImageFile, setInsightImageFile] = useState<File | null>(null);
+  const [insightVideoFile, setInsightVideoFile] = useState<File | null>(null);
+  const [insightVideoPreview, setInsightVideoPreview] = useState<string>('');
 
   const fetchItems = async () => {
     setLoading(true);
@@ -6098,6 +6123,35 @@ export default function AdminPage() {
                             <input type="file" className="hidden" onChange={(e) => setInsightImageFile(e.target.files?.[0] || null)} accept="image/*" />
                           </label>
                         </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Video (optional)</label>
+                        <div className="flex items-center justify-center w-full group">
+                          <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-200 border-dashed rounded-xl cursor-pointer bg-gray-50 group-hover:bg-blue-50/50 group-hover:border-blue-300 transition-all duration-300">
+                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                              <div className="p-3 bg-white rounded-full shadow-sm mb-2 group-hover:scale-110 transition-transform">
+                                <Upload className="w-5 h-5 text-gray-400 group-hover:text-blue-500" />
+                              </div>
+                              <p className="text-xs text-gray-500 font-medium">{insightVideoFile ? <span className="text-blue-600">{insightVideoFile.name}</span> : (insightFormData.video ? <span className="text-gray-700">Current video</span> : 'Click to upload video (mp4, webm)')}</p>
+                            </div>
+                            <input type="file" className="hidden" onChange={(e) => {
+                              const f = e.target.files?.[0] || null;
+                              setInsightVideoFile(f);
+                              if (f) {
+                                const reader = new FileReader();
+                                reader.onload = (ev) => setInsightVideoPreview(ev.target?.result as string);
+                                reader.readAsDataURL(f);
+                              } else {
+                                setInsightVideoPreview('');
+                              }
+                            }} accept="video/*" />
+                          </label>
+                        </div>
+                        {insightVideoPreview && (
+                          <div className="mt-3">
+                            <video src={insightVideoPreview} controls className="w-full h-48 object-cover rounded-md" />
+                          </div>
+                        )}
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
