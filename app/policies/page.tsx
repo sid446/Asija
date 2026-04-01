@@ -6,7 +6,7 @@ import { useEffect, useState, useRef } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useTheme } from "@/components/ThemeProvider";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { InteractiveHoverButton } from "@/components/ui/InteractiveHoverButton";
 import Loader from "@/components/ui/Loader";
 import Link from "next/link";
@@ -450,26 +450,31 @@ export default function PoliciesPage() {
 
         {/* Recent Policies Compact Heading (tappable) */}
         <div className="fixed right-20 top-24 z-50 hidden xl:block">
-          <button
-            onClick={() => setNoticeOpen(true)}
-            className={`flex items-center gap-3 p-3 rounded-xl border shadow-md backdrop-blur-sm ${isLight ? 'bg-white/90 border-gray-100' : 'bg-slate-900/80 border-white/10'}`}
-            aria-label="Open recent policies"
-          >
-            <div className={`w-3 h-3 rounded-full ${noticeTab === 'general' ? 'bg-gray-400' : 'bg-gray-300'}`} />
-            <div className={`font-semibold ${isLight ? 'text-gray-900' : 'text-white'}`}>Recent Policies</div>
-          </button>
+          {!noticeOpen && (
+            <motion.button
+              layoutId="recent-policies-panel"
+              onClick={() => setNoticeOpen(true)}
+              className={`flex items-center gap-3 p-3 rounded-xl border shadow-md backdrop-blur-sm ${isLight ? 'bg-white/90 border-gray-100' : 'bg-slate-900/80 border-white/10'}`}
+              aria-label="Open recent policies"
+              transition={{ type: 'spring', stiffness: 320, damping: 28 }}
+            >
+              <div className={`w-3 h-3 rounded-full ${noticeTab === 'general' ? 'bg-gray-400' : 'bg-gray-300'}`} />
+              <div className={`font-semibold ${isLight ? 'text-gray-900' : 'text-white'}`}>Recent Policies</div>
+            </motion.button>
+          )}
         </div>
 
         {/* Fullscreen Recent Policies Overlay */}
-        {noticeOpen && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            className="fixed inset-0 z-60 flex items-start justify-center p-6"
-          >
-            <div className="absolute inset-0 bg-black/50" onClick={() => setNoticeOpen(false)} />
-            <div className={`relative w-full max-w-4xl mt-16 rounded-2xl border p-6 shadow-2xl backdrop-blur-md ${isLight ? 'bg-white/95 border-gray-100' : 'bg-slate-900/95 border-white/10'}`}>
+        <AnimatePresence>
+          {noticeOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-60 flex items-start justify-center p-6"
+            >
+              <div className="absolute inset-0 bg-black/50" onClick={() => setNoticeOpen(false)} />
+              <motion.div layoutId="recent-policies-panel" transition={{ type: 'spring', stiffness: 320, damping: 28 }} className={`relative w-full max-w-4xl mt-16 rounded-2xl border p-6 shadow-2xl backdrop-blur-md ${isLight ? 'bg-white/95 border-gray-100' : 'bg-white/1 border-white/10'}`}>
               <div className="flex items-center justify-between mb-4">
                 <h3 className={`text-xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>Recent Policies</h3>
                 <div className="flex items-center gap-2">
@@ -526,10 +531,14 @@ export default function PoliciesPage() {
                               onClick={() => setNoticeOpen(false)}
                             >
                               {p.title}
+                              
                             </Link>
-                            <div className={`text-xs ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>{p.subCategory ? p.subCategory : 'General'}</div>
+                            
+                            <div className={`text-xs uppercase ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>{p.subCategory ? p.subCategory : 'General'}</div>
+                          
                           </div>
-                          <div className="text-sm text-gray-400">→</div>
+                         
+                          
                         </div>
                       ))
                     )}
@@ -565,9 +574,10 @@ export default function PoliciesPage() {
                   </div>
                 )}
               </div>
-            </div>
-          </motion.div>
-        )}
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Mobile Navigation */}
         <div className="fixed bottom-1 left-1/2 transform -translate-x-1/2 z-40 lg:hidden">
