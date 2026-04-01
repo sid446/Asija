@@ -75,6 +75,14 @@ export default function PoliciesPage() {
 
   const sections = [
     { 
+      id: 'employee-policies', 
+      label: 'Employee', 
+      title: 'Employee & Internal Policies',
+      description: 'Department-specific guidelines and employee resources',
+      bgImage: '/about3.jpg',
+      color: 'from-green-900/80 to-green-700/80'
+    },
+    { 
       id: 'general-policies', 
       label: 'General', 
       title: 'General Policies',
@@ -89,14 +97,6 @@ export default function PoliciesPage() {
       description: 'Essential legal documents and terms of service',
       bgImage: '/about2.jpg',
       color: 'from-purple-900/80 to-purple-700/80'
-    },
-    { 
-      id: 'employee-policies', 
-      label: 'Employee', 
-      title: 'Employee & Internal Policies',
-      description: 'Department-specific guidelines and employee resources',
-      bgImage: '/about3.jpg',
-      color: 'from-green-900/80 to-green-700/80'
     },
   ];
 
@@ -173,6 +173,20 @@ export default function PoliciesPage() {
     return acc;
   }, {} as Record<string, PolicyItem[]>);
 
+  const isEmployeeSection = sections[currentSectionIndex]?.id === 'employee-policies';
+  const [noticeTab, setNoticeTab] = useState<'general' | 'employee' | 'legal'>('general');
+  const [noticeOpen, setNoticeOpen] = useState(false);
+
+  const recentGeneral = policies
+    .slice()
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .slice(0, 6);
+
+  const recentEmployee = employeePolicies
+    .slice()
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .slice(0, 8);
+
   if (loading) {
     return <Loader pageName="Policies" />;
   }
@@ -181,7 +195,7 @@ export default function PoliciesPage() {
     <div className={`h-screen overflow-hidden transition-colors duration-300 ${isLight ? 'bg-white text-gray-900' : 'bg-slate-950 text-white'}`}>
       <Navbar />
       
-      <main className={`relative ${currentSectionIndex === 2 ? 'h-auto' : 'h-screen'} ${currentSectionIndex === 2 ? 'overflow-y-auto' : 'overflow-hidden'}`}>
+      <main className={`relative ${isEmployeeSection ? 'h-auto' : 'h-screen'} ${isEmployeeSection ? 'overflow-y-auto' : 'overflow-hidden'}`}>
         {/* Hero Sections */}
         <div 
           ref={sectionsContainerRef}
@@ -191,6 +205,75 @@ export default function PoliciesPage() {
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
+          {/* Employee Policies Section */}
+          <section 
+            id="employee-policies" 
+            ref={(el) => { sectionRefs.current['employee-policies'] = el; }}
+            className="relative h-screen flex items-start justify-start overflow-y-auto  pt-24 sm:pt-35 "
+          >
+            <div className="absolute inset-0">
+              <img 
+                src="https://res.cloudinary.com/do5lklzbn/image/upload/v1766834244/ql_t1cg2w.jpg" 
+                alt="Employee Policies" 
+                className="w-full h-full object-cover"
+              />
+              <div className={`absolute inset-0 bg-gradient-to-r from-black/30 to-black/10 `} />
+            </div>
+            
+            <div className="relative z-10 text-left text-white px-4 sm:px-6 lg:px-8 max-w-6xl">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+              >
+                <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6 tracking-tight" style={{color: '#74d2f8'}}>{sections[0].title}<span className="text-6xl ml-4" style={{color: 'white'}}>.</span></h2>
+                
+                <p className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 opacity-90" style={{color: 'white'}}>{sections[0].description}</p>
+                
+                {!session && (
+                  <div className="mb-6 sm:mb-8">
+                    <p className="text-base sm:text-lg opacity-80 mb-4 sm:mb-6" style={{color: 'white'}}>Please log in to view employee policies and department-specific guidelines.</p>
+                    <Link href="/login" prefetch={false}>
+                      <InteractiveHoverButton
+                        text="Login to View"
+                        className="bg-white/20 hover:bg-white/30 border-white/30 text-white"
+                      />
+                    </Link>
+                  </div>
+                )}
+
+                {session && departments.length > 0 && (
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                    {departments.map((department, index) => (
+                      <motion.div
+                        key={department.slug}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: index * 0.1 }}
+                        className="bg-white/5 backdrop-blur-sm rounded-lg p-3 sm:p-4 border border-white/10 hover:bg-white/10 transition-all duration-500 cursor-pointer group"
+                        onClick={() => router.push(`/policies/${department.slug}`)}
+                      >
+                        <div className="w-8 sm:w-12 h-px bg-white/30 mb-4 sm:mb-6 group-hover:bg-[#009edb] transition-colors duration-300" />
+                        <h3 className="text-lg sm:text-xl font-light mb-3 sm:mb-4 leading-tight" style={{color: '#74d2f8'}}>
+                          {department.name}
+                        </h3>
+                        <p className="text-xs sm:text-sm opacity-70 leading-relaxed mb-4 sm:mb-6 line-clamp-2" style={{color: 'white'}}>
+                          {department.description}
+                        </p>
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-light tracking-wider uppercase opacity-50" style={{color: 'white'}}>VIEW POLICIES</span>
+                          <div className="text-sm sm:text-lg group-hover:translate-x-2 transition-transform duration-300" style={{color: 'white'}}>→</div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            </div>
+          </section>
+
           {/* General Policies Section */}
           <section 
             id="general-policies" 
@@ -213,8 +296,8 @@ export default function PoliciesPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
               >
-                <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6 tracking-tight" style={{color: '#74d2f8'}}>{sections[0].title} <span className="text-6xl " style={{color: 'white'}}>.</span></h2>
-                <p className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 opacity-90 max-w-2xl  leading-relaxed" style={{color: 'white'}}>{sections[0].description}</p>
+                <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6 tracking-tight" style={{color: '#74d2f8'}}>{sections[1].title} <span className="text-6xl " style={{color: 'white'}}>.</span></h2>
+                <p className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 opacity-90 max-w-2xl  leading-relaxed" style={{color: 'white'}}>{sections[1].description}</p>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-6xl mx-auto">
                   {policies.slice(0, 3).map((policy, index) => {
@@ -275,8 +358,8 @@ export default function PoliciesPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
               >
-                <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6 tracking-tight" style={{color: '#74d2f8'}}>{sections[1].title}<span className="text-6xl ml-4 " style={{color: 'white'}}>.</span></h2>
-                <p className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 opacity-90 max-w-2xl leading-relaxed" style={{color: 'white'}}>{sections[1].description}</p>
+                <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6 tracking-tight" style={{color: '#74d2f8'}}>{sections[2].title}<span className="text-6xl ml-4 " style={{color: 'white'}}>.</span></h2>
+                <p className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 opacity-90 max-w-2xl leading-relaxed" style={{color: 'white'}}>{sections[2].description}</p>
                 
                 <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 lg:gap-8 justify-center items-center max-w-4xl mx-auto">
                   <motion.div
@@ -312,75 +395,6 @@ export default function PoliciesPage() {
                     </div>
                   </motion.div>
                 </div>
-              </motion.div>
-            </div>
-          </section>
-
-          {/* Employee Policies Section */}
-          <section 
-            id="employee-policies" 
-            ref={(el) => { sectionRefs.current['employee-policies'] = el; }}
-            className="relative h-screen flex items-start justify-start overflow-y-auto  pt-24 sm:pt-35 "
-          >
-            <div className="absolute inset-0">
-              <img 
-                src="https://res.cloudinary.com/do5lklzbn/image/upload/v1766834244/ql_t1cg2w.jpg" 
-                alt="Employee Policies" 
-                className="w-full h-full object-cover"
-              />
-              <div className={`absolute inset-0 bg-gradient-to-r from-black/30 to-black/10 `} />
-            </div>
-            
-            <div className="relative z-10 text-left text-white px-4 sm:px-6 lg:px-8 max-w-6xl">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-              >
-                <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6 tracking-tight" style={{color: '#74d2f8'}}>{sections[2].title}<span className="text-6xl ml-4" style={{color: 'white'}}>.</span></h2>
-                
-                <p className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 opacity-90" style={{color: 'white'}}>{sections[2].description}</p>
-                
-                {!session && (
-                  <div className="mb-6 sm:mb-8">
-                    <p className="text-base sm:text-lg opacity-80 mb-4 sm:mb-6" style={{color: 'white'}}>Please log in to view employee policies and department-specific guidelines.</p>
-                    <Link href="/login" prefetch={false}>
-                      <InteractiveHoverButton
-                        text="Login to View"
-                        className="bg-white/20 hover:bg-white/30 border-white/30 text-white"
-                      />
-                    </Link>
-                  </div>
-                )}
-
-                {session && departments.length > 0 && (
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-                    {departments.map((department, index) => (
-                      <motion.div
-                        key={department.slug}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.1 }}
-                        className="bg-white/5 backdrop-blur-sm rounded-lg p-3 sm:p-4 border border-white/10 hover:bg-white/10 transition-all duration-500 cursor-pointer group"
-                        onClick={() => router.push(`/policies/${department.slug}`)}
-                      >
-                        <div className="w-8 sm:w-12 h-px bg-white/30 mb-4 sm:mb-6 group-hover:bg-[#009edb] transition-colors duration-300" />
-                        <h3 className="text-lg sm:text-xl font-light mb-3 sm:mb-4 leading-tight" style={{color: '#74d2f8'}}>
-                          {department.name}
-                        </h3>
-                        <p className="text-xs sm:text-sm opacity-70 leading-relaxed mb-4 sm:mb-6 line-clamp-2" style={{color: 'white'}}>
-                          {department.description}
-                        </p>
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-light tracking-wider uppercase opacity-50" style={{color: 'white'}}>VIEW POLICIES</span>
-                          <div className="text-sm sm:text-lg group-hover:translate-x-2 transition-transform duration-300" style={{color: 'white'}}>→</div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                )}
               </motion.div>
             </div>
           </section>
@@ -433,6 +447,127 @@ export default function PoliciesPage() {
             </div>
           </div>
         </div>
+
+        {/* Recent Policies Compact Heading (tappable) */}
+        <div className="fixed right-20 top-24 z-50 hidden xl:block">
+          <button
+            onClick={() => setNoticeOpen(true)}
+            className={`flex items-center gap-3 p-3 rounded-xl border shadow-md backdrop-blur-sm ${isLight ? 'bg-white/90 border-gray-100' : 'bg-slate-900/80 border-white/10'}`}
+            aria-label="Open recent policies"
+          >
+            <div className={`w-3 h-3 rounded-full ${noticeTab === 'general' ? 'bg-gray-400' : 'bg-gray-300'}`} />
+            <div className={`font-semibold ${isLight ? 'text-gray-900' : 'text-white'}`}>Recent Policies</div>
+          </button>
+        </div>
+
+        {/* Fullscreen Recent Policies Overlay */}
+        {noticeOpen && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="fixed inset-0 z-60 flex items-start justify-center p-6"
+          >
+            <div className="absolute inset-0 bg-black/50" onClick={() => setNoticeOpen(false)} />
+            <div className={`relative w-full max-w-4xl mt-16 rounded-2xl border p-6 shadow-2xl backdrop-blur-md ${isLight ? 'bg-white/95 border-gray-100' : 'bg-slate-900/95 border-white/10'}`}>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className={`text-xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>Recent Policies</h3>
+                <div className="flex items-center gap-2">
+                  <button onClick={() => setNoticeTab('general')} className={`px-2 py-1 rounded ${noticeTab === 'general' ? 'text-[#009edb] font-medium' : 'text-sm text-gray-500'}`}>General</button>
+                  {session && <button onClick={() => setNoticeTab('employee')} className={`px-2 py-1 rounded ${noticeTab === 'employee' ? 'text-[#009edb] font-medium' : 'text-sm text-gray-500'}`}>Employee</button>}
+                  <button onClick={() => setNoticeTab('legal')} className={`px-2 py-1 rounded ${noticeTab === 'legal' ? 'text-[#009edb] font-medium' : 'text-sm text-gray-500'}`}>Legal</button>
+                  <button onClick={() => setNoticeOpen(false)} className="ml-3 text-sm text-gray-500">Close</button>
+                </div>
+              </div>
+
+              <div className="max-h-[70vh] overflow-y-auto">
+                {noticeTab === 'general' && (
+                  <div className="space-y-3">
+                    {recentGeneral.length === 0 ? (
+                      <p className={`text-sm ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>No recent general policies.</p>
+                    ) : (
+                      recentGeneral.map((p) => (
+                        <div key={p._id} className="flex items-start justify-between">
+                          <div>
+                            <button
+                              onClick={() => {
+                                setNoticeOpen(false);
+                                setCurrentSectionIndex(sections.findIndex(s => s.id === 'general-policies'));
+                                setTimeout(() => {
+                                  const el = sectionRefs.current['general-policies'];
+                                  el?.scrollIntoView({ behavior: 'smooth' });
+                                }, 250);
+                              }}
+                              className="text-sm font-medium text-[#009edb] hover:underline text-left"
+                            >
+                              {p.title}
+                            </button>
+                            <div className={`text-xs ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>{new Date(p.createdAt).toLocaleDateString()}</div>
+                          </div>
+                          <div className="text-sm text-gray-400">→</div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
+
+                {noticeTab === 'employee' && session && (
+                  <div className="space-y-3">
+                    {recentEmployee.length === 0 ? (
+                      <p className={`text-sm ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>No recent employee policies.</p>
+                    ) : (
+                      recentEmployee.map((p) => (
+                        <div key={p._id} className="flex items-start justify-between">
+                          <div>
+                            <Link
+                              href={p.subCategory ? `/policies/${p.subCategory.toLowerCase()}` : '/policies'}
+                              prefetch={false}
+                              className="text-sm font-medium text-[#009edb] hover:underline"
+                              onClick={() => setNoticeOpen(false)}
+                            >
+                              {p.title}
+                            </Link>
+                            <div className={`text-xs ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>{p.subCategory ? p.subCategory : 'General'}</div>
+                          </div>
+                          <div className="text-sm text-gray-400">→</div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
+
+                {noticeTab === 'legal' && (
+                  <div className="space-y-3">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <button
+                          onClick={() => { window.open('/policies/privacy-policy', '_blank'); setNoticeOpen(false); }}
+                          className="text-sm font-medium text-[#009edb] hover:underline text-left"
+                        >
+                          Privacy Policy
+                        </button>
+                        <div className={`text-xs ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>Essential legal</div>
+                      </div>
+                      <div className="text-sm text-gray-400">→</div>
+                    </div>
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <button
+                          onClick={() => { window.open('/policies/terms-of-service', '_blank'); setNoticeOpen(false); }}
+                          className="text-sm font-medium text-[#009edb] hover:underline text-left"
+                        >
+                          Terms of Service
+                        </button>
+                        <div className={`text-xs ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>Essential legal</div>
+                      </div>
+                      <div className="text-sm text-gray-400">→</div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        )}
 
         {/* Mobile Navigation */}
         <div className="fixed bottom-1 left-1/2 transform -translate-x-1/2 z-40 lg:hidden">

@@ -98,13 +98,20 @@ export default function InsightsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {featuredInsights.map((insight: Insight) => (
                 <div key={insight._id} className="bg-card   overflow-hidden hover:shadow-xl transition-shadow border border-theme">
-                  {insight.image && (
+                  {insight.video ? (
+                    <video
+                      src={insight.video}
+                      controls
+                      poster={insight.image || undefined}
+                      className="w-full h-48 object-cover"
+                    />
+                  ) : insight.image ? (
                     <img
                       src={insight.image}
                       alt={insight.title}
                       className="w-full h-48 object-cover"
                     />
-                  )}
+                  ) : null}
                   <div className="p-6">
                     <div className="flex items-center gap-2 mb-3">
                       <span className="px-3 py-1 bg-[#009edb]/10 text-[#009edb] text-sm font-medium rounded-full">
@@ -171,13 +178,20 @@ export default function InsightsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {regularInsights.map((insight: Insight) => (
             <div key={insight._id} className="bg-card overflow-hidden hover:shadow-xl transition-shadow border border-theme">
-              {insight.image && (
-                <img
-                  src={insight.image}
-                  alt={insight.title}
-                  className="w-full h-48 object-cover"
-                />
-              )}
+                {insight.video ? (
+                  <video
+                    src={insight.video}
+                    controls
+                    poster={insight.image || undefined}
+                    className="w-full h-48 object-cover"
+                  />
+                ) : insight.image ? (
+                  <img
+                    src={insight.image}
+                    alt={insight.title}
+                    className="w-full h-48 object-cover"
+                  />
+                ) : null}
               <div className="p-6">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="px-3 py-1 bg-[#009edb]/10 text-[#009edb] text-sm font-medium rounded-full">

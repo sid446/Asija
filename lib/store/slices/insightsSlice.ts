@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
 export interface Insight {
+  video: any;
   _id: string;
   title: string;
   description: string;
