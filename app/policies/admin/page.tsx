@@ -147,7 +147,13 @@ export default function AdminPoliciesPage() {
               PDF Policies
             </h2>
             <div className="space-y-8">
-              {pdfPolicies.map((policy, index) => (
+              {pdfPolicies.map((policy, index) => {
+                const isOneDrive = !!(
+                  policy.pdfUrl &&
+                  (policy.pdfUrl.includes('onedrive.live.com') || policy.pdfUrl.includes('1drv.ms'))
+                );
+
+                return (
                 <motion.div
                   key={policy._id}
                   initial={{ opacity: 0, y: 20 }}
@@ -163,6 +169,7 @@ export default function AdminPoliciesPage() {
                   <div className="flex items-start justify-between mb-4">
                     <h3 className="text-xl font-bold text-[#009edb]">{policy.title}</h3>
                     <div className="flex gap-2">
+                      
                       {policy.excelUrl && (
                         <a
                           href={policy.excelUrl}
@@ -178,7 +185,7 @@ export default function AdminPoliciesPage() {
                           let viewerUrl = policy.pdfUrl!;
                           if (policy.pdfUrl!.includes('drive.google.com')) {
                             viewerUrl = policy.pdfUrl!.replace('/view', '/preview');
-                          } else if (policy.pdfUrl!.includes('onedrive.live.com') || policy.pdfUrl!.includes('1drv.ms')) {
+                          } else if (isOneDrive) {
                             viewerUrl = policy.pdfUrl!;
                           }
                           window.open(viewerUrl, '_blank', 'fullscreen=yes,scrollbars=yes,resizable=yes');
@@ -186,12 +193,12 @@ export default function AdminPoliciesPage() {
                         className="flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-sm"
                       >
                         <Maximize2 className="w-4 h-4" />
-                        Full Screen
+                        PDF View
                       </button>
                     </div>
                   </div>
                   <p className={`mb-4 ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>{policy.content}</p>
-                  {!(policy.pdfUrl!.includes('onedrive.live.com') || policy.pdfUrl!.includes('1drv.ms')) && (
+                  {!isOneDrive && (
                     <div className="w-full h-[400px] border rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 mb-4">
                       <iframe
                         src={
@@ -207,16 +214,11 @@ export default function AdminPoliciesPage() {
                       />
                     </div>
                   )}
-                  {policy.pdfUrl!.includes('onedrive.live.com') || policy.pdfUrl!.includes('1drv.ms') ? (
-                    <div className="w-full text-center py-8 border rounded-lg bg-gray-50 dark:bg-gray-800 mb-4">
-                      <FileText className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                      <p className="text-gray-600 dark:text-gray-400">
-                        OneDrive document - Click "Full Screen" to view
-                      </p>
-                    </div>
-                  ) : null}
+                  
                 </motion.div>
-              ))}
+                );
+              })}
+            
             </div>
           </section>
         )}
