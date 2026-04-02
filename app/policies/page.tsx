@@ -173,6 +173,12 @@ export default function PoliciesPage() {
     return acc;
   }, {} as Record<string, PolicyItem[]>);
 
+  // Only show departments that actually have employee policies
+  const filteredDepartments = departments.filter((d) => {
+    const slug = d.slug?.toLowerCase();
+    return !!(slug && groupedEmployeePolicies[slug] && groupedEmployeePolicies[slug].length > 0);
+  });
+
   const isEmployeeSection = sections[currentSectionIndex]?.id === 'employee-policies';
   const [noticeTab, setNoticeTab] = useState<'general' | 'employee' | 'legal'>('general');
   const [noticeOpen, setNoticeOpen] = useState(false);
@@ -243,9 +249,9 @@ export default function PoliciesPage() {
                   </div>
                 )}
 
-                {session && departments.length > 0 && (
+                {session && filteredDepartments.length > 0 && (
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-                    {departments.map((department, index) => (
+                    {filteredDepartments.map((department, index) => (
                       <motion.div
                         key={department.slug}
                         initial={{ opacity: 0, y: 20 }}
