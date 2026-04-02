@@ -264,7 +264,7 @@ export default function PoliciesPage() {
                         </p>
                         <div className="flex items-center justify-between">
                           <span className="text-xs font-light tracking-wider uppercase opacity-50" style={{color: 'white'}}>VIEW POLICIES</span>
-                          <div className="text-sm sm:text-lg group-hover:translate-x-2 transition-transform duration-300" style={{color: 'white'}}>→</div>
+                         
                         </div>
                       </motion.div>
                     ))}
@@ -374,7 +374,7 @@ export default function PoliciesPage() {
                     <p className="text-xs sm:text-sm opacity-70 leading-relaxed mb-4 sm:mb-6" style={{color: 'white'}}>Learn how we collect, use, and protect your personal information.</p>
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-light tracking-wider uppercase opacity-50" style={{color: 'white'}}>READ MORE</span>
-                      <div className="text-base sm:text-lg group-hover:translate-x-2 transition-transform duration-300" style={{color: 'white'}}>→</div>
+                    
                     </div>
                   </motion.div>
 
@@ -453,7 +453,15 @@ export default function PoliciesPage() {
           {!noticeOpen && (
             <motion.button
               layoutId="recent-policies-panel"
-              onClick={() => setNoticeOpen(true)}
+              onClick={() => {
+                // Open the recent policies overlay and default to Employee tab for signed-in users
+                setNoticeOpen(true);
+                if (session) {
+                  setNoticeTab('employee');
+                } else {
+                  setNoticeTab('general');
+                }
+              }}
               className={`flex items-center gap-3 p-3 rounded-xl border shadow-md backdrop-blur-sm ${isLight ? 'bg-white/90 border-gray-100' : 'bg-slate-900/80 border-white/10'}`}
               aria-label="Open recent policies"
               transition={{ type: 'spring', stiffness: 320, damping: 28 }}
@@ -478,8 +486,9 @@ export default function PoliciesPage() {
               <div className="flex items-center justify-between mb-4">
                 <h3 className={`text-xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>Recent Policies</h3>
                 <div className="flex items-center gap-2">
-                  <button onClick={() => setNoticeTab('general')} className={`px-2 py-1 rounded ${noticeTab === 'general' ? 'text-[#009edb] font-medium' : 'text-sm text-gray-500'}`}>General</button>
                   {session && <button onClick={() => setNoticeTab('employee')} className={`px-2 py-1 rounded ${noticeTab === 'employee' ? 'text-[#009edb] font-medium' : 'text-sm text-gray-500'}`}>Employee</button>}
+                  <button onClick={() => setNoticeTab('general')} className={`px-2 py-1 rounded ${noticeTab === 'general' ? 'text-[#009edb] font-medium' : 'text-sm text-gray-500'}`}>General</button>
+                  
                   <button onClick={() => setNoticeTab('legal')} className={`px-2 py-1 rounded ${noticeTab === 'legal' ? 'text-[#009edb] font-medium' : 'text-sm text-gray-500'}`}>Legal</button>
                   <button onClick={() => setNoticeOpen(false)} className="ml-3 text-sm text-gray-500">Close</button>
                 </div>
