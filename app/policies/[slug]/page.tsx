@@ -196,7 +196,14 @@ export default function DepartmentPoliciesPage() {
                       </div>
                     </div>
 
-                    {policy.policyType === 'pdf' && policy.pdfUrl ? (
+                    {policy.content && policy.content.trim().length > 0 ? (
+                      <div className={`prose prose-lg max-w-none ${isLight ? 'prose-gray' : 'prose-invert'}`}>
+                        <div
+                          className={`leading-relaxed ${isLight ? 'text-gray-700' : 'text-gray-300'}`}
+                          dangerouslySetInnerHTML={{ __html: policy.content.replace(/\n/g, '<br />') }}
+                        />
+                      </div>
+                    ) : policy.pdfUrl ? (
                       <div className="space-y-4">
                         <div className="flex items-center gap-2 text-red-600 dark:text-red-400">
                           <FileText className="h-5 w-5" />
@@ -214,7 +221,7 @@ export default function DepartmentPoliciesPage() {
                           </a>
                         </div>
                       </div>
-                    ) : policy.excelUrl && !policy.pdfUrl ? (
+                    ) : policy.excelUrl ? (
                       <div className="space-y-4">
                         <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
                           <Table className="h-5 w-5" />
@@ -231,14 +238,7 @@ export default function DepartmentPoliciesPage() {
                           </a>
                         </div>
                       </div>
-                    ) : (
-                      <div className={`prose prose-lg max-w-none ${isLight ? 'prose-gray' : 'prose-invert'}`}>
-                        <div
-                          className={`leading-relaxed ${isLight ? 'text-gray-700' : 'text-gray-300'}`}
-                          dangerouslySetInnerHTML={{ __html: policy.content.replace(/\n/g, '<br />') }}
-                        />
-                      </div>
-                    )}
+                    ) : null}
                   </motion.div>
                 ))
             )}
