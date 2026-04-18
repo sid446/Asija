@@ -26,6 +26,7 @@ type PolicyItem = {
   subCategory?: string;
   pdfUrl?: string;
   excelUrl?: string;
+  videoUrl?: string;
   policyType: 'text' | 'pdf';
   order: number;
   createdAt: Date;

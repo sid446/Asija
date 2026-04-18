@@ -7,6 +7,7 @@ const PolicySchema = new Schema({
   subCategory: { type: String, required: false }, // Allow any string value for custom departments
   pdfUrl: { type: String, required: false },
   excelUrl: { type: String, required: false },
+  videoUrl: { type: String, required: false },
   policyType: { type: String, enum: ['text', 'pdf'], default: 'text' },
   order: { type: Number, default: 0 },
 }, { timestamps: true });

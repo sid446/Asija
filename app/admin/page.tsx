@@ -347,7 +347,7 @@ type EventCoverItem = {
 };
 
 type PolicyItem = {
-  excelUrl: any;
+  excelUrl?: string;
   policyType: string;
   _id: string;
   title: string;
@@ -355,6 +355,7 @@ type PolicyItem = {
   category: 'general' | 'employee';
   subCategory?: string; // Allow any string value for custom departments
   pdfUrl?: string;
+  videoUrl?: string;
   order: number;
 };
 
@@ -984,9 +985,10 @@ export default function AdminPage() {
     subCategory?: string;
     pdfUrl?: string;
     excelUrl?: string;
+    videoUrl?: string;
     policyType?: string;
     order: number;
-  }>({ customSubCategory: '', title: '', content: '', category: 'general', subCategory: '', pdfUrl: '', excelUrl: '', policyType: 'text', order: 0 });
+  }>({ customSubCategory: '', title: '', content: '', category: 'general', subCategory: '', pdfUrl: '', excelUrl: '', videoUrl: '', policyType: 'text', order: 0 });
   const [departmentFormData, setDepartmentFormData] = useState({
     slug: '',
     name: '',
@@ -2908,7 +2910,7 @@ export default function AdminPage() {
 
       if (res.ok) {
         setMessage(editingPolicyId ? 'Policy updated successfully!' : 'Policy added successfully!');
-        setPolicyFormData({ customSubCategory: '', title: '', content: '', category: 'general', subCategory: '', pdfUrl: '', excelUrl: '', policyType: 'text', order: 0 });
+        setPolicyFormData({ customSubCategory: '', title: '', content: '', category: 'general', subCategory: '', pdfUrl: '', excelUrl: '', videoUrl: '', policyType: 'text', order: 0 });
         setEditingPolicyId(null);
         fetchPolicies();
       } else {
@@ -2936,6 +2938,7 @@ export default function AdminPage() {
       customSubCategory: deptExists ? '' : (item.subCategory || ''),
       pdfUrl: item.pdfUrl || '',
       excelUrl: item.excelUrl || '',
+      videoUrl: item.videoUrl || '',
       policyType: item.policyType || 'text',
       order: item.order
     });
@@ -6546,6 +6549,19 @@ export default function AdminPage() {
                           />
                           <p className="text-xs text-gray-500 mt-1">Add downloadable Excel files, spreadsheets, or data sheets</p>
                         </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">🎬 Video link</label>
+                          <input
+                            type="url"
+                            name="videoUrl"
+                            value={policyFormData.videoUrl || ''}
+                            onChange={handlePolicyChange}
+                            placeholder="https://www.youtube.com/watch?v=... or https://vimeo.com/..."
+                            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                          />
+                          <p className="text-xs text-gray-500 mt-1">Optional. Shown next to PDF and Excel on employee policy pages.</p>
+                        </div>
                       </div>
 
                       {/* Actions */}
@@ -6573,7 +6589,7 @@ export default function AdminPage() {
                             type="button"
                             onClick={() => {
                               setEditingPolicyId(null);
-                              setPolicyFormData({ title: '', content: '', category: 'general', subCategory: '', customSubCategory: '', pdfUrl: '', excelUrl: '', policyType: 'text', order: 0 });
+                              setPolicyFormData({ title: '', content: '', category: 'general', subCategory: '', customSubCategory: '', pdfUrl: '', excelUrl: '', videoUrl: '', policyType: 'text', order: 0 });
                             }}
                             className="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all font-medium"
                           >
@@ -6742,6 +6758,12 @@ export default function AdminPage() {
                                     </span>
                                   )}
 
+                                  {item.videoUrl && (
+                                    <span className="text-xs font-semibold px-3 py-1 rounded-full bg-violet-100 text-violet-700 border border-violet-200">
+                                      🎬 Video
+                                    </span>
+                                  )}
+
                                   <span className="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded border border-gray-200 flex items-center gap-1" title="Display order - lower numbers appear first">
                                     <span className="text-gray-500">#</span>
                                     <span className="font-medium">{item.order}</span>
@@ -6767,6 +6789,12 @@ export default function AdminPage() {
                                   <div className="flex items-center gap-1">
                                     <span className="text-emerald-600">📊</span>
                                     <span>Excel Available</span>
+                                  </div>
+                                )}
+                                {item.videoUrl && (
+                                  <div className="flex items-center gap-1">
+                                    <span className="text-violet-600">🎬</span>
+                                    <span>Video Available</span>
                                   </div>
                                 )}
                               </div>

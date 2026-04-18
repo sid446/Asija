@@ -8,6 +8,9 @@ export interface Policy {
   order: number;
   createdAt: string;
   updatedAt: string;
+  pdfUrl?: string;
+  excelUrl?: string;
+  videoUrl?: string;
 }
 
 interface PoliciesState {

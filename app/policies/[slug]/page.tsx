@@ -8,7 +8,7 @@ import Footer from "@/components/Footer";
 import { useTheme } from "@/components/ThemeProvider";
 import { motion } from "framer-motion";
 import { InteractiveHoverButton } from "@/components/ui/InteractiveHoverButton";
-import { Maximize2, FileText, Table, Download } from "lucide-react";
+import { Maximize2, FileText, Table, Download, Video } from "lucide-react";
 import Link from "next/link";
 
 type PolicyItem = {
@@ -19,6 +19,7 @@ type PolicyItem = {
   subCategory?: string;
   pdfUrl?: string;
   excelUrl?: string;
+  videoUrl?: string;
   policyType?: 'text' | 'pdf';
   order: number;
 };
@@ -193,6 +194,17 @@ export default function DepartmentPoliciesPage() {
                             <Table className="h-5 w-5" />
                           </a>
                         )}
+                        {policy.videoUrl && (
+                          <a
+                            href={policy.videoUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 rounded-lg bg-violet-500/10 hover:bg-violet-500/20 text-violet-600 dark:text-violet-400 transition-colors"
+                            title="Open video"
+                          >
+                            <Video className="h-5 w-5" />
+                          </a>
+                        )}
                       </div>
                     </div>
 
@@ -235,6 +247,24 @@ export default function DepartmentPoliciesPage() {
                           >
                             <Download className="h-4 w-4" />
                             Download Excel
+                          </a>
+                        </div>
+                      </div>
+                    ) : policy.videoUrl ? (
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2 text-violet-600 dark:text-violet-400">
+                          <Video className="h-5 w-5" />
+                          <span className="text-sm font-medium">Video</span>
+                        </div>
+                        <div className="flex gap-3">
+                          <a
+                            href={policy.videoUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors"
+                          >
+                            <Video className="h-4 w-4" />
+                            Watch video
                           </a>
                         </div>
                       </div>
